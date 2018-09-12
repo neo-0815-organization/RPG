@@ -1,0 +1,1045 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:PapyrusJava="http://www.eclipse.org/papyrus/PapyrusJava/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_VlWdcLLgEeiHip-lVD_btw" name="RPG">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_V3MbYLLgEeiHip-lVD_btw">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="__sPmsLLgEeiHip-lVD_btw" name="rpg">
+      <packagedElement xmi:type="uml:Package" xmi:id="__tp78LLgEeiHip-lVD_btw" name="rpg">
+        <packagedElement xmi:type="uml:Class" xmi:id="__tvbgLLgEeiHip-lVD_btw" name="RPG" visibility="public">
+          <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="__z9_ULLgEeiHip-lVD_btw" name="main" specification="__z3RoLLgEeiHip-lVD_btw">
+            <language>JAVA</language>
+            <body>&#xD;
+</body>
+          </ownedBehavior>
+          <ownedOperation xmi:type="uml:Operation" xmi:id="__z3RoLLgEeiHip-lVD_btw" name="main" visibility="public" isStatic="true" method="__z9_ULLgEeiHip-lVD_btw">
+            <ownedParameter xmi:type="uml:Parameter" xmi:id="__z68ALLgEeiHip-lVD_btw" name="args" type="__t6aoLLgEeiHip-lVD_btw">
+              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__z7jELLgEeiHip-lVD_btw"/>
+              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__z8xMLLgEeiHip-lVD_btw" value="*"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_Cd8SQLLhEeiHip-lVD_btw" name="packethandler">
+          <packagedElement xmi:type="uml:Class" xmi:id="_Cd_VkLLhEeiHip-lVD_btw" name="ListeningThread" visibility="public" isAbstract="true">
+            <generalization xmi:type="uml:Generalization" xmi:id="_CeGqULLhEeiHip-lVD_btw" general="_CeAjsLLhEeiHip-lVD_btw"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CeSQgLLhEeiHip-lVD_btw" name="in" visibility="private" isLeaf="true" type="_CeKUsLLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CebacLLhEeiHip-lVD_btw" name="out" visibility="private" isLeaf="true" type="_CeVT0LLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CewKkLLhEeiHip-lVD_btw" name="ListeningThread" specification="_CeivMLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    super(&quot;Listening-Thread -- &quot; + socket.getLocalAddress() + &quot;:&quot; + socket.getLocalPort());&#xD;
+    in = socket.getInputStream();&#xD;
+    out = socket.getOutputStream();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Ce24QLLhEeiHip-lVD_btw" name="ListeningThread" specification="_CewxoLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    super(&quot;Listening-Thread&quot;);&#xD;
+    this.in = in;&#xD;
+    this.out = out;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Ce3fULLhEeiHip-lVD_btw" name="run" specification="_Ce24QbLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    while (!isInterrupted()) try {&#xD;
+        if (in.available() > 0) {&#xD;
+            final ByteBuffer buf = new ByteBuffer().readFromInputStream(in);&#xD;
+            final Packet packet = connection().getPacket(buf.readInt(), buf.readInt());&#xD;
+            final ByteBuffer packetContent = new ByteBuffer().setLimit(buf.readInt());&#xD;
+            packetContent.write(buf.toByteArray());&#xD;
+            packet.fromBuffer(packetContent);&#xD;
+            if (packet instanceof PacketPong)&#xD;
+                connection().onPong((PacketPong) packet);&#xD;
+            connection().onPacketReceived(packet);&#xD;
+            if (packet.response() != null)&#xD;
+                connection().sendPacket(packet.response(), out);&#xD;
+        }&#xD;
+    } catch (final IOException e) {&#xD;
+        e.printStackTrace();&#xD;
+    }&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CeivMLLhEeiHip-lVD_btw" name="ListeningThread" visibility="public" method="_CewKkLLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ceo10LLhEeiHip-lVD_btw" name="socket" type="_CedPoLLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CewxoLLhEeiHip-lVD_btw" name="ListeningThread" visibility="public" method="_Ce24QLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ce1DELLhEeiHip-lVD_btw" name="in" type="_CeKUsLLhEeiHip-lVD_btw"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ce2RMLLhEeiHip-lVD_btw" name="out" type="_CeVT0LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Ce24QbLhEeiHip-lVD_btw" name="run" visibility="public" method="_Ce3fULLhEeiHip-lVD_btw"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Ce57kLLhEeiHip-lVD_btw" name="connection" visibility="protected" isAbstract="true">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ce7JsLLhEeiHip-lVD_btw" type="_Ce6ioLLhEeiHip-lVD_btw" direction="return"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_Ce6ioLLhEeiHip-lVD_btw" name="Connection" visibility="public" isAbstract="true">
+            <generalization xmi:type="uml:Generalization" xmi:id="_CgLt8LLhEeiHip-lVD_btw" general="_CfBQULLhEeiHip-lVD_btw"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CgM8ELLhEeiHip-lVD_btw" name="INSTANCE" visibility="private" isLeaf="true" type="_Ce6ioLLhEeiHip-lVD_btw" isUnique="false">
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_CgOKMLLhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>this</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CgP_YLLhEeiHip-lVD_btw" name="out" visibility="private" isLeaf="true" type="_CeVT0LLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CgSboLLhEeiHip-lVD_btw" name="listeningThread" visibility="private" type="_Cd_VkLLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CgTCsLLhEeiHip-lVD_btw" name="millis" visibility="private" isUnique="false">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_8heigBydEduyofBvg4RL2w"/>
+            </ownedAttribute>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CgUQ0LLhEeiHip-lVD_btw" name="ping" visibility="private" isUnique="false">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+            </ownedAttribute>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CgeB0LLhEeiHip-lVD_btw" name="Connection" specification="_CgXUILLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    this.out = out;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CgoZ4bLhEeiHip-lVD_btw" name="onPong" specification="_Cgny0LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    ping = (int) ((long) packet.values().get(&quot;time&quot;) - millis);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cg3qcLLhEeiHip-lVD_btw" name="sendPacket" specification="_CgvHkLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (objects == null || objects.length == 0)&#xD;
+        packet.init();&#xD;
+    else&#xD;
+        packet.init(objects);&#xD;
+    final ByteBuffer packetContent = new ByteBuffer();&#xD;
+    packet.toBuffer(packetContent);&#xD;
+    final ByteBuffer buf = new ByteBuffer();&#xD;
+    buf.writeInt(packet.packetPhase());&#xD;
+    buf.writeInt(packet.packetId());&#xD;
+    buf.writeInt(packetContent.getWriteCursor());&#xD;
+    buf.write(packetContent.toByteArray());&#xD;
+    out.write(buf.toByteArray());&#xD;
+    out.flush();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cg8i8LLhEeiHip-lVD_btw" name="sendPacket" specification="_Cg5foLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    sendPacket(packet, out, null);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ChANULLhEeiHip-lVD_btw" name="pingTest" specification="_Cg-_MLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    millis = System.currentTimeMillis();&#xD;
+    try {&#xD;
+        sendPacket(getPacket(0, 0), out, millis);&#xD;
+    } catch (final IOException e) {&#xD;
+        e.printStackTrace();&#xD;
+    }&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ChFF0LLhEeiHip-lVD_btw" name="getPing" specification="_ChCpkLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return ping;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ChKlYLLhEeiHip-lVD_btw" name="initListeningThread" specification="_ChGT8LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (listeningThread == null)&#xD;
+        listeningThread = new ListeningThread(socket) {&#xD;
+&#xD;
+            @Override&#xD;
+            protected Connection connection() {&#xD;
+                return INSTANCE;&#xD;
+            }&#xD;
+        };&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ChTIQLLhEeiHip-lVD_btw" name="initListeningThread" specification="_ChNosLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (listeningThread == null)&#xD;
+        listeningThread = new ListeningThread(in, out) {&#xD;
+&#xD;
+            @Override&#xD;
+            protected Connection connection() {&#xD;
+                return INSTANCE;&#xD;
+            }&#xD;
+        };&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ChXZsLLhEeiHip-lVD_btw" name="startListening" specification="_ChWLkLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (listeningThread != null)&#xD;
+        listeningThread.start();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_ChcSMLLhEeiHip-lVD_btw" name="stopListening" specification="_ChYn0LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (listeningThread != null)&#xD;
+        listeningThread.interrupt();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CgXUILLhEeiHip-lVD_btw" name="Connection" visibility="public" method="_CgeB0LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CgczsLLhEeiHip-lVD_btw" name="out" type="_CeVT0LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CggeELLhEeiHip-lVD_btw" name="onPacketReceived" visibility="protected" isAbstract="true">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CghsMLLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Cgny0LLhEeiHip-lVD_btw" name="onPong" visibility="protected" method="_CgoZ4bLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CgoZ4LLhEeiHip-lVD_btw" name="packet" type="_Cgi6ULLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CgvHkLLhEeiHip-lVD_btw" name="sendPacket" visibility="protected" method="_Cg3qcLLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CgwVsLLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CgyK4LLhEeiHip-lVD_btw" name="objects" type="_CgpA8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Cg5foLLhEeiHip-lVD_btw" name="sendPacket" visibility="protected" method="_Cg8i8LLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cg774LLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Cg-_MLLhEeiHip-lVD_btw" name="pingTest" visibility="public" method="_ChANULLhEeiHip-lVD_btw"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_ChCpkLLhEeiHip-lVD_btw" name="getPing" visibility="public" method="_ChFF0LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_ChEewLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_ChGT8LLhEeiHip-lVD_btw" name="initListeningThread" visibility="public" method="_ChKlYLLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_ChIJILLhEeiHip-lVD_btw" name="socket" type="_CedPoLLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_ChNosLLhEeiHip-lVD_btw" name="initListeningThread" visibility="public" method="_ChTIQLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_ChO20LLhEeiHip-lVD_btw" name="in" type="_CeKUsLLhEeiHip-lVD_btw"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_ChRTELLhEeiHip-lVD_btw" name="out" type="_CeVT0LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_ChWLkLLhEeiHip-lVD_btw" name="startListening" visibility="public" method="_ChXZsLLhEeiHip-lVD_btw"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_ChYn0LLhEeiHip-lVD_btw" name="stopListening" visibility="public" method="_ChcSMLLhEeiHip-lVD_btw"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_CfBQULLhEeiHip-lVD_btw" name="PacketRegistry" visibility="public">
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_CfJMILLhEeiHip-lVD_btw" name="packets" visibility="protected" isLeaf="true" type="_CfDskLLhEeiHip-lVD_btw" isUnique="false">
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_CfLBULLhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>new HashMap&lt;>()</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CfaR4LLhEeiHip-lVD_btw" name="registerPacket" specification="_CfWAcLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    final int phase = packet.packetPhase(), id = packet.packetId();&#xD;
+    if (!packets.containsKey(phase))&#xD;
+        packets.put(phase, new HashMap&lt;>());&#xD;
+    if (packets.get(phase).containsKey(id))&#xD;
+        throw new IllegalArgumentException(&quot;Packet with id('&quot; + id + &quot;') is registered&quot;);&#xD;
+    packets.get(phase).put(id, packet);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cf6oMLLhEeiHip-lVD_btw" name="getPacket" specification="_Cfz6gLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (!packets.containsKey(phase))&#xD;
+        throw new IllegalArgumentException(&quot;Phase '&quot; + phase + &quot;' doesn't exist&quot;);&#xD;
+    if (!packets.get(phase).containsKey(id))&#xD;
+        throw new IllegalArgumentException(&quot;Packet with id('&quot; + id + &quot;') isn't registered&quot;);&#xD;
+    return packets.get(phase).get(id);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cf_gsLLhEeiHip-lVD_btw" name="getAllPackets" specification="_Cf72ULLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    final ArrayList&lt;Packet> list = new ArrayList&lt;>();&#xD;
+    for (final HashMap&lt;Integer, Packet> map : packets.values()) for (final Packet packet : map.values()) list.add(packet);&#xD;
+    return list;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CfWAcLLhEeiHip-lVD_btw" name="registerPacket" visibility="public" method="_CfaR4LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CfZDwLLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Cfz6gLLhEeiHip-lVD_btw" name="getPacket" visibility="public" method="_Cf6oMLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cf1vsLLhEeiHip-lVD_btw" type="_CfP50LLhEeiHip-lVD_btw" direction="return"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cf3k4LLhEeiHip-lVD_btw" name="phase">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cf5aELLhEeiHip-lVD_btw" name="id">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Cf72ULLhEeiHip-lVD_btw" name="getAllPackets" visibility="public" method="_Cf_gsLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cf9rgLLhEeiHip-lVD_btw" type="_CfP50LLhEeiHip-lVD_btw" direction="return">
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Cf-SkLLhEeiHip-lVD_btw"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Cf-5oLLhEeiHip-lVD_btw" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_ChtX8LLhEeiHip-lVD_btw" name="ByteBuffer" visibility="public">
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_Chv0MLLhEeiHip-lVD_btw" name="bytes" visibility="private" isLeaf="true" type="_xLSh4LLkEeiHip-lVD_btw" isUnique="false">
+              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ChyQcLLhEeiHip-lVD_btw"/>
+              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ChzekLLhEeiHip-lVD_btw" value="*"/>
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Ch0FoLLhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>new ArrayList&lt;>()</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_Ch1TwLLhEeiHip-lVD_btw" name="limit" visibility="private" isUnique="false">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Ch1TwbLhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>-1</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_Ch160LLhEeiHip-lVD_btw" name="writeCursor" visibility="private" isUnique="false">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Ch160bLhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>0</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_Ch160rLhEeiHip-lVD_btw" name="readCursor" visibility="private" isUnique="false">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Ch1607LhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>0</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Ch8ogLLhEeiHip-lVD_btw" name="ByteBuffer" specification="_Ch3wALLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CiKq8LLhEeiHip-lVD_btw" name="ByteBuffer" specification="_Ch_EwLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    write(bytes);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CiW4MLLhEeiHip-lVD_btw" name="write" specification="_CiL5ELLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    for (final byte b : bytes) write(b);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CibJoLLhEeiHip-lVD_btw" name="writeInt" specification="_CiZUcLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    write((byte) (i >>> 24));&#xD;
+    write((byte) (i >>> 16));&#xD;
+    write((byte) (i >>> 8));&#xD;
+    write((byte) i);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CifbELLhEeiHip-lVD_btw" name="writeChar" specification="_CicXwLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    writeInt(c);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CilhsLLhEeiHip-lVD_btw" name="writeShort" specification="_CiieYLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    write((byte) (s >>> 8));&#xD;
+    write((byte) s);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CiroULLhEeiHip-lVD_btw" name="writeLong" specification="_Cin98LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    write((byte) (l >>> 56));&#xD;
+    write((byte) (l >>> 48));&#xD;
+    write((byte) (l >>> 40));&#xD;
+    write((byte) (l >>> 32));&#xD;
+    write((byte) (l >>> 24));&#xD;
+    write((byte) (l >>> 16));&#xD;
+    write((byte) (l >>> 8));&#xD;
+    write((byte) l);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cixu8LLhEeiHip-lVD_btw" name="writeString" specification="_CiuEkLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    writeInt(s.length());&#xD;
+    for (final char c : s.toCharArray()) writeChar(c);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Ci2AYLLhEeiHip-lVD_btw" name="writeDouble" specification="_Ciy9ELLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    writeLong(Double.doubleToRawLongBits(d));&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Ci644LLhEeiHip-lVD_btw" name="writeFloat" specification="_Ci31kLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    writeInt(Float.floatToRawIntBits(f));&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Ci_KULLhEeiHip-lVD_btw" name="writeBoolean" specification="_Ci8HALLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    write((byte) (b ? 1 : 0));&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjEC0LLhEeiHip-lVD_btw" name="read" specification="_CjAYcLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    final byte b = bytes.get(readCursor);&#xD;
+    readCursor++;&#xD;
+    return b;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjKJcLLhEeiHip-lVD_btw" name="readInt" specification="_CjHtMLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return read() &lt;&lt; 24 | read() &lt;&lt; 16 | read() &lt;&lt; 8 | read();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjMlsLLhEeiHip-lVD_btw" name="readChar" specification="_CjKwgLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return (char) readInt();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjQQELLhEeiHip-lVD_btw" name="readShort" specification="_CjNz0LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return (short) (read() &lt;&lt; 8 | read());&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjT6cLLhEeiHip-lVD_btw" name="readLong" specification="_CjReMLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return read() &lt;&lt; 56 | read() &lt;&lt; 48 | read() &lt;&lt; 40 | read() &lt;&lt; 32 | read() &lt;&lt; 24 | read() &lt;&lt; 16 | read() &lt;&lt; 8 | read();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjZaALLhEeiHip-lVD_btw" name="readString" specification="_CjVvoLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    String s = &quot;&quot;;&#xD;
+    final int length = readInt();&#xD;
+    for (int i = 0; i &lt; length; i++) s += readChar();&#xD;
+    return s;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjeSgLLhEeiHip-lVD_btw" name="readDouble" specification="_CjaBELLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return Double.longBitsToDouble(readLong());&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cje5kbLhEeiHip-lVD_btw" name="readFloat" specification="_CjeSgbLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return Float.intBitsToFloat(readInt());&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cjh84LLhEeiHip-lVD_btw" name="toByteArray" specification="_CjguwLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    final byte[] byteArray = new byte[bytes.size() - readCursor];&#xD;
+    for (int i = readCursor; i &lt; bytes.size(); i++) byteArray[i - readCursor] = bytes.get(i);&#xD;
+    return byteArray;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjjyELLhEeiHip-lVD_btw" name="writeToOutputStream" specification="_Cjij8LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    out.write(toByteArray());&#xD;
+    return this;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjmOULLhEeiHip-lVD_btw" name="readFromInputStream" specification="_CjkZILLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    while (in.available() > 0) write((byte) in.read());&#xD;
+    return this;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjoqkLLhEeiHip-lVD_btw" name="getLimit" specification="_CjoDgLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return limit;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjsU8LLhEeiHip-lVD_btw" name="setLimit" specification="_CjpRoLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (bytes.size() &lt;= limit)&#xD;
+        this.limit = limit;&#xD;
+    return this;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_CjxNcLLhEeiHip-lVD_btw" name="getWriteCursor" specification="_CjuxMLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return writeCursor;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_Cj030LLhEeiHip-lVD_btw" name="getReadCursor" specification="_CjybkLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return readCursor;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Ch3wALLhEeiHip-lVD_btw" name="ByteBuffer" visibility="public" method="_Ch8ogLLhEeiHip-lVD_btw"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Ch_EwLLhEeiHip-lVD_btw" name="ByteBuffer" visibility="public" method="_CiKq8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CiGZgLLhEeiHip-lVD_btw" name="bytes">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_DxuQ4PaLEeW5KOK8aDMdgA"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CiIOsLLhEeiHip-lVD_btw"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CiI1wLLhEeiHip-lVD_btw" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CiL5ELLhEeiHip-lVD_btw" name="write" visibility="public" method="_CiW4MLLhEeiHip-lVD_btw" raisedException="_CiPjcLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CiNuQLLhEeiHip-lVD_btw" name="b">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_DxuQ4PaLEeW5KOK8aDMdgA"/>
+              </ownedParameter>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CiXfQLLhEeiHip-lVD_btw" name="bytes">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_DxuQ4PaLEeW5KOK8aDMdgA"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CiYGULLhEeiHip-lVD_btw"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CiYGUbLhEeiHip-lVD_btw" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CiZUcLLhEeiHip-lVD_btw" name="writeInt" visibility="public" method="_CibJoLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CiZ7gLLhEeiHip-lVD_btw" name="i">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CicXwLLhEeiHip-lVD_btw" name="writeChar" visibility="public" method="_CifbELLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cic-0LLhEeiHip-lVD_btw" name="c">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_5lVhgBydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CiieYLLhEeiHip-lVD_btw" name="writeShort" visibility="public" method="_CilhsLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cik6oLLhEeiHip-lVD_btw" name="s">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_K-lFQByeEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Cin98LLhEeiHip-lVD_btw" name="writeLong" visibility="public" method="_CiroULLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CipMELLhEeiHip-lVD_btw" name="l">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_8heigBydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CiuEkLLhEeiHip-lVD_btw" name="writeString" visibility="public" method="_Cixu8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ciwg0LLhEeiHip-lVD_btw" name="s" type="__t6aoLLgEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Ciy9ELLhEeiHip-lVD_btw" name="writeDouble" visibility="public" method="_Ci2AYLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ci0yQLLhEeiHip-lVD_btw" name="d">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_6j0jABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Ci31kLLhEeiHip-lVD_btw" name="writeFloat" visibility="public" method="_Ci644LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ci5DsLLhEeiHip-lVD_btw" name="f">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7W3wkBydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Ci8HALLhEeiHip-lVD_btw" name="writeBoolean" visibility="public" method="_Ci_KULLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Ci98MLLhEeiHip-lVD_btw" name="b">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_vAIV4I7PEdySGvm5GN66HA"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjAYcLLhEeiHip-lVD_btw" name="read" visibility="public" method="_CjEC0LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjA_gLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_DxuQ4PaLEeW5KOK8aDMdgA"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjHtMLLhEeiHip-lVD_btw" name="readInt" visibility="public" method="_CjKJcLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjJiYLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjKwgLLhEeiHip-lVD_btw" name="readChar" visibility="public" method="_CjMlsLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjL-oLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_5lVhgBydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjNz0LLhEeiHip-lVD_btw" name="readShort" visibility="public" method="_CjQQELLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjPB8LLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_K-lFQByeEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjReMLLhEeiHip-lVD_btw" name="readLong" visibility="public" method="_CjT6cLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjSsULLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_8heigBydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjVvoLLhEeiHip-lVD_btw" name="readString" visibility="public" method="_CjZaALLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjXk0LLhEeiHip-lVD_btw" type="__t6aoLLgEeiHip-lVD_btw" direction="return"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjaBELLhEeiHip-lVD_btw" name="readDouble" visibility="public" method="_CjeSgLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjcdULLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_6j0jABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjeSgbLhEeiHip-lVD_btw" name="readFloat" visibility="public" method="_Cje5kbLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cje5kLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7W3wkBydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjguwLLhEeiHip-lVD_btw" name="toByteArray" visibility="public" method="_Cjh84LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjguwbLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_DxuQ4PaLEeW5KOK8aDMdgA"/>
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CjhV0LLhEeiHip-lVD_btw"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_CjhV0bLhEeiHip-lVD_btw" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_Cjij8LLhEeiHip-lVD_btw" name="writeToOutputStream" visibility="public" method="_CjjyELLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cjij8bLhEeiHip-lVD_btw" type="_ChtX8LLhEeiHip-lVD_btw" direction="return"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjjLALLhEeiHip-lVD_btw" name="out" type="_CeVT0LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjkZILLhEeiHip-lVD_btw" name="readFromInputStream" visibility="public" method="_CjmOULLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjlAMLLhEeiHip-lVD_btw" type="_ChtX8LLhEeiHip-lVD_btw" direction="return"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjlnQLLhEeiHip-lVD_btw" name="in" type="_CeKUsLLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjoDgLLhEeiHip-lVD_btw" name="getLimit" visibility="public" method="_CjoqkLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjoDgbLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjpRoLLhEeiHip-lVD_btw" name="setLimit" visibility="public" method="_CjsU8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cjp4sLLhEeiHip-lVD_btw" type="_ChtX8LLhEeiHip-lVD_btw" direction="return"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjqfwLLhEeiHip-lVD_btw" name="limit">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjuxMLLhEeiHip-lVD_btw" name="getWriteCursor" visibility="public" method="_CjxNcLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_Cjv_ULLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_CjybkLLhEeiHip-lVD_btw" name="getReadCursor" visibility="public" method="_Cj030LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_CjzpsLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_E-I-ILLhEeiHip-lVD_btw" name="ClientConnection" visibility="public">
+            <generalization xmi:type="uml:Generalization" xmi:id="_E-N2oLLhEeiHip-lVD_btw" general="_Ce6ioLLhEeiHip-lVD_btw"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_E-Pr0LLhEeiHip-lVD_btw" name="server" visibility="private" isLeaf="true" type="_E-PEwLLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_E-SvILLhEeiHip-lVD_btw" name="client" visibility="private" isLeaf="true" type="_CedPoLLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E-hYoLLhEeiHip-lVD_btw" name="ClientConnection" specification="_E-WZgLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    super(client.getOutputStream());&#xD;
+    this.server = server;&#xD;
+    this.client = client;&#xD;
+    initListeningThread(client);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E-lqELLhEeiHip-lVD_btw" name="onPacketReceived" specification="_E-j04LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    server.onPacketReceived(client, packet);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E-s-0LLhEeiHip-lVD_btw" name="sendPacket" specification="_E-otYLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    super.sendPacket(packet);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E-WZgLLhEeiHip-lVD_btw" name="ClientConnection" visibility="public" method="_E-hYoLLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E-b5ELLhEeiHip-lVD_btw" name="server" type="_E-PEwLLhEeiHip-lVD_btw"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E-eVULLhEeiHip-lVD_btw" name="client" type="_CedPoLLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E-j04LLhEeiHip-lVD_btw" name="onPacketReceived" visibility="protected" method="_E-lqELLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E-lDALLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E-otYLLhEeiHip-lVD_btw" name="sendPacket" visibility="protected" method="_E-s-0LLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E-qikLLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_E-PEwLLhEeiHip-lVD_btw" name="Server" visibility="public" isAbstract="true">
+            <generalization xmi:type="uml:Generalization" xmi:id="_E-5MELLhEeiHip-lVD_btw" general="_CfBQULLhEeiHip-lVD_btw"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_E-_5wLLhEeiHip-lVD_btw" name="socket" visibility="private" isLeaf="true" type="_E-7BQLLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_E_Bu8LLhEeiHip-lVD_btw" name="acceptingThread" visibility="private" isLeaf="true" type="_CeAjsLLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_E_CWALLhEeiHip-lVD_btw" name="INSTANCE" visibility="private" isLeaf="true" type="_E-PEwLLhEeiHip-lVD_btw" isUnique="false">
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_E_DkILLhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>this</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_E_ELMLLhEeiHip-lVD_btw" name="clients" visibility="protected" isLeaf="true" type="_CfDskLLhEeiHip-lVD_btw" isUnique="false">
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_E_ELMbLhEeiHip-lVD_btw" name="defaultValue">
+                <language>JAVA</language>
+                <body>new HashMap&lt;>()</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E_KR0LLhEeiHip-lVD_btw" name="Server" specification="_E_ELMrLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    socket = new ServerSocket(port);&#xD;
+    acceptingThread = new Thread(&quot;Accepting-Thread -- &quot; + socket.getLocalPort()) {&#xD;
+&#xD;
+        @Override&#xD;
+        public void run() {&#xD;
+            while (!isInterrupted()) try {&#xD;
+                final Socket client = socket.accept();&#xD;
+                clients.put(client, new ClientConnection(INSTANCE, client));&#xD;
+                for (final Packet packet : getAllPackets()) clients.get(client).registerPacket(packet);&#xD;
+                clients.get(client).startListening();&#xD;
+                clients.get(client).sendPacket(clients.get(client).getPacket(0, 0));&#xD;
+            } catch (final IOException e) {&#xD;
+                e.printStackTrace();&#xD;
+            }&#xD;
+        }&#xD;
+    };&#xD;
+    registerPacket(new PacketPing());&#xD;
+    registerPacket(new PacketPong());&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E_MuELLhEeiHip-lVD_btw" name="start" specification="_E_MHALLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    acceptingThread.start();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E_PxYLLhEeiHip-lVD_btw" name="stop" specification="_E_OjQLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    acceptingThread.interrupt();&#xD;
+    for (final ClientConnection client : clients.values()) client.stopListening();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E_awgLLhEeiHip-lVD_btw" name="sendPacket" specification="_E_S0sLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (!clients.containsKey(client))&#xD;
+        throw new IllegalArgumentException(&quot;This client is not connected to this server&quot;);&#xD;
+    clients.get(client).sendPacket(packet);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E_fpALLhEeiHip-lVD_btw" name="broadcastPacket" specification="_E_dMwLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    for (final Socket client : clients.keySet()) sendPacket(client, packet);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_E_rPMLLhEeiHip-lVD_btw" name="registerPacket" specification="_E_nk0LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    super.registerPacket(packet);&#xD;
+    for (final Socket client : clients.keySet()) clients.get(client).registerPacket(packet);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E_ELMrLhEeiHip-lVD_btw" name="Server" visibility="public" method="_E_KR0LLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E_H1kLLhEeiHip-lVD_btw" name="port">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E_MHALLhEeiHip-lVD_btw" name="start" visibility="public" method="_E_MuELLhEeiHip-lVD_btw"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E_OjQLLhEeiHip-lVD_btw" name="stop" visibility="public" method="_E_PxYLLhEeiHip-lVD_btw"/>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E_S0sLLhEeiHip-lVD_btw" name="sendPacket" visibility="public" method="_E_awgLLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw _E_WfELLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E_UC0LLhEeiHip-lVD_btw" name="client" type="_CedPoLLhEeiHip-lVD_btw"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E_VQ8LLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E_dMwLLhEeiHip-lVD_btw" name="broadcastPacket" visibility="public" method="_E_fpALLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E_ea4LLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E_iFQLLhEeiHip-lVD_btw" name="onPacketReceived" visibility="protected" isAbstract="true">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E_j6cLLhEeiHip-lVD_btw" name="client" type="_CedPoLLhEeiHip-lVD_btw"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E_lIkLLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_E_nk0LLhEeiHip-lVD_btw" name="registerPacket" visibility="public" method="_E_rPMLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_E_qBELLhEeiHip-lVD_btw" name="packet" type="_CfP50LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_GVXPwLLhEeiHip-lVD_btw" name="Packet" visibility="public" isAbstract="true">
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GVqKsLLhEeiHip-lVD_btw" name="init" specification="_GVjdALLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GVt1ELLhEeiHip-lVD_btw" name="values" specification="_GVrY0LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    final HashMap&lt;String, Object> fields = new HashMap&lt;>();&#xD;
+    values(fields);&#xD;
+    return fields;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GVytkLLhEeiHip-lVD_btw" name="values" specification="_GVwRULLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GV2_ALLhEeiHip-lVD_btw" name="response" specification="_GV0iwLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return null;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GVXPwbLhEeiHip-lVD_btw" name="packetId" visibility="public" isAbstract="true">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GVXPwrLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GVYd4LLhEeiHip-lVD_btw" name="packetPhase" visibility="public" isAbstract="true">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GVZsALLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GVdWYLLhEeiHip-lVD_btw" name="fromBuffer" visibility="public" isAbstract="true">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GVekgLLhEeiHip-lVD_btw" name="buf" type="_ChtX8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GVfyoLLhEeiHip-lVD_btw" name="toBuffer" visibility="public" isAbstract="true">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GVhn0LLhEeiHip-lVD_btw" name="buf" type="_ChtX8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GVjdALLhEeiHip-lVD_btw" name="init" visibility="public" method="_GVqKsLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GVl5QLLhEeiHip-lVD_btw" name="objects" type="_CgpA8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GVrY0LLhEeiHip-lVD_btw" name="values" visibility="public" method="_GVt1ELLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GVsm8LLhEeiHip-lVD_btw" type="_CfDskLLhEeiHip-lVD_btw" direction="return"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GVwRULLhEeiHip-lVD_btw" name="values" visibility="public" method="_GVytkLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GVxfcLLhEeiHip-lVD_btw" name="fields" type="_CfDskLLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GV0iwLLhEeiHip-lVD_btw" name="response" visibility="public" method="_GV2_ALLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GV2X8LLhEeiHip-lVD_btw" type="_GVXPwLLhEeiHip-lVD_btw" direction="return"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_GV6CULLhEeiHip-lVD_btw" name="PacketPong" visibility="public">
+            <generalization xmi:type="uml:Generalization" xmi:id="_GV-60LLhEeiHip-lVD_btw" general="_GV73gLLhEeiHip-lVD_btw"/>
+            <generalization xmi:type="uml:Generalization" xmi:id="_iPeX8LLmEeiHip-lVD_btw" general="_JPDZsLLhEeiHip-lVD_btw"/>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GWBXELLhEeiHip-lVD_btw" name="packetId" specification="_GWAI8LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return 1;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GWFBcLLhEeiHip-lVD_btw" name="packetPhase" specification="_GWDMQLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return 0;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GWAI8LLhEeiHip-lVD_btw" name="packetId" visibility="public" method="_GWBXELLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GWAwALLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GWDMQLLhEeiHip-lVD_btw" name="packetPhase" visibility="public" method="_GWFBcLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GWEaYLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_GWIEwLLhEeiHip-lVD_btw" name="PacketPing" visibility="public">
+            <generalization xmi:type="uml:Generalization" xmi:id="_GWJS4LLhEeiHip-lVD_btw" general="_GV73gLLhEeiHip-lVD_btw"/>
+            <generalization xmi:type="uml:Generalization" xmi:id="_fyCFILLmEeiHip-lVD_btw" general="_JPDZsLLhEeiHip-lVD_btw"/>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GWLIELLhEeiHip-lVD_btw" name="packetId" specification="_GWJ58LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return 0;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GWQAkLLhEeiHip-lVD_btw" name="packetPhase" specification="_GWNkULLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return 0;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_GWR1wLLhEeiHip-lVD_btw" name="response" specification="_GWQnoLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    return new PacketPong();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GWJ58LLhEeiHip-lVD_btw" name="packetId" visibility="public" method="_GWLIELLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GWKhALLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GWNkULLhEeiHip-lVD_btw" name="packetPhase" visibility="public" method="_GWQAkLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GWOycLLhEeiHip-lVD_btw" direction="return">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_GWQnoLLhEeiHip-lVD_btw" name="response" visibility="public" method="_GWR1wLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_GWROsLLhEeiHip-lVD_btw" type="_GVXPwLLhEeiHip-lVD_btw" direction="return"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_JPDZsLLhEeiHip-lVD_btw" name="PacketTime" visibility="public" isAbstract="true">
+            <generalization xmi:type="uml:Generalization" xmi:id="_JPISMLLhEeiHip-lVD_btw" general="_GVXPwLLhEeiHip-lVD_btw"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_JPI5QLLhEeiHip-lVD_btw" name="time" visibility="protected" isUnique="false">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_8heigBydEduyofBvg4RL2w"/>
+            </ownedAttribute>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_JPTRULLhEeiHip-lVD_btw" name="init" specification="_JPJgULLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    if (objects.length != 0)&#xD;
+        if (objects[0] instanceof Long) {&#xD;
+            time = (long) objects[0];&#xD;
+            return;&#xD;
+        }&#xD;
+    time = System.currentTimeMillis();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_JPb0MLLhEeiHip-lVD_btw" name="fromBuffer" specification="_JPW7sLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    time = buf.readLong();&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_JPgFoLLhEeiHip-lVD_btw" name="toBuffer" specification="_JPdCULLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    buf.writeLong(time);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_JPmzULLhEeiHip-lVD_btw" name="values" specification="_JPjI8LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    fields.put(&quot;time&quot;, time);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_JPJgULLhEeiHip-lVD_btw" name="init" visibility="public" method="_JPTRULLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_JPL8kLLhEeiHip-lVD_btw" name="objects" type="_CgpA8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_JPW7sLLhEeiHip-lVD_btw" name="fromBuffer" visibility="public" method="_JPb0MLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_JPZ_ALLhEeiHip-lVD_btw" name="buf" type="_ChtX8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_JPdCULLhEeiHip-lVD_btw" name="toBuffer" visibility="public" method="_JPgFoLLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_JPe3gLLhEeiHip-lVD_btw" name="buf" type="_ChtX8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_JPjI8LLhEeiHip-lVD_btw" name="values" visibility="public" method="_JPmzULLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_JPllMLLhEeiHip-lVD_btw" name="fields" type="_CfDskLLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_HZPHkLLhEeiHip-lVD_btw" name="Client" visibility="public" isAbstract="true">
+            <generalization xmi:type="uml:Generalization" xmi:id="_HZPuoLLhEeiHip-lVD_btw" general="_Ce6ioLLhEeiHip-lVD_btw"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_HZQVsLLhEeiHip-lVD_btw" name="socket" visibility="private" isStatic="true" type="_CedPoLLhEeiHip-lVD_btw" isUnique="false"/>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_HZhbcLLhEeiHip-lVD_btw" name="Client" specification="_HZQ8wLLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    super((socket = new Socket(host, port)).getOutputStream());&#xD;
+    initListeningThread(socket);&#xD;
+    registerPacket(new PacketPing());&#xD;
+    registerPacket(new PacketPong());&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_HZsakLLhEeiHip-lVD_btw" name="sendPacket" specification="_HZls4LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    sendPacket(getPacket(phase, id));&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_HZ4n0LLhEeiHip-lVD_btw" name="sendPacket" specification="_HZu20LLhEeiHip-lVD_btw">
+              <language>JAVA</language>
+              <body>&#xD;
+    sendPacket(getPacket(phase, id), objects);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_HZQ8wLLhEeiHip-lVD_btw" name="Client" visibility="public" method="_HZhbcLLhEeiHip-lVD_btw" raisedException="_HZZfoLLhEeiHip-lVD_btw _CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_HZWcULLhEeiHip-lVD_btw" name="host" type="__t6aoLLgEeiHip-lVD_btw"/>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_HZXqcLLhEeiHip-lVD_btw" name="port">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_HZls4LLhEeiHip-lVD_btw" name="sendPacket" visibility="public" method="_HZsakLLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_HZoJILLhEeiHip-lVD_btw" name="phase">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_HZp-ULLhEeiHip-lVD_btw" name="id">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_HZu20LLhEeiHip-lVD_btw" name="sendPacket" visibility="public" method="_HZ4n0LLhEeiHip-lVD_btw" raisedException="_CeqD8LLhEeiHip-lVD_btw">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_HZwE8LLhEeiHip-lVD_btw" name="phase">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_HZxTELLhEeiHip-lVD_btw" name="id">
+                <type xmi:type="uml:PrimitiveType" href="pathmap://PapyrusJava_LIBRARIES/JavaLibrary.uml#_7wRIABydEduyofBvg4RL2w"/>
+              </ownedParameter>
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_HZzIQLLhEeiHip-lVD_btw" name="objects" type="_CgpA8LLhEeiHip-lVD_btw"/>
+            </ownedOperation>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="__tzF4LLgEeiHip-lVD_btw" name="java">
+      <packagedElement xmi:type="uml:Package" xmi:id="__t3XULLgEeiHip-lVD_btw" name="java">
+        <packagedElement xmi:type="uml:Package" xmi:id="__t4lcLLgEeiHip-lVD_btw" name="lang">
+          <packagedElement xmi:type="uml:Class" xmi:id="__t6aoLLgEeiHip-lVD_btw" name="String"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_CeAjsLLhEeiHip-lVD_btw" name="Thread"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_CgpA8LLhEeiHip-lVD_btw" name="Object"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_E_WfELLhEeiHip-lVD_btw" name="IllegalArgumentException"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_CiPjcLLhEeiHip-lVD_btw" name="IllegalStateException"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_CeJGkLLhEeiHip-lVD_btw" name="io">
+          <packagedElement xmi:type="uml:Class" xmi:id="_CeKUsLLhEeiHip-lVD_btw" name="InputStream"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_CeVT0LLhEeiHip-lVD_btw" name="OutputStream"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_CeqD8LLhEeiHip-lVD_btw" name="IOException"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_CecokLLhEeiHip-lVD_btw" name="net">
+          <packagedElement xmi:type="uml:Class" xmi:id="_CedPoLLhEeiHip-lVD_btw" name="Socket"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_E-7BQLLhEeiHip-lVD_btw" name="ServerSocket"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_HZZfoLLhEeiHip-lVD_btw" name="UnknownHostException"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_CfDFgLLhEeiHip-lVD_btw" name="util">
+          <packagedElement xmi:type="uml:Class" xmi:id="_CfDskLLhEeiHip-lVD_btw" name="HashMap"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_xLSh4LLkEeiHip-lVD_btw" name="ArrayList"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_CfMPcLLhEeiHip-lVD_btw" name="importedTypes">
+      <packagedElement xmi:type="uml:Package" xmi:id="_CfM2gLLhEeiHip-lVD_btw" name="rpg">
+        <packagedElement xmi:type="uml:Package" xmi:id="_CfNdkLLhEeiHip-lVD_btw" name="api">
+          <packagedElement xmi:type="uml:Package" xmi:id="_CfOEoLLhEeiHip-lVD_btw" name="packethandler">
+            <packagedElement xmi:type="uml:Package" xmi:id="_CfOrsLLhEeiHip-lVD_btw" name="packet">
+              <packagedElement xmi:type="uml:Class" xmi:id="_CfP50LLhEeiHip-lVD_btw" name="Packet"/>
+              <packagedElement xmi:type="uml:Class" xmi:id="_Cgi6ULLhEeiHip-lVD_btw" name="PacketPong"/>
+              <packagedElement xmi:type="uml:Package" xmi:id="_GV7QcLLhEeiHip-lVD_btw" name="time">
+                <packagedElement xmi:type="uml:Class" xmi:id="_GV73gLLhEeiHip-lVD_btw" name="PacketTime"/>
+              </packagedElement>
+            </packagedElement>
+          </packagedElement>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="__s3RwLLgEeiHip-lVD_btw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="__s5uALLgEeiHip-lVD_btw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/PapyrusJava/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="__teVwLLgEeiHip-lVD_btw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="__tfj4LLgEeiHip-lVD_btw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/Codegen/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="__tmRkLLgEeiHip-lVD_btw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="__tnfsLLgEeiHip-lVD_btw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <PapyrusJava:External xmi:id="__z1ccLLgEeiHip-lVD_btw" name="java.lang.String" base_Classifier="__t6aoLLgEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CeE1ILLhEeiHip-lVD_btw" name="java.lang.Thread" base_Classifier="_CeAjsLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CeQbULLhEeiHip-lVD_btw" name="java.io.InputStream" base_Classifier="_CeKUsLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CeaMULLhEeiHip-lVD_btw" name="java.io.OutputStream" base_Classifier="_CeVT0LLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CehhELLhEeiHip-lVD_btw" name="java.net.Socket" base_Classifier="_CedPoLLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_CenAoLLhEeiHip-lVD_btw" base_BehavioralFeature="_CeivMLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_Ceu8cLLhEeiHip-lVD_btw" name="java.io.IOException" base_Classifier="_CeqD8LLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_Ce0cALLhEeiHip-lVD_btw" base_BehavioralFeature="_CewxoLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CfH-ALLhEeiHip-lVD_btw" name="java.util.HashMap" base_Classifier="_CfDskLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CfULQLLhEeiHip-lVD_btw" name="rpg.api.packethandler.packet.Packet" base_Classifier="_CfP50LLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_CgblkLLhEeiHip-lVD_btw" base_BehavioralFeature="_CgXUILLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CgmksLLhEeiHip-lVD_btw" name="rpg.api.packethandler.packet.PacketPong" base_Classifier="_Cgi6ULLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CgtSYLLhEeiHip-lVD_btw" name="java.lang.Object" base_Classifier="_CgpA8LLhEeiHip-lVD_btw"/>
+  <PapyrusJava:Variadic xmi:id="_Cg11QLLhEeiHip-lVD_btw" base_Parameter="_CgyK4LLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_Ch6zULLhEeiHip-lVD_btw" base_BehavioralFeature="_Ch3wALLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_CiD9QLLhEeiHip-lVD_btw" base_BehavioralFeature="_Ch_EwLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_CiUb8LLhEeiHip-lVD_btw" name="IllegalStateException" base_Classifier="_CiPjcLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_E-MogLLhEeiHip-lVD_btw" name="rpg.api.packethandler.Connection" base_Classifier="_Ce6ioLLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_E-aD4LLhEeiHip-lVD_btw" base_BehavioralFeature="_E-WZgLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_E-398LLhEeiHip-lVD_btw" name="rpg.api.packethandler.PacketRegistry" base_Classifier="_CfBQULLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_E--EkLLhEeiHip-lVD_btw" name="java.net.ServerSocket" base_Classifier="_E-7BQLLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_E_GncLLhEeiHip-lVD_btw" base_BehavioralFeature="_E_ELMrLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_E_ZiYLLhEeiHip-lVD_btw" name="IllegalArgumentException" base_Classifier="_E_WfELLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_GVcIQLLhEeiHip-lVD_btw" name="rpg.api.packethandler.ByteBuffer" base_Classifier="_ChtX8LLhEeiHip-lVD_btw"/>
+  <PapyrusJava:Variadic xmi:id="_GVo8kLLhEeiHip-lVD_btw" base_Parameter="_GVl5QLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_GV-TwLLhEeiHip-lVD_btw" name="rpg.api.packethandler.packet.time.PacketTime" base_Classifier="_GV73gLLhEeiHip-lVD_btw"/>
+  <standard:Create xmi:id="_HZUAELLhEeiHip-lVD_btw" base_BehavioralFeature="_HZQ8wLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_HZdxELLhEeiHip-lVD_btw" name="java.net.UnknownHostException" base_Classifier="_HZZfoLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:Variadic xmi:id="_HZ2yoLLhEeiHip-lVD_btw" base_Parameter="_HZzIQLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:External xmi:id="_JPHEELLhEeiHip-lVD_btw" name="rpg.api.packethandler.packet.Packet" base_Classifier="_GVXPwLLhEeiHip-lVD_btw"/>
+  <PapyrusJava:Variadic xmi:id="_JPSDMLLhEeiHip-lVD_btw" base_Parameter="_JPL8kLLhEeiHip-lVD_btw"/>
+</xmi:XMI>
