@@ -96,6 +96,11 @@ public class Vec2D {
 		this.y = y;
 	}
 	
+	@Override
+	public String toString() {
+		return "Vec2D[" + x + ", " + y + "]";
+	}
+	
 	/**
 	 * Creates a clone of this {@link Vec2D}.
 	 * 
