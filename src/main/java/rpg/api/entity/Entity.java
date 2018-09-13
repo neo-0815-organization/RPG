@@ -4,16 +4,16 @@ import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 import rpg.api.Direction;
+import rpg.api.INameable;
 import rpg.api.Location;
 import rpg.api.Vec2D;
-import rpg.api.localization.StringLocalizer;
 
 /**
  * The abstract Class Entity.
  * 
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
-public abstract class Entity {
+public abstract class Entity implements INameable {
 	protected Location location;
 	protected Direction lookingDirection;
 	protected Vec2D velocity;
@@ -45,29 +45,26 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * Gets the unlocalized display name.
-	 *
-	 * @return the unlocalized display name
+	 * Gets the unlocalized name.
+	 * 
+	 * @see INameable#getUnlocalizedName()
+	 * 
+	 * @return the unlocalized name
 	 */
-	public String getUnlocalizedDisplayName() {
+	@Override
+	public String getUnlocalizedName() {
 		return displayName;
 	}
 	
 	/**
-	 * Gets the localized display name.
-	 *
-	 * @return the localized display name
-	 */
-	public String getDisplayName() {
-		return StringLocalizer.localize(displayName);
-	}
-	
-	/**
 	 * Sets the display name.
+	 * 
+	 * @see INameable#setDisplayName(String)
 	 *
 	 * @param displayName
 	 *            the new display name
 	 */
+	@Override
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
