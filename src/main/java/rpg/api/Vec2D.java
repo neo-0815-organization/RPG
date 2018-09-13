@@ -6,50 +6,23 @@ package rpg.api;
  * @author Tim Ludwig, Neo Hornberger
  */
 public class Vec2D {
-	private double angle;
-	private double length;
+	private double x, y;
 	
-	private double x;
-	
-	private double y;
+	public static Vec2D create(double x, double y) {
+		return new Vec2D(x, y);
+	}
 	
 	/**
 	 * Creates a new {@link Vec2D} using the carthesian coordinate system.
-	 *
+	 * 
 	 * @param x
 	 *            the x coordinate
 	 * @param y
 	 *            the y coordinate
-	 * @return the newly constructed {@link Vec2D}
-	 */
-	public static Vec2D createXY(final double x, final double y) {
-		return new Vec2D(x, y);
-	}
-	
-	/**
-	 * Creates a new {@link Vec2D} using the polar coordinate system.
-	 *
-	 * @param angle
-	 *            the angle
-	 * @param length
-	 *            the length
-	 * @return the newly constructed {@link Vec2D}
-	 */
-	public static Vec2D createAL(final double angle, final double length) {
-		final double x = length * Math.cos(angle);
-		final double y = length * Math.sin(angle);
-		
-		return new Vec2D(x, y);
-	}
-	
-	/**
-	 * @see #createXY(double, double)
 	 */
 	private Vec2D(final double x, final double y) {
 		this.x = x;
 		this.y = y;
-		length = Math.sqrt(x * x + y * y);
-		angle = Math.atan(y / this.x);
 	}
 	
 	/**
@@ -60,7 +33,7 @@ public class Vec2D {
 	 * @return the sum of this {@link Vec2D} and the parameter
 	 */
 	public Vec2D add(Vec2D vec) {
-		return createXY(x + vec.x, y + vec.y);
+		return create(x + vec.x, y + vec.y);
 	}
 	
 	/**
@@ -71,7 +44,7 @@ public class Vec2D {
 	 * @return the difference of this {@link Vec2D} and the parameter
 	 */
 	public Vec2D subtract(Vec2D vec) {
-		return createXY(x - vec.x, y - vec.y);
+		return create(x - vec.x, y - vec.y);
 	}
 	
 	/**
@@ -82,25 +55,7 @@ public class Vec2D {
 	 * @return the scalar product of this {@link Vec2D} and the parameter
 	 */
 	public Vec2D scale(double d) {
-		return createAL(angle, length * d);
-	}
-	
-	/**
-	 * Gets the angle.
-	 *
-	 * @return the angle
-	 */
-	public double getAngle() {
-		return angle;
-	}
-	
-	/**
-	 * Gets the length.
-	 *
-	 * @return the length
-	 */
-	public double getLength() {
-		return length;
+		return create(x * d, y * d);
 	}
 	
 	/**
@@ -122,30 +77,6 @@ public class Vec2D {
 	}
 	
 	/**
-	 * Sets the angle and updates the carthesian coordinates.
-	 *
-	 * @param angle
-	 *            the new angle
-	 */
-	public void setAngle(final double angle) {
-		this.angle = angle;
-		x = length * Math.cos(angle);
-		y = length * Math.sin(angle);
-	}
-	
-	/**
-	 * Sets the length and updates the carthesian coordinates.
-	 *
-	 * @param length
-	 *            the new length
-	 */
-	public void setLength(final double length) {
-		this.length = length;
-		x = length * Math.cos(angle);
-		y = length * Math.sin(angle);
-	}
-	
-	/**
 	 * Sets the x coordinate and updates the polar coordinates.
 	 *
 	 * @param x
@@ -153,8 +84,6 @@ public class Vec2D {
 	 */
 	public void setX(final double x) {
 		this.x = x;
-		length = Math.sqrt(x * x + y * y);
-		angle = Math.atan(y / x);
 	}
 	
 	/**
@@ -165,8 +94,6 @@ public class Vec2D {
 	 */
 	public void setY(final double y) {
 		this.y = y;
-		length = Math.sqrt(x * x + y * y);
-		angle = Math.atan(y / x);
 	}
 	
 	/**

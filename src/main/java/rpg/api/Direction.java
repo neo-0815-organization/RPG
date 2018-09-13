@@ -9,15 +9,15 @@ public enum Direction {
 	public Vec2D getVector() {
 		switch(this) {
 			case NORTH:
-				return Vec2D.createXY(0, 1);
+				return Vec2D.create(0, 1);
 			case EAST:
-				return Vec2D.createXY(1, 0);
+				return Vec2D.create(1, 0);
 			case SOUTH:
-				return Vec2D.createXY(0, -1);
+				return Vec2D.create(0, -1);
 			case WEST:
-				return Vec2D.createXY(-1, 0);
+				return Vec2D.create(-1, 0);
 			default:
-				return Vec2D.createXY(0, 0);
+				return Vec2D.create(0, 0);
 		}
 	}
 }
