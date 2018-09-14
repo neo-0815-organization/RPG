@@ -21,6 +21,10 @@ public abstract class Entity implements INameable {
 	protected String displayName;
 	protected UUID uuid;
 	
+	public Entity(String name) {
+		setDisplayName(name);
+	}
+	
 	/**
 	 * Accelerates this {@link Entity}.
 	 *
@@ -66,6 +70,8 @@ public abstract class Entity implements INameable {
 	 */
 	@Override
 	public void setDisplayName(String displayName) {
+		if(!displayName.endsWith(".name")) displayName += ".name";
+		
 		this.displayName = displayName;
 	}
 	
