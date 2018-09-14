@@ -14,14 +14,14 @@ import rpg.api.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
 public abstract class Entity implements INameable {
-	protected Location location;
-	protected Direction lookingDirection;
-	protected Vec2D velocity;
-	protected BufferedImage image;
-	protected String displayName;
-	protected UUID uuid;
+	protected Location		location;
+	protected Direction		lookingDirection;
+	protected Vec2D			velocity;
+	protected BufferedImage	image;
+	protected String		displayName;
+	protected UUID			uuid;
 	
-	public Entity(String name) {
+	public Entity(final String name) {
 		setDisplayName(name);
 	}
 	
@@ -34,7 +34,7 @@ public abstract class Entity implements INameable {
 	 *            the accelerating amount of force
 	 * @see #accelerate(Vec2D)
 	 */
-	public void accelerate(Direction direction, double force) {
+	public void accelerate(final Direction direction, final double force) {
 		accelerate(direction.getVector().scale(force));
 	}
 	
@@ -44,7 +44,7 @@ public abstract class Entity implements INameable {
 	 * @param acc
 	 *            the accelerating force
 	 */
-	public void accelerate(Vec2D acc) {
+	public void accelerate(final Vec2D acc) {
 		velocity = velocity.add(acc);
 	}
 	
@@ -52,7 +52,6 @@ public abstract class Entity implements INameable {
 	 * Gets the unlocalized name.
 	 * 
 	 * @see INameable#getUnlocalizedName()
-	 * 
 	 * @return the unlocalized name
 	 */
 	@Override
@@ -64,7 +63,6 @@ public abstract class Entity implements INameable {
 	 * Sets the display name.
 	 * 
 	 * @see INameable#setDisplayName(String)
-	 *
 	 * @param displayName
 	 *            the new display name
 	 */
