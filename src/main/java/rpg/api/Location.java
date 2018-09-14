@@ -36,4 +36,9 @@ public class Location {
 	public int getY() {
 		return y;
 	}
+	
+	@Override
+	public String toString() {
+		return "Location@" + Integer.toHexString(hashCode()) + "[" + x + ", " + y + "]";
+	}
 }
