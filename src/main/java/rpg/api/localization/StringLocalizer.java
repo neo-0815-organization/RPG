@@ -11,8 +11,8 @@ import java.util.IllegalFormatConversionException;
 import java.util.MissingFormatArgumentException;
 
 public class StringLocalizer {
-	private static final File langDir = getLangDir();
-	private static Locale activeLocale = Locale.getDefault();
+	private static final File	langDir			= getLangDir();
+	private static Locale		activeLocale	= Locale.getDefault();
 	
 	public static String localize(String path) {
 		return format0(path, true);
@@ -31,14 +31,14 @@ public class StringLocalizer {
 				
 				String line = null;
 				int lineNumber = 1;
-				while((line = reader.readLine()) != null) {
+				while( (line = reader.readLine()) != null) {
 					if(line.split("=")[0].equals(path)) try {
 						return String.format(line.split("=")[1], objects);
-					}catch(final MissingFormatArgumentException | IllegalFormatConversionException e) {
+					} catch(final MissingFormatArgumentException | IllegalFormatConversionException e) {
 						if(ignoreExceptions) return line.split("=")[1];
 						else if(e instanceof MissingFormatArgumentException) throw new LocalizationException(path, file.getName(), ((MissingFormatArgumentException) e).getFormatSpecifier(), lineNumber);
 						else if(e instanceof IllegalFormatConversionException) throw new LocalizationException(path, file.getName(), "%" + ((IllegalFormatConversionException) e).getConversion(), ((IllegalFormatConversionException) e).getArgumentClass(), lineNumber);
-					}catch(final ArrayIndexOutOfBoundsException e) {
+					} catch(final ArrayIndexOutOfBoundsException e) {
 						return "";
 					}
 					
@@ -46,7 +46,7 @@ public class StringLocalizer {
 				}
 				
 				reader.close();
-			}catch(final IOException e) {
+			} catch(final IOException e) {
 				e.printStackTrace();
 			}
 		
@@ -59,7 +59,7 @@ public class StringLocalizer {
 		File file = null;
 		try {
 			file = new File(url.toURI());
-		}catch(final URISyntaxException e) {
+		} catch(final URISyntaxException e) {
 			file = new File(url.getPath());
 		}
 		
