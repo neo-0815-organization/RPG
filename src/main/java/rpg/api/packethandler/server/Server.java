@@ -46,11 +46,11 @@ public abstract class Server extends PacketRegistry {
 		registerPacket(new PacketPong());
 	}
 	
-	public void start() {
+	protected void start() {
 		acceptingThread.start();
 	}
 	
-	public void stop() {
+	protected void stop() {
 		acceptingThread.interrupt();
 		
 		for(final ClientConnection client : clients.values())
@@ -70,7 +70,7 @@ public abstract class Server extends PacketRegistry {
 	 * @throws IllegalArgumentException
 	 *             if 'client' hasn't an associated {@link ClientConnection}
 	 */
-	public void sendPacket(Socket client, Packet packet) throws IOException, IllegalArgumentException {
+	protected void sendPacket(Socket client, Packet packet) throws IOException, IllegalArgumentException {
 		if(!clients.containsKey(client)) throw new IllegalArgumentException("This client is not connected to this server");
 		
 		clients.get(client).sendPacket(packet);
@@ -85,7 +85,7 @@ public abstract class Server extends PacketRegistry {
 	 *             if an I/O error occures
 	 * @see #sendPacket(Socket, Packet)
 	 */
-	public void broadcastPacket(Packet packet) throws IOException {
+	protected void broadcastPacket(Packet packet) throws IOException {
 		for(final Socket client : clients.keySet())
 			sendPacket(client, packet);
 	}

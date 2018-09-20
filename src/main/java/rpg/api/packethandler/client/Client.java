@@ -31,7 +31,7 @@ public abstract class Client extends Connection {
 	 * @throws IOException
 	 *             if an I/O error occures
 	 */
-	public void sendPacket(int phase, int id) throws IOException {
+	protected void sendPacket(int phase, int id) throws IOException {
 		sendPacket(getPacket(phase, id));
 	}
 	
@@ -48,7 +48,7 @@ public abstract class Client extends Connection {
 	 * @throws IOException
 	 *             if an I/O error occures
 	 */
-	public void sendPacket(int phase, int id, Object... objects) throws IOException {
+	protected void sendPacket(int phase, int id, Object... objects) throws IOException {
 		sendPacket(getPacket(phase, id), objects);
 	}
 }
