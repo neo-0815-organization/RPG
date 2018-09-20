@@ -11,7 +11,7 @@ public class EventHandler {
 	public void handle(final Event e) {
 		final EventType t = e.getEventType();
 		
-		if( !listener.containsKey(t)) return;
+		if(!listener.containsKey(t)) return;
 		
 		for(final EventListener l : listener.get(t))
 			new Thread(new Runnable() {
@@ -20,10 +20,13 @@ public class EventHandler {
 					l.onEvent(e);
 				}
 			}, "");
-		
 	}
 	
 	public void registerEventListener(final EventListener l) {
-		listener.get(l.getEventType()).add(l);
+		EventType eT = l.getEventType();
+		
+		if(!listener.containsKey(eT)) listener.put(eT, new ArrayList<>());
+			
+		listener.get(eT).add(l);
 	}
 }

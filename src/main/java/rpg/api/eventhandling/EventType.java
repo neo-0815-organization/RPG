@@ -1,15 +1,29 @@
 package rpg.api.eventhandling;
 
+import java.util.HashMap;
+
 public enum EventType {
-	EVENT("event");
+	EVENT(0);
 	
-	String name;
+	private static HashMap<Integer, EventType> idMap = new HashMap<>();
+		
+	int eventID;
 	
-	private EventType(final String n) {
-		name = n;
+	private EventType(int id) {
+		this.eventID = id;
+		
+		addEventType(this, id);
 	}
 	
-	public String getName() {
-		return name;
+	private void addEventType(EventType eventType, int id) {
+		idMap.put(id, eventType);
+	}
+	
+	public static EventType getEventTypeByID(int id) {
+		return idMap.get(id);
+	}
+	
+	public int getID() {
+		return eventID;
 	}
 }
