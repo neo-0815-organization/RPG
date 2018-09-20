@@ -67,7 +67,7 @@ public abstract class Connection extends PacketRegistry {
 		sendPacket(packet, out, null);
 	}
 	
-	public void pingTest() {
+	protected void pingTest() {
 		millis = System.currentTimeMillis();
 		
 		try {
@@ -81,7 +81,7 @@ public abstract class Connection extends PacketRegistry {
 		return ping;
 	}
 	
-	public void initListeningThread(Socket socket) throws IOException {
+	protected void initListeningThread(Socket socket) throws IOException {
 		if(listeningThread == null) listeningThread = new ListeningThread(socket) {
 			
 			@Override
@@ -91,7 +91,7 @@ public abstract class Connection extends PacketRegistry {
 		};
 	}
 	
-	public void initListeningThread(InputStream in, OutputStream out) {
+	protected void initListeningThread(InputStream in, OutputStream out) {
 		if(listeningThread == null) listeningThread = new ListeningThread(in, out) {
 			
 			@Override
