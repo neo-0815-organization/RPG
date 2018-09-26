@@ -2,12 +2,12 @@ package rpg.api.entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.UUID;
 
 import rpg.RPG;
 import rpg.api.Direction;
 import rpg.api.IDrawable;
+import rpg.api.IImagable;
 import rpg.api.INameable;
 import rpg.api.Location;
 import rpg.api.Vec2D;
@@ -18,12 +18,11 @@ import rpg.api.scene.Camera;
  * 
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
-public abstract class Entity implements INameable, IDrawable {
+public abstract class Entity implements INameable, IDrawable, IImagable {
 	protected Location location;
 	protected Direction lookingDirection;
 	protected Vec2D velocity;
-	protected BufferedImage image;
-	protected String displayName;
+	protected String displayName, imageName;
 	protected UUID uuid;
 	
 	public Entity(String name) {
@@ -124,10 +123,25 @@ public abstract class Entity implements INameable, IDrawable {
 	}
 	
 	@Override
+	public void setImageName(String name) {
+		imageName = name;
+	}
+	
+	@Override
+	public String getImageName() {
+		return imageName;
+	}
+	
+	@Override
+	public String getDirectoryName() {
+		return "entity";
+	}
+	
+	@Override
 	public void draw(Graphics2D g2d) {
 		final Rectangle screen = new Rectangle(Camera.loc.getX(), Camera.loc.getY(), RPG.SCREEN_WIDTH, RPG.SCREEN_HEIGHT);
 		
-		if(screen.intersects(getCurrentImageBoundings())) g2d.drawImage(image, location.getX() - Camera.loc.getX(), location.getY() - Camera.loc.getY(), null);
+		if(screen.intersects(getCurrentImageBoundings())) g2d.drawImage(getImage(), location.getX() - Camera.loc.getX(), location.getY() - Camera.loc.getY(), null);
 	}
 	
 	public Rectangle getCurrentImageBoundings() {
