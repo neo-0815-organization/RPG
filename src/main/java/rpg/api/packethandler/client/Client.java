@@ -5,8 +5,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import rpg.api.packethandler.Connection;
-import rpg.api.packethandler.packet.PacketPing;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPing;
+import rpg.api.packethandler.packet.time.PacketPong;
 
 public abstract class Client extends Connection {
 	private static Socket socket;
@@ -30,7 +30,7 @@ public abstract class Client extends Connection {
 	 * @throws IOException
 	 *                         if an I/O error occures
 	 */
-	public void sendPacket(int phase, int id) throws IOException {
+	protected void sendPacket(int phase, int id) throws IOException {
 		sendPacket(getPacket(phase, id));
 	}
 	
@@ -46,7 +46,7 @@ public abstract class Client extends Connection {
 	 * @throws IOException
 	 *                         if an I/O error occures
 	 */
-	public void sendPacket(int phase, int id, Object... objects) throws IOException {
+	protected void sendPacket(int phase, int id, Object... objects) throws IOException {
 		sendPacket(getPacket(phase, id), objects);
 	}
 }
