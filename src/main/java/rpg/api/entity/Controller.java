@@ -16,5 +16,5 @@ public abstract class Controller {
 	
 	public abstract void setVelocity(Vec2D vector);
 	
-	public abstract void setUniqueId(UUID uuid); 
+	public abstract void setUniqueId(UUID uuid);
 }
