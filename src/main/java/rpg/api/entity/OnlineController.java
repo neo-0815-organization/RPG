@@ -1,14 +1,22 @@
 package rpg.api.entity;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.UUID;
 
 import rpg.api.Direction;
 import rpg.api.Location;
 import rpg.api.Vec2D;
+import rpg.api.packethandler.client.Client;
+import rpg.api.packethandler.packet.Packet;
 
-public class LocalController implements Controller {
+public class OnlineController extends Client implements Controller {
 	private Entity entity;
-	
+
+	public OnlineController(String host, int port) throws UnknownHostException, IOException {
+		super(host, port);
+	}
+
 	@Override
 	public void setDisplayName(String displayName) {
 		entity.displayName = displayName;
@@ -33,4 +41,7 @@ public class LocalController implements Controller {
 	public void setUniqueId(UUID uuid) {
 		entity.uuid = uuid;
 	}
+
+	@Override
+	protected void onPacketReceived(Packet packet) {}
 }

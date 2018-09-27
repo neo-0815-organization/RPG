@@ -6,15 +6,15 @@ import rpg.api.Direction;
 import rpg.api.Location;
 import rpg.api.Vec2D;
 
-public abstract class Controller {
+public interface Controller {
+
+	public void setDisplayName(String displayName);
 	
-	public abstract void setDisplayName(String displayName);
+	public void setLocation(Location location);
 	
-	public abstract void setLocation(Location location);
+	public void setLookingDirection(Direction direction);
 	
-	public abstract void setLookingDirection(Direction direction);
+	public void setVelocity(Vec2D vector);
 	
-	public abstract void setVelocity(Vec2D vector);
-	
-	public abstract void setUniqueId(UUID uuid);
+	public void setUniqueId(UUID uuid);
 }
