@@ -9,7 +9,7 @@ import rpg.api.packethandler.packet.Packet;
 import rpg.api.packethandler.packet.time.PacketPong;
 
 public abstract class Connection extends PacketRegistry {
-	private final Connection INSTANCE = this;
+	private final Connection INSTANCE	= this;
 	private final OutputStream out;
 	
 	private ListeningThread listeningThread;
@@ -27,15 +27,14 @@ public abstract class Connection extends PacketRegistry {
 	}
 	
 	/**
-	 * Sends the {@link Packet} 'packet' with the {@link Object}[] 'objects' as
-	 * arguments to the {@link OutputStream} of this instance.
+	 * Sends the {@link Packet} 'packet' with the {@link Object}[] 'objects' as arguments to the {@link OutputStream} of this instance.
 	 *
-	 * @param packet
-	 *            - the {@link Packet}
-	 * @param objects
-	 *            - the {@link Object}[]
+	 * @param  packet
+	 *                         - the {@link Packet}
+	 * @param  objects
+	 *                         - the {@link Object}[]
 	 * @throws IOException
-	 *             if an I/O error occures
+	 *                         if an I/O error occures
 	 */
 	protected void sendPacket(Packet packet, Object... objects) throws IOException {
 		if(objects == null || objects.length == 0) packet.init();
@@ -57,11 +56,11 @@ public abstract class Connection extends PacketRegistry {
 	/**
 	 * Sends the {@link Packet} 'packet' with {@code null} as arguments.
 	 *
-	 * @param packet
-	 *            - the {@link Packet}
+	 * @param  packet
+	 *                         - the {@link Packet}
 	 * @throws IOException
-	 *             if an I/O error occures
-	 * @see #sendPacket(Packet, Object...)
+	 *                         if an I/O error occures
+	 * @see                #sendPacket(Packet, Object...)
 	 */
 	protected void sendPacket(Packet packet) throws IOException {
 		sendPacket(packet, out, null);
