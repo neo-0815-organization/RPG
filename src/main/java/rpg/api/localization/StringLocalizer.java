@@ -62,7 +62,7 @@ public class StringLocalizer {
 				
 				tables.put(file.getName().replace(".lang", ""), table);
 				reader.close();
-			}catch(final IOException e) {
+			} catch(final IOException e) {
 				e.printStackTrace();
 			}
 	}
@@ -73,7 +73,7 @@ public class StringLocalizer {
 		File file = null;
 		try {
 			file = new File(url.toURI());
-		}catch(final URISyntaxException e) {
+		} catch(final URISyntaxException e) {
 			file = new File(url.getPath());
 		}
 		
