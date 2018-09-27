@@ -23,10 +23,16 @@ public class Locale {
 		return country;
 	}
 	
+	public String getName() {
+		if(this == NONE) return null;
+		
+		return language + "_" + country;
+	}
+	
 	public String getFilename() {
 		if(this == NONE) return null;
 		
-		return language + "_" + country + ".lang";
+		return getName() + ".lang";
 	}
 	
 	public static Locale getDefault() {
