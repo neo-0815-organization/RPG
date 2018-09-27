@@ -12,7 +12,7 @@ public enum Direction {
 	WEST(Vec2D.WEST),
 	NONE(Vec2D.createXY(0, 0));
 	
-	Vec2D vec;
+	private Vec2D vec;
 	
 	private Direction(final Vec2D vec) {
 		this.vec = vec;
@@ -25,5 +25,10 @@ public enum Direction {
 	 */
 	public Vec2D getVector() {
 		return vec.clone();
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "[" + vec.getX() + ", " + vec.getY() + "]";
 	}
 }

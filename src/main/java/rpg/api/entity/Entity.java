@@ -147,4 +147,9 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	public Rectangle getCurrentImageBoundings() {
 		return new Rectangle(location.getX(), location.getY(), 16, 16);
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "[uuid=" + uuid + ", displayName=" + displayName + "]";
+	}
 }

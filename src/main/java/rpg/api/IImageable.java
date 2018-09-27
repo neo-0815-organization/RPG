@@ -1,7 +1,6 @@
 package rpg.api;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -16,7 +15,8 @@ public interface IImageable {
 	
 	public default BufferedImage getImage() {
 		try {
-			return ImageIO.read(new File(""));
+			// TODO Use 'SpriteLoader' and 'Sprite'
+			return ImageIO.read(getClass().getResource("/assets/textures/" + getDirectoryName() + "/" + getImageName() + ".png"));
 		}catch(final IOException e) {}
 		
 		return null;

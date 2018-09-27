@@ -132,7 +132,7 @@ public class Vec2D {
 	 */
 	@Override
 	public String toString() {
-		return "Vec2D@" + Integer.toHexString(hashCode()) + "[" + x + "; " + y + "]";
+		return "Vec2D@" + Integer.toHexString(hashCode()) + "[" + x + ", " + y + "]";
 	}
 	
 	/**

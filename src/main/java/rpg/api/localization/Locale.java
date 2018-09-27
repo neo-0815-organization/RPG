@@ -4,7 +4,6 @@ public class Locale {
 	public static final Locale NONE = createLocale("", "");
 	
 	public static final Locale AMERICAN_ENGLISH = createLocale("en", "US");
-	public static final Locale BRITISH_ENGLISH = createLocale("en", "GB");
 	public static final Locale GERMAN = createLocale("de", "DE");
 	
 	private final String language, country;

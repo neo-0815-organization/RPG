@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 import rpg.api.packethandler.PacketRegistry;
 import rpg.api.packethandler.packet.Packet;
-import rpg.api.packethandler.packet.PacketPing;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPing;
+import rpg.api.packethandler.packet.time.PacketPong;
 
 public abstract class Server extends PacketRegistry {
 	private final ServerSocket socket;
@@ -35,7 +35,7 @@ public abstract class Server extends PacketRegistry {
 						
 						clients.get(client).startListening();
 						
-						clients.get(client).sendPacket(clients.get(client).getPacket(0, 0));
+						clients.get(client).sendPacket(clients.get(client).getPacket(-1, 0));
 					}catch(final IOException e) {
 						e.printStackTrace();
 					}

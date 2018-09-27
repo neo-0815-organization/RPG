@@ -1,6 +1,6 @@
-package rpg.api.packethandler.packet;
+package rpg.api.packethandler.packet.time;
 
-import rpg.api.packethandler.packet.time.PacketTime;
+import rpg.api.packethandler.packet.Packet;
 
 public class PacketPing extends PacketTime {
 	
@@ -11,7 +11,7 @@ public class PacketPing extends PacketTime {
 	
 	@Override
 	public int packetPhase() {
-		return 0;
+		return -1;
 	}
 	
 	@Override

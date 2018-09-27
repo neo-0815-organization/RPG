@@ -5,8 +5,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import rpg.api.packethandler.Connection;
-import rpg.api.packethandler.packet.PacketPing;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPing;
+import rpg.api.packethandler.packet.time.PacketPong;
 
 public abstract class Client extends Connection {
 	private static Socket socket;

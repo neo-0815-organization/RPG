@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import rpg.api.packethandler.packet.Packet;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPong;
 
 public abstract class Connection extends PacketRegistry {
 	private final Connection INSTANCE = this;
@@ -71,7 +71,7 @@ public abstract class Connection extends PacketRegistry {
 		millis = System.currentTimeMillis();
 		
 		try {
-			sendPacket(getPacket(0, 0), out, millis);
+			sendPacket(getPacket(-1, 0), out, millis);
 		}catch(final IOException e) {
 			e.printStackTrace();
 		}
