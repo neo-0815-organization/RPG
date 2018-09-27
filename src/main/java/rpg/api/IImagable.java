@@ -23,6 +23,6 @@ public interface IImagable {
 			return ImageIO.read(getFile());
 		}catch(final IOException e) {}
 		
-		return Statics.defaultImage;
+		return null;
 	}
 }
