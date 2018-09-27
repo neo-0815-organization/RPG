@@ -19,7 +19,7 @@ public class EventHandler {
 				public void run() {
 					l.onEvent(e);
 				}
-			}, "");
+			}, "Listener " + l + " handling " + t).start();
 	}
 	
 	public void registerEventListener(final EventListener l) {
