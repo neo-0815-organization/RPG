@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public interface IImagable {
+public interface IImageable {
 	
 	public String getImageName();
 	
@@ -14,13 +14,9 @@ public interface IImagable {
 	
 	public String getDirectoryName();
 	
-	public default File getFile() {
-		return new File("assets/textures/" + getDirectoryName() + "/" + getImageName() + ".png");
-	}
-	
 	public default BufferedImage getImage() {
 		try {
-			return ImageIO.read(getFile());
+			return ImageIO.read(new File(""));
 		}catch(final IOException e) {}
 		
 		return null;

@@ -68,7 +68,7 @@ public class StringLocalizer {
 	}
 	
 	private static File getLangDir() {
-		final URL url = StringLocalizer.class.getClassLoader().getResource("lang");
+		final URL url = StringLocalizer.class.getResource("assets/lang");
 		
 		File file = null;
 		try {

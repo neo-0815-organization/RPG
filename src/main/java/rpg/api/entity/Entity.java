@@ -7,7 +7,7 @@ import java.util.UUID;
 import rpg.RPG;
 import rpg.api.Direction;
 import rpg.api.IDrawable;
-import rpg.api.IImagable;
+import rpg.api.IImageable;
 import rpg.api.INameable;
 import rpg.api.Location;
 import rpg.api.Vec2D;
@@ -18,7 +18,7 @@ import rpg.api.scene.Camera;
  * 
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
-public abstract class Entity implements INameable, IDrawable, IImagable {
+public abstract class Entity implements INameable, IDrawable, IImageable {
 	protected Location location;
 	protected Direction lookingDirection;
 	protected Vec2D velocity;
