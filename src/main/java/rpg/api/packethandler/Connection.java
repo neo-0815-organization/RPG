@@ -6,15 +6,15 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import rpg.api.packethandler.packet.Packet;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPong;
 
 public abstract class Connection extends PacketRegistry {
-	private final Connection	INSTANCE	= this;
-	private final OutputStream	out;
+	private final Connection INSTANCE	= this;
+	private final OutputStream out;
 	
-	private ListeningThread	listeningThread;
-	private long			millis;
-	private int				ping;
+	private ListeningThread listeningThread;
+	private long millis;
+	private int ping;
 	
 	public Connection(OutputStream out) {
 		this.out = out;
@@ -66,12 +66,12 @@ public abstract class Connection extends PacketRegistry {
 		sendPacket(packet, out, null);
 	}
 	
-	public void pingTest() {
+	protected void pingTest() {
 		millis = System.currentTimeMillis();
 		
 		try {
-			sendPacket(getPacket(0, 0), out, millis);
-		} catch(final IOException e) {
+			sendPacket(getPacket(-1, 0), out, millis);
+		}catch(final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -80,7 +80,7 @@ public abstract class Connection extends PacketRegistry {
 		return ping;
 	}
 	
-	public void initListeningThread(Socket socket) throws IOException {
+	protected void initListeningThread(Socket socket) throws IOException {
 		if(listeningThread == null) listeningThread = new ListeningThread(socket) {
 			
 			@Override
@@ -90,7 +90,7 @@ public abstract class Connection extends PacketRegistry {
 		};
 	}
 	
-	public void initListeningThread(InputStream in, OutputStream out) {
+	protected void initListeningThread(InputStream in, OutputStream out) {
 		if(listeningThread == null) listeningThread = new ListeningThread(in, out) {
 			
 			@Override

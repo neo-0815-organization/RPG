@@ -6,13 +6,13 @@ package rpg.api;
  * @author Tim Ludwig
  */
 public enum Direction {
-	NORTH(Vec2D.createAL(AngleUnit.TURN.convert(0.25, AngleUnit.RADIAN), 1)),
-	EAST(Vec2D.createAL(AngleUnit.TURN.convert(0, AngleUnit.RADIAN), 1)),
-	SOUTH(Vec2D.createAL(AngleUnit.TURN.convert(0.75, AngleUnit.RADIAN), 1)),
-	WEST(Vec2D.createAL(AngleUnit.TURN.convert(0.5, AngleUnit.RADIAN), 1)),
+	NORTH(Vec2D.NORTH),
+	EAST(Vec2D.EAST),
+	SOUTH(Vec2D.SOUTH),
+	WEST(Vec2D.WEST),
 	NONE(Vec2D.createXY(0, 0));
 	
-	Vec2D vec;
+	private Vec2D vec;
 	
 	private Direction(final Vec2D vec) {
 		this.vec = vec;
@@ -25,5 +25,10 @@ public enum Direction {
 	 */
 	public Vec2D getVector() {
 		return vec.clone();
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "[" + vec.getX() + ", " + vec.getY() + "]";
 	}
 }

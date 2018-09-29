@@ -6,10 +6,10 @@ package rpg.api;
  * @author Tim Ludwig, Neo Hornberger
  */
 public class Vec2D {
-	public static final Vec2D	NORTH	= createAL(AngleUnit.TURN.convert(0.25, AngleUnit.RADIAN), 1);
-	public static final Vec2D	EAST	= createAL(AngleUnit.TURN.convert(0, AngleUnit.RADIAN), 1);
-	public static final Vec2D	SOUTH	= createAL(AngleUnit.TURN.convert(0.75, AngleUnit.RADIAN), 1);
-	public static final Vec2D	WEST	= createAL(AngleUnit.TURN.convert(0.5, AngleUnit.RADIAN), 1);
+	public static final Vec2D NORTH = createAL(AngleUnit.TURN.convert(0.25, AngleUnit.RADIAN), 1);
+	public static final Vec2D EAST = createAL(AngleUnit.TURN.convert(0, AngleUnit.RADIAN), 1);
+	public static final Vec2D SOUTH = createAL(AngleUnit.TURN.convert(0.75, AngleUnit.RADIAN), 1);
+	public static final Vec2D WEST = createAL(AngleUnit.TURN.convert(0.5, AngleUnit.RADIAN), 1);
 	
 	private double x, y;
 	
@@ -125,14 +125,14 @@ public class Vec2D {
 	}
 	
 	/**
-	 * Returns a human readable representation of the {@link Vec2D}
-	 * looking like Vec2D@hash[x; y]
+	 * Returns a human readable representation of the {@link Vec2D} looking like
+	 * Vec2D@hash[x; y]
 	 * 
 	 * @return the textual representation of the {@link Vec2D}
 	 */
 	@Override
 	public String toString() {
-		return "Vec2D@" + Integer.toHexString(hashCode()) + "[" + x + "; " + y + "]";
+		return "Vec2D@" + Integer.toHexString(hashCode()) + "[" + x + ", " + y + "]";
 	}
 	
 	/**

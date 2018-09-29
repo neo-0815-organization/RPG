@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import rpg.api.packethandler.packet.Packet;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPong;
 
 /**
  * This thread is listening to an {@link InputStream}, reading the transfered bytes,<br>

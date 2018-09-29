@@ -1,6 +1,4 @@
-package rpg.api.packethandler.packet;
-
-import rpg.api.packethandler.packet.time.PacketTime;
+package rpg.api.packethandler.packet.time;
 
 public class PacketPong extends PacketTime {
 	
@@ -11,6 +9,6 @@ public class PacketPong extends PacketTime {
 	
 	@Override
 	public int packetPhase() {
-		return 0;
+		return -1;
 	}
 }

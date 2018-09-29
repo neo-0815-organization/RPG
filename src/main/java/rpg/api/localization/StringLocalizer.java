@@ -62,18 +62,18 @@ public class StringLocalizer {
 				
 				tables.put(file.getName().replace(".lang", ""), table);
 				reader.close();
-			} catch(final IOException e) {
+			}catch(final IOException e) {
 				e.printStackTrace();
 			}
 	}
 	
 	private static File getLangDir() {
-		final URL url = StringLocalizer.class.getClassLoader().getResource("lang");
+		final URL url = StringLocalizer.class.getResource("/assets/lang/");
 		
 		File file = null;
 		try {
 			file = new File(url.toURI());
-		} catch(final URISyntaxException e) {
+		}catch(final URISyntaxException e) {
 			file = new File(url.getPath());
 		}
 		
