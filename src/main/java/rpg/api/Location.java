@@ -4,23 +4,24 @@ package rpg.api;
  * The Class Location.
  */
 public class Location {
-	private int x, y;
+	private int x,
+			y;
 	
 	/**
-	 * Instantiates a new location.
+	 * Instantiates a new {@link Location}.
 	 *
 	 * @param x
-	 *            the x coordinate
+	 *        the x coordinate
 	 * @param y
-	 *            the y coordinate
+	 *        the y coordinate
 	 */
-	public Location(int x, int y) {
+	public Location(final int x, final int y) {
 		this.x = x;
 		this.y = y;
 	}
 	
 	/**
-	 * Gets the x coordinate.
+	 * Gets the x coordinate of this {@Link Location}.
 	 *
 	 * @return the x coordinate
 	 */
@@ -29,9 +30,12 @@ public class Location {
 	}
 	
 	/**
-	 * @param x the x to set
+	 * Sets the x coordinate.
+	 * 
+	 * @param x
+	 *        the x coordinate to set
 	 */
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
 	}
 	
@@ -43,14 +47,23 @@ public class Location {
 	public int getY() {
 		return y;
 	}
-
+	
 	/**
-	 * @param y the y to set
+	 * Sets the y coordinate.
+	 * 
+	 * @param y
+	 *        the y to set
 	 */
-	public void setY(int y) {
+	public void setY(final int y) {
 		this.y = y;
 	}
-
+	
+	/**
+	 * Returns a human readable representation of this {@link Location} looking like
+	 * Location@hash[x; y].
+	 * 
+	 * @return the textual representation of this {@link Location}
+	 */
 	@Override
 	public String toString() {
 		return "Location@" + Integer.toHexString(hashCode()) + "[" + x + ", " + y + "]";
