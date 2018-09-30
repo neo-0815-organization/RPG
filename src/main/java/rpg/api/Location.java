@@ -60,7 +60,7 @@ public class Location {
 	
 	/**
 	 * Returns a human readable representation of this {@link Location} looking like
-	 * Location@hash[x; y].
+	 * Location@hash[x, y].
 	 * 
 	 * @return the textual representation of this {@link Location}
 	 */
