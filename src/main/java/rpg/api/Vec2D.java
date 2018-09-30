@@ -152,7 +152,7 @@ public class Vec2D {
 	
 	/**
 	 * Returns a human readable representation of this {@link Vec2D} looking like
-	 * Vec2D@hash[x; y]
+	 * Vec2D@hash[x, y]
 	 * 
 	 * @return the textual representation of this {@link Vec2D}
 	 */
