@@ -66,6 +66,6 @@ public class Location {
 	 */
 	@Override
 	public String toString() {
-		return "Location@" + Integer.toHexString(hashCode()) + "[" + x + ", " + y + "]";
+		return super.toString() + "[" + x + ", " + y + "]";
 	}
 }
