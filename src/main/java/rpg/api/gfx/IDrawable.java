@@ -1,4 +1,4 @@
-package rpg.api;
+package rpg.api.gfx;
 
 import java.awt.Graphics2D;
 

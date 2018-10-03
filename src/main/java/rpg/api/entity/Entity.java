@@ -6,11 +6,10 @@ import java.util.UUID;
 
 import rpg.RPG;
 import rpg.api.Direction;
-import rpg.api.IDrawable;
-import rpg.api.IImageable;
 import rpg.api.INameable;
 import rpg.api.Location;
 import rpg.api.Vec2D;
+import rpg.api.gfx.IDrawable;
 import rpg.api.scene.Camera;
 
 /**
@@ -18,14 +17,15 @@ import rpg.api.scene.Camera;
  * 
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
-public abstract class Entity implements INameable, IDrawable, IImageable {
-	protected Location location;
-	protected Direction lookingDirection;
-	protected Vec2D velocity;
-	protected String displayName, imageName;
-	protected UUID uuid;
+public abstract class Entity implements INameable, IDrawable {
+	protected Location	location;
+	protected Direction	lookingDirection;
+	protected Vec2D		velocity;
+	protected String	displayName,
+			imageName;
+	protected UUID		uuid;
 	
-	public Entity(String name) {
+	public Entity(final String name) {
 		setDisplayName(name);
 	}
 	
@@ -33,12 +33,12 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *            the direction to accelerate in
+	 *        the direction to accelerate in
 	 * @param force
-	 *            the accelerating amount of force
+	 *        the accelerating amount of force
 	 * @see #accelerate(Vec2D)
 	 */
-	public void accelerate(Direction direction, double force) {
+	public void accelerate(final Direction direction, final double force) {
 		accelerate(direction.getVector().scale(force));
 	}
 	
@@ -46,9 +46,9 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param acc
-	 *            the accelerating force
+	 *        the accelerating force
 	 */
-	public void accelerate(Vec2D acc) {
+	public void accelerate(final Vec2D acc) {
 		velocity = velocity.add(acc);
 	}
 	
@@ -68,7 +68,7 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	 * 
 	 * @see INameable#setDisplayName(String)
 	 * @param displayName
-	 *            the new display name
+	 *        the new display name
 	 */
 	@Override
 	public void setDisplayName(String displayName) {
@@ -123,22 +123,7 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	}
 	
 	@Override
-	public void setImageName(String name) {
-		imageName = name;
-	}
-	
-	@Override
-	public String getImageName() {
-		return imageName;
-	}
-	
-	@Override
-	public String getDirectoryName() {
-		return "entity";
-	}
-	
-	@Override
-	public void draw(Graphics2D g2d) {
+	public void draw(final Graphics2D g2d) {
 		final Rectangle screen = new Rectangle(Camera.loc.getX(), Camera.loc.getY(), RPG.SCREEN_WIDTH, RPG.SCREEN_HEIGHT);
 		
 		if(screen.intersects(getCurrentImageBoundings())) g2d.drawImage(getImage(), location.getX() - Camera.loc.getX(), location.getY() - Camera.loc.getY(), null);
