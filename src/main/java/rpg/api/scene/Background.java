@@ -15,6 +15,9 @@ public class Background extends Scene {
 	private BufferedImage background;
 	private ArrayList<Tile> tiles;
 	
+	public Background() {
+		tiles = new ArrayList<>();
+	}
 	@Override
 	public void draw(Graphics2D g2d) {
 		final Rectangle screen = new Rectangle(Camera.loc.getX(), Camera.loc.getY(), RPG.SCREEN_WIDTH, RPG.SCREEN_HEIGHT);

@@ -7,6 +7,7 @@ import rpg.api.Location;
 
 public abstract class Tile {
 	protected Location loc;
+	private Hitbox hbox;
 	
 	public Rectangle getCurrentImageBoundings() {
 		return new Rectangle(loc.getX(), loc.getY(), getLook().getWidth(), getLook().getHeight());
@@ -16,5 +17,9 @@ public abstract class Tile {
 	
 	public Location getLocation() {
 		return loc;
+	}
+	
+	public Hitbox getHitbox() {
+		return hbox ;
 	}
 }
