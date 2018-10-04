@@ -122,6 +122,10 @@ public class ByteBuffer {
 		return Float.intBitsToFloat(readInt());
 	}
 	
+	public boolean readBoolean() {
+		return read() == 1;
+	}
+	
 	/**
 	 * Returns all non-written bytes of this {@link ByteBuffer} in form of a byte[].
 	 *
