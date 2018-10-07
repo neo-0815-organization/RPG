@@ -12,64 +12,87 @@ import rpg.api.entity.Entity;
 import rpg.api.packethandler.ByteBuffer;
 
 public class GameData {
-	private File file;
+	private final File file;
 	private ByteBuffer buffer;
 	
-	public GameData(String path) {
+	public GameData(final String path) {
 		file = new File(path);
 	}
 	
-	public void writeBoolean(boolean b) {
+	public void writeBoolean(final boolean b) {
 		writeIdentifier(b);
 		buffer.writeBoolean(b);
 	}
 	
-	public void writeByte(byte b) {
+	public void writeByte(final byte b) {
 		writeIdentifier(b);
 		buffer.write(b);
 	}
 	
-	public void writeShort(short s) {
+	public void writeShort(final short s) {
 		writeIdentifier(s);
 		buffer.writeShort(s);
 	}
 	
-	public void writeInt(int i) {
+	public void writeInt(final int i) {
 		writeIdentifier(i);
 		buffer.writeInt(i);
 	}
 	
-	public void writeLong(long l) {
+	public void writeLong(final long l) {
 		writeIdentifier(l);
 		buffer.writeLong(l);
 	}
 	
-	public void writeFloat(float f) {
+	public void writeFloat(final float f) {
 		writeIdentifier(f);
 		buffer.writeFloat(f);
 	}
 	
-	public void writeDouble(double d) {
+	public void writeDouble(final double d) {
 		writeIdentifier(d);
 		buffer.writeDouble(d);
 	}
 	
-	public void writeChar(char c) {
+	public void writeChar(final char c) {
 		writeIdentifier(c);
 		buffer.writeChar(c);
 	}
 	
-	public void writeString(String s) {
+	public void writeString(final String s) {
 		writeIdentifier(s);
 		buffer.writeString(s);
 	}
 	
-	public void writeList(List<?> l) {
+	public void writeList(final List<?> l) {
 		writeIdentifier(l);
-		
 	}
 	
-	private void writeIdentifier(Object obj) {
+	public void writeLocation(final Location l) {
+		writeIdentifier(l);
+		buffer.writeInt(l.getX());
+		buffer.writeInt(l.getY());
+	}
+	
+	public void writeDirection(final Direction d) {
+		writeIdentifier(d);
+	}
+	
+	public void writeVec2D(final Vec2D v) {
+		writeIdentifier(v);
+	}
+	
+	public void writeUUID(final UUID u) {
+		writeIdentifier(u);
+		buffer.writeInt(36);
+		buffer.writeString(u.toString(), false);
+	}
+	
+	public void writeEntity(final Entity e) {
+		writeIdentifier(e);
+	}
+	
+	private void writeIdentifier(final Object obj) {
 		byte id = -1;
 		
 		if(obj instanceof Map) id = MAP_IDENTIFIER;
@@ -92,21 +115,28 @@ public class GameData {
 		buffer.write(id);
 	}
 	
-	private static final byte MAP_IDENTIFIER 		= 0;
-	private static final byte BOOLEAN_IDENTIFIER 	= 1;
-	private static final byte BYTE_IDENTIFIER 		= 2;
-	private static final byte SHORT_IDENTIFIER 		= 3;
-	private static final byte INT_IDENTIFIER 		= 4;
-	private static final byte LONG_IDENTIFIER 		= 5;
-	private static final byte FLOAT_IDENTIFIER 		= 6;
-	private static final byte DOUBLE_IDENTIFIER 	= 7;
-	private static final byte CHAR_IDENTIFIER 		= 8;
-	private static final byte STRING_IDENTIFIER		= 9;
-	private static final byte LIST_IDENTIFIER 		= 10;
-	private static final byte LOCATION_IDENTIFIER 	= 11;
-	private static final byte DIRECTION_IDENTIFIER 	= 12;
-	private static final byte VEC2D_IDENTIFIER 		= 13;
-	private static final byte UUID_IDENTIFIER 		= 14;
-	private static final byte ENTITY_IDENTIFIER 	= 15;
+	private Object read(final int id) {
+		switch(id) {
+			
+		}
+		
+		return null;
+	}
 	
+	private static final byte MAP_IDENTIFIER = 0;
+	private static final byte BOOLEAN_IDENTIFIER = 1;
+	private static final byte BYTE_IDENTIFIER = 2;
+	private static final byte SHORT_IDENTIFIER = 3;
+	private static final byte INT_IDENTIFIER = 4;
+	private static final byte LONG_IDENTIFIER = 5;
+	private static final byte FLOAT_IDENTIFIER = 6;
+	private static final byte DOUBLE_IDENTIFIER = 7;
+	private static final byte CHAR_IDENTIFIER = 8;
+	private static final byte STRING_IDENTIFIER = 9;
+	private static final byte LIST_IDENTIFIER = 10;
+	private static final byte LOCATION_IDENTIFIER = 11;
+	private static final byte DIRECTION_IDENTIFIER = 12;
+	private static final byte VEC2D_IDENTIFIER = 13;
+	private static final byte UUID_IDENTIFIER = 14;
+	private static final byte ENTITY_IDENTIFIER = 15;
 }
