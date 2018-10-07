@@ -4,32 +4,44 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
 public class Sprite {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
 	
-	private final HashMap<String, LinkedList<BufferedImage>>	animations	= new HashMap<>();
-	private final String										name;
-	private SpriteTheme											loadedTheme	= SpriteTheme.DEFAULT;
+	private final HashMap<String, Animation>	animations	= new HashMap<>();
+	private Animation							currentAnimation;
+	private final String						name;
+	private SpriteTheme							loadedTheme	= SpriteTheme.DEFAULT;
 	
 	public Sprite(final String name, final SpriteTheme theme) {
 		this.name = name;
-		loadedTheme = theme;
+		loadTheme(theme);
 		
-		Sprite.loadedSprites.put(getName(), this);
+		loadedSprites.put(getName(), this);
 	}
 	
 	public void loadTheme(final SpriteTheme theme) {
 		loadedTheme = theme;
+		
+		final Set<String> animationNames = animations.keySet();
+		
+		dumpAllAnimations();
+		
+		for(final String animationName : animationNames)
+			addAnimation(animationName, /* how do i find this */ 0);
 	}
 	
 	public void dumpAllAnimations() {
+		currentAnimation = null;
+		
 		animations.clear();
 	}
 	
 	public void dumpAnimation(final String animationName) {
+		if(currentAnimation.getName() == animationName) currentAnimation = null;
 		animations.remove(animationName);
 	}
 	
@@ -53,15 +65,15 @@ public class Sprite {
 		for(int loadingFrame = 0; loadingFrame < frameCount; loadingFrame++)
 			frames.add(animation.getSubimage(0, frameCount * frameHeight, animWidth, frameHeight));
 		
-		animations.put(animationName, frames);
+		animations.put(animationName, new Animation(animationName, frames));
 	}
 	
-	public LinkedList<BufferedImage> getAnimation(final String animationName) {
-		return animations.get(animationName);
-	}
-	
-	public BufferedImage getAnimationFrame(final String animationName, final int frameInAnimation) {
-		return getAnimation(animationName).get(frameInAnimation);
+	public BufferedImage getNextAnimationFrame(final String animationName) {
+		if(currentAnimation.getName() == animationName) return currentAnimation.nextFrame();
+		
+		currentAnimation = animations.get(animationName);
+		
+		return currentAnimation.nextFrame();
 	}
 	
 	public String getPath() {
