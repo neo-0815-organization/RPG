@@ -8,6 +8,8 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import rpg.api.TableFileReader;
+
 public class Sprite {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
 	
@@ -18,6 +20,7 @@ public class Sprite {
 	
 	public Sprite(final String name, final SpriteTheme theme) {
 		this.name = name;
+		
 		loadTheme(theme);
 		
 		loadedSprites.put(getName(), this);
@@ -28,10 +31,10 @@ public class Sprite {
 		
 		final Set<String> animationNames = animations.keySet();
 		
-		dumpAllAnimations();
+		final HashMap<String, String> frameCounts = TableFileReader.read(getPath() + "/animations_frameheight.txt", ":");
 		
 		for(final String animationName : animationNames)
-			addAnimation(animationName, /* how do i find this */ 0);
+			addAnimation(animationName, Integer.valueOf(frameCounts.get(animationName)));
 	}
 	
 	public void dumpAllAnimations() {
@@ -50,7 +53,7 @@ public class Sprite {
 		try {
 			animation = ImageIO.read(getClass().getResource(getPath() + "/" + animationName + ".png"));
 		} catch(final IOException ex) {
-			throw new IllegalArgumentException("File " + animationName + ".png doesn't exist in the directory " + getPath());
+			throw new IllegalArgumentException("File '" + animationName + ".png' doesn't exist in the directory '" + getPath() + "'.");
 		}
 		
 		final int animWidth = animation.getWidth();
@@ -65,7 +68,7 @@ public class Sprite {
 		for(int loadingFrame = 0; loadingFrame < frameCount; loadingFrame++)
 			frames.add(animation.getSubimage(0, frameCount * frameHeight, animWidth, frameHeight));
 		
-		animations.put(animationName, new Animation(animationName, frames));
+		animations.put(animationName, new Animation(animationName, frameHeight, frames));
 	}
 	
 	public BufferedImage getNextAnimationFrame(final String animationName) {

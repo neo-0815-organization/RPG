@@ -6,10 +6,12 @@ import java.util.LinkedList;
 
 public class Animation {
 	private final String	animationName;
+	private final int		frameHeight;
 	private Frame			currentFrame	= null;
 	
-	public Animation(final String animationName, final LinkedList<BufferedImage> frames) {
+	public Animation(final String animationName, final int frameHeight, final LinkedList<BufferedImage> frames) {
 		this.animationName = animationName;
+		this.frameHeight = frameHeight;
 		
 		loadFramesFromList(frames);
 	}
@@ -31,6 +33,10 @@ public class Animation {
 		}
 		
 		animationEnd.setNextFrame(currentFrame);
+	}
+	
+	public int getFrameHeight() {
+		return frameHeight;
 	}
 	
 	public String getName() {
