@@ -19,105 +19,101 @@ public class GameData {
 		file = new File(path);
 	}
 	
-	public void writeBoolean(final boolean b) {
-		writeIdentifier(b);
-		buffer.writeBoolean(b);
-	}
-	
-	public void writeByte(final byte b) {
-		writeIdentifier(b);
-		buffer.write(b);
-	}
-	
-	public void writeShort(final short s) {
-		writeIdentifier(s);
-		buffer.writeShort(s);
-	}
-	
-	public void writeInt(final int i) {
-		writeIdentifier(i);
-		buffer.writeInt(i);
-	}
-	
-	public void writeLong(final long l) {
-		writeIdentifier(l);
-		buffer.writeLong(l);
-	}
-	
-	public void writeFloat(final float f) {
-		writeIdentifier(f);
-		buffer.writeFloat(f);
-	}
-	
-	public void writeDouble(final double d) {
-		writeIdentifier(d);
-		buffer.writeDouble(d);
-	}
-	
-	public void writeChar(final char c) {
-		writeIdentifier(c);
-		buffer.writeChar(c);
-	}
-	
-	public void writeString(final String s) {
-		writeIdentifier(s);
-		buffer.writeString(s);
-	}
-	
-	public void writeList(final List<?> l) {
-		writeIdentifier(l);
-	}
-	
-	public void writeLocation(final Location l) {
-		writeIdentifier(l);
-		buffer.writeInt(l.getX());
-		buffer.writeInt(l.getY());
-	}
-	
-	public void writeDirection(final Direction d) {
-		writeIdentifier(d);
-	}
-	
-	public void writeVec2D(final Vec2D v) {
-		writeIdentifier(v);
-	}
-	
-	public void writeUUID(final UUID u) {
-		writeIdentifier(u);
-		buffer.writeInt(36);
-		buffer.writeString(u.toString(), false);
-	}
-	
-	public void writeEntity(final Entity e) {
-		writeIdentifier(e);
-	}
-	
-	private void writeIdentifier(final Object obj) {
-		byte id = -1;
-		
-		if(obj instanceof Map) id = MAP_IDENTIFIER;
-		else if(obj instanceof Boolean) id = BOOLEAN_IDENTIFIER;
-		else if(obj instanceof Byte) id = BYTE_IDENTIFIER;
-		else if(obj instanceof Short) id = SHORT_IDENTIFIER;
-		else if(obj instanceof Integer) id = INT_IDENTIFIER;
-		else if(obj instanceof Long) id = LONG_IDENTIFIER;
-		else if(obj instanceof Float) id = FLOAT_IDENTIFIER;
-		else if(obj instanceof Double) id = DOUBLE_IDENTIFIER;
-		else if(obj instanceof Character) id = CHAR_IDENTIFIER;
-		else if(obj instanceof String) id = STRING_IDENTIFIER;
-		else if(obj instanceof List) id = LIST_IDENTIFIER;
-		else if(obj instanceof Location) id = LOCATION_IDENTIFIER;
-		else if(obj instanceof Direction) id = DIRECTION_IDENTIFIER;
-		else if(obj instanceof Vec2D) id = VEC2D_IDENTIFIER;
-		else if(obj instanceof UUID) id = UUID_IDENTIFIER;
-		else if(obj instanceof Entity) id = ENTITY_IDENTIFIER;
-		
-		buffer.write(id);
-	}
-	
-	private Object read(final int id) {
-		switch(id) {
+	public void write(final Object obj) {
+		if(obj instanceof Map) {
+			buffer.write(MAP_IDENTIFIER);;
+		}else if(obj instanceof Boolean) {
+			buffer.write(BOOLEAN_IDENTIFIER);
 			
+			buffer.writeBoolean((boolean) obj);
+		}else if(obj instanceof Byte) {
+			buffer.write(BYTE_IDENTIFIER);
+			
+			buffer.write((byte) obj);
+		}else if(obj instanceof Short) {
+			buffer.write(SHORT_IDENTIFIER);
+			
+			buffer.writeShort((short) obj);
+		}else if(obj instanceof Integer) {
+			buffer.write(INT_IDENTIFIER);
+			
+			buffer.writeInt((int) obj);
+		}else if(obj instanceof Long) {
+			buffer.write(LONG_IDENTIFIER);
+			
+			buffer.writeLong((long) obj);
+		}else if(obj instanceof Float) {
+			buffer.write(FLOAT_IDENTIFIER);
+			
+			buffer.writeFloat((float) obj);
+		}else if(obj instanceof Double) {
+			buffer.write(DOUBLE_IDENTIFIER);
+			
+			buffer.writeDouble((double) obj);
+		}else if(obj instanceof Character) {
+			buffer.write(CHAR_IDENTIFIER);
+			
+			buffer.writeChar((char) obj);
+		}else if(obj instanceof String) {
+			buffer.write(STRING_IDENTIFIER);
+			
+			buffer.writeString((String) obj);
+		}else if(obj instanceof List) {
+			buffer.write(LIST_IDENTIFIER);;
+		}else if(obj instanceof Location) {
+			buffer.write(LOCATION_IDENTIFIER);
+			
+			final Location l = (Location) obj;
+			buffer.writeInt(l.getX());
+			buffer.writeInt(l.getY());
+		}else if(obj instanceof Direction) {
+			buffer.write(DIRECTION_IDENTIFIER);;
+		}else if(obj instanceof Vec2D) {
+			buffer.write(VEC2D_IDENTIFIER);;
+		}else if(obj instanceof UUID) {
+			buffer.write(UUID_IDENTIFIER);
+			
+			buffer.writeInt(36);
+			buffer.writeString(((UUID) obj).toString(), false);
+		}else if(obj instanceof Entity) {
+			buffer.write(ENTITY_IDENTIFIER);;
+		}
+	}
+	
+	public Object read() {
+		switch(buffer.read()) {
+			case MAP_IDENTIFIER:
+				return null;
+			case BOOLEAN_IDENTIFIER:
+				return buffer.readBoolean();
+			case BYTE_IDENTIFIER:
+				return buffer.read();
+			case SHORT_IDENTIFIER:
+				return null;
+			case INT_IDENTIFIER:
+				return null;
+			case LONG_IDENTIFIER:
+				return null;
+			case FLOAT_IDENTIFIER:
+				return null;
+			case DOUBLE_IDENTIFIER:
+				return null;
+			case CHAR_IDENTIFIER:
+				return null;
+			case STRING_IDENTIFIER:
+				return null;
+			case LIST_IDENTIFIER:
+				return null;
+			case LOCATION_IDENTIFIER:
+				return null;
+			case DIRECTION_IDENTIFIER:
+				return null;
+			case VEC2D_IDENTIFIER:
+				return null;
+			case UUID_IDENTIFIER:
+				return null;
+			case ENTITY_IDENTIFIER:
+				return null;
 		}
 		
 		return null;
