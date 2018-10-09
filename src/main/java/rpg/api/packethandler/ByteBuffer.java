@@ -133,6 +133,16 @@ public class ByteBuffer {
 	}
 	
 	/**
+	 * Clears this {@link ByteBuffer} and sets both cursors to 0.
+	 */
+	public void clear() {
+		bytes.clear();
+		
+		writeCursor = 0;
+		readCursor = 0;
+	}
+	
+	/**
 	 * Returns all non-written bytes of this {@link ByteBuffer} in form of a
 	 * byte[].
 	 *

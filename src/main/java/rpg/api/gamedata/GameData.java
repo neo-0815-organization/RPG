@@ -1,6 +1,10 @@
 package rpg.api.gamedata;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,12 +18,36 @@ import rpg.api.packethandler.ByteBuffer;
 public class GameData {
 	private final File file;
 	private ByteBuffer buffer;
+	private HashMap<String, Object> data;
 	
 	public GameData(final String path) {
 		file = new File(path);
 	}
 	
-	public void write(final Object obj) {
+	public void load() throws IOException {
+		final FileInputStream in = new FileInputStream(file);
+		final byte[] fileMagicNumber = new byte[MAGIC_NUMBER.length];
+		
+		in.read(fileMagicNumber);
+		
+		if(fileMagicNumber == MAGIC_NUMBER) {
+			// TODO read into byte-buffer (before: clear it)
+			;;
+		}
+		
+		in.close();
+	}
+	
+	public void save() throws IOException {
+		final FileOutputStream out = new FileOutputStream(file);
+		
+		out.write(MAGIC_NUMBER);
+		// TODO write from byte-buffer
+		
+		out.close();
+	}
+	
+	protected void write(final Object obj) {
 		if(obj instanceof Map) {
 			buffer.write(MAP_IDENTIFIER);;
 		}else if(obj instanceof Boolean) {
@@ -79,8 +107,8 @@ public class GameData {
 			buffer.write(ENTITY_IDENTIFIER);;
 		}
 	}
-	
-	public Object read() {
+
+	protected Object read() {
 		switch(buffer.read()) {
 			case MAP_IDENTIFIER:
 				return null;
@@ -118,7 +146,7 @@ public class GameData {
 		
 		return null;
 	}
-	
+
 	private static final byte MAP_IDENTIFIER = 0;
 	private static final byte BOOLEAN_IDENTIFIER = 1;
 	private static final byte BYTE_IDENTIFIER = 2;
@@ -135,4 +163,6 @@ public class GameData {
 	private static final byte VEC2D_IDENTIFIER = 13;
 	private static final byte UUID_IDENTIFIER = 14;
 	private static final byte ENTITY_IDENTIFIER = 15;
+	
+	private static final byte[] MAGIC_NUMBER = "\u0033\u2663\u0000\u05D0\u03C9\u0000\u0000\u0000".getBytes();
 }
