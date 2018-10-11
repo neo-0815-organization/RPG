@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class GameData {
 		file = new File(path);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void load() throws IOException {
 		final FileInputStream in = new FileInputStream(file);
 		final byte[] fileMagicNumber = new byte[MAGIC_NUMBER.length];
@@ -31,8 +33,9 @@ public class GameData {
 		in.read(fileMagicNumber);
 		
 		if(fileMagicNumber == MAGIC_NUMBER) {
-			// TODO read into byte-buffer (before: clear it)
-			;;
+			buffer.clear();
+			
+			data = (HashMap<String, Object>) read();
 		}
 		
 		in.close();
@@ -42,7 +45,18 @@ public class GameData {
 		final FileOutputStream out = new FileOutputStream(file);
 		
 		out.write(MAGIC_NUMBER);
-		// TODO write from byte-buffer
+
+		buffer.clear();
+		
+		Object value;
+		for(String key : data.keySet()) {
+			value = data.get(key);
+			
+			write(key);
+			write(value);
+		}
+		
+		buffer.writeToOutputStream(out);
 		
 		out.close();
 	}
@@ -87,7 +101,12 @@ public class GameData {
 			
 			buffer.writeString((String) obj);
 		}else if(obj instanceof List) {
-			buffer.write(LIST_IDENTIFIER);;
+			buffer.write(LIST_IDENTIFIER);
+			
+			List<?> l = (List<?>) obj;
+			buffer.writeInt(l.size());
+			for(final Object o : l)
+				write(o);
 		}else if(obj instanceof Location) {
 			buffer.write(LOCATION_IDENTIFIER);
 			
@@ -95,53 +114,65 @@ public class GameData {
 			buffer.writeInt(l.getX());
 			buffer.writeInt(l.getY());
 		}else if(obj instanceof Direction) {
-			buffer.write(DIRECTION_IDENTIFIER);;
+			buffer.write(DIRECTION_IDENTIFIER);
+			
+			buffer.write(((Direction) obj).getId());
 		}else if(obj instanceof Vec2D) {
-			buffer.write(VEC2D_IDENTIFIER);;
+			buffer.write(VEC2D_IDENTIFIER);
+			
+			final Vec2D v = (Vec2D) obj;
+			buffer.writeDouble(v.getX());
+			buffer.writeDouble(v.getY());
 		}else if(obj instanceof UUID) {
 			buffer.write(UUID_IDENTIFIER);
 			
-			buffer.writeInt(36);
 			buffer.writeString(((UUID) obj).toString(), false);
 		}else if(obj instanceof Entity) {
 			buffer.write(ENTITY_IDENTIFIER);;
+			// TODO write Entity
 		}
 	}
 
 	protected Object read() {
 		switch(buffer.read()) {
 			case MAP_IDENTIFIER:
-				return null;
+				return null; // TODO read map
 			case BOOLEAN_IDENTIFIER:
 				return buffer.readBoolean();
 			case BYTE_IDENTIFIER:
 				return buffer.read();
 			case SHORT_IDENTIFIER:
-				return null;
+				return buffer.readShort();
 			case INT_IDENTIFIER:
-				return null;
+				return buffer.readInt();
 			case LONG_IDENTIFIER:
-				return null;
+				return buffer.readLong();
 			case FLOAT_IDENTIFIER:
-				return null;
+				return buffer.readFloat();
 			case DOUBLE_IDENTIFIER:
-				return null;
+				return buffer.readDouble();
 			case CHAR_IDENTIFIER:
-				return null;
+				return buffer.readChar();
 			case STRING_IDENTIFIER:
-				return null;
+				return buffer.readString();
 			case LIST_IDENTIFIER:
-				return null;
+				List<Object> l = new ArrayList<>();
+				int size = buffer.readInt();
+				
+				for(int i = 0; i < size; i++)
+					l.add(read());
+				
+				return l;
 			case LOCATION_IDENTIFIER:
-				return null;
+				return new Location(buffer.readInt(), buffer.readInt());
 			case DIRECTION_IDENTIFIER:
-				return null;
+				return Direction.getDirectionById(buffer.read()); // TODO
 			case VEC2D_IDENTIFIER:
-				return null;
+				return Vec2D.createXY(buffer.readDouble(), buffer.readDouble());
 			case UUID_IDENTIFIER:
-				return null;
+				return UUID.fromString(buffer.readString(36));
 			case ENTITY_IDENTIFIER:
-				return null;
+				return null; // TODO read Entity
 		}
 		
 		return null;
@@ -164,5 +195,5 @@ public class GameData {
 	private static final byte UUID_IDENTIFIER = 14;
 	private static final byte ENTITY_IDENTIFIER = 15;
 	
-	private static final byte[] MAGIC_NUMBER = "\u0033\u2663\u0000\u05D0\u03C9\u0000\u0000\u0000".getBytes();
+	private static final byte[] MAGIC_NUMBER = "\u0033\u2663\u0000\u05D0\u03C9\u0000\u0000\u0000\n".getBytes();
 }
