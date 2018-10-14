@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,36 @@ import rpg.api.packethandler.ByteBuffer;
 
 public class GameData {
 	private final File file;
-	private ByteBuffer buffer;
+	private final ByteBuffer buffer;
 	private HashMap<String, Object> data;
 	
 	public GameData(final String path) {
-		file = new File(path);
+		file = new File(new File(getClass().getResource("/").getFile()), path);
+		
+		if(!file.exists()) {
+			file.getParentFile().mkdirs();
+			
+			try {
+				file.createNewFile();
+			}catch(final IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		buffer = new ByteBuffer();
+		data = new HashMap<>();
+	}
+	
+	public void set(final String key, final Object value) {
+		data.put(key, value);
+	}
+	
+	public Object get(final String key) {
+		return data.get(key);
+	}
+	
+	public boolean contains(final String key) {
+		return data.containsKey(key);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -45,16 +71,10 @@ public class GameData {
 		final FileOutputStream out = new FileOutputStream(file);
 		
 		out.write(MAGIC_NUMBER);
-
+		
 		buffer.clear();
 		
-		Object value;
-		for(String key : data.keySet()) {
-			value = data.get(key);
-			
-			write(key);
-			write(value);
-		}
+		write(data);
 		
 		buffer.writeToOutputStream(out);
 		
@@ -63,7 +83,14 @@ public class GameData {
 	
 	protected void write(final Object obj) {
 		if(obj instanceof Map) {
-			buffer.write(MAP_IDENTIFIER);;
+			buffer.write(MAP_IDENTIFIER);
+			
+			final Map<?, ?> m = (Map<?, ?>) obj;
+			buffer.writeInt(m.size());
+			for(final Object key : m.keySet()) {
+				write(key);
+				write(m.get(key));
+			}
 		}else if(obj instanceof Boolean) {
 			buffer.write(BOOLEAN_IDENTIFIER);
 			
@@ -103,7 +130,7 @@ public class GameData {
 		}else if(obj instanceof List) {
 			buffer.write(LIST_IDENTIFIER);
 			
-			List<?> l = (List<?>) obj;
+			final List<?> l = (List<?>) obj;
 			buffer.writeInt(l.size());
 			for(final Object o : l)
 				write(o);
@@ -132,11 +159,17 @@ public class GameData {
 			// TODO write Entity
 		}
 	}
-
+	
 	protected Object read() {
 		switch(buffer.read()) {
 			case MAP_IDENTIFIER:
-				return null; // TODO read map
+				final Map<Object, Object> m = new HashMap<>();
+				final int size = buffer.readInt();
+				
+				for(int i = 0; i < size; i++)
+					m.put(read(), read());
+				
+				return m;
 			case BOOLEAN_IDENTIFIER:
 				return buffer.readBoolean();
 			case BYTE_IDENTIFIER:
@@ -156,17 +189,17 @@ public class GameData {
 			case STRING_IDENTIFIER:
 				return buffer.readString();
 			case LIST_IDENTIFIER:
-				List<Object> l = new ArrayList<>();
-				int size = buffer.readInt();
+				final List<Object> l = new ArrayList<>();
+				final int length = buffer.readInt();
 				
-				for(int i = 0; i < size; i++)
+				for(int i = 0; i < length; i++)
 					l.add(read());
 				
 				return l;
 			case LOCATION_IDENTIFIER:
 				return new Location(buffer.readInt(), buffer.readInt());
 			case DIRECTION_IDENTIFIER:
-				return Direction.getDirectionById(buffer.read()); // TODO
+				return Direction.getDirectionById(buffer.read());
 			case VEC2D_IDENTIFIER:
 				return Vec2D.createXY(buffer.readDouble(), buffer.readDouble());
 			case UUID_IDENTIFIER:
@@ -177,7 +210,11 @@ public class GameData {
 		
 		return null;
 	}
-
+	
+	public Map<String, Object> getData() {
+		return Collections.unmodifiableMap(data);
+	}
+	
 	private static final byte MAP_IDENTIFIER = 0;
 	private static final byte BOOLEAN_IDENTIFIER = 1;
 	private static final byte BYTE_IDENTIFIER = 2;
