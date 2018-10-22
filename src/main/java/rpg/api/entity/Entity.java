@@ -10,6 +10,7 @@ import rpg.api.INameable;
 import rpg.api.Location;
 import rpg.api.Vec2D;
 import rpg.api.gfx.IDrawable;
+import rpg.api.gfx.Sprite;
 import rpg.api.scene.Camera;
 
 /**
@@ -19,6 +20,7 @@ import rpg.api.scene.Camera;
  */
 public abstract class Entity implements INameable, IDrawable {
 	protected Location	location;
+	protected Sprite	sprite;
 	protected Direction	lookingDirection;
 	protected Vec2D		velocity;
 	protected String	displayName,
@@ -125,8 +127,8 @@ public abstract class Entity implements INameable, IDrawable {
 	@Override
 	public void draw(final Graphics2D g2d) {
 		final Rectangle screen = new Rectangle(Camera.loc.getX(), Camera.loc.getY(), RPG.SCREEN_WIDTH, RPG.SCREEN_HEIGHT);
-		
-		if(screen.intersects(getCurrentImageBoundings())) g2d.drawImage(getImage(), location.getX() - Camera.loc.getX(), location.getY() - Camera.loc.getY(), null);
+		// TODO: implement animatin name selection
+		if(screen.intersects(getCurrentImageBoundings())) g2d.drawImage(sprite.getNextAnimationFrame(""), location.getX() - Camera.loc.getX(), location.getY() - Camera.loc.getY(), null);
 	}
 	
 	public Rectangle getCurrentImageBoundings() {
