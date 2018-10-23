@@ -8,7 +8,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
-import rpg.api.TableFileReader;
+import rpg.api.filereading.RPGFileReader;
 
 public class Sprite {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
@@ -31,7 +31,7 @@ public class Sprite {
 		
 		final Set<String> animationNames = animations.keySet();
 		
-		final HashMap<String, String> frameCounts = TableFileReader.read(getPath() + "/animations_frameheight.txt", ":");
+		final HashMap<String, String> frameCounts = RPGFileReader.readLineSplit(getPath() + "/animations_frameheight.txt", ":");
 		
 		for(final String animationName : animationNames)
 			addAnimation(animationName, Integer.valueOf(frameCounts.get(animationName)));
