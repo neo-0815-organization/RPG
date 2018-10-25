@@ -3,18 +3,18 @@ package rpg.api.tile;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import rpg.api.Location;
+import rpg.api.Vec2D;
 
 public abstract class Tile {
-	protected Location loc;
+	protected Vec2D loc;
 	
 	public Rectangle getCurrentImageBoundings() {
-		return new Rectangle(loc.getX(), loc.getY(), getLook().getWidth(), getLook().getHeight());
+		return new Rectangle(loc.getX().getValuePixel(), loc.getY().getValuePixel(), getLook().getWidth(), getLook().getHeight());
 	}
 	
 	public abstract BufferedImage getLook();
 	
-	public Location getLocation() {
+	public Vec2D getLocation() {
 		return loc;
 	}
 }

@@ -71,10 +71,12 @@ public class Sprite {
 		animations.put(animationName, new Animation(animationName, frameHeight, frames));
 	}
 	
+	public BufferedImage getNextAnimationFrame() {
+		return currentAnimation.nextFrame();
+	}
+	
 	public BufferedImage getNextAnimationFrame(final String animationName) {
-		if(currentAnimation.getName() == animationName) return currentAnimation.nextFrame();
-		
-		currentAnimation = animations.get(animationName);
+		if(currentAnimation.getName() != animationName) currentAnimation = animations.get(animationName);
 		
 		return currentAnimation.nextFrame();
 	}
