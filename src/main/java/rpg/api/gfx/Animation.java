@@ -1,5 +1,6 @@
 package rpg.api.gfx;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -7,12 +8,14 @@ import java.util.LinkedList;
 public class Animation {
 	private final String	animationName;
 	private final int		frameHeight;
+	private final Rectangle	bounds;
 	private Frame			currentFrame	= null;
 	
-	public Animation(final String animationName, final int frameHeight, final LinkedList<BufferedImage> frames) {
+	public Animation(final String animationName, final int frameHeight, final int frameWidth, final LinkedList<BufferedImage> frames) {
 		this.animationName = animationName;
 		this.frameHeight = frameHeight;
 		
+		bounds = new Rectangle(0, 0, frameWidth, frameHeight);
 		loadFramesFromList(frames);
 	}
 	
@@ -41,6 +44,16 @@ public class Animation {
 	
 	public String getName() {
 		return animationName;
+	}
+	
+	public Rectangle getBounds() {
+		return (Rectangle) bounds.clone();
+	}
+	
+	public BufferedImage currentFrame() {
+		final BufferedImage img = currentFrame.getFrame();
+		
+		return img;
 	}
 	
 	public BufferedImage nextFrame() {

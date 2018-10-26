@@ -1,23 +1,20 @@
 package rpg.api.entity;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.UUID;
 
-import rpg.RPG;
 import rpg.api.Direction;
 import rpg.api.INameable;
 import rpg.api.Vec2D;
-import rpg.api.gfx.IDrawable;
+import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
-import rpg.api.scene.Camera;
 
 /**
  * The abstract Class Entity.
  * 
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
-public abstract class Entity implements INameable, IDrawable {
+public abstract class Entity implements INameable, ISprite {
 	protected Vec2D		location;
 	protected Sprite	sprite;
 	protected Direction	lookingDirection;
@@ -79,9 +76,9 @@ public abstract class Entity implements INameable, IDrawable {
 	}
 	
 	/**
-	 * Gets the {@link Location}.
+	 * Gets the {@link Vec2D} representing the location of this entity.
 	 *
-	 * @return the {@link Location}
+	 * @return the {@link Vec2D} representing the location of this entity.
 	 */
 	public Vec2D getLocation() {
 		return location;
@@ -124,14 +121,13 @@ public abstract class Entity implements INameable, IDrawable {
 	}
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
-		final Rectangle screen = new Rectangle(Camera.loc.getX().getValuePixel(), Camera.loc.getY().getValuePixel(), RPG.SCREEN_WIDTH, RPG.SCREEN_HEIGHT);
-		
-		if(screen.intersects(getCurrentImageBoundings())) g2d.drawImage(sprite.getNextAnimationFrame(), location.getX().getValuePixel() - Camera.loc.getX().getValuePixel(), location.getY().getValuePixel() - Camera.loc.getY().getValuePixel(), null);
+	public Sprite getSprite() {
+		return sprite;
 	}
 	
-	public Rectangle getCurrentImageBoundings() {
-		return new Rectangle(location.getX().getValuePixel(), location.getY().getValuePixel(), 16, 16);
+	@Override
+	public void draw(final Graphics2D g2d) {
+		draw(g2d, location);
 	}
 	
 	@Override

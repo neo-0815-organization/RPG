@@ -1,5 +1,6 @@
 package rpg.api.gfx;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -68,11 +69,19 @@ public class Sprite {
 		for(int loadingFrame = 0; loadingFrame < frameCount; loadingFrame++)
 			frames.add(animation.getSubimage(0, frameCount * frameHeight, animWidth, frameHeight));
 		
-		animations.put(animationName, new Animation(animationName, frameHeight, frames));
+		animations.put(animationName, new Animation(animationName, frameHeight, animWidth, frames));
+	}
+	
+	public Rectangle getBounds() {
+		return currentAnimation.getBounds();
 	}
 	
 	public BufferedImage getNextAnimationFrame() {
 		return currentAnimation.nextFrame();
+	}
+	
+	public BufferedImage getCurrentAnimationFrame() {
+		return currentAnimation.currentFrame();
 	}
 	
 	public BufferedImage getNextAnimationFrame(final String animationName) {
