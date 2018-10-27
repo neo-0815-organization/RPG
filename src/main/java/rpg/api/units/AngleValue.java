@@ -9,14 +9,30 @@ public class AngleValue extends Value {
 		super(value, ANGLE_FACTORS);
 	}
 	
+	/**
+	 * Gets the value stored in this {@link AngleValue} converted to turns
+	 * (proportion of a whole circle)
+	 * 
+	 * @return the converted value
+	 */
 	public double getValueTurn() {
 		return getValue(0);
 	}
 	
+	/**
+	 * Gets the value stored in this {@link AngleValue} converted to radians
+	 * 
+	 * @return the converted value
+	 */
 	public double getValueRadian() {
 		return getValue(1);
 	}
 	
+	/**
+	 * Gets the value stored in this {@link AngleValue} converted to degrees
+	 * 
+	 * @return the converted value
+	 */
 	public double getValueDegree() {
 		return getValue(2);
 	}

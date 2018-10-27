@@ -1,24 +1,36 @@
 package rpg.api.gfx;
 
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * Encapsulates multiple {@link Frame}s in one class
+ * 
+ * @author tludwig
+ *         27.10.2018
+ */
 public class Animation {
 	private final String	animationName;
-	private final int		frameHeight;
-	private final Rectangle	bounds;
+	private final int		frameHeight,
+			frameWidth;
 	private Frame			currentFrame	= null;
 	
 	public Animation(final String animationName, final int frameHeight, final int frameWidth, final LinkedList<BufferedImage> frames) {
 		this.animationName = animationName;
 		this.frameHeight = frameHeight;
+		this.frameWidth = frameWidth;
 		
-		bounds = new Rectangle(0, 0, frameWidth, frameHeight);
 		loadFramesFromList(frames);
 	}
 	
+	/**
+	 * Loads the {@link BufferedImage}s in the {@link LinkedList} frames into this
+	 * {@link Animation}
+	 * 
+	 * @param frames
+	 *        the {@link LinkedList} to load
+	 */
 	@SuppressWarnings("null")
 	public void loadFramesFromList(final LinkedList<BufferedImage> frames) {
 		final Iterator<BufferedImage> frameIterator = frames.descendingIterator();
@@ -38,32 +50,55 @@ public class Animation {
 		animationEnd.setNextFrame(currentFrame);
 	}
 	
+	/**
+	 * Gets the height of every frame in this {@link Animation}
+	 * 
+	 * @return the frame height
+	 */
 	public int getFrameHeight() {
 		return frameHeight;
 	}
 	
+	/**
+	 * Gets the width of every frame in this {@link Animation}
+	 * 
+	 * @return the frame width
+	 */
+	public int getFrameWidth() {
+		return frameWidth;
+	}
+	
+	/**
+	 * Gets the name of this {@link Animation}
+	 * 
+	 * @return the name
+	 */
 	public String getName() {
 		return animationName;
 	}
 	
-	public Rectangle getBounds() {
-		return (Rectangle) bounds.clone();
-	}
-	
+	/**
+	 * Gets the current frame of this {@link Animation}
+	 * 
+	 * @return the current frame
+	 */
 	public BufferedImage currentFrame() {
-		final BufferedImage img = currentFrame.getFrame();
-		
-		return img;
+		return currentFrame.getFrame();
 	}
 	
-	public BufferedImage nextFrame() {
-		final BufferedImage img = currentFrame.getFrame();
-		
+	/**
+	 * Skips to the next {@link Frame} of this {@link Animation}
+	 */
+	public void nextFrame() {
 		currentFrame = currentFrame.getNextFrame();
-		
-		return img;
 	}
 	
+	/**
+	 * Represents one frame in an {@link Animation}
+	 * 
+	 * @author tludwig
+	 *         27.10.2018
+	 */
 	private class Frame {
 		private final BufferedImage	frame;
 		private Frame				nextFrame;

@@ -7,6 +7,17 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class RPGFileReader {
+	/**
+	 * Reads a file, splitting the lines seperately in to key and value pairs,
+	 * seperated by a seperator in the file.
+	 * 
+	 * @param readFile
+	 *        the file to read
+	 * @param seperator
+	 *        the seperator seperating key and value
+	 * @param onRead
+	 *        the method to run on every line read. see {@link ILineRead}
+	 */
 	public static void readLineSplit(final File readFile, final String seperator, final ILineRead onRead) {
 		try {
 			final BufferedReader reader = new BufferedReader(new FileReader(readFile));
@@ -27,6 +38,17 @@ public class RPGFileReader {
 		}
 	}
 	
+	/**
+	 * Reads a file, splitting the lines seperately in to key and value pairs,
+	 * seperated by a seperator in the file.
+	 * 
+	 * @param path
+	 *        the path to the file to read
+	 * @param seperator
+	 *        the seperator seperating key and value
+	 * @return a {@link HashMap} consisting of the key and value pairs read from the
+	 *         file
+	 */
 	public static HashMap<String, String> readLineSplit(final String path, final String seperator) {
 		final HashMap<String, String> result = new HashMap<>();
 		

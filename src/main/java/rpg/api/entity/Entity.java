@@ -31,9 +31,9 @@ public abstract class Entity implements INameable, ISprite {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *        the direction to accelerate in
+	 *        the {@link Direction} to accelerate in
 	 * @param force
-	 *        the accelerating amount of force
+	 *        the amount of accelerating force
 	 * @see #accelerate(Vec2D)
 	 */
 	public void accelerate(final Direction direction, final double force) {
@@ -44,35 +44,11 @@ public abstract class Entity implements INameable, ISprite {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param acc
-	 *        the accelerating force
+	 *        the accelerating force {@link Vec2D}
+	 * @see #accelerate(Direction, double)
 	 */
 	public void accelerate(final Vec2D acc) {
 		velocity = velocity.add(acc);
-	}
-	
-	/**
-	 * Gets the unlocalized name.
-	 * 
-	 * @see INameable#getUnlocalizedName()
-	 * @return the unlocalized name
-	 */
-	@Override
-	public String getUnlocalizedName() {
-		return displayName;
-	}
-	
-	/**
-	 * Sets the display name.
-	 * 
-	 * @see INameable#setDisplayName(String)
-	 * @param displayName
-	 *        the new display name
-	 */
-	@Override
-	public void setDisplayName(String displayName) {
-		if(!displayName.endsWith(".name")) displayName += ".name";
-		
-		this.displayName = displayName;
 	}
 	
 	/**
@@ -112,12 +88,24 @@ public abstract class Entity implements INameable, ISprite {
 	}
 	
 	/**
-	 * Gets the unique id.
+	 * Gets the {@link UUID}.
 	 *
-	 * @return the unique id
+	 * @return the {@link UUID}
 	 */
 	public UUID getUniqueId() {
 		return uuid;
+	}
+	
+	@Override
+	public String getUnlocalizedName() {
+		return displayName;
+	}
+	
+	@Override
+	public void setDisplayName(String displayName) {
+		if(!displayName.endsWith(".name")) displayName += ".name";
+		
+		this.displayName = displayName;
 	}
 	
 	@Override
@@ -130,6 +118,13 @@ public abstract class Entity implements INameable, ISprite {
 		draw(g2d, location);
 	}
 	
+	/**
+	 * Returns a human readable representation of this {@link Entity} looking like
+	 * Entity@hash[x, y]
+	 * 
+	 * @return the textual representation of this {@link Entity}
+	 * @see Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return super.toString() + "[uuid=" + uuid + ", displayName=" + displayName + "]";

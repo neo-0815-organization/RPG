@@ -1,24 +1,48 @@
 package rpg.api.gfx;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import rpg.RPG;
+import rpg.api.Vec2D;
 import rpg.api.scene.Camera;
 
 public interface IImage extends IDrawable {
 	public BufferedImage getImage();
 	
-	public default Rectangle getBounds() {
-		return new Rectangle(0, 0, getImage().getWidth(), getImage().getHeight());
+	/**
+	 * Gets the width of the {@link BufferedImage} this interface represents
+	 * 
+	 * @return the width of the {@link BufferedImage}
+	 */
+	public default int getWidth() {
+		return getImage().getWidth();
 	}
 	
-	public default void draw(final Graphics2D g2d, final int x, final int y) {
-		final int camX = Camera.loc.getX().getValuePixel(),
-				camY = Camera.loc.getY().getValuePixel(),
-				w = (int) getBounds().getWidth(),
-				h = (int) getBounds().getHeight(),
+	/**
+	 * Gets the height of the {@link BufferedImage} this interface represents
+	 * 
+	 * @return the height of the {@link BufferedImage}
+	 */
+	public default int getHeight() {
+		return getImage().getHeight();
+	}
+	
+	/**
+	 * Draws the {@link BufferedImage} this interface represents
+	 * 
+	 * @param g2d
+	 *        the {@link Graphics2D} object to draw on
+	 * @param location
+	 *        the location to draw at
+	 */
+	public default void draw(final Graphics2D g2d, final Vec2D location) {
+		final int x = location.getX().getValuePixel(),
+				y = location.getY().getValuePixel(),
+				camX = Camera.location.getX().getValuePixel(),
+				camY = Camera.location.getY().getValuePixel(),
+				w = getWidth(),
+				h = getHeight(),
 				camXW = camX + RPG.SCREEN_WIDTH,
 				camYH = camY + RPG.SCREEN_HEIGHT;
 		

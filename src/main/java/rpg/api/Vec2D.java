@@ -8,10 +8,13 @@ import rpg.api.units.DistanceValue;
  * @author Tim Ludwig, Neo Hornberger
  */
 public class Vec2D {
-	private double			x,
-			y;
-	private DistanceValue	xValue,
-			yValue;
+	public static final Vec2D ORIGIN = createXY(0, 0);
+	
+	private final double	x;
+	private final double	y;
+	
+	private final DistanceValue	xValue;
+	private final DistanceValue	yValue;
 	
 	/**
 	 * Creates a new {@link Vec2D} using the polar coordinate system.
@@ -46,8 +49,11 @@ public class Vec2D {
 	 *        the y component of the new {@link Vec2D}
 	 */
 	private Vec2D(final double x, final double y) {
-		setX(x);
-		setY(y);
+		this.x = x;
+		this.y = y;
+		
+		xValue = new DistanceValue(x);
+		yValue = new DistanceValue(y);
 	}
 	
 	/**
@@ -129,30 +135,6 @@ public class Vec2D {
 	 */
 	public DistanceValue getY() {
 		return (DistanceValue) yValue.clone();
-	}
-	
-	/**
-	 * Sets the x component of this {@link Vec2D}.
-	 *
-	 * @param x
-	 *        the new x component of this {@link Vec2D}
-	 */
-	public void setX(final double x) {
-		this.x = x;
-		
-		xValue.setValue(x);
-	}
-	
-	/**
-	 * Sets the y component of this {@link Vec2D}.
-	 *
-	 * @param y
-	 *        the new y component of this {@link Vec2D}
-	 */
-	public void setY(final double y) {
-		this.y = y;
-		
-		yValue.setValue(y);
 	}
 	
 	/**

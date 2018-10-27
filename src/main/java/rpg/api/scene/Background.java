@@ -4,11 +4,12 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import rpg.api.Vec2D;
 import rpg.api.gfx.IImage;
 import rpg.api.tile.Tile;
 
 /**
- * Background class contains background image and all "tiles".
+ * Background class contains the background image and all {@link Tile}.
  */
 public class Background implements IImage {
 	private BufferedImage	background;
@@ -16,7 +17,7 @@ public class Background implements IImage {
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
-		draw(g2d, 0, 0);
+		draw(g2d, Vec2D.ORIGIN);
 		
 		for(final Tile t : tiles)
 			t.draw(g2d);

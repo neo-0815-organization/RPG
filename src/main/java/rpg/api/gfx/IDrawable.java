@@ -4,10 +4,10 @@ import java.awt.Graphics2D;
 
 public interface IDrawable {
 	/**
-	 * Is responsible for drawing things.
+	 * Method to draw any sub-class of {@link IDrawable}
 	 * 
 	 * @param g2d
-	 *        Graphics object to draw on
+	 *        {@link Graphics2D} object to draw on
 	 */
 	void draw(Graphics2D g2d);
 }
