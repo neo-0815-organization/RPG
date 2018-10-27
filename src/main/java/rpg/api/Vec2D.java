@@ -1,13 +1,20 @@
 package rpg.api;
 
+import rpg.api.units.DistanceValue;
+
 /**
  * The Class Vec2D representing a two dimensional vector.
  *
  * @author Tim Ludwig, Neo Hornberger
  */
 public class Vec2D {
-	private double x,
-			y;
+	public static final Vec2D ORIGIN = createXY(0, 0);
+	
+	private final double	x;
+	private final double	y;
+	
+	private final DistanceValue	xValue;
+	private final DistanceValue	yValue;
 	
 	/**
 	 * Creates a new {@link Vec2D} using the polar coordinate system.
@@ -18,10 +25,7 @@ public class Vec2D {
 	 *        the length of the new {@link Vec2D}
 	 */
 	public static Vec2D createAL(final double a, final double l) {
-		final double x = Math.cos(a) * l;
-		final double y = Math.sin(a) * l;
-		
-		return new Vec2D(x, y);
+		return new Vec2D(Math.cos(a) * l, Math.sin(a) * l);
 	}
 	
 	/**
@@ -47,6 +51,9 @@ public class Vec2D {
 	private Vec2D(final double x, final double y) {
 		this.x = x;
 		this.y = y;
+		
+		xValue = new DistanceValue(x);
+		yValue = new DistanceValue(y);
 	}
 	
 	/**
@@ -117,8 +124,8 @@ public class Vec2D {
 	 *
 	 * @return the x component of this {@link Vec2D}
 	 */
-	public double getX() {
-		return x;
+	public DistanceValue getX() {
+		return (DistanceValue) xValue.clone();
 	}
 	
 	/**
@@ -126,28 +133,8 @@ public class Vec2D {
 	 *
 	 * @return the y component of this {@link Vec2D}
 	 */
-	public double getY() {
-		return y;
-	}
-	
-	/**
-	 * Sets the x component of this {@link Vec2D}.
-	 *
-	 * @param x
-	 *        the new x component of this {@link Vec2D}
-	 */
-	public void setX(final double x) {
-		this.x = x;
-	}
-	
-	/**
-	 * Sets the y component of this {@link Vec2D}.
-	 *
-	 * @param y
-	 *        the new y component of this {@link Vec2D}
-	 */
-	public void setY(final double y) {
-		this.y = y;
+	public DistanceValue getY() {
+		return (DistanceValue) yValue.clone();
 	}
 	
 	/**

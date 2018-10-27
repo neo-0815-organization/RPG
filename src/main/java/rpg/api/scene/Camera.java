@@ -1,10 +1,10 @@
 package rpg.api.scene;
 
-import rpg.api.Location;
+import rpg.api.Vec2D;
 
 /**
- * Camera returns the ingame top left screen coordinate.
+ * Camera stores the ingame coordinate of the top left corner of the screen.
  */
 public class Camera {
-	public static Location loc;
+	public static Vec2D location;
 }

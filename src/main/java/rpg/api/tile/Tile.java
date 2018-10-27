@@ -1,20 +1,31 @@
 package rpg.api.tile;
 
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 
-import rpg.api.Location;
+import rpg.api.Vec2D;
+import rpg.api.gfx.ISprite;
+import rpg.api.gfx.Sprite;
 
-public abstract class Tile {
-	protected Location loc;
+public abstract class Tile implements ISprite {
+	protected Vec2D		locaction;
+	protected Sprite	sprite;
 	
-	public Rectangle getCurrentImageBoundings() {
-		return new Rectangle(loc.getX(), loc.getY(), getLook().getWidth(), getLook().getHeight());
+	/**
+	 * Gets the location of this tile {@link Vec2D}
+	 * 
+	 * @return the location of this tile
+	 */
+	public Vec2D getLocation() {
+		return locaction;
 	}
 	
-	public abstract BufferedImage getLook();
+	@Override
+	public void draw(final Graphics2D g2d) {
+		draw(g2d, locaction);
+	}
 	
-	public Location getLocation() {
-		return loc;
+	@Override
+	public Sprite getSprite() {
+		return sprite;
 	}
 }
