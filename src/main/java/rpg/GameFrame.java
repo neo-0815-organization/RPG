@@ -5,7 +5,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import rpg.api.IDrawable;
+import rpg.api.gfx.IDrawable;
 
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1861206115390613807L;

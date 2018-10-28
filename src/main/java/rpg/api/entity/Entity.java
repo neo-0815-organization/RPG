@@ -1,31 +1,29 @@
 package rpg.api.entity;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.util.UUID;
 
-import rpg.RPG;
 import rpg.api.Direction;
-import rpg.api.IDrawable;
-import rpg.api.IImageable;
 import rpg.api.INameable;
-import rpg.api.Location;
 import rpg.api.Vec2D;
-import rpg.api.scene.Camera;
+import rpg.api.gfx.ISprite;
+import rpg.api.gfx.Sprite;
 
 /**
  * The abstract Class Entity.
  * 
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
-public abstract class Entity implements INameable, IDrawable, IImageable {
-	protected Location location;
-	protected Direction lookingDirection;
-	protected Vec2D velocity;
-	protected String displayName, imageName;
-	protected UUID uuid;
+public abstract class Entity implements INameable, ISprite {
+	protected Vec2D		location;
+	protected Sprite	sprite;
+	protected Direction	lookingDirection;
+	protected Vec2D		velocity;
+	protected String	displayName,
+			imageName;
+	protected UUID		uuid;
 	
-	public Entity(String name) {
+	public Entity(final String name) {
 		setDisplayName(name);
 	}
 	
@@ -33,12 +31,12 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *            the direction to accelerate in
+	 *        the {@link Direction} to accelerate in
 	 * @param force
-	 *            the accelerating amount of force
+	 *        the amount of accelerating force
 	 * @see #accelerate(Vec2D)
 	 */
-	public void accelerate(Direction direction, double force) {
+	public void accelerate(final Direction direction, final double force) {
 		accelerate(direction.getVector().scale(force));
 	}
 	
@@ -46,43 +44,19 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param acc
-	 *            the accelerating force
+	 *        the accelerating force {@link Vec2D}
+	 * @see #accelerate(Direction, double)
 	 */
-	public void accelerate(Vec2D acc) {
+	public void accelerate(final Vec2D acc) {
 		velocity = velocity.add(acc);
 	}
 	
 	/**
-	 * Gets the unlocalized name.
-	 * 
-	 * @see INameable#getUnlocalizedName()
-	 * @return the unlocalized name
-	 */
-	@Override
-	public String getUnlocalizedName() {
-		return displayName;
-	}
-	
-	/**
-	 * Sets the display name.
-	 * 
-	 * @see INameable#setDisplayName(String)
-	 * @param displayName
-	 *            the new display name
-	 */
-	@Override
-	public void setDisplayName(String displayName) {
-		if(!displayName.endsWith(".name")) displayName += ".name";
-		
-		this.displayName = displayName;
-	}
-	
-	/**
-	 * Gets the {@link Location}.
+	 * Gets the {@link Vec2D} representing the location of this entity.
 	 *
-	 * @return the {@link Location}
+	 * @return the {@link Vec2D} representing the location of this entity.
 	 */
-	public Location getLocation() {
+	public Vec2D getLocation() {
 		return location;
 	}
 	
@@ -114,40 +88,43 @@ public abstract class Entity implements INameable, IDrawable, IImageable {
 	}
 	
 	/**
-	 * Gets the unique id.
+	 * Gets the {@link UUID}.
 	 *
-	 * @return the unique id
+	 * @return the {@link UUID}
 	 */
 	public UUID getUniqueId() {
 		return uuid;
 	}
 	
 	@Override
-	public void setImageName(String name) {
-		imageName = name;
+	public String getUnlocalizedName() {
+		return displayName;
 	}
 	
 	@Override
-	public String getImageName() {
-		return imageName;
-	}
-	
-	@Override
-	public String getDirectoryName() {
-		return "entity";
-	}
-	
-	@Override
-	public void draw(Graphics2D g2d) {
-		final Rectangle screen = new Rectangle(Camera.loc.getX(), Camera.loc.getY(), RPG.SCREEN_WIDTH, RPG.SCREEN_HEIGHT);
+	public void setDisplayName(String displayName) {
+		if(!displayName.endsWith(".name")) displayName += ".name";
 		
-		if(screen.intersects(getCurrentImageBoundings())) g2d.drawImage(getImage(), location.getX() - Camera.loc.getX(), location.getY() - Camera.loc.getY(), null);
+		this.displayName = displayName;
 	}
 	
-	public Rectangle getCurrentImageBoundings() {
-		return new Rectangle(location.getX(), location.getY(), 16, 16);
+	@Override
+	public Sprite getSprite() {
+		return sprite;
 	}
 	
+	@Override
+	public void draw(final Graphics2D g2d) {
+		draw(g2d, location);
+	}
+	
+	/**
+	 * Returns a human readable representation of this {@link Entity} looking like
+	 * Entity@hash[x, y]
+	 * 
+	 * @return the textual representation of this {@link Entity}
+	 * @see Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return super.toString() + "[uuid=" + uuid + ", displayName=" + displayName + "]";

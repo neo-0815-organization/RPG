@@ -6,10 +6,12 @@ import rpg.api.scene.GameField;
  * The main class of this project.
  */
 public class RPG {
-	public static final int SCREEN_WIDTH = 1680, SCREEN_HEIGHT = 1050;
-	public static GameFrame gui;
+	public static final int	SCREEN_WIDTH	= 1680,
+			SCREEN_HEIGHT = 1050,
+			TILE_SIZE = 32;
+	public static GameFrame	gui;
 	
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		init();
 		GameField gf = new GameField();
 		gf.startUpdating();
