@@ -15,6 +15,9 @@ public class Background implements IImage {
 	private BufferedImage	background;
 	private ArrayList<Tile>	tiles;
 	
+	public Background() {
+		tiles = new ArrayList<>();
+	}
 	@Override
 	public void draw(final Graphics2D g2d) {
 		draw(g2d, Vec2D.ORIGIN);

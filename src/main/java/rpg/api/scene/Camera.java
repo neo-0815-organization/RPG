@@ -10,6 +10,6 @@ import rpg.api.Vec2D;
  * height of the view.
  */
 public class Camera {
-	public static Vec2D		location;
+	public static Vec2D		location = Vec2D.ORIGIN;
 	public static Dimension	frameSize	= Toolkit.getDefaultToolkit().getScreenSize();
 }
