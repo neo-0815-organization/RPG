@@ -5,10 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Encapsulates multiple {@link Frame}s in one class
- * 
- * @author tludwig
- *         27.10.2018
+ * Encapsulates multiple {@link Frame}s in one class.
+ *
+ * @author Tim Ludwig
  */
 public class Animation {
 	private final String	animationName;
@@ -25,11 +24,11 @@ public class Animation {
 	}
 	
 	/**
-	 * Loads the {@link BufferedImage}s in the {@link LinkedList} frames into this
-	 * {@link Animation}
-	 * 
+	 * Loads the {@link BufferedImage}s in the {@link LinkedList} 'frames' into this
+	 * {@link Animation}.
+	 *
 	 * @param frames
-	 *        the {@link LinkedList} to load
+	 *     the {@link LinkedList} to load
 	 */
 	@SuppressWarnings("null")
 	public void loadFramesFromList(final LinkedList<BufferedImage> frames) {
@@ -47,12 +46,12 @@ public class Animation {
 			currentFrame = frameToAdd;
 		}
 		
-		animationEnd.setNextFrame(currentFrame);
+		animationEnd.setNextFrame(frameToAdd);
 	}
 	
 	/**
-	 * Gets the height of every frame in this {@link Animation}
-	 * 
+	 * Gets the height of every frame in this {@link Animation}.
+	 *
 	 * @return the frame height
 	 */
 	public int getFrameHeight() {
@@ -60,8 +59,8 @@ public class Animation {
 	}
 	
 	/**
-	 * Gets the width of every frame in this {@link Animation}
-	 * 
+	 * Gets the width of every frame in this {@link Animation}.
+	 *
 	 * @return the frame width
 	 */
 	public int getFrameWidth() {
@@ -69,8 +68,8 @@ public class Animation {
 	}
 	
 	/**
-	 * Gets the name of this {@link Animation}
-	 * 
+	 * Gets the name of this {@link Animation}.
+	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -78,8 +77,8 @@ public class Animation {
 	}
 	
 	/**
-	 * Gets the current frame of this {@link Animation}
-	 * 
+	 * Gets the current frame of this {@link Animation}.
+	 *
 	 * @return the current frame
 	 */
 	public BufferedImage currentFrame() {
@@ -87,7 +86,7 @@ public class Animation {
 	}
 	
 	/**
-	 * Skips to the next {@link Frame} of this {@link Animation}
+	 * Skips to the next {@link Frame} of this {@link Animation}.
 	 */
 	public void nextFrame() {
 		currentFrame = currentFrame.getNextFrame();
@@ -95,9 +94,9 @@ public class Animation {
 	
 	/**
 	 * Represents one frame in an {@link Animation}
-	 * 
-	 * @author tludwig
-	 *         27.10.2018
+	 * used to chain multiple frames together.
+	 *
+	 * @author Tim Ludwig
 	 */
 	private class Frame {
 		private final BufferedImage	frame;
@@ -107,14 +106,31 @@ public class Animation {
 			this.frame = frame;
 		}
 		
+		/**
+		 * Sets the next {@link Frame} in the chain.
+		 *
+		 * @param nextFrame
+		 *     the next {@link Frame}
+		 */
 		public void setNextFrame(final Frame nextFrame) {
 			this.nextFrame = nextFrame;
 		}
 		
+		/**
+		 * Gets the next {@link Frame} in the chain.
+		 *
+		 * @return the next {@link Frame}
+		 */
 		public Frame getNextFrame() {
 			return nextFrame;
 		}
 		
+		/**
+		 * Gets the {@link BufferedImage} representing this frame in the
+		 * {@link Animation}.
+		 *
+		 * @return the {@link BufferedImage} representing this frame
+		 */
 		public BufferedImage getFrame() {
 			return frame;
 		}

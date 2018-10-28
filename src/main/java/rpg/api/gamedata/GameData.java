@@ -17,11 +17,20 @@ import rpg.api.Vec2D;
 import rpg.api.entity.Entity;
 import rpg.api.packethandler.ByteBuffer;
 
+/**
+ * The class GameData, used to save and load data about the game into/from a
+ * {@link File}.
+ *
+ * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer
+ */
 public class GameData {
-	private final File file;
-	private final ByteBuffer buffer;
-	private HashMap<String, Object> data;
+	private final File				file;
+	private final ByteBuffer		buffer;
+	private HashMap<String, Object>	data;
 	
+	/**
+	 * Constructor of the class {@link GameData}.
+	 */
 	public GameData(final String path) {
 		file = new File(getClass().getResource("/").getFile() + "/" + path);
 		
@@ -30,7 +39,7 @@ public class GameData {
 			
 			try {
 				file.createNewFile();
-			}catch(final IOException e) {
+			} catch(final IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -39,18 +48,45 @@ public class GameData {
 		data = new HashMap<>();
 	}
 	
+	/**
+	 * Sets the entry corresponding to the key.
+	 *
+	 * @param key
+	 *     the key corresponding to the value to change
+	 * @param value
+	 *     the value to set
+	 */
 	public void set(final String key, final Object value) {
 		data.put(key, value);
 	}
 	
+	/**
+	 * Gets the corresponding value of this key.
+	 *
+	 * @param key
+	 *     the key to query the value from
+	 * @return the value corresponding to this key
+	 */
 	public Object get(final String key) {
 		return data.get(key);
 	}
 	
+	/**
+	 * Checks if this key has a corresponding value.
+	 *
+	 * @return {@code true} if this key corresponds to a valuehas a corresponding
+	 * value
+	 */
 	public boolean contains(final String key) {
 		return data.containsKey(key);
 	}
 	
+	/**
+	 * Loads the data from the {@link File} corresponding to this {@link GameData}.
+	 *
+	 * @throws IOException
+	 *     if I/O error occures
+	 */
 	@SuppressWarnings("unchecked")
 	public void load() throws IOException {
 		final FileInputStream in = new FileInputStream(file);
@@ -67,6 +103,12 @@ public class GameData {
 		in.close();
 	}
 	
+	/**
+	 * Saves the data to the {@link File} corresponding to this {@link GameData}.
+	 *
+	 * @throws IOException
+	 *     if I/O error occures
+	 */
 	public void save() throws IOException {
 		final FileOutputStream out = new FileOutputStream(file);
 		
@@ -81,6 +123,12 @@ public class GameData {
 		out.close();
 	}
 	
+	/**
+	 * Writes the {@link Object} obj to the {@link ByteBuffer}.
+	 *
+	 * @param obj
+	 *     the {@link Object} to write
+	 */
 	protected void write(final Object obj) {
 		if(obj instanceof Map) {
 			buffer.write(MAP_IDENTIFIER);
@@ -91,69 +139,74 @@ public class GameData {
 				write(key);
 				write(m.get(key));
 			}
-		}else if(obj instanceof Boolean) {
+		} else if(obj instanceof Boolean) {
 			buffer.write(BOOLEAN_IDENTIFIER);
 			
 			buffer.writeBoolean((boolean) obj);
-		}else if(obj instanceof Byte) {
+		} else if(obj instanceof Byte) {
 			buffer.write(BYTE_IDENTIFIER);
 			
 			buffer.write((byte) obj);
-		}else if(obj instanceof Short) {
+		} else if(obj instanceof Short) {
 			buffer.write(SHORT_IDENTIFIER);
 			
 			buffer.writeShort((short) obj);
-		}else if(obj instanceof Integer) {
+		} else if(obj instanceof Integer) {
 			buffer.write(INT_IDENTIFIER);
 			
 			buffer.writeInt((int) obj);
-		}else if(obj instanceof Long) {
+		} else if(obj instanceof Long) {
 			buffer.write(LONG_IDENTIFIER);
 			
 			buffer.writeLong((long) obj);
-		}else if(obj instanceof Float) {
+		} else if(obj instanceof Float) {
 			buffer.write(FLOAT_IDENTIFIER);
 			
 			buffer.writeFloat((float) obj);
-		}else if(obj instanceof Double) {
+		} else if(obj instanceof Double) {
 			buffer.write(DOUBLE_IDENTIFIER);
 			
 			buffer.writeDouble((double) obj);
-		}else if(obj instanceof Character) {
+		} else if(obj instanceof Character) {
 			buffer.write(CHAR_IDENTIFIER);
 			
 			buffer.writeChar((char) obj);
-		}else if(obj instanceof String) {
+		} else if(obj instanceof String) {
 			buffer.write(STRING_IDENTIFIER);
 			
 			buffer.writeString((String) obj);
-		}else if(obj instanceof List) {
+		} else if(obj instanceof List) {
 			buffer.write(LIST_IDENTIFIER);
 			
 			final List<?> l = (List<?>) obj;
 			buffer.writeInt(l.size());
 			for(final Object o : l)
 				write(o);
-		}else if(obj instanceof Direction) {
+		} else if(obj instanceof Direction) {
 			buffer.write(DIRECTION_IDENTIFIER);
 			
 			buffer.write(((Direction) obj).getId());
-		}else if(obj instanceof Vec2D) {
+		} else if(obj instanceof Vec2D) {
 			buffer.write(VEC2D_IDENTIFIER);
 			
 			final Vec2D v = (Vec2D) obj;
 			buffer.writeDouble(v.getX().getValueTiles());
 			buffer.writeDouble(v.getY().getValueTiles());
-		}else if(obj instanceof UUID) {
+		} else if(obj instanceof UUID) {
 			buffer.write(UUID_IDENTIFIER);
 			
 			buffer.writeString(((UUID) obj).toString(), false);
-		}else if(obj instanceof Entity) {
+		} else if(obj instanceof Entity) {
 			buffer.write(ENTITY_IDENTIFIER);;
 			// TODO write Entity
 		}
 	}
 	
+	/**
+	 * Reads the next value stored from the {@link ByteBuffer}
+	 *
+	 * @return the {@link Object} read
+	 */
 	protected Object read() {
 		switch(buffer.read()) {
 			case MAP_IDENTIFIER:
@@ -203,6 +256,12 @@ public class GameData {
 		return null;
 	}
 	
+	/**
+	 * Gets the {@link Map} of keys and values currently stored in this
+	 * {@link GameData}.
+	 *
+	 * @return the data {@link Map}
+	 */
 	public Map<String, Object> getData() {
 		return Collections.unmodifiableMap(data);
 	}
@@ -225,4 +284,5 @@ public class GameData {
 			VEC2D_IDENTIFIER = 12,
 			UUID_IDENTIFIER = 13,
 			ENTITY_IDENTIFIER = 14;
+	// @formatter:on
 }

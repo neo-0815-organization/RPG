@@ -6,36 +6,44 @@ import java.awt.image.BufferedImage;
 import rpg.api.Vec2D;
 import rpg.api.scene.Camera;
 
+/**
+ * This interface represents every IDrawable that has to draw a
+ * {@link BufferedImage}.
+ *
+ * @author Tim Ludwig
+ */
 public interface IImage extends IDrawable {
-	public BufferedImage getImage();
+	BufferedImage getImage();
 	
 	/**
-	 * Gets the width of the {@link BufferedImage} this interface represents
-	 * 
+	 * Gets the width of the {@link BufferedImage} which this interface is
+	 * representing.
+	 *
 	 * @return the width of the {@link BufferedImage}
 	 */
-	public default int getWidth() {
+	default int getWidth() {
 		return getImage().getWidth();
 	}
 	
 	/**
-	 * Gets the height of the {@link BufferedImage} this interface represents
-	 * 
+	 * Gets the height of the {@link BufferedImage} which this interface is
+	 * representing.
+	 *
 	 * @return the height of the {@link BufferedImage}
 	 */
-	public default int getHeight() {
+	default int getHeight() {
 		return getImage().getHeight();
 	}
 	
 	/**
-	 * Draws the {@link BufferedImage} this interface represents
-	 * 
+	 * Draws the {@link BufferedImage} which this interface is representing.
+	 *
 	 * @param g2d
-	 *        the {@link Graphics2D} object to draw on
+	 *     the {@link Graphics2D} object to draw on
 	 * @param location
-	 *        the location to draw at
+	 *     the location {@link Vec2D} to draw at
 	 */
-	public default void draw(final Graphics2D g2d, final Vec2D location) {
+	default void draw(final Graphics2D g2d, final Vec2D location) {
 		final int x = location.getX().getValuePixel(),
 				y = location.getY().getValuePixel(),
 				camX = Camera.location.getX().getValuePixel(),

@@ -20,7 +20,7 @@ public interface INameable {
 	 * Sets the display name.
 	 *
 	 * @param displayName
-	 *            the new display name
+	 *     the new display name
 	 */
 	public void setDisplayName(String displayName);
 	

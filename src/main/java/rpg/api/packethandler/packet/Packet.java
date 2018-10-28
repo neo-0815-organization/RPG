@@ -4,19 +4,24 @@ import java.util.HashMap;
 
 import rpg.api.packethandler.ByteBuffer;
 
+/**
+ * The abstract class Packet.
+ *
+ * @author Neo Hornberger
+ */
 public abstract class Packet {
 	
 	/**
 	 * The id of this packet.
 	 *
-	 * @return the int
+	 * @return the id
 	 */
 	public abstract int packetId();
 	
 	/**
-	 * The phase of this packet.
+	 * The phase of communcation to which this {@link Packet} correspondes.
 	 *
-	 * @return the int
+	 * @return the phase
 	 */
 	public abstract int packetPhase();
 	
@@ -24,7 +29,7 @@ public abstract class Packet {
 	 * Reads data from the {@link ByteBuffer} 'buf'.
 	 *
 	 * @param buf
-	 *                - the {@link ByteBuffer}
+	 *     the {@link ByteBuffer}
 	 */
 	public abstract void fromBuffer(ByteBuffer buf);
 	
@@ -32,7 +37,7 @@ public abstract class Packet {
 	 * Writes data to the {@link ByteBuffer} 'buf'.
 	 *
 	 * @param buf
-	 *                - the {@link ByteBuffer}
+	 *     the {@link ByteBuffer}
 	 */
 	public abstract void toBuffer(ByteBuffer buf);
 	
@@ -40,14 +45,15 @@ public abstract class Packet {
 	 * Inits this packet with {@link Object}[] as arguments.
 	 *
 	 * @param objects
-	 *                    - the {@link Object}[]
+	 *     the arguments
 	 */
-	public void init(Object... objects) {}
+	public void init(final Object... objects) {}
 	
 	/**
-	 * Returns a {@link HashMap} with strings as keys and associated objects as values.
+	 * Returns a {@link HashMap} with {@link String}s as keys and associated
+	 * {@link Object}s as values.
 	 *
-	 * @return the {@link HashMap}<{@link String}, {@link Object}>
+	 * @return the {@link HashMap} values
 	 */
 	public HashMap<String, Object> values() {
 		final HashMap<String, Object> fields = new HashMap<>();
@@ -58,17 +64,19 @@ public abstract class Packet {
 	}
 	
 	/**
-	 * Returns a {@link HashMap} with strings as keys and associated objects as values.
+	 * Returns a {@link HashMap} with {@link String}s as keys and associated
+	 * {@link Object}s as values.
 	 *
 	 * @param fields
-	 *                   - the {@link HashMap<String,Object>}
+	 *     the {@link HashMap} which will contain the values
 	 */
-	public void values(HashMap<String, Object> fields) {}
+	public void values(final HashMap<String, Object> fields) {}
 	
 	/**
-	 * Gets the response {@link Packet} (can be {@code null} if no response packet is defined).
+	 * Gets the response {@link Packet}.
+	 * {@code null} if no response packet is defined.
 	 *
-	 * @return the {@link Packet}
+	 * @return the response {@link Packet}
 	 */
 	public Packet response() {
 		return null;

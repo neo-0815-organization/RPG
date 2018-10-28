@@ -3,7 +3,7 @@ package rpg.api;
 import rpg.api.units.DistanceValue;
 
 /**
- * The Class Vec2D representing a two dimensional vector.
+ * The Class Vec2D represents a two dimensional vector.
  *
  * @author Tim Ludwig, Neo Hornberger
  */
@@ -18,11 +18,11 @@ public class Vec2D {
 	
 	/**
 	 * Creates a new {@link Vec2D} using the polar coordinate system.
-	 * 
+	 *
 	 * @param a
-	 *        the angle of the new {@link Vec2D}
+	 *     the angle of the new {@link Vec2D}
 	 * @param l
-	 *        the length of the new {@link Vec2D}
+	 *     the length of the new {@link Vec2D}
 	 */
 	public static Vec2D createAL(final double a, final double l) {
 		return new Vec2D(Math.cos(a) * l, Math.sin(a) * l);
@@ -30,11 +30,11 @@ public class Vec2D {
 	
 	/**
 	 * Creates a new {@link Vec2D} using the carthesian coordinate system.
-	 * 
+	 *
 	 * @param x
-	 *        the x component of the new {@link Vec2D}
+	 *     the x component of the new {@link Vec2D}
 	 * @param y
-	 *        the y component of the new {@link Vec2D}
+	 *     the y component of the new {@link Vec2D}
 	 */
 	public static Vec2D createXY(final double x, final double y) {
 		return new Vec2D(x, y);
@@ -42,11 +42,11 @@ public class Vec2D {
 	
 	/**
 	 * Creates a new {@link Vec2D} using the carthesian coordinate system.
-	 * 
+	 *
 	 * @param x
-	 *        the x component of the new {@link Vec2D}
+	 *     the x component of the new {@link Vec2D}
 	 * @param y
-	 *        the y component of the new {@link Vec2D}
+	 *     the y component of the new {@link Vec2D}
 	 */
 	private Vec2D(final double x, final double y) {
 		this.x = x;
@@ -60,7 +60,7 @@ public class Vec2D {
 	 * Calculates the sum of this {@link Vec2D} and the parameter.
 	 *
 	 * @param vec
-	 *        the {@link Vec2D} to add
+	 *     the {@link Vec2D} to add
 	 * @return the sum of this {@link Vec2D} and the parameter
 	 */
 	public Vec2D add(final Vec2D vec) {
@@ -71,7 +71,7 @@ public class Vec2D {
 	 * Calculates the difference of this {@link Vec2D} and the parameter.
 	 *
 	 * @param vec
-	 *        the {@link Vec2D} to subtract
+	 *     the {@link Vec2D} to subtract
 	 * @return the difference of this {@link Vec2D} and the parameter
 	 */
 	public Vec2D subtract(final Vec2D vec) {
@@ -82,7 +82,7 @@ public class Vec2D {
 	 * Scales this {@link Vec2D} by the parameter.
 	 *
 	 * @param d
-	 *        the value to scale with
+	 *     the value to scale with
 	 * @return the scaled version of this {@link Vec2D}
 	 */
 	public Vec2D scale(final double d) {
@@ -94,7 +94,7 @@ public class Vec2D {
 	 * German: Skalarprodukt
 	 *
 	 * @param vec
-	 *        the {@link Vec2D} to multiply with
+	 *     the {@link Vec2D} to multiply with
 	 * @return the dotproduct
 	 */
 	public double dotproduct(final Vec2D vec) {
@@ -140,7 +140,7 @@ public class Vec2D {
 	/**
 	 * Returns a human readable representation of this {@link Vec2D} looking like
 	 * Vec2D@hash[x, y]
-	 * 
+	 *
 	 * @return the textual representation of this {@link Vec2D}
 	 */
 	@Override
@@ -150,7 +150,7 @@ public class Vec2D {
 	
 	/**
 	 * Creates a clone of this {@link Vec2D}.
-	 * 
+	 *
 	 * @return the clone of {@link Vec2D}
 	 */
 	@Override

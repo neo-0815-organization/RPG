@@ -4,15 +4,17 @@ import rpg.api.eventhandling.EventType;
 
 /**
  * The Interface Event.
+ *
+ * @author Tim Ludiwg
  */
 public interface Event {
 	
 	/**
-	 * Gets the EventType of this Event.
+	 * Gets the {@link EventType} of this {@link Event}.
 	 *
-	 * @return the EventType of this Event
+	 * @return the {@link EventType} of this {@link Event}
 	 */
-	public default EventType getEventType() {
+	default EventType getEventType() {
 		return EventType.GENERAL_EVENT;
 	}
 }

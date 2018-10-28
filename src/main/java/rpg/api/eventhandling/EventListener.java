@@ -2,28 +2,28 @@ package rpg.api.eventhandling;
 
 import rpg.api.eventhandling.events.Event;
 
-// TODO: Auto-generated Javadoc
 /**
- * The listener interface for receiving events.
- * 
+ * The listener interface for receiving {@link Event}s.
+ *
  * @see Event
+ * @author Tim Ludwig
  */
 public interface EventListener {
 	
 	/**
-	 * Gets the EventType this EventListener is supposed to receive.
+	 * Gets the {@link EventType} this {@link EventListener} is supposed to receive.
 	 *
-	 * @return the EventType
+	 * @return the {@link EventType}
 	 */
-	public default EventType getEventType() {
+	default EventType getEventType() {
 		return EventType.GENERAL_EVENT;
 	}
 	
 	/**
-	 * The method to execute on receiving an Event.
+	 * The method to execute on receiving an {@link Event}.
 	 *
 	 * @param event
-	 *        the Event received
+	 *     the {@link Event} received
 	 */
-	public abstract void onEvent(final Event event);
+	void onEvent(final Event event);
 }

@@ -1,5 +1,10 @@
 package rpg.api.units;
 
+/**
+ * Sub-class of {@link Value} to convert between diffenernt units of rotation
+ *
+ * @author Tim Ludwig
+ */
 public class AngleValue extends Value {
 	private static final double		TURN_RADIAN_FACTOR	= 2 * Math.PI;
 	private static final double		TURN_DEGREE_FACTOR	= 360;
@@ -12,7 +17,7 @@ public class AngleValue extends Value {
 	/**
 	 * Gets the value stored in this {@link AngleValue} converted to turns
 	 * (proportion of a whole circle)
-	 * 
+	 *
 	 * @return the converted value
 	 */
 	public double getValueTurn() {
@@ -21,7 +26,7 @@ public class AngleValue extends Value {
 	
 	/**
 	 * Gets the value stored in this {@link AngleValue} converted to radians
-	 * 
+	 *
 	 * @return the converted value
 	 */
 	public double getValueRadian() {
@@ -30,7 +35,7 @@ public class AngleValue extends Value {
 	
 	/**
 	 * Gets the value stored in this {@link AngleValue} converted to degrees
-	 * 
+	 *
 	 * @return the converted value
 	 */
 	public double getValueDegree() {

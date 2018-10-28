@@ -9,15 +9,18 @@ import rpg.api.gfx.IImage;
 import rpg.api.tile.Tile;
 
 /**
- * Background class contains the background image and all {@link Tile}.
+ * Background class contains the background image and all {@link Tile}s.
+ *
+ * @author Erik Diers, Jan Unterhuber
  */
 public class Background implements IImage {
-	private BufferedImage	background;
-	private ArrayList<Tile>	tiles;
+	private BufferedImage			background;
+	private final ArrayList<Tile>	tiles;
 	
 	public Background() {
 		tiles = new ArrayList<>();
 	}
+	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		draw(g2d, Vec2D.ORIGIN);

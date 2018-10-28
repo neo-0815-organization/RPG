@@ -10,7 +10,7 @@ public class RPG {
 	
 	public static void main(final String[] args) {
 		init();
-		GameField gf = new GameField();
+		final GameField gf = new GameField();
 		gf.startUpdating();
 	}
 	

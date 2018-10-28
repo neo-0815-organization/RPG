@@ -1,6 +1,7 @@
 package rpg.api.gfx;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,10 +12,9 @@ import javax.imageio.ImageIO;
 import rpg.api.filereading.RPGFileReader;
 
 /**
- * Encapsulates multiple {@link Animation}s in one {@link Sprite}
- * 
- * @author tludwig
- *         27.10.2018
+ * Encapsulates multiple {@link Animation}s in one {@link Sprite}.
+ *
+ * @author Tim Ludwig
  */
 public class Sprite {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
@@ -33,10 +33,10 @@ public class Sprite {
 	}
 	
 	/**
-	 * Loads the {@link SpriteTheme}
-	 * 
+	 * Loads the {@link SpriteTheme}.
+	 *
 	 * @param theme
-	 *        the {@link SpriteTheme} to load
+	 *     the {@link SpriteTheme} to load
 	 */
 	public void loadTheme(final SpriteTheme theme) {
 		loadedTheme = theme;
@@ -50,7 +50,7 @@ public class Sprite {
 	}
 	
 	/**
-	 * Dumps all {@link Animation}s stored in this {@link Sprite}
+	 * Dumps all {@link Animation}s stored in this {@link Sprite}.
 	 */
 	public void dumpAllAnimations() {
 		currentAnimation = null;
@@ -59,10 +59,10 @@ public class Sprite {
 	}
 	
 	/**
-	 * Dumps one {@link Animation} stored in this {@link Sprite}
-	 * 
+	 * Dumps one {@link Animation} stored in this {@link Sprite}.
+	 *
 	 * @param animationName
-	 *        the name of the {@link Animation} to dump
+	 *     the name of the {@link Animation} to dump
 	 */
 	public void dumpAnimation(final String animationName) {
 		if(currentAnimation.getName() == animationName) currentAnimation = null;
@@ -71,18 +71,19 @@ public class Sprite {
 	}
 	
 	/**
-	 * Loads an {@link Animation}
-	 * 
+	 * Loads an {@link Animation}.
+	 *
 	 * @param animationName
-	 *        the name of the {@link Animation} to laod
+	 *     the name of the {@link Animation} to load
 	 * @param frameHeight
-	 *        the height of all frames in the {@link Animation}
+	 *     the height of all frames in the {@link Animation}
 	 * @throws IllegalArgumentException
-	 *         if the animation isn't found, or the frameHeight doesn't match the
-	 *         height of the file found
+	 *     if the animation isn't found, or the frameHeight doesn't match the
+	 *     height of the {@link File} found
 	 */
 	public void addAnimation(final String animationName, final int frameHeight) throws IllegalArgumentException {
 		BufferedImage animation;
+		
 		try {
 			animation = ImageIO.read(getClass().getResource(getPath() + "/" + animationName + ".png"));
 		} catch(final IOException ex) {
@@ -105,8 +106,8 @@ public class Sprite {
 	}
 	
 	/**
-	 * Gets the width of the current frame
-	 * 
+	 * Gets the width of the current frame.
+	 *
 	 * @return the width of the current frame
 	 * @see Animation#getFrameWidth()
 	 */
@@ -115,8 +116,8 @@ public class Sprite {
 	}
 	
 	/**
-	 * Gets the height of the current frame
-	 * 
+	 * Gets the height of the current frame.
+	 *
 	 * @return the height of the current frame
 	 * @see Animation#getFrameHeight()
 	 */
@@ -126,7 +127,7 @@ public class Sprite {
 	
 	/**
 	 * Skips the current {@link Animation} to the next frame.
-	 * 
+	 *
 	 * @see Animation#nextFrame()
 	 */
 	public void nextFrame() {
@@ -134,8 +135,8 @@ public class Sprite {
 	}
 	
 	/**
-	 * Gets the current frame
-	 * 
+	 * Gets the current frame.
+	 *
 	 * @return the current frame
 	 * @see Animation#currentFrame()
 	 */
@@ -144,28 +145,28 @@ public class Sprite {
 	}
 	
 	/**
-	 * Sets the current {@link Animation}
-	 * 
+	 * Sets the current {@link Animation}.
+	 *
 	 * @param animationName
-	 *        the name of the {@link Animation} to set
+	 *     the name of the {@link Animation} to set
 	 */
 	public void setAnimation(final String animationName) {
 		if(currentAnimation.getName() != animationName) currentAnimation = animations.get(animationName);
 	}
 	
 	/**
-	 * Gets the path corresponding to this {@link Sprite} and {@link SpriteTheme}
-	 * 
+	 * Gets the path corresponding to this {@link Sprite} and {@link SpriteTheme}.
+	 *
 	 * @return the path corresponding to the animations in the currently loaded
-	 *         {@link SpriteTheme}
+	 * {@link SpriteTheme}
 	 */
 	public String getPath() {
 		return loadedTheme.getPath() + "/" + getName();
 	}
 	
 	/**
-	 * Gets the name of this {@link Sprite}
-	 * 
+	 * Gets the name of this {@link Sprite}.
+	 *
 	 * @return the name of this {@link Sprite}
 	 */
 	public String getName() {

@@ -2,7 +2,7 @@ package rpg.api;
 
 /**
  * Enum representing the four main directions north west south and east.
- * 
+ *
  * @author Tim Ludwig
  */
 public enum Direction {
@@ -10,17 +10,24 @@ public enum Direction {
 	EAST(Vec2D.createAL(0, 1), 1),
 	SOUTH(Vec2D.createAL(1.5 * Math.PI, 1), 2),
 	WEST(Vec2D.createAL(Math.PI, 1), 3),
-  
+	
 	NONE(Vec2D.createXY(0, 0), -1);
 	
-	private Vec2D vec;
-	private byte id;
+	private Vec2D	vec;
+	private byte	id;
 	
 	private Direction(final Vec2D vec, final int id) {
 		this.vec = vec;
 		this.id = (byte) id;
 	}
 	
+	/**
+	 * Gets the {@link Direction} corresponding to the id 'id'.
+	 *
+	 * @param id
+	 *     the id of the {@link Direction} to return
+	 * @return the {@link Direction} corresponding to the id 'id'
+	 */
 	public static Direction getDirectionById(final byte id) {
 		for(final Direction d : values())
 			if(d.id == id) return d;
@@ -30,13 +37,18 @@ public enum Direction {
 	
 	/**
 	 * Returns the {@link Vec2D} pointing in this {@link Direction}.
-	 * 
+	 *
 	 * @return the {@link Vec2D} pointing in this {@link Direction}
 	 */
 	public Vec2D getVector() {
 		return vec.clone();
 	}
 	
+	/**
+	 * Gets the id of this {@link Direction}.
+	 *
+	 * @return the id of this {@link Direction}
+	 */
 	public byte getId() {
 		return id;
 	}

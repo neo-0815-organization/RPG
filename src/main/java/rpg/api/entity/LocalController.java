@@ -1,35 +1,13 @@
 package rpg.api.entity;
 
-import java.util.UUID;
-
-import rpg.api.Direction;
-import rpg.api.Vec2D;
-
+/**
+ * The class LocalController used to control an {@link Entity} locally.
+ */
 public class LocalController implements Controller {
 	private Entity entity;
 	
 	@Override
-	public void setDisplayName(final String displayName) {
-		entity.displayName = displayName;
-	}
-	
-	@Override
-	public void setLocation(final Vec2D location) {
-		entity.location = location;
-	}
-	
-	@Override
-	public void setLookingDirection(final Direction direction) {
-		entity.lookingDirection = direction;
-	}
-	
-	@Override
-	public void setVelocity(final Vec2D velocity) {
-		entity.velocity = velocity;
-	}
-	
-	@Override
-	public void setUniqueId(final UUID uuid) {
-		entity.uuid = uuid;
+	public Entity getEntity() {
+		return entity;
 	}
 }

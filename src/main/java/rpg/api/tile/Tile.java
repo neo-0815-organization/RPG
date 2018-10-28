@@ -6,15 +6,21 @@ import rpg.api.Vec2D;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 
+/**
+ * The abstract class Tile represents everything a player can interact with
+ * which is not an {@link Entity}.
+ *
+ * @author Tim Ludwig, Erik Diers
+ */
 public abstract class Tile implements ISprite {
 	protected Vec2D		locaction;
 	protected Sprite	sprite;
-  protected Hitbox hbox;
+	protected Hitbox	hbox;
 	
 	/**
-	 * Gets the location of this tile {@link Vec2D}
-	 * 
-	 * @return the location of this tile
+	 * Gets the location {@link Vec2D} of this {@link Tile}.
+	 *
+	 * @return the location of this {@link Tile}
 	 */
 	public Vec2D getLocation() {
 		return locaction;
@@ -30,6 +36,11 @@ public abstract class Tile implements ISprite {
 		return sprite;
 	}
 	
+	/**
+	 * Gets the {@link Hitbox} of this {@link Tile}.
+	 *
+	 * @return the {@link Hitbox} of this {@link Tile}
+	 */
 	public Hitbox getHitbox() {
 		return hbox;
 	}

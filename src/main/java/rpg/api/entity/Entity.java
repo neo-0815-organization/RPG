@@ -11,7 +11,7 @@ import rpg.api.gfx.Sprite;
 
 /**
  * The abstract Class Entity.
- * 
+ *
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
 public abstract class Entity implements INameable, ISprite {
@@ -31,9 +31,9 @@ public abstract class Entity implements INameable, ISprite {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *        the {@link Direction} to accelerate in
+	 *     the {@link Direction} to accelerate in
 	 * @param force
-	 *        the amount of accelerating force
+	 *     the amount of accelerating force
 	 * @see #accelerate(Vec2D)
 	 */
 	public void accelerate(final Direction direction, final double force) {
@@ -44,53 +44,52 @@ public abstract class Entity implements INameable, ISprite {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param acc
-	 *        the accelerating force {@link Vec2D}
-	 * @see #accelerate(Direction, double)
+	 *     the accelerating force {@link Vec2D}
 	 */
 	public void accelerate(final Vec2D acc) {
 		velocity = velocity.add(acc);
 	}
 	
 	/**
-	 * Gets the {@link Vec2D} representing the location of this entity.
+	 * Gets the {@link Vec2D} representing the location of this {@link Entity}.
 	 *
-	 * @return the {@link Vec2D} representing the location of this entity.
+	 * @return the {@link Vec2D} representing the location of this {@link Entity}
 	 */
 	public Vec2D getLocation() {
 		return location;
 	}
 	
 	/**
-	 * Gets the looking {@link Direction}.
+	 * Gets the looking {@link Direction} of this {@link Entity}.
 	 *
-	 * @return the looking {@link Direction}
+	 * @return the looking {@link Direction} of this {@link Entity}
 	 */
 	public Direction getLookingDirection() {
 		return lookingDirection;
 	}
 	
 	/**
-	 * Gets the looking {@link Vec2D}.
+	 * Gets the looking {@link Vec2D} of this {@link Entity}.
 	 *
-	 * @return the looking {@link Vec2D}
+	 * @return the looking {@link Vec2D} of this {@link Entity}
 	 */
 	public Vec2D getLookingVector() {
 		return lookingDirection.getVector();
 	}
 	
 	/**
-	 * Gets the velocity {@link Vec2D}.
+	 * Gets the velocity {@link Vec2D} of this {@link Entity}.
 	 *
-	 * @return the velocity {@link Vec2D}
+	 * @return the velocity {@link Vec2D} of this {@link Entity}
 	 */
 	public Vec2D getVelocity() {
 		return velocity;
 	}
 	
 	/**
-	 * Gets the {@link UUID}.
+	 * Gets the {@link UUID} of this {@link Entity}.
 	 *
-	 * @return the {@link UUID}
+	 * @return the {@link UUID} of this {@link Entity}
 	 */
 	public UUID getUniqueId() {
 		return uuid;
@@ -120,8 +119,8 @@ public abstract class Entity implements INameable, ISprite {
 	
 	/**
 	 * Returns a human readable representation of this {@link Entity} looking like
-	 * Entity@hash[x, y]
-	 * 
+	 * Entity@hash[{@link UUID}, displayName].
+	 *
 	 * @return the textual representation of this {@link Entity}
 	 * @see Object#toString()
 	 */

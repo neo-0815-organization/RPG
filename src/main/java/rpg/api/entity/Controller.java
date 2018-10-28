@@ -5,49 +5,73 @@ import java.util.UUID;
 import rpg.api.Direction;
 import rpg.api.Vec2D;
 
+/**
+ * The interface controller used to control an {@link Entity}.
+ *
+ * @author Neo Hornberger, Tim Ludwig
+ */
 public interface Controller {
+	
+	/**
+	 * Gets the {@link Entity} corresponding to this {@link Controller}.
+	 *
+	 * @return the {@link Entity} corresponding to this {@link Controller}
+	 */
+	Entity getEntity();
+	
 	/**
 	 * Sets the display name of the {@link Entity} corresponding to this
-	 * {@link Controller}
-	 * 
+	 * {@link Controller}.
+	 *
 	 * @param displayName
-	 *        the displayName to set
+	 *     the displayName to set
 	 */
-	public void setDisplayName(String displayName);
+	default void setDisplayName(final String displayName) {
+		getEntity().displayName = displayName;
+	}
 	
 	/**
 	 * Sets the location {@link Vec2D} of the {@link Entity} corresponding to this
-	 * {@link Controller}
-	 * 
+	 * {@link Controller}.
+	 *
 	 * @param location
-	 *        the Location to set
+	 *     the location {@link Vec2D} to set
 	 */
-	public void setLocation(Vec2D location);
+	default void setLocation(final Vec2D location) {
+		getEntity().location = location;
+	}
 	
 	/**
-	 * Sets the looking direction of the {@link Entity} corresponding to this
-	 * {@link Controller}
-	 * 
+	 * Sets the looking {@link Direction} of the {@link Entity} corresponding to
+	 * this
+	 * {@link Controller}.
+	 *
 	 * @param direction
-	 *        the {@link Direction} to set
+	 *     the {@link Direction} to set
 	 */
-	public void setLookingDirection(Direction direction);
+	default void setLookingDirection(final Direction direction) {
+		getEntity().lookingDirection = direction;
+	}
 	
 	/**
 	 * Sets the velocity {@link Vec2D} of the {@link Entity} corresponding to this
-	 * {@link Controller}
-	 * 
+	 * {@link Controller}.
+	 *
 	 * @param velocity
-	 *        the velocity {@link Vec2D} to set
+	 *     the velocity {@link Vec2D} to set
 	 */
-	public void setVelocity(Vec2D velocity);
+	default void setVelocity(final Vec2D velocity) {
+		getEntity().velocity = velocity;
+	}
 	
 	/**
 	 * Sets the {@link UUID} of the {@link Entity} corresponding to this
-	 * {@link Controller}
-	 * 
+	 * {@link Controller}.
+	 *
 	 * @param uuid
-	 *        the {@link UUID} to set
+	 *     the {@link UUID} to set
 	 */
-	public void setUniqueId(UUID uuid);
+	default void setUniqueId(final UUID uuid) {
+		getEntity().uuid = uuid;
+	}
 }
