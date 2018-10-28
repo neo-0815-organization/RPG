@@ -6,11 +6,11 @@ package rpg.api;
  * @author Tim Ludwig
  */
 public enum Direction {
-	NORTH(Vec2D.createAL(AngleUnit.TURN.convert(0.25, AngleUnit.RADIAN), 1), 0),
-	EAST(Vec2D.createAL(AngleUnit.TURN.convert(0, AngleUnit.RADIAN), 1), 1),
-	SOUTH(Vec2D.createAL(AngleUnit.TURN.convert(0.75, AngleUnit.RADIAN), 1), 2),
-	WEST(Vec2D.createAL(AngleUnit.TURN.convert(0.5, AngleUnit.RADIAN), 1), 3),
-	
+	NORTH(Vec2D.createAL(.5 * Math.PI, 1), 0),
+	EAST(Vec2D.createAL(0, 1), 1),
+	SOUTH(Vec2D.createAL(1.5 * Math.PI, 1), 2),
+	WEST(Vec2D.createAL(Math.PI, 1), 3),
+  
 	NONE(Vec2D.createXY(0, 0), -1);
 	
 	private Vec2D vec;
