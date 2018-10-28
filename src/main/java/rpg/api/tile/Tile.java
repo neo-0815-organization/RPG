@@ -9,6 +9,7 @@ import rpg.api.gfx.Sprite;
 public abstract class Tile implements ISprite {
 	protected Vec2D		locaction;
 	protected Sprite	sprite;
+  protected Hitbox hbox;
 	
 	/**
 	 * Gets the location of this tile {@link Vec2D}
@@ -27,5 +28,9 @@ public abstract class Tile implements ISprite {
 	@Override
 	public Sprite getSprite() {
 		return sprite;
+	}
+	
+	public Hitbox getHitbox() {
+		return hbox;
 	}
 }

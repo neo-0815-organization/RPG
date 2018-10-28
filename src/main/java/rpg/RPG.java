@@ -1,5 +1,7 @@
 package rpg;
 
+import rpg.api.scene.GameField;
+
 /**
  * The main class of this project.
  */
@@ -11,6 +13,8 @@ public class RPG {
 	
 	public static void main(final String[] args) {
 		init();
+		GameField gf = new GameField();
+		gf.startUpdating();
 	}
 	
 	/* This method should not be edited! Thanks! */
