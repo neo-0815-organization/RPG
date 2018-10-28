@@ -3,7 +3,6 @@ package rpg.api.gfx;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import rpg.RPG;
 import rpg.api.Vec2D;
 import rpg.api.scene.Camera;
 
@@ -43,8 +42,8 @@ public interface IImage extends IDrawable {
 				camY = Camera.location.getY().getValuePixel(),
 				w = getWidth(),
 				h = getHeight(),
-				camXW = camX + RPG.SCREEN_WIDTH,
-				camYH = camY + RPG.SCREEN_HEIGHT;
+				camXW = (int) (camX + Camera.frameSize.getWidth()),
+				camYH = (int) (camY + Camera.frameSize.getHeight());
 		
 		if((x < camX && camX < w || x < camXW && camXW < w) && (x < camY && camY < h || x < camYH && camYH < h)) g2d.drawImage(getImage(), x, y, null);
 	}
