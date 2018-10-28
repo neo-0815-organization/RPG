@@ -6,22 +6,21 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
- * A class to store bytes that will be send through an {@link OutputStream} and to read bytes from an {@link InputStream}.
+ * A class to store bytes that will be send through an {@link OutputStream} and
+ * to read bytes from an {@link InputStream}.
  */
 public class ByteBuffer {
 	private final ArrayList<Byte> bytes = new ArrayList<>();
 	
-	private int limit = -1,
-		writeCursor = 0,
-		readCursor = 0;
+	private int limit = -1, writeCursor = 0, readCursor = 0;
 	
 	public ByteBuffer() {}
 	
-	public ByteBuffer(byte[] bytes) {
+	public ByteBuffer(final byte[] bytes) {
 		write(bytes);
 	}
 	
-	public void write(byte b) throws IllegalStateException {
+	public void write(final byte b) throws IllegalStateException {
 		if(limit > -1 && writeCursor >= limit) throw new IllegalStateException("Reached limit of " + limit + " elements");
 		
 		bytes.add(b);
@@ -29,28 +28,28 @@ public class ByteBuffer {
 		writeCursor++;
 	}
 	
-	public void write(byte[] bytes) {
+	public void write(final byte[] bytes) {
 		for(final byte b : bytes)
 			write(b);
 	}
 	
-	public void writeInt(int i) {
+	public void writeInt(final int i) {
 		write((byte) (i >>> 24));
 		write((byte) (i >>> 16));
 		write((byte) (i >>> 8));
 		write((byte) i);
 	}
 	
-	public void writeChar(char c) {
+	public void writeChar(final char c) {
 		writeInt(c);
 	}
 	
-	public void writeShort(short s) {
+	public void writeShort(final short s) {
 		write((byte) (s >>> 8));
 		write((byte) s);
 	}
 	
-	public void writeLong(long l) {
+	public void writeLong(final long l) {
 		write((byte) (l >>> 56));
 		write((byte) (l >>> 48));
 		write((byte) (l >>> 40));
@@ -61,22 +60,26 @@ public class ByteBuffer {
 		write((byte) l);
 	}
 	
-	public void writeString(String s) {
-		writeInt(s.length());
+	public void writeString(final String s) {
+		writeString(s, true);
+	}
+	
+	public void writeString(final String s, final boolean writeLength) {
+		if(writeLength) writeInt(s.length());
 		
 		for(final char c : s.toCharArray())
 			writeChar(c);
 	}
 	
-	public void writeDouble(double d) {
+	public void writeDouble(final double d) {
 		writeLong(Double.doubleToRawLongBits(d));
 	}
 	
-	public void writeFloat(float f) {
+	public void writeFloat(final float f) {
 		writeInt(Float.floatToRawIntBits(f));
 	}
 	
-	public void writeBoolean(boolean b) {
+	public void writeBoolean(final boolean b) {
 		write((byte) (b ? 1 : 0));
 	}
 	
@@ -105,8 +108,11 @@ public class ByteBuffer {
 	}
 	
 	public String readString() {
+		return readString(readInt());
+	}
+	
+	public String readString(final int length) {
 		String s = "";
-		final int length = readInt();
 		
 		for(int i = 0; i < length; i++)
 			s += readChar();
@@ -122,8 +128,23 @@ public class ByteBuffer {
 		return Float.intBitsToFloat(readInt());
 	}
 	
+	public boolean readBoolean() {
+		return read() == 1;
+	}
+	
 	/**
-	 * Returns all non-written bytes of this {@link ByteBuffer} in form of a byte[].
+	 * Clears this {@link ByteBuffer} and sets both cursors to 0.
+	 */
+	public void clear() {
+		bytes.clear();
+		
+		writeCursor = 0;
+		readCursor = 0;
+	}
+	
+	/**
+	 * Returns all non-written bytes of this {@link ByteBuffer} in form of a
+	 * byte[].
 	 *
 	 * @return the {@link byte}[]
 	 */
@@ -137,30 +158,32 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Write all non-written bytes of this {@link ByteBuffer} to the {@link OutputStream} 'out'.
+	 * Write all non-written bytes of this {@link ByteBuffer} to the
+	 * {@link OutputStream} 'out'.
 	 *
-	 * @param  out
-	 *                         - the {@link OutputStream} to which it will write
-	 * @return             the current instance of this class
+	 * @param out
+	 *            - the {@link OutputStream} to which it will write
+	 * @return the current instance of this class
 	 * @throws IOException
-	 *                         if an I/O error occures
+	 *             if an I/O error occures
 	 */
-	public ByteBuffer writeToOutputStream(OutputStream out) throws IOException {
+	public ByteBuffer writeToOutputStream(final OutputStream out) throws IOException {
 		out.write(toByteArray());
 		
 		return this;
 	}
 	
 	/**
-	 * Read all bytes from the {@link InputStream} 'in' and store it in the current instance.
+	 * Read all bytes from the {@link InputStream} 'in' and store it in the
+	 * current instance.
 	 *
-	 * @param  in
-	 *                         - the {@link InputStream} from which it will read
-	 * @return             the current instance of this class
+	 * @param in
+	 *            - the {@link InputStream} from which it will read
+	 * @return the current instance of this class
 	 * @throws IOException
-	 *                         if an I/O error occurres.
+	 *             if an I/O error occurres.
 	 */
-	public ByteBuffer readFromInputStream(InputStream in) throws IOException {
+	public ByteBuffer readFromInputStream(final InputStream in) throws IOException {
 		while(in.available() > 0)
 			write((byte) in.read());
 		
@@ -171,7 +194,7 @@ public class ByteBuffer {
 		return limit;
 	}
 	
-	public ByteBuffer setLimit(int limit) {
+	public ByteBuffer setLimit(final int limit) {
 		if(bytes.size() <= limit) this.limit = limit;
 		
 		return this;
