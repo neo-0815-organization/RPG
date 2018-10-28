@@ -31,7 +31,7 @@ public enum Direction {
 	/**
 	 * Returns the {@link Vec2D} pointing in this {@link Direction}.
 	 * 
-	 * @return the {@link Vec2D} pointing int this {@link Direction}
+	 * @return the {@link Vec2D} pointing in this {@link Direction}
 	 */
 	public Vec2D getVector() {
 		return vec.clone();
@@ -40,7 +40,7 @@ public enum Direction {
 	public byte getId() {
 		return id;
 	}
-
+	
 	@Override
 	public String toString() {
 		return super.toString() + "[" + vec.getX() + ", " + vec.getY() + "]";

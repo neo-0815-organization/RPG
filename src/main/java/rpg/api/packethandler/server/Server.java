@@ -17,7 +17,7 @@ public abstract class Server extends PacketRegistry {
 	
 	protected final HashMap<Socket, ClientConnection> clients = new HashMap<>();
 	
-	public Server(int port) throws IOException {
+	public Server(final int port) throws IOException {
 		socket = new ServerSocket(port);
 		
 		acceptingThread = new Thread("Accepting-Thread -- " + socket.getLocalPort()) {
@@ -27,15 +27,15 @@ public abstract class Server extends PacketRegistry {
 				while(!isInterrupted())
 					try {
 						final Socket client = socket.accept();
-						
-						clients.put(client, new ClientConnection(INSTANCE, client));
+						final ClientConnection clientCon = new ClientConnection(INSTANCE, client);
 						
 						for(final Packet packet : getAllPackets())
-							clients.get(client).registerPacket(packet);
+							clientCon.registerPacket(packet);
 						
-						clients.get(client).startListening();
+						clientCon.startListening();
+						clientCon.sendPacket(clientCon.getPacket(-1, 0)); // TODO change to enum usage '(-1, 0)'
 						
-						clients.get(client).sendPacket(clients.get(client).getPacket(-1, 0));
+						clients.put(client, clientCon);
 					}catch(final IOException e) {
 						e.printStackTrace();
 					}
@@ -70,7 +70,7 @@ public abstract class Server extends PacketRegistry {
 	 * @throws IllegalArgumentException
 	 *             if 'client' hasn't an associated {@link ClientConnection}
 	 */
-	protected void sendPacket(Socket client, Packet packet) throws IOException, IllegalArgumentException {
+	protected void sendPacket(final Socket client, final Packet packet) throws IOException, IllegalArgumentException {
 		if(!clients.containsKey(client)) throw new IllegalArgumentException("This client is not connected to this server");
 		
 		clients.get(client).sendPacket(packet);
@@ -85,7 +85,7 @@ public abstract class Server extends PacketRegistry {
 	 *             if an I/O error occures
 	 * @see #sendPacket(Socket, Packet)
 	 */
-	protected void broadcastPacket(Packet packet) throws IOException {
+	protected void broadcastPacket(final Packet packet) throws IOException {
 		for(final Socket client : clients.keySet())
 			sendPacket(client, packet);
 	}
@@ -93,7 +93,7 @@ public abstract class Server extends PacketRegistry {
 	protected abstract void onPacketReceived(Socket client, Packet packet);
 	
 	@Override
-	public void registerPacket(Packet packet) {
+	public void registerPacket(final Packet packet) {
 		super.registerPacket(packet);
 		
 		for(final Socket client : clients.keySet())

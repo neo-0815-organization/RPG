@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ public class GameData {
 	private HashMap<String, Object> data;
 	
 	public GameData(final String path) {
-		file = new File(new File(getClass().getResource("/").getFile()), path);
+		file = new File(getClass().getResource("/").getFile() + "/" + path);
 		
 		if(!file.exists()) {
 			file.getParentFile().mkdirs();
@@ -58,7 +59,7 @@ public class GameData {
 		
 		in.read(fileMagicNumber);
 		
-		if(fileMagicNumber == MAGIC_NUMBER) {
+		if(Arrays.equals(fileMagicNumber, MAGIC_NUMBER)) {
 			buffer.clear();
 			
 			data = (HashMap<String, Object>) read();
@@ -215,22 +216,23 @@ public class GameData {
 		return Collections.unmodifiableMap(data);
 	}
 	
-	private static final byte MAP_IDENTIFIER = 0;
-	private static final byte BOOLEAN_IDENTIFIER = 1;
-	private static final byte BYTE_IDENTIFIER = 2;
-	private static final byte SHORT_IDENTIFIER = 3;
-	private static final byte INT_IDENTIFIER = 4;
-	private static final byte LONG_IDENTIFIER = 5;
-	private static final byte FLOAT_IDENTIFIER = 6;
-	private static final byte DOUBLE_IDENTIFIER = 7;
-	private static final byte CHAR_IDENTIFIER = 8;
-	private static final byte STRING_IDENTIFIER = 9;
-	private static final byte LIST_IDENTIFIER = 10;
-	private static final byte LOCATION_IDENTIFIER = 11;
-	private static final byte DIRECTION_IDENTIFIER = 12;
-	private static final byte VEC2D_IDENTIFIER = 13;
-	private static final byte UUID_IDENTIFIER = 14;
-	private static final byte ENTITY_IDENTIFIER = 15;
-	
 	private static final byte[] MAGIC_NUMBER = "\u0033\u2663\u0000\u05D0\u03C9\u0000\u0000\u0000\n".getBytes();
+	
+	// @formatter:off
+	private static final byte MAP_IDENTIFIER = 0,
+			BOOLEAN_IDENTIFIER = 1,
+			BYTE_IDENTIFIER = 2,
+			SHORT_IDENTIFIER = 3,
+			INT_IDENTIFIER = 4,
+			LONG_IDENTIFIER = 5,
+			FLOAT_IDENTIFIER = 6,
+			DOUBLE_IDENTIFIER = 7,
+			CHAR_IDENTIFIER = 8,
+			STRING_IDENTIFIER = 9,
+			LIST_IDENTIFIER = 10,
+			LOCATION_IDENTIFIER = 11,
+			DIRECTION_IDENTIFIER = 12,
+			VEC2D_IDENTIFIER = 13,
+			UUID_IDENTIFIER = 14,
+			ENTITY_IDENTIFIER = 15;
 }
