@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import rpg.api.Direction;
-import rpg.api.Location;
 import rpg.api.Vec2D;
 import rpg.api.entity.Entity;
 import rpg.api.packethandler.ByteBuffer;
@@ -135,12 +134,6 @@ public class GameData {
 			buffer.writeInt(l.size());
 			for(final Object o : l)
 				write(o);
-		}else if(obj instanceof Location) {
-			buffer.write(LOCATION_IDENTIFIER);
-			
-			final Location l = (Location) obj;
-			buffer.writeInt(l.getX());
-			buffer.writeInt(l.getY());
 		}else if(obj instanceof Direction) {
 			buffer.write(DIRECTION_IDENTIFIER);
 			
@@ -149,8 +142,8 @@ public class GameData {
 			buffer.write(VEC2D_IDENTIFIER);
 			
 			final Vec2D v = (Vec2D) obj;
-			buffer.writeDouble(v.getX());
-			buffer.writeDouble(v.getY());
+			buffer.writeDouble(v.getX().getValueTiles());
+			buffer.writeDouble(v.getY().getValueTiles());
 		}else if(obj instanceof UUID) {
 			buffer.write(UUID_IDENTIFIER);
 			
@@ -197,8 +190,6 @@ public class GameData {
 					l.add(read());
 				
 				return l;
-			case LOCATION_IDENTIFIER:
-				return new Location(buffer.readInt(), buffer.readInt());
 			case DIRECTION_IDENTIFIER:
 				return Direction.getDirectionById(buffer.read());
 			case VEC2D_IDENTIFIER:
@@ -230,9 +221,8 @@ public class GameData {
 			CHAR_IDENTIFIER = 8,
 			STRING_IDENTIFIER = 9,
 			LIST_IDENTIFIER = 10,
-			LOCATION_IDENTIFIER = 11,
-			DIRECTION_IDENTIFIER = 12,
-			VEC2D_IDENTIFIER = 13,
-			UUID_IDENTIFIER = 14,
-			ENTITY_IDENTIFIER = 15;
+			DIRECTION_IDENTIFIER = 11,
+			VEC2D_IDENTIFIER = 12,
+			UUID_IDENTIFIER = 13,
+			ENTITY_IDENTIFIER = 14;
 }
