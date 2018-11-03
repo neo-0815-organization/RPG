@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 import java.util.UUID;
 
 import rpg.api.Direction;
-import rpg.api.INameable;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
+import rpg.api.localization.INameable;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 

@@ -1,6 +1,4 @@
-package rpg.api;
-
-import rpg.api.localization.StringLocalizer;
+package rpg.api.localization;
 
 /**
  * The Interface INameable.
