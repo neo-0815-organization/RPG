@@ -2,27 +2,27 @@ package rpg.api.tile;
 
 import java.awt.Graphics2D;
 
-import rpg.api.Vec2D;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
+import rpg.api.vector.ModifiableVec2D;
 
 public abstract class Tile implements ISprite {
-	protected Vec2D		locaction;
-	protected Sprite	sprite;
-  protected Hitbox hbox;
+	protected ModifiableVec2D location;
+	protected Sprite sprite;
+	protected Hitbox hbox;
 	
 	/**
-	 * Gets the location of this tile {@link Vec2D}
+	 * Gets the location of this tile {@link ModifiableVec2D}
 	 * 
 	 * @return the location of this tile
 	 */
-	public Vec2D getLocation() {
-		return locaction;
+	public ModifiableVec2D getLocation() {
+		return location;
 	}
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
-		draw(g2d, locaction);
+		draw(g2d, location);
 	}
 	
 	@Override

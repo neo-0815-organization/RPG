@@ -5,9 +5,9 @@ import java.net.UnknownHostException;
 import java.util.UUID;
 
 import rpg.api.Direction;
-import rpg.api.Vec2D;
 import rpg.api.packethandler.client.Client;
 import rpg.api.packethandler.packet.Packet;
+import rpg.api.vector.ModifiableVec2D;
 
 public class OnlineController extends Client implements Controller {
 	private Entity entity;
@@ -22,7 +22,7 @@ public class OnlineController extends Client implements Controller {
 	}
 	
 	@Override
-	public void setLocation(final Vec2D location) {
+	public void setLocation(final ModifiableVec2D location) {
 		entity.location = location;
 	}
 	
@@ -32,7 +32,7 @@ public class OnlineController extends Client implements Controller {
 	}
 	
 	@Override
-	public void setVelocity(final Vec2D velocity) {
+	public void setVelocity(final ModifiableVec2D velocity) {
 		entity.velocity = velocity;
 	}
 	

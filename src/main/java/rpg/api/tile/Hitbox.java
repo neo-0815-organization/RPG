@@ -2,17 +2,17 @@ package rpg.api.tile;
 
 import java.awt.Polygon;
 
-import rpg.api.Vec2D;
+import rpg.api.vector.UnmodifiableVec2D;
 
 public class Hitbox {
 	private final int shape;
-	private final Vec2D loc;
+	private final UnmodifiableVec2D loc;
 	private Polygon realHitbox;
 	/*
 	 * shape=0 means Rectangle shape=1 means another shape etc.
 	 */
 	
-	public Hitbox(final int shape, final Vec2D loc, final int width, final int height) {
+	public Hitbox(final int shape, final UnmodifiableVec2D loc, final int width, final int height) {
 		this.shape = shape;
 		this.loc = loc;
 		

@@ -1,22 +1,25 @@
 package rpg.api;
 
+import rpg.api.vector.ModifiableVec2D;
+import rpg.api.vector.UnmodifiableVec2D;
+
 /**
  * Enum representing the four main directions north west south and east.
  * 
  * @author Tim Ludwig
  */
 public enum Direction {
-	NORTH(Vec2D.createAL(.5 * Math.PI, 1), 0),
-	EAST(Vec2D.createAL(0, 1), 1),
-	SOUTH(Vec2D.createAL(1.5 * Math.PI, 1), 2),
-	WEST(Vec2D.createAL(Math.PI, 1), 3),
-  
-	NONE(Vec2D.createXY(0, 0), -1);
+	NORTH(UnmodifiableVec2D.createAL(.5 * Math.PI, 1), 0),
+	EAST(UnmodifiableVec2D.createAL(0, 1), 1),
+	SOUTH(UnmodifiableVec2D.createAL(1.5 * Math.PI, 1), 2),
+	WEST(UnmodifiableVec2D.createAL(Math.PI, 1), 3),
 	
-	private Vec2D vec;
+	NONE(UnmodifiableVec2D.createXY(0, 0), -1);
+	
+	private UnmodifiableVec2D vec;
 	private byte id;
 	
-	private Direction(final Vec2D vec, final int id) {
+	private Direction(final UnmodifiableVec2D vec, final int id) {
 		this.vec = vec;
 		this.id = (byte) id;
 	}
@@ -29,12 +32,12 @@ public enum Direction {
 	}
 	
 	/**
-	 * Returns the {@link Vec2D} pointing in this {@link Direction}.
+	 * Returns the {@link ModifiableVec2D} pointing in this {@link Direction}.
 	 * 
-	 * @return the {@link Vec2D} pointing in this {@link Direction}
+	 * @return the {@link ModifiableVec2D} pointing in this {@link Direction}
 	 */
-	public Vec2D getVector() {
-		return vec.clone();
+	public ModifiableVec2D getVector() {
+		return vec.toModifiable();
 	}
 	
 	public byte getId() {

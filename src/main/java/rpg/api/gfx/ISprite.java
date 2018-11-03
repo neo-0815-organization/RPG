@@ -2,8 +2,8 @@ package rpg.api.gfx;
 
 import java.awt.Graphics2D;
 
-import rpg.api.Vec2D;
 import rpg.api.scene.Camera;
+import rpg.api.vector.Vec2D;
 
 public interface ISprite extends IDrawable {
 	public Sprite getSprite();
@@ -32,19 +32,12 @@ public interface ISprite extends IDrawable {
 	 * Draws the {@link Sprite} this interface represents
 	 * 
 	 * @param g2d
-	 *        the {@link Graphics2D} object to draw on
+	 *            the {@link Graphics2D} object to draw on
 	 * @param location
-	 *        the location to draw at
+	 *            the location to draw at
 	 */
-	public default void draw(final Graphics2D g2d, final Vec2D location) {
-		final int x = location.getX().getValuePixel(),
-				y = location.getY().getValuePixel(),
-				camX = Camera.location.getX().getValuePixel(),
-				camY = Camera.location.getY().getValuePixel(),
-				w = getWidth(),
-				h = getHeight(),
-				camXW = camX + (int) Camera.frameSize.getWidth(),
-				camYH = camY + (int) Camera.frameSize.getHeight();
+	public default void draw(final Graphics2D g2d, final Vec2D<?> location) {
+		final int x = location.getX().getValuePixel(), y = location.getY().getValuePixel(), camX = Camera.location.getX().getValuePixel(), camY = Camera.location.getY().getValuePixel(), w = getWidth(), h = getHeight(), camXW = camX + (int) Camera.frameSize.getWidth(), camYH = camY + (int) Camera.frameSize.getHeight();
 		
 		if((x < camX && camX < w || x < camXW && camXW < w) && (x < camY && camY < h || x < camYH && camYH < h)) g2d.drawImage(getSprite().getCurrentAnimationFrame(), x, y, null);
 	}
