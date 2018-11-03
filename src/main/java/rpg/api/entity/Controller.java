@@ -3,7 +3,7 @@ package rpg.api.entity;
 import java.util.UUID;
 
 import rpg.api.Direction;
-import rpg.api.Vec2D;
+import rpg.api.vector.Vec2D;
 
 /**
  * The interface controller used to control an {@link Entity}.
@@ -11,7 +11,6 @@ import rpg.api.Vec2D;
  * @author Neo Hornberger, Tim Ludwig
  */
 public interface Controller {
-	
 	/**
 	 * Gets the {@link Entity} corresponding to this {@link Controller}.
 	 *
@@ -24,44 +23,43 @@ public interface Controller {
 	 * {@link Controller}.
 	 *
 	 * @param displayName
-	 *     the displayName to set
+	 *            the displayName to set
 	 */
 	default void setDisplayName(final String displayName) {
 		getEntity().displayName = displayName;
 	}
 	
 	/**
-	 * Sets the location {@link Vec2D} of the {@link Entity} corresponding to this
-	 * {@link Controller}.
+	 * Sets the location {@link Vec2D} of the {@link Entity} corresponding to
+	 * this {@link Controller}.
 	 *
 	 * @param location
-	 *     the location {@link Vec2D} to set
+	 *            the location {@link Vec2D} to set
 	 */
-	default void setLocation(final Vec2D location) {
-		getEntity().location = location;
+	default void setLocation(final Vec2D<?> location) {
+		getEntity().location = location.toModifiable();
 	}
 	
 	/**
 	 * Sets the looking {@link Direction} of the {@link Entity} corresponding to
-	 * this
-	 * {@link Controller}.
+	 * this {@link Controller}.
 	 *
 	 * @param direction
-	 *     the {@link Direction} to set
+	 *            the {@link Direction} to set
 	 */
 	default void setLookingDirection(final Direction direction) {
 		getEntity().lookingDirection = direction;
 	}
 	
 	/**
-	 * Sets the velocity {@link Vec2D} of the {@link Entity} corresponding to this
-	 * {@link Controller}.
+	 * Sets the velocity {@link Vec2D} of the {@link Entity} corresponding to
+	 * this {@link Controller}.
 	 *
 	 * @param velocity
-	 *     the velocity {@link Vec2D} to set
+	 *            the velocity {@link Vec2D} to set
 	 */
-	default void setVelocity(final Vec2D velocity) {
-		getEntity().velocity = velocity;
+	default void setVelocity(final Vec2D<?> velocity) {
+		getEntity().velocity = velocity.toModifiable();
 	}
 	
 	/**
@@ -69,7 +67,7 @@ public interface Controller {
 	 * {@link Controller}.
 	 *
 	 * @param uuid
-	 *     the {@link UUID} to set
+	 *            the {@link UUID} to set
 	 */
 	default void setUniqueId(final UUID uuid) {
 		getEntity().uuid = uuid;

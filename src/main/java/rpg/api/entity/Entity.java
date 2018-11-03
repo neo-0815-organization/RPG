@@ -5,9 +5,10 @@ import java.util.UUID;
 
 import rpg.api.Direction;
 import rpg.api.INameable;
-import rpg.api.Vec2D;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
+import rpg.api.vector.ModifiableVec2D;
+import rpg.api.vector.Vec2D;
 
 /**
  * The abstract Class Entity.
@@ -15,13 +16,12 @@ import rpg.api.gfx.Sprite;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
 public abstract class Entity implements INameable, ISprite {
-	protected Vec2D		location;
-	protected Sprite	sprite;
-	protected Direction	lookingDirection;
-	protected Vec2D		velocity;
-	protected String	displayName,
-			imageName;
-	protected UUID		uuid;
+	protected ModifiableVec2D location;
+	protected Sprite sprite;
+	protected Direction lookingDirection;
+	protected ModifiableVec2D velocity;
+	protected String displayName, imageName;
+	protected UUID uuid;
 	
 	public Entity(final String name) {
 		setDisplayName(name);
@@ -31,9 +31,9 @@ public abstract class Entity implements INameable, ISprite {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *     the {@link Direction} to accelerate in
+	 *            the {@link Direction} to accelerate in
 	 * @param force
-	 *     the amount of accelerating force
+	 *            the amount of accelerating force
 	 * @see #accelerate(Vec2D)
 	 */
 	public void accelerate(final Direction direction, final double force) {
@@ -44,19 +44,20 @@ public abstract class Entity implements INameable, ISprite {
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param acc
-	 *     the accelerating force {@link Vec2D}
+	 *            the accelerating force {@link Vec2D}
 	 */
-	public void accelerate(final Vec2D acc) {
-		velocity = velocity.add(acc);
+	public void accelerate(final Vec2D<?> acc) {
+		velocity.add(acc);
 	}
 	
 	/**
 	 * Gets the {@link Vec2D} representing the location of this {@link Entity}.
 	 *
-	 * @return the {@link Vec2D} representing the location of this {@link Entity}
+	 * @return the {@link Vec2D} representing the location of this
+	 *         {@link Entity}
 	 */
-	public Vec2D getLocation() {
-		return location;
+	public ModifiableVec2D getLocation() {
+		return location.toModifiable();
 	}
 	
 	/**
@@ -73,7 +74,7 @@ public abstract class Entity implements INameable, ISprite {
 	 *
 	 * @return the looking {@link Vec2D} of this {@link Entity}
 	 */
-	public Vec2D getLookingVector() {
+	public ModifiableVec2D getLookingVector() {
 		return lookingDirection.getVector();
 	}
 	
@@ -82,7 +83,7 @@ public abstract class Entity implements INameable, ISprite {
 	 *
 	 * @return the velocity {@link Vec2D} of this {@link Entity}
 	 */
-	public Vec2D getVelocity() {
+	public ModifiableVec2D getVelocity() {
 		return velocity;
 	}
 	
@@ -118,8 +119,8 @@ public abstract class Entity implements INameable, ISprite {
 	}
 	
 	/**
-	 * Returns a human readable representation of this {@link Entity} looking like
-	 * Entity@hash[{@link UUID}, displayName].
+	 * Returns a human readable representation of this {@link Entity} looking
+	 * like Entity@hash[{@link UUID}, displayName].
 	 *
 	 * @return the textual representation of this {@link Entity}
 	 * @see Object#toString()

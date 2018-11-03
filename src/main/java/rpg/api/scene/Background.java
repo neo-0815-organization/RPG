@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import rpg.api.Vec2D;
 import rpg.api.gfx.IImage;
 import rpg.api.tile.Tile;
+import rpg.api.vector.Vec2D;
 
 /**
  * Background class contains the background image and all {@link Tile}s.
@@ -14,8 +14,8 @@ import rpg.api.tile.Tile;
  * @author Erik Diers, Jan Unterhuber
  */
 public class Background implements IImage {
-	private BufferedImage			background;
-	private final ArrayList<Tile>	tiles;
+	private BufferedImage background;
+	private final ArrayList<Tile> tiles;
 	
 	public Background() {
 		tiles = new ArrayList<>();

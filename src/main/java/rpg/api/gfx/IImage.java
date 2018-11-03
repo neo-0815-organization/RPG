@@ -3,8 +3,8 @@ package rpg.api.gfx;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import rpg.api.Vec2D;
 import rpg.api.scene.Camera;
+import rpg.api.vector.Vec2D;
 
 /**
  * This interface represents every IDrawable that has to draw a
@@ -39,19 +39,12 @@ public interface IImage extends IDrawable {
 	 * Draws the {@link BufferedImage} which this interface is representing.
 	 *
 	 * @param g2d
-	 *     the {@link Graphics2D} object to draw on
+	 *            the {@link Graphics2D} object to draw on
 	 * @param location
-	 *     the location {@link Vec2D} to draw at
+	 *            the location {@link Vec2D} to draw at
 	 */
-	default void draw(final Graphics2D g2d, final Vec2D location) {
-		final int x = location.getX().getValuePixel(),
-				y = location.getY().getValuePixel(),
-				camX = Camera.location.getX().getValuePixel(),
-				camY = Camera.location.getY().getValuePixel(),
-				w = getWidth(),
-				h = getHeight(),
-				camXW = (int) (camX + Camera.frameSize.getWidth()),
-				camYH = (int) (camY + Camera.frameSize.getHeight());
+	default void draw(final Graphics2D g2d, final Vec2D<?> location) {
+		final int x = location.getX().getValuePixel(), y = location.getY().getValuePixel(), camX = Camera.location.getX().getValuePixel(), camY = Camera.location.getY().getValuePixel(), w = getWidth(), h = getHeight(), camXW = (int) (camX + Camera.frameSize.getWidth()), camYH = (int) (camY + Camera.frameSize.getHeight());
 		
 		if((x < camX && camX < w || x < camXW && camXW < w) && (x < camY && camY < h || x < camYH && camYH < h)) g2d.drawImage(getImage(), x, y, null);
 	}

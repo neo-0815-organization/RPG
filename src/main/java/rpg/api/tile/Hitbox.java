@@ -2,7 +2,7 @@ package rpg.api.tile;
 
 import java.awt.Polygon;
 
-import rpg.api.Vec2D;
+import rpg.api.vector.Vec2D;
 
 // TODO ERIK!!! Javadoc
 /**
@@ -11,15 +11,16 @@ import rpg.api.Vec2D;
  * @author Jan Unterhuber, Erik Diers
  */
 public class Hitbox {
-	private final int	shape;
-	private final Vec2D	loc;
-	private Polygon		realHitbox;
+	private final int shape;
+	private final Vec2D<?> loc;
+	private Polygon realHitbox;
 	
 	// TODO Enum oder Klassen (Vererbung: 'Triangle / Rectangle / Trapez')
 	/*
 	 * shape=0 means Rectangle, shape=1 means another shape etc.
 	 */
-	public Hitbox(final int shape, final Vec2D loc, final int width, final int height) {
+	
+	public Hitbox(final int shape, final Vec2D<?> loc, final int width, final int height) {
 		this.shape = shape;
 		this.loc = loc;
 		
@@ -34,7 +35,7 @@ public class Hitbox {
 			yPoints[1] = loc.getY().getValuePixel() + height;
 			
 			realHitbox = new Polygon(xPoints, yPoints, nPoints);
-		} else if(shape == 1) {
+		}else if(shape == 1) {
 			
 		}
 	}

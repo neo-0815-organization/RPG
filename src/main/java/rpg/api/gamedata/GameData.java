@@ -13,9 +13,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import rpg.api.Direction;
-import rpg.api.Vec2D;
 import rpg.api.entity.Entity;
 import rpg.api.packethandler.ByteBuffer;
+import rpg.api.vector.ModifiableVec2D;
+import rpg.api.vector.Vec2D;
 
 /**
  * The class GameData, used to save and load data about the game into/from a
@@ -189,7 +190,7 @@ public class GameData {
 		} else if(obj instanceof Vec2D) {
 			buffer.write(VEC2D_IDENTIFIER);
 			
-			final Vec2D v = (Vec2D) obj;
+			final Vec2D<?> v = (Vec2D<?>) obj;
 			buffer.writeDouble(v.getX().getValueTiles());
 			buffer.writeDouble(v.getY().getValueTiles());
 		} else if(obj instanceof UUID) {
@@ -246,7 +247,7 @@ public class GameData {
 			case DIRECTION_IDENTIFIER:
 				return Direction.getDirectionById(buffer.read());
 			case VEC2D_IDENTIFIER:
-				return Vec2D.createXY(buffer.readDouble(), buffer.readDouble());
+				return ModifiableVec2D.createXY(buffer.readDouble(), buffer.readDouble());
 			case UUID_IDENTIFIER:
 				return UUID.fromString(buffer.readString(36));
 			case ENTITY_IDENTIFIER:
