@@ -2,6 +2,8 @@ package rpg.api.tile;
 
 import java.awt.Graphics2D;
 
+import rpg.api.collision.Hitbox;
+import rpg.api.entity.Entity;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 import rpg.api.vector.ModifiableVec2D;
@@ -13,9 +15,9 @@ import rpg.api.vector.ModifiableVec2D;
  * @author Tim Ludwig, Erik Diers
  */
 public abstract class Tile implements ISprite {
-	protected ModifiableVec2D location;
-	protected Sprite sprite;
-	protected Hitbox hbox;
+	protected ModifiableVec2D	location;
+	protected Sprite			sprite;
+	protected Hitbox			hbox;
 	
 	/**
 	 * Gets the location of this tile {@link ModifiableVec2D}
