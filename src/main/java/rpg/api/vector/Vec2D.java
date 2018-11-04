@@ -115,13 +115,14 @@ public abstract class Vec2D<T extends Vec2D<?>> implements Cloneable {
 	}
 	
 	@Override
-	public Vec2D<?> clone() {
+	@SuppressWarnings("unchecked")
+	public T clone() {
 		try {
-			return (Vec2D<?>) super.clone();
+			return (T) super.clone();
 		}catch(final CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		
-		return ORIGIN;
+		return (T) ORIGIN;
 	}
 }
