@@ -2,7 +2,7 @@ package rpg.api.vector;
 
 import rpg.api.units.DistanceValue;
 
-public abstract class Vec2D<T extends Vec2D<?>> {
+public abstract class Vec2D<T extends Vec2D<?>> implements Cloneable {
 	public static final UnmodifiableVec2D ORIGIN = UnmodifiableVec2D.createXY(0, 0);
 	
 	protected double x, y;
@@ -112,5 +112,16 @@ public abstract class Vec2D<T extends Vec2D<?>> {
 	
 	public UnmodifiableVec2D toUnmodifiable() {
 		return new UnmodifiableVec2D(x, y);
+	}
+	
+	@Override
+	public Vec2D<?> clone() {
+		try {
+			return (Vec2D<?>) super.clone();
+		}catch(final CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		
+		return ORIGIN;
 	}
 }
