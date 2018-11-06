@@ -34,6 +34,8 @@ public class RPGFileReader {
 				lineNumber++;
 			}
 			
+//			 reader.lines().map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
+			
 			reader.close();
 		} catch(final IOException ex) {
 			ex.printStackTrace();
@@ -52,17 +54,15 @@ public class RPGFileReader {
 	 * @return a {@link HashMap} consisting of the key and value pairs read from the
 	 * {@link File}
 	 */
-	public static HashMap<String, String> readLineSplit(final String path, final String seperator) {
-		final HashMap<String, String> result = new HashMap<>();
+	public static String[][] readLineSplit(final String path, final String seperator) {
+		String[][] result = new String[0][0];
 		
 		try {
 			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
-			String line;
-			String[] split;
+			result = reader.lines().map(line -> line.split(seperator)).toArray(String[][]::new);
 			
-			while((line = reader.readLine()) != null)
-				if((split = line.split(seperator)).length == 2) result.put(split[0], split[1]);
+			System.out.println(result);
 			
 			reader.close();
 		} catch(final IOException e) {

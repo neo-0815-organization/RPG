@@ -8,7 +8,6 @@ import java.util.IllegalFormatConversionException;
 import java.util.LinkedHashMap;
 import java.util.MissingFormatArgumentException;
 
-import rpg.api.filereading.ILineRead;
 import rpg.api.filereading.RPGFileReader;
 
 /**
@@ -105,12 +104,8 @@ public class StringLocalizer {
 		for(final File file : files) {
 			final LocalizationTable table = new LocalizationTable();
 			
-			RPGFileReader.readLineSplit(file, "=", new ILineRead() {
-				
-				@Override
-				public void onLineRead(final String key, final String value, final int lineNumber) {
-					table.setValueAndLineNumber(key, value, lineNumber);
-				}
+			RPGFileReader.readLineSplit(file, "=", (key, value, lineNumber) -> {
+				table.setValueAndLineNumber(key, value, lineNumber);
 			});
 			
 			tables.put(file.getName().replace(".lang", ""), table);
