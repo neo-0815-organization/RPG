@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -40,10 +42,12 @@ public class Sprite {
 	public void loadTheme(final SpriteTheme theme) {
 		loadedTheme = theme;
 		
-		final String[][] frameCounts = RPGFileReader.readLineSplit(getPath() + "/animations_frameheight.txt", ":");
+		final Set<String> animationNames = animations.keySet();
 		
-		for(final String[] animationEntry : frameCounts)
-			addAnimation(animationEntry[0], Integer.valueOf(animationEntry[1]));
+		final Map<String, String> frameCounts = RPGFileReader.readLineSplit(getPath() + "/animations_frameheight.txt", ":");
+		
+		for(final String animName : animationNames)
+			addAnimation(animName, Integer.valueOf(frameCounts.get(animName)));
 	}
 	
 	/**

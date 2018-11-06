@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RPGFileReader {
 	
@@ -34,7 +36,7 @@ public class RPGFileReader {
 				lineNumber++;
 			}
 			
-//			 reader.lines().map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
+//			reader.lines().filter(line -> !line.equals("")).map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
 			
 			reader.close();
 		} catch(final IOException ex) {
@@ -51,18 +53,24 @@ public class RPGFileReader {
 	 *     the path to the {@link File} to read
 	 * @param seperator
 	 *     the seperator seperating key and value
-	 * @return a {@link HashMap} consisting of the key and value pairs read from the
+	 * @return a {@link HashMap} consisting of the key and value pairs read from
+	 * the
 	 * {@link File}
 	 */
-	public static String[][] readLineSplit(final String path, final String seperator) {
-		String[][] result = new String[0][0];
+	public static Map<String, String> readLineSplit(final String path, final String seperator) {
+		Map<String, String> result = null;
 		
 		try {
 			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
-			result = reader.lines().map(line -> line.split(seperator)).toArray(String[][]::new);
-			
-			System.out.println(result);
+			//@formatter:off
+			result = reader	.lines()
+							.filter(line -> line != "")
+							.map(line -> line.split(seperator))
+							.filter(entry -> entry[0] != "" && entry[1] != "")
+							.collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
+																				entry -> entry[1]));
+			//@formatter:on
 			
 			reader.close();
 		} catch(final IOException e) {
