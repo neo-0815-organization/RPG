@@ -68,7 +68,7 @@ public class RPGFileReader {
 							.parallel()
 							.map(line -> line.split(seperator))
 							.filter(entry -> entry.length == 2)
-							.filter(entry -> entry[0] != "" && entry[1] != "")
+							.filter(entry -> !entry[0].isEmpty() && !entry[1].isEmpty())
 							.collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
 																				entry -> entry[1]));
 			//@formatter:on
