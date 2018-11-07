@@ -1,14 +1,11 @@
 package rpg.api.localization;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.IllegalFormatConversionException;
-import java.util.LinkedHashMap;
 import java.util.MissingFormatArgumentException;
 
-import rpg.api.filereading.ILineRead;
 import rpg.api.filereading.RPGFileReader;
 
 /**
@@ -17,23 +14,16 @@ import rpg.api.filereading.RPGFileReader;
  * @author Neo Hornberger
  */
 public class StringLocalizer {
-	private static final File										langDir			= getLangDir();
-	private static final LinkedHashMap<String, LocalizationTable>	tables			= new LinkedHashMap<>();
-	private static Locale											activeLocale	= Locale.getDefault();
+	private static final File langDir = getLangDir();
 	
-	private static final FilenameFilter filenameFilter = new FilenameFilter() {
-		
-		@Override
-		public boolean accept(final File dir, final String name) {
-			return name.endsWith(".lang");
-		}
-	};
+	private static LocalizationTable activeTable = new LocalizationTable();
+	private static Locale activeLocale = Locale.getDefault();
 	
 	/**
 	 * Localizes the path 'path'.
 	 *
 	 * @param path
-	 *     the path which will be localized
+	 *            the path which will be localized
 	 * @return the localized value of the path 'path'
 	 */
 	public static String localize(final String path) {
@@ -44,14 +34,14 @@ public class StringLocalizer {
 	 * Localizes the path 'path' and formats its value.
 	 *
 	 * @param path
-	 *     the path which will be localized and formated
+	 *            the path which will be localized and formated
 	 * @param objects
-	 *     the arguments referenced by the format specifiers in the format
-	 *     string. If there are more arguments than format specifiers, the
-	 *     extra arguments are ignored. The number of arguments is variable and
-	 *     may be zero.
-	 *     The behaviour on a {@code null} argument depends on the
-	 *     <a href="../util/Formatter.html#syntax">conversion</a>
+	 *            the arguments referenced by the format specifiers in the
+	 *            format string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero. The behaviour on a
+	 *            {@code null} argument depends on the
+	 *            <a href="../util/Formatter.html#syntax">conversion</a>
 	 * @return the localized and formated value of the path 'path'
 	 */
 	public static String format(final String path, final Object... objects) {
@@ -59,36 +49,34 @@ public class StringLocalizer {
 	}
 	
 	/**
-	 * <h4>Does the whole magic!!</h4>
-	 * Localizes the path 'path' and formats its value.
-	 * This method is only for internal usage.
+	 * <h4>Does the whole magic!!</h4> Localizes the path 'path' and formats its
+	 * value. This method is only for internal usage.
 	 *
 	 * @param path
-	 *     the path which will be localized and formated
+	 *            the path which will be localized and formated
 	 * @param ignoreExceptions
-	 *     if {@code true} the method won't throw any {@link LocalizationException}
+	 *            if {@code true} the method won't throw any
+	 *            {@link LocalizationException}
 	 * @param objects
-	 *     the arguments referenced by the format specifiers in the format
-	 *     string. If there are more arguments than format specifiers, the
-	 *     extra arguments are ignored. The number of arguments is variable and
-	 *     may be zero.
-	 *     The behaviour on a {@code null} argument depends on the
-	 *     <a href="../util/Formatter.html#syntax">conversion</a>
+	 *            the arguments referenced by the format specifiers in the
+	 *            format string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero. The behaviour on a
+	 *            {@code null} argument depends on the
+	 *            <a href="../util/Formatter.html#syntax">conversion</a>
 	 * @return the localized and formated value of the path 'path'
 	 */
 	private static String format0(final String path, final boolean ignoreExceptions, final Object... objects) {
-		final LocalizationTable table = tables.get(activeLocale.getName());
-		
-		if(table.pathHasValue(path)) {
-			final String value = table.getValue(path);
+		if(activeTable.pathHasValue(path)) {
+			final String value = activeTable.getValue(path);
 			
 			try {
 				return String.format(value, objects);
-			} catch(final MissingFormatArgumentException | IllegalFormatConversionException e) {
+			}catch(final MissingFormatArgumentException | IllegalFormatConversionException e) {
 				if(ignoreExceptions) return value;
-				else if(e instanceof MissingFormatArgumentException) throw new LocalizationException(path, activeLocale.getFilename(), ((MissingFormatArgumentException) e).getFormatSpecifier(), table.getLineNumber(path));
-				else if(e instanceof IllegalFormatConversionException) throw new LocalizationException(path, activeLocale.getFilename(), "%" + ((IllegalFormatConversionException) e).getConversion(), ((IllegalFormatConversionException) e).getArgumentClass(), table.getLineNumber(path));
-			} catch(final ArrayIndexOutOfBoundsException e) {
+				else if(e instanceof MissingFormatArgumentException) throw new LocalizationException(path, activeLocale.getFilename(), ((MissingFormatArgumentException) e).getFormatSpecifier(), activeTable.getLineNumber(path));
+				else if(e instanceof IllegalFormatConversionException) throw new LocalizationException(path, activeLocale.getFilename(), "%" + ((IllegalFormatConversionException) e).getConversion(), ((IllegalFormatConversionException) e).getArgumentClass(), activeTable.getLineNumber(path));
+			}catch(final ArrayIndexOutOfBoundsException e) {
 				return "";
 			}
 		}
@@ -97,24 +85,10 @@ public class StringLocalizer {
 	}
 	
 	/**
-	 * Updates the {@link LocalizationTable}s.
+	 * Updates the {@link LocalizationTable}.
 	 */
-	public static void updateTables() {
-		final File[] files = langDir.listFiles(filenameFilter);
-		
-		for(final File file : files) {
-			final LocalizationTable table = new LocalizationTable();
-			
-			RPGFileReader.readLineSplit(file, "=", new ILineRead() {
-				
-				@Override
-				public void onLineRead(final String key, final String value, final int lineNumber) {
-					table.setValueAndLineNumber(key, value, lineNumber);
-				}
-			});
-			
-			tables.put(file.getName().replace(".lang", ""), table);
-		}
+	public static void updateTable() {
+		RPGFileReader.readLineSplit(new File(langDir, activeLocale.getFilename()), "=", (key, value, lineNumber) -> activeTable.setValueAndLineNumber(key, value, lineNumber));
 	}
 	
 	/**
@@ -128,7 +102,7 @@ public class StringLocalizer {
 		File file = null;
 		try {
 			file = new File(url.toURI());
-		} catch(final URISyntaxException e) {
+		}catch(final URISyntaxException e) {
 			file = new File(url.getPath());
 		}
 		
@@ -149,6 +123,8 @@ public class StringLocalizer {
 	 */
 	public static void setActiveLocale(final Locale locale) {
 		activeLocale = locale;
+		
+		updateTable();
 	}
 	
 	/**
@@ -157,6 +133,6 @@ public class StringLocalizer {
 	 * @see Locale#getDefault()
 	 */
 	public static void resetActiveLocale() {
-		activeLocale = Locale.getDefault();
+		setActiveLocale(Locale.getDefault());
 	}
 }
