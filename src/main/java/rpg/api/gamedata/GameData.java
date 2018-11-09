@@ -97,6 +97,7 @@ public class GameData {
 		
 		if(Arrays.equals(fileMagicNumber, MAGIC_NUMBER)) {
 			buffer.clear();
+			buffer.readFromInputStream(in);
 			
 			data = (HashMap<String, Object>) read();
 		}
