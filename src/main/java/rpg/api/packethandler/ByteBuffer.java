@@ -228,7 +228,7 @@ public class ByteBuffer {
 	 * @see #read()
 	 */
 	public long readLong() {
-		return (read() & 0xFF) << 56 | (read() & 0xFF) << 48 | (read() & 0xFF) << 40 | (read() & 0xFF) << 32 | (read() & 0xFF) << 24 | (read() & 0xFF) << 16 | (read() & 0xFF) << 8 | read() & 0xFF;
+		return ((long) read() & 0xFF) << 56 | ((long) read() & 0xFF) << 48 | ((long) read() & 0xFF) << 40 | ((long) read() & 0xFF) << 32 | ((long) read() & 0xFF) << 24 | ((long) read() & 0xFF) << 16 | ((long) read() & 0xFF) << 8 | (long) read() & 0xFF;
 	}
 	
 	/**
