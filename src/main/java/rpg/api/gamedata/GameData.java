@@ -15,7 +15,6 @@ import java.util.UUID;
 import rpg.api.Direction;
 import rpg.api.entity.Entity;
 import rpg.api.packethandler.ByteBuffer;
-import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
@@ -25,9 +24,9 @@ import rpg.api.vector.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer
  */
 public class GameData {
-	private final File				file;
-	private final ByteBuffer		buffer;
-	private HashMap<String, Object>	data;
+	private final File file;
+	private final ExtendedByteBuffer buffer;
+	private HashMap<String, Object> data;
 	
 	/**
 	 * Constructor of the class {@link GameData}.
@@ -40,12 +39,12 @@ public class GameData {
 			
 			try {
 				file.createNewFile();
-			} catch(final IOException e) {
+			}catch(final IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
-		buffer = new ByteBuffer();
+		buffer = new ExtendedByteBuffer();
 		data = new HashMap<>();
 	}
 	
@@ -53,9 +52,9 @@ public class GameData {
 	 * Sets the entry corresponding to the key.
 	 *
 	 * @param key
-	 *     the key corresponding to the value to change
+	 *            the key corresponding to the value to change
 	 * @param value
-	 *     the value to set
+	 *            the value to set
 	 */
 	public void set(final String key, final Object value) {
 		data.put(key, value);
@@ -65,7 +64,7 @@ public class GameData {
 	 * Gets the corresponding value of this key.
 	 *
 	 * @param key
-	 *     the key to query the value from
+	 *            the key to query the value from
 	 * @return the value corresponding to this key
 	 */
 	public Object get(final String key) {
@@ -75,18 +74,19 @@ public class GameData {
 	/**
 	 * Checks if this key has a corresponding value.
 	 *
-	 * @return {@code true} if this key corresponds to a valuehas a corresponding
-	 * value
+	 * @return {@code true} if this key corresponds to a valuehas a
+	 *         corresponding value
 	 */
 	public boolean contains(final String key) {
 		return data.containsKey(key);
 	}
 	
 	/**
-	 * Loads the data from the {@link File} corresponding to this {@link GameData}.
+	 * Loads the data from the {@link File} corresponding to this
+	 * {@link GameData}.
 	 *
 	 * @throws IOException
-	 *     if I/O error occures
+	 *             if I/O error occures
 	 */
 	@SuppressWarnings("unchecked")
 	public void load() throws IOException {
@@ -105,10 +105,11 @@ public class GameData {
 	}
 	
 	/**
-	 * Saves the data to the {@link File} corresponding to this {@link GameData}.
+	 * Saves the data to the {@link File} corresponding to this
+	 * {@link GameData}.
 	 *
 	 * @throws IOException
-	 *     if I/O error occures
+	 *             if I/O error occures
 	 */
 	public void save() throws IOException {
 		final FileOutputStream out = new FileOutputStream(file);
@@ -128,7 +129,7 @@ public class GameData {
 	 * Writes the {@link Object} obj to the {@link ByteBuffer}.
 	 *
 	 * @param obj
-	 *     the {@link Object} to write
+	 *            the {@link Object} to write
 	 */
 	protected void write(final Object obj) {
 		if(obj instanceof Map) {
@@ -140,66 +141,65 @@ public class GameData {
 				write(key);
 				write(m.get(key));
 			}
-		} else if(obj instanceof Boolean) {
+		}else if(obj instanceof Boolean) {
 			buffer.write(BOOLEAN_IDENTIFIER);
 			
 			buffer.writeBoolean((boolean) obj);
-		} else if(obj instanceof Byte) {
+		}else if(obj instanceof Byte) {
 			buffer.write(BYTE_IDENTIFIER);
 			
 			buffer.write((byte) obj);
-		} else if(obj instanceof Short) {
+		}else if(obj instanceof Short) {
 			buffer.write(SHORT_IDENTIFIER);
 			
 			buffer.writeShort((short) obj);
-		} else if(obj instanceof Integer) {
+		}else if(obj instanceof Integer) {
 			buffer.write(INT_IDENTIFIER);
 			
 			buffer.writeInt((int) obj);
-		} else if(obj instanceof Long) {
+		}else if(obj instanceof Long) {
 			buffer.write(LONG_IDENTIFIER);
 			
 			buffer.writeLong((long) obj);
-		} else if(obj instanceof Float) {
+		}else if(obj instanceof Float) {
 			buffer.write(FLOAT_IDENTIFIER);
 			
 			buffer.writeFloat((float) obj);
-		} else if(obj instanceof Double) {
+		}else if(obj instanceof Double) {
 			buffer.write(DOUBLE_IDENTIFIER);
 			
 			buffer.writeDouble((double) obj);
-		} else if(obj instanceof Character) {
+		}else if(obj instanceof Character) {
 			buffer.write(CHAR_IDENTIFIER);
 			
 			buffer.writeChar((char) obj);
-		} else if(obj instanceof String) {
+		}else if(obj instanceof String) {
 			buffer.write(STRING_IDENTIFIER);
 			
 			buffer.writeString((String) obj);
-		} else if(obj instanceof List) {
+		}else if(obj instanceof List) {
 			buffer.write(LIST_IDENTIFIER);
 			
 			final List<?> l = (List<?>) obj;
 			buffer.writeInt(l.size());
 			for(final Object o : l)
 				write(o);
-		} else if(obj instanceof Direction) {
+		}else if(obj instanceof Direction) {
 			buffer.write(DIRECTION_IDENTIFIER);
 			
-			buffer.write(((Direction) obj).getId());
-		} else if(obj instanceof Vec2D) {
+			buffer.writeDirection((Direction) obj);
+		}else if(obj instanceof Vec2D) {
 			buffer.write(VEC2D_IDENTIFIER);
 			
-			final Vec2D<?> v = (Vec2D<?>) obj;
-			buffer.writeDouble(v.getX().getValueTiles());
-			buffer.writeDouble(v.getY().getValueTiles());
-		} else if(obj instanceof UUID) {
+			buffer.writeVec2D((Vec2D<?>) obj);
+		}else if(obj instanceof UUID) {
 			buffer.write(UUID_IDENTIFIER);
 			
-			buffer.writeString(((UUID) obj).toString(), false);
-		} else if(obj instanceof Entity) {
-			buffer.write(ENTITY_IDENTIFIER);;
-			// TODO write Entity
+			buffer.writeUUID((UUID) obj);
+		}else if(obj instanceof Entity) {
+			buffer.write(ENTITY_IDENTIFIER);
+			
+			buffer.writeEntity((Entity) obj);
 		}
 	}
 	
@@ -245,13 +245,13 @@ public class GameData {
 				
 				return l;
 			case DIRECTION_IDENTIFIER:
-				return Direction.getDirectionById(buffer.read());
+				return buffer.readDirection();
 			case VEC2D_IDENTIFIER:
-				return ModifiableVec2D.createXY(buffer.readDouble(), buffer.readDouble());
+				return buffer.readVec2D();
 			case UUID_IDENTIFIER:
-				return UUID.fromString(buffer.readString(36));
+				return buffer.readUUID();
 			case ENTITY_IDENTIFIER:
-				return null; // TODO read Entity
+				return buffer.readEntity();
 		}
 		
 		return null;
@@ -270,20 +270,20 @@ public class GameData {
 	private static final byte[] MAGIC_NUMBER = "\u0033\u2663\u0000\u05D0\u03C9\u0000\u0000\u0000\n".getBytes();
 	
 	// @formatter:off
-	private static final byte MAP_IDENTIFIER = 0,
-			BOOLEAN_IDENTIFIER = 1,
-			BYTE_IDENTIFIER = 2,
-			SHORT_IDENTIFIER = 3,
-			INT_IDENTIFIER = 4,
-			LONG_IDENTIFIER = 5,
-			FLOAT_IDENTIFIER = 6,
-			DOUBLE_IDENTIFIER = 7,
-			CHAR_IDENTIFIER = 8,
-			STRING_IDENTIFIER = 9,
-			LIST_IDENTIFIER = 10,
-			DIRECTION_IDENTIFIER = 11,
-			VEC2D_IDENTIFIER = 12,
-			UUID_IDENTIFIER = 13,
-			ENTITY_IDENTIFIER = 14;
+	private static final byte	MAP_IDENTIFIER = 0,
+								BOOLEAN_IDENTIFIER = 1,
+								BYTE_IDENTIFIER = 2,
+								SHORT_IDENTIFIER = 3,
+								INT_IDENTIFIER = 4,
+								LONG_IDENTIFIER = 5,
+								FLOAT_IDENTIFIER = 6,
+								DOUBLE_IDENTIFIER = 7,
+								CHAR_IDENTIFIER = 8,
+								STRING_IDENTIFIER = 9,
+								LIST_IDENTIFIER = 10,
+								DIRECTION_IDENTIFIER = 11,
+								VEC2D_IDENTIFIER = 12,
+								UUID_IDENTIFIER = 13,
+								ENTITY_IDENTIFIER = 14;
 	// @formatter:on
 }
