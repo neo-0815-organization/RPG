@@ -108,6 +108,10 @@ public abstract class Entity implements INameable, ISprite {
 		this.displayName = displayName;
 	}
 	
+	public String getImageName() {
+		return imageName;
+	}
+	
 	@Override
 	public Sprite getSprite() {
 		return sprite;

@@ -7,17 +7,14 @@ import java.util.ArrayList;
 
 /**
  * The class ByteBuffer stores bytes that will be sent through an
- * {@link OutputStream} and
- * reads bytes from an {@link InputStream}.
- * All types that uses more than one byte are stored in the big-endian format.
+ * {@link OutputStream} and reads bytes from an {@link InputStream}. All types
+ * that uses more than one byte are stored in the big-endian format.
  *
  * @author Neo Hornberger
  */
 public class ByteBuffer {
-	private final ArrayList<Byte>	bytes	= new ArrayList<>();
-	private int						limit	= -1,
-			writeCursor = 0,
-			readCursor = 0;
+	private final ArrayList<Byte> bytes = new ArrayList<>();
+	private int limit = -1, writeCursor = 0, readCursor = 0;
 	
 	/**
 	 * Constructs a new empty {@link ByteBuffer}.
@@ -29,7 +26,7 @@ public class ByteBuffer {
 	 * 'bytes'.
 	 *
 	 * @param bytes
-	 *     the bytes to write
+	 *            the bytes to write
 	 * @see #write(byte[])
 	 */
 	public ByteBuffer(final byte[] bytes) {
@@ -40,7 +37,7 @@ public class ByteBuffer {
 	 * Writes the byte 'b' to the buffer.
 	 *
 	 * @param b
-	 *     the byte to write
+	 *            the byte to write
 	 */
 	public void write(final byte b) {
 		if(limit > -1 && writeCursor >= limit) throw new IllegalStateException("Reached limit of " + limit + " elements");
@@ -54,7 +51,7 @@ public class ByteBuffer {
 	 * Writes the bytes contained in the byte[] 'bytes' to the buffer.
 	 *
 	 * @param bytes
-	 *     the bytes to write
+	 *            the bytes to write
 	 * @see #write(byte)
 	 */
 	public void write(final byte[] bytes) {
@@ -66,7 +63,7 @@ public class ByteBuffer {
 	 * Writes the int 'i' to the buffer.
 	 *
 	 * @param i
-	 *     the int to write
+	 *            the int to write
 	 * @see #write(byte)
 	 */
 	public void writeInt(final int i) {
@@ -80,7 +77,7 @@ public class ByteBuffer {
 	 * Writes the char 'c' to the buffer.
 	 *
 	 * @param c
-	 *     the char to write
+	 *            the char to write
 	 * @see #writeInt(int)
 	 */
 	public void writeChar(final char c) {
@@ -91,7 +88,7 @@ public class ByteBuffer {
 	 * Writes the short 's' to the buffer.
 	 *
 	 * @param s
-	 *     the short to write
+	 *            the short to write
 	 * @see #write(byte)
 	 */
 	public void writeShort(final short s) {
@@ -103,7 +100,7 @@ public class ByteBuffer {
 	 * Writes the long 'l' to the buffer.
 	 *
 	 * @param l
-	 *     the long to write
+	 *            the long to write
 	 * @see #write(byte)
 	 */
 	public void writeLong(final long l) {
@@ -121,7 +118,7 @@ public class ByteBuffer {
 	 * Writes the String 's' to the buffer.
 	 *
 	 * @param s
-	 *     the String to write
+	 *            the String to write
 	 * @see #writeString(String, boolean)
 	 */
 	public void writeString(final String s) {
@@ -129,14 +126,14 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Writes the {@link String} 's' and if 'writeLength' is {@code true} its length
-	 * to the buffer.
+	 * Writes the {@link String} 's' and if 'writeLength' is {@code true} its
+	 * length to the buffer.
 	 *
 	 * @param s
-	 *     the {@link String} to write
+	 *            the {@link String} to write
 	 * @param writeLength
-	 *     whether the length of the {@link String} 's' should be written in front
-	 *     of it
+	 *            whether the length of the {@link String} 's' should be written
+	 *            in front of it
 	 * @see #writeInt(int)
 	 * @see #writeChar(char)
 	 */
@@ -151,7 +148,7 @@ public class ByteBuffer {
 	 * Writes the double 'd' to the buffer.
 	 *
 	 * @param d
-	 *     the double to write
+	 *            the double to write
 	 * @see #writeLong(long)
 	 */
 	public void writeDouble(final double d) {
@@ -162,7 +159,7 @@ public class ByteBuffer {
 	 * Writes the float 'f' to the buffer.
 	 *
 	 * @param f
-	 *     the float to write
+	 *            the float to write
 	 * @see #writeInt(int)
 	 */
 	public void writeFloat(final float f) {
@@ -170,11 +167,11 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Writes the boolean 'b' to the buffer as one byte. ({@code 00000001 = true} or
-	 * {@code 00000000 = false})
+	 * Writes the boolean 'b' to the buffer as one byte.
+	 * ({@code 00000001 = true} or {@code 00000000 = false})
 	 *
 	 * @param b
-	 *     the boolean to write
+	 *            the boolean to write
 	 * @see #write(byte)
 	 */
 	public void writeBoolean(final boolean b) {
@@ -201,7 +198,7 @@ public class ByteBuffer {
 	 * @see #read()
 	 */
 	public int readInt() {
-		return read() << 24 | read() << 16 | read() << 8 | read();
+		return (read() & 0xFF) << 24 | (read() & 0xFF) << 16 | (read() & 0xFF) << 8 | read() & 0xFF;
 	}
 	
 	/**
@@ -221,7 +218,7 @@ public class ByteBuffer {
 	 * @see #read()
 	 */
 	public short readShort() {
-		return (short) (read() << 8 | read());
+		return (short) ((read() & 0xFF) << 8 | read() & 0xFF);
 	}
 	
 	/**
@@ -231,12 +228,12 @@ public class ByteBuffer {
 	 * @see #read()
 	 */
 	public long readLong() {
-		return read() << 56 | read() << 48 | read() << 40 | read() << 32 | read() << 24 | read() << 16 | read() << 8 | read();
+		return ((long) read() & 0xFF) << 56 | ((long) read() & 0xFF) << 48 | ((long) read() & 0xFF) << 40 | ((long) read() & 0xFF) << 32 | ((long) read() & 0xFF) << 24 | ((long) read() & 0xFF) << 16 | ((long) read() & 0xFF) << 8 | (long) read() & 0xFF;
 	}
 	
 	/**
-	 * Reads one int {@code n} and {@code n} chars from the buffer and interprets
-	 * the chars read as a {@link String}.
+	 * Reads one int {@code n} and {@code n} chars from the buffer and
+	 * interprets the chars read as a {@link String}.
 	 *
 	 * @return the {@link String} read
 	 * @see #readInt()
@@ -321,10 +318,10 @@ public class ByteBuffer {
 	 * {@link OutputStream} 'out'.
 	 *
 	 * @param out
-	 *     - the {@link OutputStream} to which it will write
+	 *            - the {@link OutputStream} to which it will write
 	 * @return the current {@link ByteBuffer} instance
 	 * @throws IOException
-	 *     if an I/O error occures
+	 *             if an I/O error occures
 	 */
 	public ByteBuffer writeToOutputStream(final OutputStream out) throws IOException {
 		out.write(toByteArray());
@@ -337,10 +334,10 @@ public class ByteBuffer {
 	 * current instance.
 	 *
 	 * @param in
-	 *     - the {@link InputStream} from which it will read
+	 *            - the {@link InputStream} from which it will read
 	 * @return the current {@link ByteBuffer} instance
 	 * @throws IOException
-	 *     if an I/O error occurres.
+	 *             if an I/O error occurres.
 	 */
 	public ByteBuffer readFromInputStream(final InputStream in) throws IOException {
 		while(in.available() > 0)
@@ -362,7 +359,7 @@ public class ByteBuffer {
 	 * Sets the limit of this {@link ByteBuffer}.
 	 *
 	 * @param limit
-	 *     the new limit of this {@link ByteBuffer}
+	 *            the new limit of this {@link ByteBuffer}
 	 * @return the current {@link ByteBuffer} instance
 	 */
 	public ByteBuffer setLimit(final int limit) {
