@@ -3,8 +3,6 @@ package rpg.api.gamedata;
 import java.util.UUID;
 
 import rpg.api.Direction;
-import rpg.api.entity.Entity;
-import rpg.api.entity.EntityCreator;
 import rpg.api.packethandler.ByteBuffer;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
@@ -24,15 +22,6 @@ public class ExtendedByteBuffer extends ByteBuffer {
 		writeString(u.toString(), false);
 	}
 	
-	public void writeEntity(final Entity e) {
-		writeString(e.getUnlocalizedName());
-		writeVec2D(e.getLocation());
-		writeVec2D(e.getVelocity());
-		writeDirection(e.getLookingDirection());
-		writeString(e.getImageName());
-		writeUUID(e.getUniqueId());
-	}
-	
 	public Direction readDirection() {
 		return Direction.getDirectionById(read());
 	}
@@ -43,9 +32,5 @@ public class ExtendedByteBuffer extends ByteBuffer {
 	
 	public UUID readUUID() {
 		return UUID.fromString(readString(36));
-	}
-	
-	public Entity readEntity() {
-		return EntityCreator.create(readString(), readVec2D(), readVec2D(), readDirection(), readString(), readUUID());
 	}
 }
