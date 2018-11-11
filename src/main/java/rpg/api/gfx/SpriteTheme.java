@@ -9,7 +9,8 @@ package rpg.api.gfx;
 public enum SpriteTheme {
 	DEFAULT("default"),
 	
-	NONE("none");
+	NONE("none"),
+	TEST("test");
 	
 	private SpriteTheme(final String name) {
 		path = "/assets/textures/" + name;
@@ -21,7 +22,7 @@ public enum SpriteTheme {
 	 * Gets the path corresponding to this {@link SpriteTheme}.
 	 *
 	 * @return the path to all {@link Sprite}s corresponding to this
-	 * {@link SpriteTheme}
+	 *         {@link SpriteTheme}
 	 */
 	public String getPath() {
 		return path;
