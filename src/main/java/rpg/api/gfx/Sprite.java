@@ -20,10 +20,10 @@ import rpg.api.filereading.RPGFileReader;
 public class Sprite {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
 	
-	private final HashMap<String, Animation>	animations	= new HashMap<>();
-	private Animation							currentAnimation;
-	private final String						name;
-	private SpriteTheme							loadedTheme	= SpriteTheme.DEFAULT;
+	private final HashMap<String, Animation> animations = new HashMap<>();
+	private Animation currentAnimation;
+	private final String name;
+	private SpriteTheme loadedTheme = SpriteTheme.DEFAULT;
 	
 	public Sprite(final String name, final SpriteTheme theme) {
 		this.name = name;
@@ -37,17 +37,16 @@ public class Sprite {
 	 * Loads the {@link SpriteTheme}.
 	 *
 	 * @param theme
-	 *     the {@link SpriteTheme} to load
+	 *            the {@link SpriteTheme} to load
 	 */
 	public void loadTheme(final SpriteTheme theme) {
 		loadedTheme = theme;
 		
 		final Set<String> animationNames = animations.keySet();
-		
-		final Map<String, String> frameCounts = RPGFileReader.readLineSplit(getPath() + "/animations_frameheight.txt", ":");
+		final Map<String, String[]> frameCounts = RPGFileReader.readLineMultiSplit(getPath() + "/animations.txt", ":", 3);
 		
 		for(final String animName : animationNames)
-			addAnimation(animName, Integer.valueOf(frameCounts.get(animName)));
+			addAnimation(animName, Integer.valueOf(frameCounts.get(animName)[0]), Boolean.valueOf(frameCounts.get(animName)[1]));
 	}
 	
 	/**
@@ -63,7 +62,7 @@ public class Sprite {
 	 * Dumps one {@link Animation} stored in this {@link Sprite}.
 	 *
 	 * @param animationName
-	 *     the name of the {@link Animation} to dump
+	 *            the name of the {@link Animation} to dump
 	 */
 	public void dumpAnimation(final String animationName) {
 		if(currentAnimation.getName() == animationName) currentAnimation = null;
@@ -71,28 +70,35 @@ public class Sprite {
 		animations.remove(animationName);
 	}
 	
+	public void addAnimation(final String animationName) throws IllegalArgumentException {
+		addAnimation(animationName, Boolean.valueOf(RPGFileReader.readLineMultiSplit(getPath() + "/animations.txt", ":", animationName, 3)[1]));
+	}
+	
+	public void addAnimation(final String animationName, final boolean loop) throws IllegalArgumentException {
+		addAnimation(animationName, Integer.valueOf(RPGFileReader.readLineMultiSplit(getPath() + "/animations.txt", ":", animationName, 3)[0]), loop);
+	}
+	
 	/**
 	 * Loads an {@link Animation}.
 	 *
 	 * @param animationName
-	 *     the name of the {@link Animation} to load
+	 *            the name of the {@link Animation} to load
 	 * @param frameHeight
-	 *     the height of all frames in the {@link Animation}
+	 *            the height of all frames in the {@link Animation}
 	 * @throws IllegalArgumentException
-	 *     if the animation isn't found, or the frameHeight doesn't match the
-	 *     height of the {@link File} found
+	 *             if the animation isn't found, or the frameHeight doesn't
+	 *             match the height of the {@link File} found
 	 */
-	public void addAnimation(final String animationName, final int frameHeight) throws IllegalArgumentException {
+	private void addAnimation(final String animationName, final int frameHeight, final boolean loop) throws IllegalArgumentException {
 		BufferedImage animation;
 		
 		try {
 			animation = ImageIO.read(getClass().getResource(getPath() + "/" + animationName + ".png"));
-		} catch(final IOException ex) {
+		}catch(final IOException ex) {
 			throw new IllegalArgumentException("File '" + animationName + ".png' doesn't exist in the directory '" + getPath() + "'.");
 		}
 		
-		final int animWidth = animation.getWidth();
-		final int animHeight = animation.getHeight();
+		final int animWidth = animation.getWidth(), animHeight = animation.getHeight();
 		
 		if(animHeight % frameHeight != 0) throw new IllegalArgumentException("Frame height " + frameHeight + "px doesn't match animation height " + animHeight + "px.");
 		
@@ -103,7 +109,7 @@ public class Sprite {
 		for(int loadingFrame = 0; loadingFrame < frameCount; loadingFrame++)
 			frames.add(animation.getSubimage(0, loadingFrame * frameHeight, animWidth, frameHeight));
 		
-		animations.put(animationName, new Animation(animationName, frameHeight, animWidth, frames));
+		animations.put(animationName, new Animation(animationName, frameHeight, animWidth, frames, loop));
 	}
 	
 	/**
@@ -149,17 +155,18 @@ public class Sprite {
 	 * Sets the current {@link Animation}.
 	 *
 	 * @param animationName
-	 *     the name of the {@link Animation} to set
+	 *            the name of the {@link Animation} to set
 	 */
 	public void setAnimation(final String animationName) {
-		if(currentAnimation.getName() != animationName) currentAnimation = animations.get(animationName);
+		if(currentAnimation == null || currentAnimation.getName() != animationName) currentAnimation = animations.get(animationName);
 	}
 	
 	/**
-	 * Gets the path corresponding to this {@link Sprite} and {@link SpriteTheme}.
+	 * Gets the path corresponding to this {@link Sprite} and
+	 * {@link SpriteTheme}.
 	 *
 	 * @return the path corresponding to the animations in the currently loaded
-	 * {@link SpriteTheme}
+	 *         {@link SpriteTheme}
 	 */
 	public String getPath() {
 		return loadedTheme.getPath() + "/" + getName();

@@ -10,33 +10,31 @@ import java.util.LinkedList;
  * @author Tim Ludwig
  */
 public class Animation {
-	private final String	animationName;
-	private final int		frameHeight,
-			frameWidth;
-	private Frame			currentFrame	= null;
+	private final String animationName;
+	private final int frameHeight, frameWidth;
+	private Frame currentFrame = null;
 	
-	public Animation(final String animationName, final int frameHeight, final int frameWidth, final LinkedList<BufferedImage> frames) {
+	public Animation(final String animationName, final int frameHeight, final int frameWidth, final LinkedList<BufferedImage> frames, final boolean loop) {
 		this.animationName = animationName;
 		this.frameHeight = frameHeight;
 		this.frameWidth = frameWidth;
 		
-		loadFramesFromList(frames);
+		loadFramesFromList(frames, loop);
 	}
 	
 	/**
-	 * Loads the {@link BufferedImage}s in the {@link LinkedList} 'frames' into this
-	 * {@link Animation}.
+	 * Loads the {@link BufferedImage}s in the {@link LinkedList} 'frames' into
+	 * this {@link Animation}.
 	 *
 	 * @param frames
-	 *     the {@link LinkedList} to load
+	 *            the {@link LinkedList} to load
+	 * @param loop
+	 *            the {@link Animation} should be able to loop
 	 */
-	@SuppressWarnings("null")
-	public void loadFramesFromList(final LinkedList<BufferedImage> frames) {
+	public void loadFramesFromList(final LinkedList<BufferedImage> frames, final boolean loop) {
 		final Iterator<BufferedImage> frameIterator = frames.descendingIterator();
 		
-		Frame frameToAdd = null,
-				animationEnd = null;
-		
+		Frame frameToAdd = null, animationEnd = null;
 		while(frameIterator.hasNext()) {
 			frameToAdd = new Frame(frameIterator.next());
 			frameToAdd.setNextFrame(currentFrame);
@@ -46,7 +44,7 @@ public class Animation {
 			currentFrame = frameToAdd;
 		}
 		
-		animationEnd.setNextFrame(frameToAdd);
+		if(loop) animationEnd.setNextFrame(frameToAdd);
 	}
 	
 	/**
@@ -93,14 +91,14 @@ public class Animation {
 	}
 	
 	/**
-	 * Represents one frame in an {@link Animation}
-	 * used to chain multiple frames together.
+	 * Represents one frame in an {@link Animation} used to chain multiple
+	 * frames together.
 	 *
 	 * @author Tim Ludwig
 	 */
 	private class Frame {
-		private final BufferedImage	frame;
-		private Frame				nextFrame;
+		private final BufferedImage frame;
+		private Frame nextFrame;
 		
 		public Frame(final BufferedImage frame) {
 			this.frame = frame;
@@ -110,7 +108,7 @@ public class Animation {
 		 * Sets the next {@link Frame} in the chain.
 		 *
 		 * @param nextFrame
-		 *     the next {@link Frame}
+		 *            the next {@link Frame}
 		 */
 		public void setNextFrame(final Frame nextFrame) {
 			this.nextFrame = nextFrame;
@@ -122,7 +120,7 @@ public class Animation {
 		 * @return the next {@link Frame}
 		 */
 		public Frame getNextFrame() {
-			return nextFrame;
+			return nextFrame == null ? this : nextFrame;
 		}
 		
 		/**
