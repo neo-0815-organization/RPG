@@ -100,7 +100,7 @@ public class RPGFileReader {
 							.parallel()
 							.filter(line -> line.contains(seperator))
 							.map(line -> line.split(seperator))
-							.filter(entry -> entry.length == 2 && entry[0].equals(key) && !entry[1].isEmpty())
+							.filter(entry -> entry.length == 2 && !entry[0].isEmpty() && entry[0].equals(key) && !entry[1].isEmpty())
 							.findFirst().get()[1];
 			//@formatter:on
 			
