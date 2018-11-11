@@ -4,21 +4,21 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RPGFileReader {
 	
 	/**
 	 * Reads a {@link File}, splitting the lines seperately in to key and value
-	 * pairs,
-	 * seperated by a seperator.
+	 * pairs, seperated by a seperator.
 	 *
 	 * @param readFile
-	 *     the {@link File} to read
+	 *            the {@link File} to read
 	 * @param seperator
-	 *     the seperator seperating key and value
+	 *            the seperator seperating key and value
 	 * @param onRead
-	 *     the method to run on every line read. see {@link ILineRead}
+	 *            the method to run on every line read. see {@link ILineRead}
 	 */
 	public static void readLineSplit(final File readFile, final String seperator, final ILineRead onRead) {
 		try {
@@ -34,38 +34,78 @@ public class RPGFileReader {
 				lineNumber++;
 			}
 			
+			//			reader.lines().filter(line -> !line.equals("")).map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
+			
 			reader.close();
-		} catch(final IOException ex) {
+		}catch(final IOException ex) {
 			ex.printStackTrace();
 		}
 	}
 	
 	/**
 	 * Reads a {@link File}, splitting the lines seperately in to key and value
-	 * pairs,
-	 * seperated by a seperator in the {@link File}.
+	 * pairs, seperated by a seperator in the {@link File}.
 	 *
 	 * @param path
-	 *     the path to the {@link File} to read
+	 *            the path to the {@link File} to read
 	 * @param seperator
-	 *     the seperator seperating key and value
-	 * @return a {@link HashMap} consisting of the key and value pairs read from the
-	 * {@link File}
+	 *            the seperator seperating key and value
+	 * @return a {@link Map} consisting of the key and value pairs read from the
+	 *         {@link File}
 	 */
-	public static HashMap<String, String> readLineSplit(final String path, final String seperator) {
-		final HashMap<String, String> result = new HashMap<>();
+	public static Map<String, String> readLineSplit(final String path, final String seperator) {
+		Map<String, String> result = null;
 		
 		try {
 			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
-			String line;
-			String[] split;
-			
-			while((line = reader.readLine()) != null)
-				if((split = line.split(seperator)).length == 2) result.put(split[0], split[1]);
+			//@formatter:off
+			result = reader	.lines()
+							.parallel()
+							.filter(line -> line.contains(seperator))
+							.map(line -> line.split(seperator))
+							.filter(entry -> entry.length == 2 && !entry[0].isEmpty() && !entry[1].isEmpty())
+							.collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
+																				entry -> entry[1]));
+			//@formatter:on
 			
 			reader.close();
-		} catch(final IOException e) {
+		}catch(final IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Reads a {@link File}, returns the {@link String} value corresponding to
+	 * the 'key', seperated by a seperator in the {@link File}.
+	 *
+	 * @param path
+	 *            the path to the {@link File} to read
+	 * @param seperator
+	 *            the seperator seperating key and value
+	 * @param key
+	 *            the key to read from
+	 * @return a {@link String} value read from the {@link File}
+	 */
+	public static String readLineSplit(final String path, final String seperator, final String key) {
+		String result = "";
+		
+		try {
+			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			
+			//@formatter:off
+			result = reader	.lines()
+							.parallel()
+							.filter(line -> line.contains(seperator))
+							.map(line -> line.split(seperator))
+							.filter(entry -> entry.length == 2 && !entry[0].isEmpty() && entry[0].equals(key) && !entry[1].isEmpty())
+							.findFirst().get()[1];
+			//@formatter:on
+			
+			reader.close();
+		}catch(final IOException e) {
 			e.printStackTrace();
 		}
 		

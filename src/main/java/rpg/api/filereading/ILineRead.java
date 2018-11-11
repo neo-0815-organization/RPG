@@ -1,9 +1,12 @@
 package rpg.api.filereading;
 
+import java.io.File;
+
 /**
  * The interface ILineRead representing the action of reading one line from a
- * {@link FIle}
+ * {@link File}
  */
+@FunctionalInterface
 public interface ILineRead {
 	
 	/**
