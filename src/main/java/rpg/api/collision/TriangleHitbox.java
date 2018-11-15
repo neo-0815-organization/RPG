@@ -24,14 +24,14 @@ public class TriangleHitbox extends Hitbox {
 	}
 	
 	private UnmodifiableVec2D getVecA() {
-		return getPoint(0);
+		return getOffset(0);
 	}
 	
 	private UnmodifiableVec2D getVecV() {
-		return getPoint(1);
+		return getOffset(1);
 	}
 	
 	private UnmodifiableVec2D getVecW() {
-		return getPoint(2);
+		return getOffset(2);
 	}
 }
