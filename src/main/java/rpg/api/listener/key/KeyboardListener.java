@@ -1,22 +1,32 @@
 package rpg.api.listener.key;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.util.HashMap;
 
-public class KeyboardListener implements KeyListener {
+public class KeyboardListener {
+	private static HashMap<Integer, OnKey> keys = new HashMap<>();
+	private static HashMap<Integer, KeyState> states = new HashMap<>();
 	
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+	private static Thread thread = new Thread("KeyboardListenerThread") {
+		
+		@Override
+		public void run() {
+			while(!interrupted())
+				states.entrySet().parallelStream().filter(entry -> entry.getValue().isActive()).forEach(entry -> keys.get(entry.getKey()).onKey(entry.getValue()));
+		};
+	};
+	
+	public static void registerKey(final int keyCode, final OnKey onKey) {
+		keys.put(keyCode, onKey);
+		states.put(keyCode, KeyState.RELEASED);
 	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		KeyboardListenerHandler.setStatus(e.getKeyCode(), KeyStatus.PRESSING);
+	
+	protected static void setState(final int keyCode, final KeyState state) {
+		if(!keys.containsKey(keyCode)) return;
+		
+		states.put(keyCode, state);
 	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		KeyboardListenerHandler.setStatus(e.getKeyCode(), KeyStatus.RELEASING);
+	
+	public static void start() {
+		thread.start();
 	}
 }

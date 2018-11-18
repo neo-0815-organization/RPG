@@ -3,5 +3,5 @@ package rpg.api.listener.key;
 @FunctionalInterface
 public interface OnKey {
 
-	public void onKey(KeyStatus status);
+	public void onKey(KeyState state);
 }
