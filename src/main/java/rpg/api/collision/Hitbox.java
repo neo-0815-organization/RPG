@@ -20,9 +20,10 @@ public abstract class Hitbox {
 	private final UnmodifiableVec2D[] offsets;
 	
 	protected Hitbox(final UnmodifiableVec2D... points) {
-		this.offsets = points;
+		offsets = points;
 	}
 	
+	// TODO MAKE ABSTRACT
 	/**
 	 * Checks whether this {@link Hitbox} collides with an other {@link Hitbox}.
 	 * 
@@ -36,44 +37,40 @@ public abstract class Hitbox {
 	 * @return <code>true</code> if this {@link Hitbox} collides with the
 	 *         {@link Hitbox} <code>colliderHitbox</code>
 	 */
-	public boolean checkCollision(Hitbox colliderHitbox, UnmodifiableVec2D colliderPosition) {
-		if (this instanceof CircleHitbox || colliderHitbox instanceof CircleHitbox ) {
-			if (this instanceof CircleHitbox && colliderHitbox instanceof CircleHitbox ) {
-				double r1 = ((CircleHitbox)this).radius, r2 = ((CircleHitbox)colliderHitbox).radius;
-				return  r1 * r1 + 2 * r1 * r2 +  r2 * r2 > colliderPosition.add(this.getOffset(0)).subtract(colliderHitbox.getOffset(0)).magnitudeSquared();
-			} else {
+	public boolean checkCollision(final Hitbox colliderHitbox, final UnmodifiableVec2D colliderPosition) {
+		if(this instanceof CircleHitbox || colliderHitbox instanceof CircleHitbox) {
+			if(this instanceof CircleHitbox && colliderHitbox instanceof CircleHitbox) {
+				final double r1 = ((CircleHitbox) this).radius, r2 = ((CircleHitbox) colliderHitbox).radius;
+				return r1 * r1 + 2 * r1 * r2 + r2 * r2 > colliderPosition.add(getOffset(0)).subtract(colliderHitbox.getOffset(0)).magnitudeSquared();
+			}else {
 				CircleHitbox circle;
 				Hitbox nonCircle;
-				ModifiableVec2D collPos = colliderPosition.toModifiable();
+				final ModifiableVec2D collPos = colliderPosition.toModifiable();
 				
-				if (this instanceof CircleHitbox) {
+				if(this instanceof CircleHitbox) {
 					circle = (CircleHitbox) this;
 					nonCircle = colliderHitbox;
 					collPos.scale(-1);
-				} else {
+				}else {
 					circle = (CircleHitbox) colliderHitbox;
 					nonCircle = this;
 				}
 				
 				UnmodifiableVec2D point;
 				
-				for (int i = 0; i < nonCircle.offsets.length; i++) {
+				for(int i = 0; i < nonCircle.offsets.length; i++) {
 					point = nonCircle.getPoint(i);
-							 
-					if(circle.checkCollision(point.subtract(collPos)))return true;
+					
+					if(circle.checkCollision(point.subtract(collPos))) return true;
 				}
 				return false;
 				
 			}
-		} else {
-			for (int i = 0; i < offsets.length; i++) {
-				if (colliderHitbox.checkCollision(colliderPosition.subtract(getPoint(i).scale(-1))))return true;
-			}
-		}
+		}else for(int i = 0; i < offsets.length; i++)
+			if(colliderHitbox.checkCollision(colliderPosition.subtract(getPoint(i).scale(-1)))) return true;
 		
 		return false;
 	}
-
 	
 	/**
 	 * Checks whether this {@link Hitbox} collides with a point.
@@ -90,10 +87,11 @@ public abstract class Hitbox {
 	
 	/**
 	 * Returns the position of an corner as an {@link UnmodifiableVec2D}
+	 * 
 	 * @param i
 	 * @return
 	 */
-	protected UnmodifiableVec2D getPoint(int i) {
+	protected UnmodifiableVec2D getPoint(final int i) {
 		return getOffset(0).add(i == 0 ? Vec2D.ORIGIN : getOffset(i));
 	}
 	
