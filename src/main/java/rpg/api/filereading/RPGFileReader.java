@@ -52,7 +52,7 @@ public class RPGFileReader {
 	 */
 	public static void readLineSplit(final File readFile, final String seperator, final ILineRead onRead) {
 		try {
-			final BufferedReader reader = new BufferedReader(new FileReader(readFile));
+			reader = new BufferedReader(new FileReader(readFile));
 			
 			String line = null;
 			String[] lineSplit = null;
@@ -87,7 +87,7 @@ public class RPGFileReader {
 		Map<String, String> result = null;
 		
 		try {
-			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
 			result = filterCheck(seperator, 2)
@@ -120,7 +120,7 @@ public class RPGFileReader {
 		Map<String, String[]> result = null;
 		
 		try {
-			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
 			result = filterCheck(seperator, splitCount)
@@ -128,8 +128,8 @@ public class RPGFileReader {
 																		   entry -> {
 																			   final String[] list = new String[splitCount - 1];
 																					 
-																			   for(int i = 0; i < list.length;)
-																				   list[i] = entry[++i];
+																			   for(int i = 0; i < list.length; i++)
+																				   list[i] = entry[i + 1];
 																						  
 																			   return list;
 																		   }));
@@ -159,7 +159,7 @@ public class RPGFileReader {
 		String result = "";
 		
 		try {
-			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
 			result = filterCheck(seperator, key, 2)
@@ -193,15 +193,15 @@ public class RPGFileReader {
 		final String[] result = new String[splitCount - 1];
 		
 		try {
-			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
 			final String[] elements = filterCheck(seperator, key, splitCount)
 									  .findFirst().get();
 			//@formatter:on
 			
-			for(int i = 0; i < result.length;)
-				result[i] = elements[++i];
+			for(int i = 0; i < result.length;i++)
+				result[i] = elements[i + 1];
 			
 			reader.close();
 		} catch(final IOException e) {
