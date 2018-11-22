@@ -17,10 +17,31 @@ public abstract class Hitbox {
 	 * <code>offsets[n] | n > 0</code> is measured relative to the {@link Vec2D}
 	 * <code>offsets[0]</code>.
 	 */
-	private final UnmodifiableVec2D[] offsets;
+	private UnmodifiableVec2D[] offsets;
 	
-	protected Hitbox(final UnmodifiableVec2D... points) {
+	/**
+	 * Creates a Hitbox.
+	 * @param precision means the number of Collision vectors...TODO This need to be Changed
+	 * @param points
+	 */
+	protected Hitbox(int precision, final UnmodifiableVec2D... points) {
 		offsets = points;
+		
+		if (precision != 1) {
+			double scalar = 1D / precision;
+			UnmodifiableVec2D[] allOffsets = new UnmodifiableVec2D[points.length * (precision)];
+			for (int i = 0; i < points.length; i++)
+				allOffsets[i] = points[i];
+			
+			for (int i = 0; i < points.length; i++) {
+				UnmodifiableVec2D vec1 = getPoint(i), vec2 = getPoint(i + 1 >= points.length?0:i + 1);
+				UnmodifiableVec2D vec12 = vec2.subtract(vec1);
+				for (int j = 0; j < precision - 1; j++) {
+					allOffsets[points.length + i * (precision - 1) + j] = vec12.scale(scalar * (j + 1));
+				}
+			}
+			offsets = allOffsets;
+		}
 	}
 	
 	// TODO MAKE ABSTRACT
@@ -98,4 +119,10 @@ public abstract class Hitbox {
 	protected UnmodifiableVec2D getOffset(final int i) {
 		return offsets[i];
 	}
+	
+//	public static void main(String[] args) {
+//		RectangleHitbox rect = new RectangleHitbox(UnmodifiableVec2D.ORIGIN, UnmodifiableVec2D.createXY(10, 0), UnmodifiableVec2D.createXY(0, 2), 10);
+//		RectangleHitbox rect2 = new RectangleHitbox(UnmodifiableVec2D.ORIGIN, UnmodifiableVec2D.createXY(2, 0), UnmodifiableVec2D.createXY(0, 10), 10);
+//		System.out.println(rect.checkCollision(rect2, UnmodifiableVec2D.createXY(-3, 3)));
+//	}
 }

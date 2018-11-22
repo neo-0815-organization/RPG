@@ -7,7 +7,7 @@ public class CircleHitbox extends Hitbox{
 	protected double radius;
 	
 	public CircleHitbox(UnmodifiableVec2D offset, double radius) {
-		super(offset);
+		super(1, offset);
 		this.radius = radius;
 	}
 

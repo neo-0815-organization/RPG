@@ -4,8 +4,12 @@ import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 public class RectangleHitbox extends Hitbox{
+	public RectangleHitbox(UnmodifiableVec2D offset, UnmodifiableVec2D offSetWidth, UnmodifiableVec2D offsetHeight, int precision) {
+		super(precision, offset, offSetWidth, offsetHeight, offSetWidth.add(offsetHeight));
+	}
+	
 	public RectangleHitbox(UnmodifiableVec2D offset, UnmodifiableVec2D offSetWidth, UnmodifiableVec2D offsetHeight) {
-		super(offset, offSetWidth, offsetHeight, offSetWidth.add(offsetHeight));
+		super(1, offset, offSetWidth, offsetHeight, offSetWidth.add(offsetHeight));
 	}
 
 	@Override
