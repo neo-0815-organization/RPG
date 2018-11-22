@@ -9,6 +9,35 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RPGFileReader {
+	private static BufferedReader reader;
+	
+	private static Stream<String> lines() {
+		return reader.lines();
+	}
+	
+	private static Stream<String> parallel() {
+		return lines().parallel();
+	}
+	
+	private static Stream<String[]> entrys(final String seperator) {
+		return parallel().map(line -> line.split(seperator));
+	}
+	
+	private static Stream<String[]> filterCheck(final String seperator, final int splitCount) {
+		return entrys(seperator).filter(entry -> checkEntry(entry, splitCount));
+	}
+	
+	private static Stream<String[]> filterCheck(final String seperator, String key, final int splitCount) {
+		return entrys(seperator).filter(entry -> checkEntry(entry, key, splitCount));
+	}
+	
+	private static boolean checkEntry(final String[] entry, final int splitCount) {
+		return entry.length == splitCount && Stream.of(entry).parallel().allMatch(s -> !s.isEmpty());
+	}
+	
+	private static boolean checkEntry(final String[] entry, final String key, final int splitCount) {
+		return entry.length == splitCount && entry[0] == key && Stream.of(entry).parallel().allMatch(s -> !s.isEmpty());
+	}
 	
 	/**
 	 * Reads a {@link File}, splitting the lines seperately in to key and value
@@ -35,10 +64,10 @@ public class RPGFileReader {
 				lineNumber++;
 			}
 			
-			//			reader.lines().filter(line -> !line.equals("")).map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
+			// reader.lines().filter(line -> !line.equals("")).map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
 			
 			reader.close();
-		}catch(final IOException ex) {
+		} catch(final IOException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -61,17 +90,13 @@ public class RPGFileReader {
 			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			result = reader.lines()
-						   .parallel()
-						   .filter(line -> line.contains(seperator))
-						   .map(line -> line.split(seperator))
-						   .filter(entry -> checkEntry(entry, 2))
-						   .collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
-																			   entry -> entry[1]));
+			result = filterCheck(seperator, 2)
+					 .collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
+							 											 entry -> entry[1]));
 			//@formatter:on
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -98,32 +123,24 @@ public class RPGFileReader {
 			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			result = reader.lines()
-						   .parallel()
-						   .filter(line -> line.contains(seperator))
-						   .map(line -> line.split(seperator))
-						   .filter(entry -> checkEntry(entry, splitCount))
-						   .collect(Collectors.<String[], String, String[]>toMap(entry -> entry[0],
-																				 entry -> {
-																					 final String[] list = new String[splitCount - 1];
+			result = filterCheck(seperator, splitCount)
+					 .collect(Collectors.<String[], String, String[]>toMap(entry -> entry[0],
+																		   entry -> {
+																			   final String[] list = new String[splitCount - 1];
 																					 
-																					 for(int i = 0; i < list.length;)
-																						 list[i] = entry[++i];
+																			   for(int i = 0; i < list.length;)
+																				   list[i] = entry[++i];
 																						  
-																					 return list;
-																				  }));
+																			   return list;
+																		   }));
 			//@formatter:on
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
 		return result;
-	}
-	
-	private static boolean checkEntry(final String[] entry, final int splitCount) {
-		return entry.length == splitCount && Stream.of(entry).parallel().allMatch(s -> !s.isEmpty());
 	}
 	
 	/**
@@ -145,16 +162,12 @@ public class RPGFileReader {
 			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			result = reader.lines()
-						   .parallel()
-						   .filter(line -> line.contains(seperator))
-						   .map(line -> line.split(seperator))
-						   .filter(entry -> checkEntry(entry, 2) && entry[0].equals(key))
-						   .findFirst().get()[1];
+			result = filterCheck(seperator, key, 2)
+					 .findFirst().get()[1];
 			//@formatter:on
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -183,19 +196,15 @@ public class RPGFileReader {
 			final BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			final String[] elements = reader.lines()
-									  		.parallel()
-									  		.filter(line -> line.contains(seperator))
-									  		.map(line -> line.split(seperator))
-									  		.filter(entry -> checkEntry(entry, splitCount) && entry[0].equals(key))
-									  		.findFirst().get();
+			final String[] elements = filterCheck(seperator, key, splitCount)
+									  .findFirst().get();
 			//@formatter:on
 			
 			for(int i = 0; i < result.length;)
 				result[i] = elements[++i];
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
