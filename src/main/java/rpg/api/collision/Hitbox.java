@@ -44,7 +44,6 @@ public abstract class Hitbox {
 		}
 	}
 	
-	// TODO MAKE ABSTRACT
 	/**
 	 * Checks whether this {@link Hitbox} collides with an other {@link Hitbox}.
 	 * 
