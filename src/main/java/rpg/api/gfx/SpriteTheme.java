@@ -17,7 +17,7 @@ public enum SpriteTheme {
 	SCHALLENBERGE("schallenberge"),
 	//	HUEBEL("huebel"),
 	
-	// Oreanen:
+	// Oreanen
 	SEYHAN("seyhan"),
 	
 	// Gestrandete
