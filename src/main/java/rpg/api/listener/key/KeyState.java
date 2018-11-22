@@ -17,4 +17,17 @@ public enum KeyState {
 	public boolean isActive() {
 		return this != RELEASED;
 	}
+	
+	public KeyState next() {
+		switch (this) {
+			case PRESSING:
+				return PRESSED;
+			case RELEASING:
+				return RELEASED;
+			case RELEASED:
+			case PRESSED:
+			default:
+				return this;
+		}
+	}
 }
