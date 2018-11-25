@@ -8,26 +8,26 @@ package rpg.api.gfx;
  */
 public enum SpriteTheme {
 	// Zwerge
-	MOERSBERGE("moersberge"),
-	BURG_MOERSBERG("burg_moersberg"),
-	STADT_MOERSBERG("stadt_moersberg"),
-	MOERSBERGWERKE("moersbergwerke"),
+	MOERSBERGE("dwarfs/moersberge"),
+	BURG_MOERSBERG("dwarfs/burg_moersberg"),
+	STADT_MOERSBERG("dwarfs/stadt_moersberg"),
+	MOERSBERGWERKE("dwarfs/moersbergwerke"),
 	
 	// Feen
-	SCHALLENBERGE("schallenberge"),
-	//	HUEBEL("huebel"),
+	SCHALLENBERGE("fairies/schallenberge"),
+	//	HUEBEL("fairies/huebel"),
 	
 	// Oreanen
-	SEYHAN("seyhan"),
+	SEYHAN("oreans/seyhan"),
 	
 	// Gestrandete
-	DUEHNE("duehne"),
+	DUEHNE("stranded/duehne"),
 	
-	// Marakus
-	HORNBERGE("hornberge"),
+	// Maracus
+	HORNBERGE("maracus/hornberge"),
 	
 	// Bach
-	BROMBACH("brombach"),
+	BROMBACH("creek/brombach"),
 	
 	NONE("none"),
 	TEST("test");
