@@ -28,6 +28,15 @@ public abstract class Tile implements ISprite {
 		return location;
 	}
 	
+	/**This update-method is used to update tiles, whenever it is needed.
+	 * It doesnt need to be overriden.
+	 * 
+	 * @param deltaTime time since last frame in sec.
+	 */
+	public void update(double deltaTime) {
+		return;
+	}
+	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		draw(g2d, location);

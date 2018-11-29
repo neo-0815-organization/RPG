@@ -29,6 +29,10 @@ public class Background implements IImage {
 			t.draw(g2d);
 	}
 	
+	public void updateBackground(double deltaTime) {
+		for (Tile t:tiles)t.update(deltaTime);
+	}
+	
 	@Override
 	public BufferedImage getImage() {
 		return background;
