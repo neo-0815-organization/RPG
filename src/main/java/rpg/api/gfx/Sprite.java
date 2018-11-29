@@ -23,7 +23,7 @@ public class Sprite {
 	private final HashMap<String, Animation> animations = new HashMap<>();
 	private Animation currentAnimation;
 	private final String name;
-	private SpriteTheme loadedTheme = SpriteTheme.DEFAULT;
+	private SpriteTheme loadedTheme = SpriteTheme.NONE;
 	
 	public Sprite(final String name, final SpriteTheme theme) {
 		this.name = name;

@@ -61,6 +61,16 @@ public abstract class Entity implements INameable, ISprite {
 	}
 	
 	/**
+	 * Sets the {@link Vec2D} representing the location of this {@link Entity}.
+	 *
+	 * @param the {@link Vec2D} representing the location of this
+	 *         {@link Entity}
+	 */
+	public void setLocation(Vec2D<?> location) {
+		this.location = location.toModifiable();
+	}
+	
+	/**
 	 * Gets the looking {@link Direction} of this {@link Entity}.
 	 *
 	 * @return the looking {@link Direction} of this {@link Entity}
@@ -70,6 +80,15 @@ public abstract class Entity implements INameable, ISprite {
 	}
 	
 	/**
+	 * Sets the looking {@link Direction} of this {@link Entity}.
+	 *
+	 * @param the looking {@link Direction} of this {@link Entity}
+	 */
+	public void setLookingDirection(Direction lookingDirection) {
+		this.lookingDirection = lookingDirection;
+	}
+
+	/**
 	 * Gets the looking {@link Vec2D} of this {@link Entity}.
 	 *
 	 * @return the looking {@link Vec2D} of this {@link Entity}
@@ -77,7 +96,7 @@ public abstract class Entity implements INameable, ISprite {
 	public ModifiableVec2D getLookingVector() {
 		return lookingDirection.getVector();
 	}
-	
+
 	/**
 	 * Gets the velocity {@link Vec2D} of this {@link Entity}.
 	 *
@@ -88,12 +107,30 @@ public abstract class Entity implements INameable, ISprite {
 	}
 	
 	/**
+	 * Sets the velocity {@link Vec2D} of this {@link Entity}.
+	 *
+	 * @param the velocity {@link Vec2D} of this {@link Entity}
+	 */
+	public void setVelocity(ModifiableVec2D velocity) {
+		this.velocity = velocity;
+	}
+	
+	/**
 	 * Gets the {@link UUID} of this {@link Entity}.
 	 *
 	 * @return the {@link UUID} of this {@link Entity}
 	 */
 	public UUID getUniqueId() {
 		return uuid;
+	}
+	
+	/**
+	 * Sets the {@link UUID} of this {@link Entity}.
+	 *
+	 * @param the {@link UUID} of this {@link Entity}
+	 */
+	public void setUniqueId(UUID uuid) {
+		this.uuid = uuid;
 	}
 	
 	@Override
@@ -108,13 +145,36 @@ public abstract class Entity implements INameable, ISprite {
 		this.displayName = displayName;
 	}
 	
+	/**
+	 * Gets the {@link String} of this {@link Entity}.
+	 *
+	 * @return the {@link String} of this {@link Entity}
+	 */
 	public String getImageName() {
 		return imageName;
+	}
+	
+	/**
+	 * Sets the {@link String} of this {@link Entity}.
+	 *
+	 * @param the {@link String} of this {@link Entity}
+	 */
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 	
 	@Override
 	public Sprite getSprite() {
 		return sprite;
+	}
+	
+	/**
+	 * Sets the {@link Sprite} of this {@link Entity}.
+	 *
+	 * @param the {@link Sprite} of this {@link Entity}
+	 */
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
 	}
 	
 	@Override

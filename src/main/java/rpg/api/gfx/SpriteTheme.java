@@ -7,7 +7,27 @@ package rpg.api.gfx;
  * @author Tim Ludwig
  */
 public enum SpriteTheme {
-	DEFAULT("default"),
+	// Zwerge
+	MOERSBERGE("dwarfs/moersberge"),
+	BURG_MOERSBERG("dwarfs/burg_moersberg"),
+	STADT_MOERSBERG("dwarfs/stadt_moersberg"),
+	MOERSBERGWERKE("dwarfs/moersbergwerke"),
+	
+	// Feen
+	SCHALLENBERGE("fairies/schallenberge"),
+	//	HUEBEL("fairies/huebel"),
+	
+	// Oreanen
+	SEYHAN("oreans/seyhan"),
+	
+	// Gestrandete
+	DUEHNE("stranded/duehne"),
+	
+	// Maracus
+	HORNBERGE("maracus/hornberge"),
+	
+	// Bach
+	BROMBACH("creek/brombach"),
 	
 	NONE("none"),
 	TEST("test");
