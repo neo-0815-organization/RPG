@@ -1,5 +1,6 @@
 package rpg;
 
+import rpg.api.gfx.GameFrame;
 import rpg.api.scene.GameField;
 
 /**

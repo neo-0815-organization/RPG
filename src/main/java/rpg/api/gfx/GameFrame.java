@@ -1,4 +1,4 @@
-package rpg;
+package rpg.api.gfx;
 
 import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
@@ -8,7 +8,6 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import rpg.api.gfx.IDrawable;
 import rpg.api.scene.Camera;
 
 public class GameFrame extends JFrame {

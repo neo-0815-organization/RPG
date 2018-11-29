@@ -117,6 +117,14 @@ public abstract class Entity implements INameable, ISprite {
 		return sprite;
 	}
 	
+	/**
+	 * This update-methods updates the entity.
+	 * @param deltaTime time since last frame in sec.
+	 */
+	public void update(double deltaTime) {
+		location.add(velocity.toUnmodifiable().scale(deltaTime));
+	}
+	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		draw(g2d, location);

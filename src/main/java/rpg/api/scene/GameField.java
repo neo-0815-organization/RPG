@@ -1,8 +1,10 @@
 package rpg.api.scene;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import rpg.RPG;
+import rpg.api.entity.Entity;
 import rpg.api.tile.Tile;
 
 /**
@@ -12,54 +14,80 @@ import rpg.api.tile.Tile;
  */
 public class GameField extends Scene {
 	public static boolean		inGame	= true;
-	public final int			maxFPS	= 30;
+	public static final double  maxDeltaTime = 0.21;
 	private final Background	background;
+	
 	
 	private double	deltaTime;
 	private long	lastFrame	= System.currentTimeMillis();
 	
+	private Thread update, draw;
+	
+	private ArrayList<Entity> entities = new ArrayList<>();
+	
+	
 	public GameField() {
 		background = new Background();
+		startUpdating();
+		startDrawing();
 	}
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		background.draw(g2d);
+		
+		for (Entity e: entities)e.draw(g2d);
 	}
 	
 	/**
-	 * Starts the game loop.
+	 * Starts a new Thread, which updates the Gamefield
 	 */
-	public void startUpdating() {
-		new Thread("GameLoop") {
+	private void startUpdating() {
+		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
 				while(inGame)
-					update();
+					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
+					lastFrame = System.currentTimeMillis();
+					
+					if(deltaTime > maxDeltaTime) deltaTime = maxDeltaTime;
+					
+					update(deltaTime);
 			}
-		}.start();
+		};
+		update.start();
+	}
+	
+	/**
+	 * Starts the loop as a thread that draws everything. 
+	 */
+	private void startDrawing() {
+		GameField me = this;
+		draw = new Thread("Draw") {
+			
+			@Override
+			public void run() {
+				while (inGame) {
+					RPG.gameFrame.drawScene(me);
+				}
+			}
+		};
+		draw.start();
 	}
 	
 	/**
 	 * Updates all {@link Tile}s and {@link Entity}s.
 	 */
-	public void update() {
-		deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
-		
-		// TODO klären, ob und wenn, wie
-		if(deltaTime < 1D / maxFPS) {
-			try {
-				Thread.sleep((long) (1000d / maxFPS - deltaTime * 1000d));
-			} catch(final InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
-		}
-		
-		RPG.gameFrame.drawScene(this);
-		System.out.println(deltaTime + " Sollte:" + 1000d / maxFPS);
-		
-		lastFrame = System.currentTimeMillis();
+	private void update(double deltaTime) {
+		background.updateBackground(deltaTime);
+		for (Entity e:entities)e.update(deltaTime);
+	}
+	
+	/**
+	 * Shuts down the {@link GameField}'s threads <a href = "https://www.bmw.de"> Lol</a>.
+	 */
+	public void shutDown() {
+		update.interrupt();
+		draw.interrupt();
 	}
 }
