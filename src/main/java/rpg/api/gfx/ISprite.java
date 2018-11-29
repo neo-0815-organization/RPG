@@ -39,8 +39,8 @@ public interface ISprite extends IDrawable {
 	 *            the location to draw at
 	 */
 	default void draw(final Graphics2D g2d, final Vec2D<?> location) {
-		final int x = location.getX().getValuePixel(), y = location.getY().getValuePixel(), camX = Camera.location.getX().getValuePixel(), camY = Camera.location.getY().getValuePixel(), w = getWidth(), h = getHeight(), camXW = camX + (int) Camera.frameSize.getWidth(), camYH = camY + (int) Camera.frameSize.getHeight();
+		final int x = location.getX().getValuePixel(), y = location.getY().getValuePixel(), camX = Camera.location.getX().getValuePixel(), camY = Camera.location.getY().getValuePixel(), xw = x + getWidth(), yh = y + getHeight(), camXW = camX + (int) Camera.frameSize.getWidth(), camYH = camY + (int) Camera.frameSize.getHeight();
 		
-		if((x < camX && camX < w || x < camXW && camXW < w) && (x < camY && camY < h || x < camYH && camYH < h)) g2d.drawImage(getSprite().getCurrentAnimationFrame(), x, y, null);
+		if((x > camX && x < camXW || xw > camX && xw < camXW) && (y > camY && y < camYH || yh > camY && yh < camYH)) g2d.drawImage(getSprite().getCurrentAnimationFrame(), x, y, null);
 	}
 }
