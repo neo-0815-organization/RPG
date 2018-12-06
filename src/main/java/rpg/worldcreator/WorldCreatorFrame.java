@@ -369,8 +369,7 @@ public class WorldCreatorFrame extends JFrame {
 					pane = new TexturePane();
 					pane.setBounds(x * size, y * size, size, size);
 					
-					pane.imageId = reader.read();
-					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(pane.imageId)), reader.read(), reader.read());
+					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read());
 					pane.setRotated(reader.read());
 					
 					workingArea.add(pane);
@@ -661,6 +660,7 @@ public class WorldCreatorFrame extends JFrame {
 		
 		public void setImage(final BufferedImage image, int xShift, int yShift) {
 			this.image = image != null ? image.getSubimage(xShift, yShift, 32, 32) : null;
+			this.imageId = RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image));
 			this.xShift = xShift;
 			this.yShift = yShift;
 			
