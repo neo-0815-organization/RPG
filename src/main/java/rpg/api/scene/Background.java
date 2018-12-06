@@ -21,6 +21,14 @@ public class Background implements IImage {
 		tiles = new ArrayList<>();
 	}
 	
+	public Background(BufferedImage backgroundImage) {
+		tiles = new ArrayList<>();
+		this.background = backgroundImage;
+	}
+	
+	/**
+	 * Draws the background image and the tiles on it
+	 */
 	@Override
 	public void draw(final Graphics2D g2d) {
 		draw(g2d, Vec2D.ORIGIN);
@@ -36,5 +44,9 @@ public class Background implements IImage {
 	@Override
 	public BufferedImage getImage() {
 		return background;
+	}
+	
+	public void setBackgroundImage(BufferedImage img) {
+		this.background = img;
 	}
 }

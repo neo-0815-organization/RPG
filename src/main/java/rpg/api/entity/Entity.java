@@ -174,6 +174,9 @@ public abstract class Entity implements INameable, ISprite {
 	 */
 	public void update(double deltaTime) {
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
+		
+		System.out.print(velocity.toString());
+		System.out.println(" >> " + deltaTime);
   }
   
   /**
@@ -189,6 +192,8 @@ public abstract class Entity implements INameable, ISprite {
 	@Override
 	public void draw(final Graphics2D g2d) {
 		draw(g2d, location);
+		
+		sprite.nextFrame();
 	}
 	
 	/**

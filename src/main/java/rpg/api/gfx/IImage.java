@@ -44,8 +44,17 @@ public interface IImage extends IDrawable {
 	 *            the location {@link Vec2D} to draw at
 	 */
 	default void draw(final Graphics2D g2d, final Vec2D<?> location) {
-		final int x = location.getX().getValuePixel(), y = location.getY().getValuePixel(), camX = Camera.location.getX().getValuePixel(), camY = Camera.location.getY().getValuePixel(), w = getWidth(), h = getHeight(), camXW = (int) (camX + Camera.frameSize.getWidth()), camYH = (int) (camY + Camera.frameSize.getHeight());
+		//@formatter:off
+		final int x = location.getX().getValuePixel(),
+				y = location.getY().getValuePixel(),
+				camX = Camera.location.getX().getValuePixel(),
+				camY = Camera.location.getY().getValuePixel(),
+				w = getWidth(),
+				h = getHeight(),
+				camXW = (int) (camX + Camera.frameSize.getWidth()),
+				camYH = (int) (camY + Camera.frameSize.getHeight());
+		//@formatter:on
 		
-		if((x < camX && camX < w || x < camXW && camXW < w) && (x < camY && camY < h || x < camYH && camYH < h)) g2d.drawImage(getImage(), x, y, null);
+		if((x < camX + w || x < camXW) && (y < camY + h || y < camYH)) g2d.drawImage(getImage(), x, y, null);
 	}
 }

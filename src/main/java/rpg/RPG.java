@@ -1,7 +1,6 @@
 package rpg;
 
 import rpg.api.gfx.GameFrame;
-import rpg.api.scene.GameField;
 
 /**
  * The main class of this project.
@@ -11,7 +10,6 @@ public class RPG {
 	
 	public static void main(final String[] args) {
 		init();
-		final GameField gf = new GameField();
 	}
 	
 	/* This method should not be edited! Thanks! */

@@ -1,7 +1,8 @@
 package rpg.api.scene;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 import rpg.RPG;
 import rpg.api.entity.Entity;
@@ -14,7 +15,8 @@ import rpg.api.tile.Tile;
  */
 public class GameField extends Scene {
 	public static boolean		inGame	= true;
-	public static final double  maxDeltaTime = 0.21;
+	public static final double  MAX_DELTA_TIME = 0.21,
+								MIN_DELTA_TIME = 0.00001;
 	private final Background	background;
 	
 	
@@ -23,20 +25,29 @@ public class GameField extends Scene {
 	
 	private Thread update, draw;
 	
-	private ArrayList<Entity> entities = new ArrayList<>();
+	private LinkedList<Entity> entities = new LinkedList<>();
 	
 	
 	public GameField() {
 		background = new Background();
+		
 		startUpdating();
 		startDrawing();
 	}
+	
+	public GameField(BufferedImage backgorundImage) {
+		background = new Background(backgorundImage);
+		
+		startUpdating();
+		startDrawing();
+	}
+	
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		background.draw(g2d);
 		
-		for (Entity e: entities)e.draw(g2d);
+		for (Entity e: entities) e.draw(g2d);
 	}
 	
 	/**
@@ -46,15 +57,21 @@ public class GameField extends Scene {
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
-				while(inGame)
+				while(inGame) {
 					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
 					lastFrame = System.currentTimeMillis();
 					
-					if(deltaTime > maxDeltaTime) deltaTime = maxDeltaTime;
+					
+					if(deltaTime > MAX_DELTA_TIME) deltaTime = MAX_DELTA_TIME;
+					if(deltaTime <= MIN_DELTA_TIME) deltaTime = MIN_DELTA_TIME;
 					
 					update(deltaTime);
+					
+					System.out.print("");
+				}
 			}
 		};
+		
 		update.start();
 	}
 	
@@ -80,7 +97,9 @@ public class GameField extends Scene {
 	 */
 	private void update(double deltaTime) {
 		background.updateBackground(deltaTime);
-		for (Entity e:entities)e.update(deltaTime);
+		
+		for (int i = 0; i < entities.size(); i++)
+			entities.get(i).update(deltaTime);
 	}
 	
 	/**
@@ -89,5 +108,13 @@ public class GameField extends Scene {
 	public void shutDown() {
 		update.interrupt();
 		draw.interrupt();
+	}
+	
+	/**
+	 * ymsdfh.ausfdhg
+	 * @param e
+	 */
+	public void addEntity(Entity e) {
+		entities.add(e);
 	}
 }
