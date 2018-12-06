@@ -82,7 +82,7 @@ public class WorldCreatorFrame extends JFrame {
 						texturePanes = new TexturePane[dimension.width][dimension.height];
 						
 						updateTitle("untitled.world");
-						updateTilePanes();
+						updateTexturePanes();
 					}
 					
 					break;
@@ -110,6 +110,16 @@ public class WorldCreatorFrame extends JFrame {
 					exportFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Files (*.png)", "png"));
 					
 					if(exportFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) exportFile(exportFileChooser.getSelectedFile());
+					
+					break;
+				case "open":
+					final JFileChooser openFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
+					openFileChooser.setAcceptAllFileFilterUsed(false);
+					openFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
+					
+					if(openFileChooser.showOpenDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
+						openFile(openFileChooser.getSelectedFile());
+					}
 					
 					break;
 				case "size":
@@ -221,6 +231,11 @@ public class WorldCreatorFrame extends JFrame {
 		newItem.addActionListener(commandActionListener);
 		newItem.setActionCommand("new");
 		fileMenu.add(newItem);
+		final JMenuItem openItem = new JMenuItem("Open...", KeyEvent.VK_O);
+		openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+		openItem.addActionListener(commandActionListener);
+		openItem.setActionCommand("open");
+		fileMenu.add(openItem);
 		final JMenuItem saveItem = new JMenuItem("Save...", KeyEvent.VK_S);
 		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		saveItem.addActionListener(commandActionListener);
@@ -325,7 +340,11 @@ public class WorldCreatorFrame extends JFrame {
 			JOptionPane.showMessageDialog(INSTANCE, "The selected file is 'null'!!", "Open File", JOptionPane.ERROR_MESSAGE);
 			
 			return;
+		}else {
+			openedFile = file;
 		}
+		
+		Arrays.stream(workingArea.getComponents()).parallel().filter(comp -> comp instanceof TexturePane).forEach(comp -> workingArea.remove(comp));
 		
 		try {			
 			final BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -348,16 +367,14 @@ public class WorldCreatorFrame extends JFrame {
 			for(int x = 0; x < texturePanes.length; x++)
 				for(int y = 0; y < texturePanes[x].length; y++) {
 					pane = new TexturePane();
+					pane.setBounds(x * size, y * size, size, size);
 					
+					pane.imageId = reader.read();
+					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(pane.imageId)), reader.read(), reader.read());
+					pane.setRotated(reader.read());
 					
-					// START ignore & remove later
-					pane = texturePanes[x][y];
-					
-					writer.write(pane.imageId);
-					writer.write(pane.xShift);
-					writer.write(pane.yShift);
-					writer.write(pane.rotation);
-					// END of ignore
+					workingArea.add(pane);
+					texturePanes[x][y] = pane;
 					
 					updateProgressBar(++numberTiles);
 				}
@@ -365,6 +382,7 @@ public class WorldCreatorFrame extends JFrame {
 			reader.close();
 			
 			updateProgressBar(progressBar.getMaximum());
+			updateTitle(openedFile.getName());
 			
 			JOptionPane.showMessageDialog(workingArea, "Opened file '" + openedFile.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Opened", JOptionPane.INFORMATION_MESSAGE);
 		}catch(final IOException e) {
@@ -428,7 +446,7 @@ public class WorldCreatorFrame extends JFrame {
 		}
 	}
 	
-	private void updateTilePanes() {
+	private void updateTexturePanes() {
 		finishedThreads = 0;
 		numberTiles = 0;
 		time = System.currentTimeMillis();
@@ -504,7 +522,7 @@ public class WorldCreatorFrame extends JFrame {
 			while(buttons.hasMoreElements()) {
 				button = buttons.nextElement();
 				
-				button.setIcon(new ImageIcon(RPGWorldCreator.getImage("/cursor/" + button.getText().toLowerCase() + ".png")));
+				button.setIcon(new ImageIcon(RPGWorldCreator.getImage("/assets/worldcreator/cursors/" + button.getText().toLowerCase() + ".png")));
 				button.addActionListener(prefixActionListener);
 				button.setActionCommand("cursor:" + button.getText().toLowerCase());
 				button.setFocusPainted(false);
@@ -655,7 +673,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private void registerCursor(final String name, final Point hotSpot, final Toolkit toolkit) {
-		cursors.put(name, toolkit.createCustomCursor(RPGWorldCreator.getImage("/cursor/" + name + ".png"), hotSpot, name));
+		cursors.put(name, toolkit.createCustomCursor(RPGWorldCreator.getImage("/assets/worldcreator/cursors/" + name + ".png"), hotSpot, name));
 	}
 	
 	@Override

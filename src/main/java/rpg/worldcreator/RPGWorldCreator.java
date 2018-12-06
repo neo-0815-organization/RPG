@@ -22,7 +22,7 @@ public class RPGWorldCreator {
 	private static File texturesFolder;
 	
 	public static void main(final String[] args) {
-		texturesFolder = new File(RPGWorldCreator.class.getResource("/").getFile(), "textures");
+		texturesFolder = new File(RPGWorldCreator.class.getResource("/assets/worldcreator/").getFile(), "textures");
 		
 		if(!texturesFolder.exists()) texturesFolder.mkdirs();
 		
@@ -39,7 +39,7 @@ public class RPGWorldCreator {
 			
 			@Override
 			public void accept(String name) {
-				image = getImage("/textures/", name);
+				image = getImage("/assets/worldcreator/textures/", name);
 				
 				textures.put(name.replace(".png", ""), count, image);
 				
