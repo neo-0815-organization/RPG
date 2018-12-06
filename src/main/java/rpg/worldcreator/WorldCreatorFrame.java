@@ -353,10 +353,10 @@ public class WorldCreatorFrame extends JFrame {
 					// START ignore & remove later
 					pane = texturePanes[x][y];
 					
-					writer.write(pane.imageId);
-					writer.write(pane.xShift);
-					writer.write(pane.yShift);
-					writer.write(pane.rotation);
+					//writer.write(pane.imageId);
+					//writer.write(pane.xShift);
+					//writer.write(pane.yShift);
+					//writer.write(pane.rotation);
 					// END of ignore
 					
 					updateProgressBar(++numberTiles);
@@ -585,8 +585,8 @@ public class WorldCreatorFrame extends JFrame {
 						
 						break;
 					case "bucket":
-						if(button == 1) setImage(currentTexture, currentTextureX, currentTextureY);
-						else if(button == 3) setImage(null);
+						if(button == 1) bucketFill(null, -1, -1, image, currentTexture); // TODO add coordinates
+						else if(button == 3) bucketFill(null, -1, -1, image, null); // TODO add coordinates
 						
 						break;
 					case "rotate":
@@ -597,6 +597,26 @@ public class WorldCreatorFrame extends JFrame {
 				}
 			};
 		};
+		
+		private void bucketFill(TexturePane pane, int paneX, int paneY, BufferedImage image, BufferedImage newImage) {
+			if(pane == null) pane = this;
+			
+			if(pane.image.equals(image)) {
+				if(newImage != null) pane.setImage(newImage, currentTextureX, currentTextureY);
+				else pane.setImage(null);
+				
+				int paneXPlus = paneX, paneXMinus = paneX, paneYPlus = paneY, paneYMinus = paneY;
+				if((paneX + 1) < texturePanes.length) paneXPlus++;
+				if((paneX - 1) < texturePanes.length) paneXMinus--;
+				if((paneY + 1) < texturePanes.length) paneYPlus++;
+				if((paneY - 1) < texturePanes.length) paneYMinus--;
+				
+				if(texturePanes[paneXPlus][paneY].image.equals(image)) bucketFill(texturePanes[paneXPlus][paneY], paneXPlus, paneY, image, newImage);
+				if(texturePanes[paneXMinus][paneY].image.equals(image)) bucketFill(texturePanes[paneXMinus][paneY], paneXMinus, paneY, image, newImage);
+				if(texturePanes[paneX][paneYPlus].image.equals(image)) bucketFill(texturePanes[paneX][paneYPlus], paneX, paneYPlus, image, newImage);
+				if(texturePanes[paneX][paneYMinus].image.equals(image)) bucketFill(texturePanes[paneX][paneYMinus], paneX, paneYMinus, image, newImage);
+			}
+		}
 		
 		private BufferedImage image;
 		private int imageId = -1, rotation = 0, xShift = 0, yShift = 0;
