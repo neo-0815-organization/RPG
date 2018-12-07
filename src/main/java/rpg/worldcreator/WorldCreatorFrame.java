@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
@@ -54,113 +53,117 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import rpg.worldcreator.dialogs.NewMapDialog;
 
 public class WorldCreatorFrame extends JFrame {
+	
 	private static final long serialVersionUID = -5092028467904882919L;
 	
-	private final WorldCreatorFrame INSTANCE = this;
-	private final NewMapDialog newMapDialog = new NewMapDialog(INSTANCE);
+	private final WorldCreatorFrame	INSTANCE		= this;
+	private final NewMapDialog		newMapDialog	= new NewMapDialog(INSTANCE);
 	
-	private final JPanel workingArea = new JPanel();
-	private final JProgressBar progressBar = new JProgressBar();
-	private final HashMap<String, Cursor> cursors = new HashMap<>();
-	private final ActionListener commandActionListener = new ActionListener() {
-		
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			final String command = e.getActionCommand();
-			
-			switch(command) {
-				case "exit":
-					System.out.println("EXIT -- CLOSED");
+	private final JPanel					workingArea				= new JPanel();
+	private final JProgressBar				progressBar				= new JProgressBar();
+	private final HashMap<String, Cursor>	cursors					= new HashMap<>();
+	private final ActionListener			commandActionListener	= new ActionListener() {
+																		
+																		@Override
+																		public void actionPerformed(final ActionEvent e) {
+																			final String command = e.getActionCommand();
+																			
+																			switch(command) {
+																				case "exit":
+																					System.out.println("EXIT -- CLOSED");
+																					
+																					dispose();
+																					break;
+																				case "new":
+																					newMapDialog.setVisible(true);
+																					
+																					final Dimension dimension = newMapDialog.getDimension();
+																					if(dimension != null) {
+																						texturePanes = new TexturePane[dimension.width][dimension.height];
+																						
+																						updateTitle("untitled.world");
+																						updateTexturePanes();
+																					}
+																					
+																					break;
+																				case "save":
+																					if(openedFile != null && openedFile.exists()) {
+																						saveFile();
+																						
+																						break;
+																					}
+																					
+																					final JFileChooser saveFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
+																					saveFileChooser.setAcceptAllFileFilterUsed(false);
+																					saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
+																					
+																					if(saveFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
+																						openedFile = saveFileChooser.getSelectedFile();
+																						
+																						saveFile();
+																					}
+																					
+																					break;
+																				case "export":
+																					final JFileChooser exportFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
+																					exportFileChooser.setAcceptAllFileFilterUsed(false);
+																					exportFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Files (*.png)", "png"));
+																					
+																					if(exportFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION)
+																						exportFile(exportFileChooser.getSelectedFile());
+																					
+																					break;
+																				case "open":
+																					final JFileChooser openFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
+																					openFileChooser.setAcceptAllFileFilterUsed(false);
+																					openFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
+																					
+																					if(openFileChooser.showOpenDialog(INSTANCE) == JFileChooser.APPROVE_OPTION)
+																						openFile(openFileChooser.getSelectedFile());
+																					
+																					break;
+																				case "size":
+																					break;
+																				case "clear":
+																					if(texturePanes != null)
+																						Arrays.stream(texturePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setImage(null));
+																					
+																					break;
+																			}
+																			
+																			if(!command.equals("new") && !command.equals("exit"))
+																				updateProgressBar(0);
+																		}
+																	},
+			prefixActionListener = new ActionListener() {
+																		
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					final String[] actionCommand = e.getActionCommand().split(":");
+					final String prefix = actionCommand[0], command = actionCommand[1], argString = actionCommand.length == 3 ? actionCommand[2] : "";
+					final String[] args = argString.split("\\|");
 					
-					dispose();
-					break;
-				case "new":
-					newMapDialog.setVisible(true);
-					
-					final Dimension dimension = newMapDialog.getDimension();
-					if(dimension != null) {
-						texturePanes = new TexturePane[dimension.width][dimension.height];
-						
-						updateTitle("untitled.world");
-						updateTexturePanes();
+					switch(prefix) {
+						case "cursor":
+							workingArea.setCursor(cursors.get(command));
+							
+							break;
+						case "sprite":
+							currentTexture = RPGWorldCreator.getTextures().getSecond(command);
+							currentTextureId = RPGWorldCreator.getTextures().getFirst(command);
+							currentTextureX = Integer.valueOf(args[0]);
+							currentTextureY = Integer.valueOf(args[1]);
+							
+							break;
 					}
-					
-					break;
-				case "save":
-					if(openedFile != null && openedFile.exists()) {
-						saveFile();
-						
-						break;
-					}
-					
-					final JFileChooser saveFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
-					saveFileChooser.setAcceptAllFileFilterUsed(false);
-					saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
-					
-					if(saveFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
-						openedFile = saveFileChooser.getSelectedFile();
-						
-						saveFile();
-					}
-					
-					break;
-				case "export":
-					final JFileChooser exportFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
-					exportFileChooser.setAcceptAllFileFilterUsed(false);
-					exportFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Files (*.png)", "png"));
-					
-					if(exportFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) exportFile(exportFileChooser.getSelectedFile());
-					
-					break;
-				case "open":
-					final JFileChooser openFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
-					openFileChooser.setAcceptAllFileFilterUsed(false);
-					openFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
-					
-					if(openFileChooser.showOpenDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
-						openFile(openFileChooser.getSelectedFile());
-					}
-					
-					break;
-				case "size":
-					break;
-				case "clear":
-					if(texturePanes != null) Arrays.stream(texturePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setImage(null));
-					
-					break;
-			}
-			
-			if(!command.equals("new") && !command.equals("exit")) updateProgressBar(0);
-		}
-	}, prefixActionListener = new ActionListener() {
-		
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			final String[] actionCommand = e.getActionCommand().split(":");
-			final String prefix = actionCommand[0], command = actionCommand[1], argString = actionCommand.length == 3 ? actionCommand[2] : "";
-			final String[] args = argString.split("\\|");
-			
-			switch(prefix) {
-				case "cursor":
-					workingArea.setCursor(cursors.get(command));
-					
-					break;
-				case "sprite":
-					currentTexture = RPGWorldCreator.getTextures().getSecond(command);
-					currentTextureId = RPGWorldCreator.getTextures().getFirst(command);
-					currentTextureX = Integer.valueOf(args[0]);
-					currentTextureY = Integer.valueOf(args[1]);
-					
-					break;
-			}
-		}
-	};
+				}
+			};
 	
-	private TexturePane[][] texturePanes;
-	private final double factor = 1d;
-	private BufferedImage currentTexture;
-	private int currentTextureId, currentTextureX, currentTextureY;
-	private File openedFile;
+	private TexturePane[][]	texturePanes;
+	private final double	factor	= 1d;
+	private BufferedImage	currentTexture;
+	private int				currentTextureId, currentTextureX, currentTextureY;
+	private File			openedFile;
 	
 	public WorldCreatorFrame() {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -184,7 +187,7 @@ public class WorldCreatorFrame extends JFrame {
 			registerCursor("rotate", new Point(16, 12));
 			
 			workingArea.setCursor(cursors.get("pencil"));
-		}catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException e) {
+		} catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException e) {
 			e.printStackTrace();
 		}
 		
@@ -194,7 +197,8 @@ public class WorldCreatorFrame extends JFrame {
 		setContentPane(new JPanel());
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		getContentPane().setBorder(new EmptyBorder(3, 3, 3, 3));
-		if(RPGWorldCreator.isDarkmode()) getContentPane().setBackground(new Color(44, 49, 53));
+		if(RPGWorldCreator.isDarkmode())
+			getContentPane().setBackground(new Color(44, 49, 53));
 		
 		initMenuBar();
 		initComponents();
@@ -217,7 +221,8 @@ public class WorldCreatorFrame extends JFrame {
 		add(sprites, BorderLayout.EAST);
 		
 		progressBar.setForeground(Color.GREEN);
-		if(RPGWorldCreator.isDarkmode()) progressBar.setBackground(new Color(25, 29, 31));
+		if(RPGWorldCreator.isDarkmode())
+			progressBar.setBackground(new Color(25, 29, 31));
 		add(progressBar, BorderLayout.SOUTH);
 	}
 	
@@ -269,11 +274,11 @@ public class WorldCreatorFrame extends JFrame {
 		setJMenuBar(menuBar);
 	}
 	
-	private int finishedThreads, numberTiles;
-	private long time;
+	private int		finishedThreads, numberTiles;
+	private long	time;
 	
 	public void saveFile() {
-		try {			
+		try {
 			finishedThreads = 0;
 			numberTiles = 0;
 			time = System.currentTimeMillis();
@@ -283,9 +288,8 @@ public class WorldCreatorFrame extends JFrame {
 			progressBar.setMaximum(widthTiles * heightTiles);
 			updateProgressBar(0);
 			
-			if(openedFile == null || !openedFile.exists()) {
+			if(openedFile == null || !openedFile.exists())
 				openedFile.createNewFile();
-			}
 			
 			final FileWriter writer = new FileWriter(openedFile);
 			
@@ -296,7 +300,7 @@ public class WorldCreatorFrame extends JFrame {
 					writer.write(id);
 					writer.write(name.length());
 					writer.write(name.toCharArray());
-				}catch (IOException e) {
+				} catch(final IOException e) {
 					e.printStackTrace();
 				}
 			});
@@ -306,9 +310,9 @@ public class WorldCreatorFrame extends JFrame {
 			writer.write(texturePanes.length);
 			
 			TexturePane pane;
-			for(int x = 0; x < texturePanes.length; x++)
-				for(int y = 0; y < texturePanes[x].length; y++) {
-					pane = texturePanes[x][y];
+			for(final TexturePane[] texturePane : texturePanes)
+				for(final TexturePane element : texturePane) {
+					pane = element;
 					
 					writer.write(pane.imageId);
 					writer.write(pane.xShift);
@@ -323,7 +327,7 @@ public class WorldCreatorFrame extends JFrame {
 			updateProgressBar(progressBar.getMaximum());
 			
 			JOptionPane.showMessageDialog(workingArea, "Saved to '" + openedFile.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Saved", JOptionPane.INFORMATION_MESSAGE);
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -340,18 +344,17 @@ public class WorldCreatorFrame extends JFrame {
 			JOptionPane.showMessageDialog(INSTANCE, "The selected file is 'null'!!", "Open File", JOptionPane.ERROR_MESSAGE);
 			
 			return;
-		}else {
+		} else
 			openedFile = file;
-		}
 		
 		Arrays.stream(workingArea.getComponents()).parallel().filter(comp -> comp instanceof TexturePane).forEach(comp -> workingArea.remove(comp));
 		
-		try {			
+		try {
 			final BufferedReader reader = new BufferedReader(new FileReader(file));
 			
 			// read texture paths from opened file
 			RPGWorldCreator.getTextures().clear();
-			int size = reader.read();
+			final int size = reader.read();
 			for(int i = 0; i < size; i++) {
 				final int id = reader.read();
 				final char[] name = new char[reader.read()];
@@ -384,7 +387,7 @@ public class WorldCreatorFrame extends JFrame {
 			updateTitle(openedFile.getName());
 			
 			JOptionPane.showMessageDialog(workingArea, "Opened file '" + openedFile.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Opened", JOptionPane.INFORMATION_MESSAGE);
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -399,18 +402,20 @@ public class WorldCreatorFrame extends JFrame {
 		progressBar.setMaximum(widthTiles * heightTiles);
 		updateProgressBar(0);
 		
-		if(file == null || !file.exists()) try {
+		if(file == null || !file.exists())
+			try {
 			file.createNewFile();
-		}catch(final IOException e) {
+			} catch(final IOException e) {
 			e.printStackTrace();
-		}
-		
+			}
+			
 		try {
 			final BufferedImage image = new BufferedImage(widthTiles * size, heightTiles * size, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = image.createGraphics();
 			
 			for(int x = 0; x < texturePanes.length; x++)
 				new Thread("ExportThread-" + x) {
+					
 					private final int x = Integer.valueOf(getName().replace("ExportThread-", ""));
 					
 					@Override
@@ -440,7 +445,7 @@ public class WorldCreatorFrame extends JFrame {
 			ImageIO.write(image, "PNG", file);
 			
 			JOptionPane.showMessageDialog(workingArea, "Exported to '" + file.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Exported", JOptionPane.INFORMATION_MESSAGE);
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -459,8 +464,9 @@ public class WorldCreatorFrame extends JFrame {
 		
 		for(int x = 0; x < widthTiles; x++)
 			new Thread("CreateThread-" + x) {
-				private final int x = Integer.valueOf(getName().replace("CreateThread-", ""));
-				private TexturePane paneToAdd;
+				
+				private final int	x	= Integer.valueOf(getName().replace("CreateThread-", ""));
+				private TexturePane	paneToAdd;
 				
 				@Override
 				public void run() {
@@ -497,6 +503,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private class ToolPanel extends JPanel {
+		
 		private static final long serialVersionUID = -333048293545148426L;
 		
 		private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -505,7 +512,8 @@ public class WorldCreatorFrame extends JFrame {
 			setLayout(new GridLayout(4, 1));
 			setBorder(new EmptyBorder(3, 3, 3, 3));
 			
-			if(RPGWorldCreator.isDarkmode()) setBackground(new Color(25, 29, 31));
+			if(RPGWorldCreator.isDarkmode())
+				setBackground(new Color(25, 29, 31));
 			
 			initComponents();
 		}
@@ -531,6 +539,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private class SpritesPanel extends JPanel {
+		
 		private static final long serialVersionUID = -8842399534328251555L;
 		
 		private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -539,7 +548,8 @@ public class WorldCreatorFrame extends JFrame {
 			setLayout(new GridLayout(10, 3));
 			setBorder(new EmptyBorder(3, 3, 3, 3));
 			
-			if(RPGWorldCreator.isDarkmode()) setBackground(new Color(25, 29, 31));
+			if(RPGWorldCreator.isDarkmode())
+				setBackground(new Color(25, 29, 31));
 			
 			initComponents();
 		}
@@ -562,81 +572,105 @@ public class WorldCreatorFrame extends JFrame {
 		}
 	}
 	
-	private boolean pressing = false;
-	private int button = 0;
+	private boolean	pressing	= false;
+	private int		button		= 0;
 	
 	private class TexturePane extends JPanel {
-		private static final long serialVersionUID = -2548204979994837953L;
-		private final MouseListener tilePaneMouseListener = new MouseAdapter() {
-			
-			@Override
-			public void mousePressed(final MouseEvent e) {
-				if(!pressing) {
-					pressing = true;
-					button = e.getButton();
-					
-					mouseEntered(e);
-				}
-			};
-			
-			@Override
-			public void mouseReleased(final MouseEvent e) {
-				if(pressing) {
-					pressing = false;
-					button = 0;
-					
-					workingArea.repaint();
-				}
-			};
-			
-			@Override
-			public void mouseEntered(final MouseEvent e) {
-				if(pressing) switch(getCursor().getName()) {
-					case "pencil":
-						if(button == 1) setImage(currentTexture, currentTextureX, currentTextureY);
-						else if(button == 3) setImage(null);
-						
-						break;
-					case "eraser":
-						if(button == 1 || button == 3) setImage(null);
-						
-						break;
-					case "bucket":
-						if(button == 1) bucketFill(null, -1, -1, image, currentTexture); // TODO add coordinates
-						else if(button == 3) bucketFill(null, -1, -1, image, null); // TODO add coordinates
-						
-						break;
-					case "rotate":
-						if(image != null) if(button == 1) setRotated(90);
-						else if(button == 3) setRotated(-90);
-						
-						break;
-				}
-			};
-		};
+		
+		private static final long	serialVersionUID		= -2548204979994837953L;
+		private final MouseListener	tilePaneMouseListener	= new MouseAdapter() {
+																
+																@Override
+																public void mousePressed(final MouseEvent e) {
+																	if(!pressing) {
+																		pressing = true;
+																		button = e.getButton();
+																		
+																		mouseEntered(e);
+																	}
+																};
+																
+																@Override
+																public void mouseReleased(final MouseEvent e) {
+																	if(pressing) {
+																		pressing = false;
+																		button = 0;
+																		
+																		workingArea.repaint();
+																	}
+																};
+																
+																@Override
+																public void mouseEntered(final MouseEvent e) {
+																	if(pressing)
+																		switch(getCursor().getName()) {
+																		case "pencil":
+																			if(button == 1)
+																				setImage(currentTexture, currentTextureX, currentTextureY);
+																			else if(button == 3)
+																				setImage(null);
+																			
+																			break;
+																		case "eraser":
+																			if(button == 1 || button == 3)
+																				setImage(null);
+																			
+																			break;
+																		case "bucket":
+																			if(button == 1)
+																				bucketFill(null, -1, -1, image, currentTexture);						// TODO add coordinates
+																			else if(button == 3)
+																				bucketFill(null, -1, -1, image, null);									// TODO add coordinates
+																			
+																			break;
+																		case "rotate":
+																			if(image != null)
+																				if(button == 1)
+																					setRotated(90);
+																			else if(button == 3)
+																				setRotated(-90);
+																			
+																			break;
+																	}
+																};
+															};
 		
 		private void bucketFill(TexturePane pane, int paneX, int paneY, BufferedImage image, BufferedImage newImage) {
-			if(pane == null) pane = this;
+			if(pane == null) {
+				pane = this;
+				paneX = pane.getX();
+				paneY = pane.getY();
+			}
 			
 			if(pane.image.equals(image)) {
-				if(newImage != null) pane.setImage(newImage, currentTextureX, currentTextureY);
-				else pane.setImage(null);
+				if(newImage != null)
+					pane.setImage(newImage, currentTextureX, currentTextureY);
+				else
+					pane.setImage(null);
 				
 				int paneXPlus = paneX, paneXMinus = paneX, paneYPlus = paneY, paneYMinus = paneY;
-				if((paneX + 1) < texturePanes.length) paneXPlus++;
-				if((paneX - 1) < texturePanes.length) paneXMinus--;
-				if((paneY + 1) < texturePanes.length) paneYPlus++;
-				if((paneY - 1) < texturePanes.length) paneYMinus--;
+				if(paneX + 1 < texturePanes.length)
+					paneXPlus++;
+				if(paneX - 1 < texturePanes.length)
+					paneXMinus--;
+				if(paneY + 1 < texturePanes.length)
+					paneYPlus++;
+				if(paneY - 1 < texturePanes.length)
+					paneYMinus--;
 				
-				if(texturePanes[paneXPlus][paneY].image.equals(image)) bucketFill(texturePanes[paneXPlus][paneY], paneXPlus, paneY, image, newImage);
-				if(texturePanes[paneXMinus][paneY].image.equals(image)) bucketFill(texturePanes[paneXMinus][paneY], paneXMinus, paneY, image, newImage);
-				if(texturePanes[paneX][paneYPlus].image.equals(image)) bucketFill(texturePanes[paneX][paneYPlus], paneX, paneYPlus, image, newImage);
-				if(texturePanes[paneX][paneYMinus].image.equals(image)) bucketFill(texturePanes[paneX][paneYMinus], paneX, paneYMinus, image, newImage);
+				if(texturePanes[paneXPlus][paneY].image.equals(image))
+					bucketFill(texturePanes[paneXPlus][paneY], paneXPlus, paneY, image, newImage);
+				if(texturePanes[paneXMinus][paneY].image.equals(image))
+					bucketFill(texturePanes[paneXMinus][paneY], paneXMinus, paneY, image, newImage);
+				if(texturePanes[paneX][paneYPlus].image.equals(image))
+					bucketFill(texturePanes[paneX][paneYPlus], paneX, paneYPlus, image, newImage);
+				if(texturePanes[paneX][paneYMinus].image.equals(image))
+					bucketFill(texturePanes[paneX][paneYMinus], paneX, paneYMinus, image, newImage);
 			}
 		}
 		
-		private BufferedImage image;
-		private int imageId = -1, rotation = 0, xShift = 0, yShift = 0;
+		private BufferedImage	image;
+		private int				imageId	= -1, rotation = 0, xShift = 0, yShift = 0;
 		
 		public TexturePane() {
 			this(null);
@@ -655,12 +689,13 @@ public class WorldCreatorFrame extends JFrame {
 		public void paintComponent(final Graphics g) {
 			super.paintComponent(g);
 			
-			if(image != null) g.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
+			if(image != null)
+				g.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
 		}
 		
 		public void setImage(final BufferedImage image, int xShift, int yShift) {
 			this.image = image != null ? image.getSubimage(xShift, yShift, 32, 32) : null;
-			this.imageId = RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image));
+			imageId = RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image));
 			this.xShift = xShift;
 			this.yShift = yShift;
 			
@@ -676,6 +711,24 @@ public class WorldCreatorFrame extends JFrame {
 			
 			rotation += angle;
 		}
+		
+		@Override
+		public int getX() {
+			for(int x = 0; x < texturePanes.length; x++)
+				for(int y = 0; y < texturePanes[x].length; y++)
+					if(texturePanes[x][y] == this)
+						return x;
+			return -1;
+		}
+		
+		@Override
+		public int getY() {
+			for(final TexturePane[] texturePane : texturePanes)
+				for(int y = 0; y < texturePane.length; y++)
+					if(texturePane[y] == this)
+						return y;
+			return -1;
+		}
 	}
 	
 	protected void updateTitle(final String filename) {
@@ -683,7 +736,8 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	protected void updateProgressBar(final int value) {
-		if(value >= 0) progressBar.setValue(value);
+		if(value >= 0)
+			progressBar.setValue(value);
 		
 		progressBar.update(progressBar.getGraphics());
 	}
