@@ -19,27 +19,25 @@ public class RPGWorldCreator {
 	private static final boolean darkMode = false;
 	
 	private static WorldCreatorFrame wcFrame;
-	private static File texturesFolder;
+	private static String texturesFolder;
 	
 	public static void main(final String[] args) {
-		texturesFolder = new File(RPGWorldCreator.class.getResource("/assets/worldcreator/").getFile(), "textures");
+		texturesFolder = "/assets/worldcreator/textures";
 		
-		if(!texturesFolder.exists()) texturesFolder.mkdirs();
-		
-		loadImages();
+		loadTextures();
 		
 		wcFrame = new WorldCreatorFrame();
 		wcFrame.setVisible(true);
 	}
 	
-	private static void loadImages() {
+	private static void loadTextures() {
 		Consumer<String> consumer = new Consumer<String>() {
 			private BufferedImage image = null;
 			private int count = 0;
 			
 			@Override
 			public void accept(String name) {
-				image = getImage("/assets/worldcreator/textures/", name);
+				image = getImage(texturesFolder, name);
 				
 				textures.put(name.replace(".png", ""), count, image);
 				
@@ -47,7 +45,7 @@ public class RPGWorldCreator {
 			}
 		};
 		
-		Arrays.stream(texturesFolder.listFiles(pngFileFilter)).parallel().map(file -> file.getName()).forEach(consumer);
+		new BufferedReader(new InputStreamReader(RPGWorldCreator.class.getResourceAsStream(texturesFolder + "/textures.txt"))).lines().forEach(consumer);
 	}
 	
 	public static BufferedImage getImage(final String file) {
@@ -58,7 +56,7 @@ public class RPGWorldCreator {
 		if(images.containsKey(file)) return images.get(file);
 		
 		try {
-			final BufferedImage image = ImageIO.read(new File(RPGWorldCreator.class.getResource(dir).getFile(), file));
+			final BufferedImage image = ImageIO.read(RPGWorldCreator.class.getResourceAsStream(dir + "/" + file));
 			
 			images.put(file, image);
 			
