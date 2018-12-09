@@ -15,14 +15,13 @@ import javax.imageio.ImageIO;
 public class RPGWorldCreator {
 	private static final HashMap<String, BufferedImage> images = new HashMap<>();
 	private static final TwoValueMap<String, Integer, BufferedImage> textures = new TwoValueMap<>();
-	private static final FilenameFilter pngFileFilter = (dir, name) -> name.endsWith(".png");
+	private static final String texturesFolder = "/assets/worldcreator/textures";
 	private static final boolean darkMode = false;
 	
 	private static WorldCreatorFrame wcFrame;
-	private static String texturesFolder;
 	
 	public static void main(final String[] args) {
-		texturesFolder = "/assets/worldcreator/textures";
+		texturesFolder ;
 		
 		loadTextures();
 		
@@ -45,7 +44,7 @@ public class RPGWorldCreator {
 			}
 		};
 		
-		new BufferedReader(new InputStreamReader(RPGWorldCreator.class.getResourceAsStream(texturesFolder + "/textures.txt"))).lines().forEach(consumer);
+		new BufferedReader(new InputStreamReader(RPGWorldCreator.class.getResourceAsStream(texturesFolder + "/textures.txt"))).lines().parallel().forEach(consumer);
 	}
 	
 	public static BufferedImage getImage(final String file) {
