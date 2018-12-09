@@ -695,7 +695,7 @@ public class WorldCreatorFrame extends JFrame {
 		
 		public void setImage(final BufferedImage image, int xShift, int yShift) {
 			this.image = image != null ? image.getSubimage(xShift, yShift, 32, 32) : null;
-			imageId = RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image));
+			imageId = image != null ? RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image)) : -1;
 			this.xShift = xShift;
 			this.yShift = yShift;
 			
