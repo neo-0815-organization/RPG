@@ -236,11 +236,7 @@ public class WorldCreatorFrame extends JFrame {
 		addMenuItem(fileMenu, "Save...", KeyEvent.VK_S, KeyEvent.VK_S, "save");
 		addMenuItem(fileMenu, "Export...", KeyEvent.VK_E, KeyEvent.VK_E, "export");
 		fileMenu.addSeparator();
-		final JMenuItem exitItem = new JMenuItem("Exit...", KeyEvent.VK_X);
-		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK));
-		exitItem.addActionListener(commandActionListener);
-		exitItem.setActionCommand("exit");
-		fileMenu.add(exitItem);
+		addMenuItem(fileMenu, "Exit...", KeyEvent.VK_X, KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK, "exit");
 		menuBar.add(fileMenu);
 		
 		final JMenu editMenu = new JMenu("Edit");
@@ -253,9 +249,13 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private void addMenuItem(final JMenu menu, final String name, final int mnemonic, final int ctrlKey, final String actionCommand) {
+		addMenuItem(menu, name, mnemonic, strokeKey, KeyEvent.CTRL_DOWN_MASK, actionCommand);
+	}
+	
+	private void addMenuItem(final JMenu menu, final String name, final int mnemonic, final int strokeKey, final int stroke, final String actionCommand) {
 		final JMenuItem menuItem = new JMenuItem(name, mnemonic);
 		
-		if(ctrlKey >= 0) menuItem.setAccelerator(KeyStroke.getKeyStroke(ctrlKey, KeyEvent.CTRL_DOWN_MASK));
+		if(strokeKey >= 0 && stroke >= 0) menuItem.setAccelerator(KeyStroke.getKeyStroke(strokeKey, stroke));
 		
 		menuItem.addActionListener(commandActionListener);
 		menuItem.setActionCommand(actionCommand);
