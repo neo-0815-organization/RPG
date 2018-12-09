@@ -231,26 +231,10 @@ public class WorldCreatorFrame extends JFrame {
 		
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		final JMenuItem newItem = new JMenuItem("New...", KeyEvent.VK_N);
-		newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-		newItem.addActionListener(commandActionListener);
-		newItem.setActionCommand("new");
-		fileMenu.add(newItem);
-		final JMenuItem openItem = new JMenuItem("Open...", KeyEvent.VK_O);
-		openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
-		openItem.addActionListener(commandActionListener);
-		openItem.setActionCommand("open");
-		fileMenu.add(openItem);
-		final JMenuItem saveItem = new JMenuItem("Save...", KeyEvent.VK_S);
-		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-		saveItem.addActionListener(commandActionListener);
-		saveItem.setActionCommand("save");
-		fileMenu.add(saveItem);
-		final JMenuItem exportItem = new JMenuItem("Export...", KeyEvent.VK_E);
-		exportItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
-		exportItem.addActionListener(commandActionListener);
-		exportItem.setActionCommand("export");
-		fileMenu.add(exportItem);
+		addMenuItem(fileMenu, "New...", KeyEvent.VK_N, KeyEvent.VK_N, "new");
+		addMenuItem(fileMenu, "Open...", KeyEvent.VK_O, KeyEvent.VK_O, "open");
+		addMenuItem(fileMenu, "Save...", KeyEvent.VK_S, KeyEvent.VK_S, "save");
+		addMenuItem(fileMenu, "Export...", KeyEvent.VK_E, KeyEvent.VK_E, "export");
 		fileMenu.addSeparator();
 		final JMenuItem exitItem = new JMenuItem("Exit...", KeyEvent.VK_X);
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK));
@@ -261,17 +245,22 @@ public class WorldCreatorFrame extends JFrame {
 		
 		final JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);
-		final JMenuItem sizeItem = new JMenuItem("Size...", KeyEvent.VK_S);
-		sizeItem.addActionListener(commandActionListener);
-		sizeItem.setActionCommand("size");
-		editMenu.add(sizeItem);
-		final JMenuItem clearItem = new JMenuItem("Clear...", KeyEvent.VK_C);
-		clearItem.addActionListener(commandActionListener);
-		clearItem.setActionCommand("clear");
-		editMenu.add(clearItem);
+		addMenuItem(editMenu, "Size...", KeyEvent.VK_S, -1, "size");
+		addMenuItem(editMenu, "Clear...", KeyEvent.VK_C, -1, "clear");
 		menuBar.add(editMenu);
 		
 		setJMenuBar(menuBar);
+	}
+	
+	private void addMenuItem(final JMenu menu, final String name, final int mnemonic, final int ctrlKey, final String actionCommand) {
+		final JMenuItem menuItem = new JMenuItem(name, mnemonic);
+		
+		if(ctrlKey >= 0) menuItem.setAccelerator(KeyStroke.getKeyStroke(ctrlKey, KeyEvent.CTRL_DOWN_MASK));
+		
+		menuItem.addActionListener(commandActionListener);
+		menuItem.setActionCommand(actionCommand);
+		
+		menu.add(menuItem);
 	}
 	
 	private int		finishedThreads, numberTiles;
