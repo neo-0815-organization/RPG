@@ -248,7 +248,7 @@ public class WorldCreatorFrame extends JFrame {
 		setJMenuBar(menuBar);
 	}
 	
-	private void addMenuItem(final JMenu menu, final String name, final int mnemonic, final int ctrlKey, final String actionCommand) {
+	private void addMenuItem(final JMenu menu, final String name, final int mnemonic, final int strokeKey, final String actionCommand) {
 		addMenuItem(menu, name, mnemonic, strokeKey, KeyEvent.CTRL_DOWN_MASK, actionCommand);
 	}
 	
