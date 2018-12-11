@@ -704,6 +704,8 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public void setRotated(final int angle) {
+			if(image == null) return;
+			
 			setImage(RPGWorldCreator.rotateImage(image, angle));
 			
 			rotation += angle;
