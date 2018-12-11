@@ -129,6 +129,11 @@ public class WorldCreatorFrame extends JFrame {
 																						Arrays.stream(texturePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setImage(null));
 																					
 																					break;
+																				case "refresh":
+																					workingArea.revalidate();
+																					workingArea.repaint();
+																					
+																					break;
 																			}
 																			
 																			if(!command.equals("new") && !command.equals("exit"))
@@ -243,6 +248,8 @@ public class WorldCreatorFrame extends JFrame {
 		editMenu.setMnemonic(KeyEvent.VK_E);
 		addMenuItem(editMenu, "Size...", KeyEvent.VK_S, -1, "size");
 		addMenuItem(editMenu, "Clear...", KeyEvent.VK_C, -1, "clear");
+		editMenu.addSeparator();
+		addMenuItem(editMenu, "Refresh", KeyEvent.VK_R, KeyEvent.VK_F5, "refresh");
 		menuBar.add(editMenu);
 		
 		setJMenuBar(menuBar);
@@ -627,6 +634,7 @@ public class WorldCreatorFrame extends JFrame {
 		private void bucketFill(TexturePane pane, int paneX, int paneY, BufferedImage image, BufferedImage newImage) {
 			if(pane == null) {
 				pane = this;
+				
 				paneX = pane.getX();
 				paneY = pane.getY();
 			}
