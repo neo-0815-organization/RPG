@@ -93,7 +93,7 @@ public class WorldCreatorFrame extends JFrame {
 																						break;
 																					}
 																					
-																					final JFileChooser saveFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
+																					final JFileChooser saveFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(""));
 																					saveFileChooser.setAcceptAllFileFilterUsed(false);
 																					saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
 																					
@@ -105,7 +105,7 @@ public class WorldCreatorFrame extends JFrame {
 																					
 																					break;
 																				case "export":
-																					final JFileChooser exportFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
+																					final JFileChooser exportFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(""));
 																					exportFileChooser.setAcceptAllFileFilterUsed(false);
 																					exportFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Files (*.png)", "png"));
 																					
@@ -114,7 +114,7 @@ public class WorldCreatorFrame extends JFrame {
 																					
 																					break;
 																				case "open":
-																					final JFileChooser openFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(getClass().getResource("/").getFile()));
+																					final JFileChooser openFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(""));
 																					openFileChooser.setAcceptAllFileFilterUsed(false);
 																					openFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
 																					
