@@ -302,8 +302,8 @@ public class WorldCreatorFrame extends JFrame {
 			});
 			
 			// write every panel to opened file
-			writer.write(texturePanes[0].length);
 			writer.write(texturePanes.length);
+			writer.write(texturePanes[0].length);
 			
 			TexturePane pane;
 			for(final TexturePane[] texturePane : texturePanes)
