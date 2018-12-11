@@ -368,8 +368,7 @@ public class WorldCreatorFrame extends JFrame {
 					pane = new TexturePane();
 					pane.setBounds(x * size, y * size, size, size);
 					
-					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read());
-					pane.setRotated(reader.read());
+					pane.setRotatedImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(imageId)), xShift, yShift, rotation);
 					
 					workingArea.add(pane);
 					texturePanes[x][y] = pane;
@@ -712,6 +711,18 @@ public class WorldCreatorFrame extends JFrame {
 			setImage(RPGWorldCreator.rotateImage(image, angle));
 			
 			rotation += angle;
+		}
+
+		public void setRotatedImage(final BufferedImage image, int xShift, int yShift, int rotation) {
+			this.image = image != null ? image.getSubimage(xShift, yShift, 32, 32) : null;
+
+			imageId = image != null ? RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image)) : -1;
+			if(this.image != null) this.image = RPGWorldCreator.rotateImage(this.image, rotation);
+
+			this.xShift = xShift;
+			this.yShift = yShift;
+
+			repaint();
 		}
 		
 		public int getTileX() {
