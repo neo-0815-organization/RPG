@@ -54,7 +54,7 @@ public class RPGWorldCreator {
 		if(images.containsKey(file)) return images.get(file);
 		
 		try {
-			final BufferedImage image = ImageIO.read(RPGWorldCreator.class.getResourceAsStream(dir + "/" + file));
+			final BufferedImage image = ImageIO.read(RPGWorldCreator.class.getResourceAsStream(dir + (dir.equals("/") ? "" : "/") + file));
 			
 			images.put(file, image);
 			
