@@ -631,7 +631,7 @@ public class WorldCreatorFrame extends JFrame {
 				paneY = pane.getY();
 			}
 			
-			if(pane.image.equals(image)) {
+			if(pane.image == image) {
 				if(newImage != null)
 					pane.setImage(newImage, currentTextureX, currentTextureY);
 				else
@@ -640,20 +640,20 @@ public class WorldCreatorFrame extends JFrame {
 				int paneXPlus = paneX, paneXMinus = paneX, paneYPlus = paneY, paneYMinus = paneY;
 				if(paneX + 1 < texturePanes.length)
 					paneXPlus++;
-				if(paneX - 1 < texturePanes.length)
+				if(paneX - 1 > 0)
 					paneXMinus--;
 				if(paneY + 1 < texturePanes.length)
 					paneYPlus++;
-				if(paneY - 1 < texturePanes.length)
+				if(paneY - 1 > 0)
 					paneYMinus--;
 				
-				if(texturePanes[paneXPlus][paneY].image.equals(image))
+				if(texturePanes[paneXPlus][paneY].image == image)
 					bucketFill(texturePanes[paneXPlus][paneY], paneXPlus, paneY, image, newImage);
-				if(texturePanes[paneXMinus][paneY].image.equals(image))
+				if(texturePanes[paneXMinus][paneY].image == image)
 					bucketFill(texturePanes[paneXMinus][paneY], paneXMinus, paneY, image, newImage);
-				if(texturePanes[paneX][paneYPlus].image.equals(image))
+				if(texturePanes[paneX][paneYPlus].image == image)
 					bucketFill(texturePanes[paneX][paneYPlus], paneX, paneYPlus, image, newImage);
-				if(texturePanes[paneX][paneYMinus].image.equals(image))
+				if(texturePanes[paneX][paneYMinus].image == image)
 					bucketFill(texturePanes[paneX][paneYMinus], paneX, paneYMinus, image, newImage);
 			}
 		}
