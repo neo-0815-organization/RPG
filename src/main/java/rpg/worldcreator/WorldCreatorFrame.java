@@ -356,7 +356,7 @@ public class WorldCreatorFrame extends JFrame {
 				final char[] name = new char[reader.read()];
 				reader.read(name);
 				
-				RPGWorldCreator.getTextures().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.texturesFolder, String.copyValueOf(name)));
+				RPGWorldCreator.getTextures().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.texturesFolder, String.copyValueOf(name) + ".png"));
 			}
 			
 			// read every panel from file
