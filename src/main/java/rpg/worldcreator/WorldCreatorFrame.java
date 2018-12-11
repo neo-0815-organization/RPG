@@ -362,11 +362,13 @@ public class WorldCreatorFrame extends JFrame {
 			// read every panel from file
 			texturePanes = new TexturePane[reader.read()][reader.read()];
 			
+			final int paneSize = (int) (32 * factor);
+			
 			TexturePane pane;
 			for(int x = 0; x < texturePanes.length; x++)
 				for(int y = 0; y < texturePanes[x].length; y++) {
 					pane = new TexturePane();
-					pane.setBounds(x * size, y * size, size, size);
+					pane.setBounds(x * paneSize, y * paneSize, paneSize, paneSize);
 					
 					pane.setRotatedImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(imageId)), xShift, yShift, rotation);
 					
