@@ -16,8 +16,9 @@ import javax.imageio.ImageIO;
 public class RPGWorldCreator {
 	private static final HashMap<String, BufferedImage> images = new HashMap<>();
 	private static final TwoValueMap<String, Integer, BufferedImage> textures = new TwoValueMap<>();
-	private static final String texturesFolder = "/assets/worldcreator/textures";
 	private static final boolean darkMode = false;
+	
+	public static final String texturesFolder = "/assets/worldcreator/textures";
 	
 	private static WorldCreatorFrame wcFrame;
 	
