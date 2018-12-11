@@ -382,6 +382,9 @@ public class WorldCreatorFrame extends JFrame {
 			updateProgressBar(progressBar.getMaximum());
 			updateTitle(openedFile.getName());
 			
+			workingArea.revalidate();
+			workingArea.repaint();
+			
 			JOptionPane.showMessageDialog(workingArea, "Opened file '" + openedFile.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Opened", JOptionPane.INFORMATION_MESSAGE);
 		} catch(final IOException e) {
 			e.printStackTrace();
