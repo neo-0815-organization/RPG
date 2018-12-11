@@ -635,8 +635,8 @@ public class WorldCreatorFrame extends JFrame {
 			if(pane == null) {
 				pane = this;
 				
-				paneX = pane.getX();
-				paneY = pane.getY();
+				paneX = pane.getTileX();
+				paneY = pane.getTileY();
 			}
 			
 			if(pane.image == image) {
@@ -709,8 +709,7 @@ public class WorldCreatorFrame extends JFrame {
 			rotation += angle;
 		}
 		
-		@Override
-		public int getX() {
+		public int getTileX() {
 			for(int x = 0; x < texturePanes.length; x++)
 				for(int y = 0; y < texturePanes[x].length; y++)
 					if(texturePanes[x][y] == this)
@@ -718,8 +717,7 @@ public class WorldCreatorFrame extends JFrame {
 			return -1;
 		}
 		
-		@Override
-		public int getY() {
+		public int getTileY() {
 			for(final TexturePane[] texturePane : texturePanes)
 				for(int y = 0; y < texturePane.length; y++)
 					if(texturePane[y] == this)
