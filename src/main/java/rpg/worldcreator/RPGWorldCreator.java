@@ -21,8 +21,6 @@ public class RPGWorldCreator {
 	private static WorldCreatorFrame wcFrame;
 	
 	public static void main(final String[] args) {
-		texturesFolder ;
-		
 		loadTextures();
 		
 		wcFrame = new WorldCreatorFrame();
