@@ -529,7 +529,7 @@ public class WorldCreatorFrame extends JFrame {
 			while(buttons.hasMoreElements()) {
 				button = buttons.nextElement();
 				
-				button.setIcon(new ImageIcon(RPGWorldCreator.getImage("/assets/worldcreator/cursors/" + button.getText().toLowerCase() + ".png")));
+				button.setIcon(new ImageIcon(RPGWorldCreator.getImage("assets/worldcreator/cursors/" + button.getText().toLowerCase() + ".png")));
 				button.addActionListener(prefixActionListener);
 				button.setActionCommand("cursor:" + button.getText().toLowerCase());
 				button.setFocusPainted(false);
@@ -760,7 +760,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private void registerCursor(final String name, final Point hotSpot, final Toolkit toolkit) {
-		cursors.put(name, toolkit.createCustomCursor(RPGWorldCreator.getImage("/assets/worldcreator/cursors/" + name + ".png"), hotSpot, name));
+		cursors.put(name, toolkit.createCustomCursor(RPGWorldCreator.getImage("assets/worldcreator/cursors/" + name + ".png"), hotSpot, name));
 	}
 	
 	@Override
