@@ -652,11 +652,11 @@ public class WorldCreatorFrame extends JFrame {
 				int paneXPlus = paneX, paneXMinus = paneX, paneYPlus = paneY, paneYMinus = paneY;
 				if(paneX + 1 < texturePanes.length)
 					paneXPlus++;
-				if(paneX - 1 > 0)
+				if(paneX - 1 >= 0)
 					paneXMinus--;
 				if(paneY + 1 < texturePanes.length)
 					paneYPlus++;
-				if(paneY - 1 > 0)
+				if(paneY - 1 >= 0)
 					paneYMinus--;
 				
 				if(texturePanes[paneXPlus][paneY].image == image)
