@@ -643,7 +643,7 @@ public class WorldCreatorFrame extends JFrame {
 				paneY = pane.getTileY();
 			}
 			
-			if(pane.image == image) {
+			if(RPGWorldCreator.compareImages(pane.image, image)) {
 				if(newImage != null)
 					pane.setImage(newImage, currentTextureX, currentTextureY);
 				else
@@ -659,14 +659,21 @@ public class WorldCreatorFrame extends JFrame {
 				if(paneY - 1 >= 0)
 					paneYMinus--;
 				
-				if(texturePanes[paneXPlus][paneY].image == image)
-					bucketFill(texturePanes[paneXPlus][paneY], paneXPlus, paneY, image, newImage);
-				if(texturePanes[paneXMinus][paneY].image == image)
-					bucketFill(texturePanes[paneXMinus][paneY], paneXMinus, paneY, image, newImage);
-				if(texturePanes[paneX][paneYPlus].image == image)
-					bucketFill(texturePanes[paneX][paneYPlus], paneX, paneYPlus, image, newImage);
-				if(texturePanes[paneX][paneYMinus].image == image)
-					bucketFill(texturePanes[paneX][paneYMinus], paneX, paneYMinus, image, newImage);
+				TexturePane nextPane = texturePanes[paneXPlus][paneY];
+				if(RPGWorldCreator.compareImages(nextPane.image, image))
+					bucketFill(nextPane, paneXPlus, paneY, image, newImage);
+				
+				nextPane = texturePanes[paneXMinus][paneY];
+				if(RPGWorldCreator.compareImages(nextPane.image, image))
+					bucketFill(nextPane, paneXMinus, paneY, image, newImage);
+				
+				nextPane = texturePanes[paneX][paneYPlus];
+				if(RPGWorldCreator.compareImages(nextPane.image, image))
+					bucketFill(nextPane, paneX, paneYPlus, image, newImage);
+				
+				nextPane = texturePanes[paneX][paneYMinus];
+				if(RPGWorldCreator.compareImages(nextPane.image, image))
+					bucketFill(nextPane, paneX, paneYMinus, image, newImage);
 			}
 		}
 		
