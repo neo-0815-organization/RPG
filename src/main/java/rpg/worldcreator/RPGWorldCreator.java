@@ -95,6 +95,20 @@ public class RPGWorldCreator {
 		return newImage;
 	}
 	
+	public static boolean compareImages(final BufferedImage imageOne, final BufferedImage imageTwo) {
+		if(imageOne == imageTwo || imageOne.equals(imageTwo)) return true;
+		if(imageOne == null ^ imageTwo == null) return false;
+		if(imageOne.getWidth() != imageTwo.getWidth() || imageOne.getHeight() != imageTwo.getHeight()) return false;
+		
+		for(int x = 0; x < imageOne.getWidth(); x++) {
+			for(int y = 0; y < imageOne.getHeight(); y++) {
+				if(imageOne.getRGB(x, y) != imageTwo.getRGB(x, y)) return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	public static TwoValueMap<String, Integer, BufferedImage> getTextures() {
 		return textures;
 	}
