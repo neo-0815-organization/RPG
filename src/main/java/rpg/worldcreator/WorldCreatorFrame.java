@@ -218,6 +218,18 @@ public class WorldCreatorFrame extends JFrame {
 		add(tools, BorderLayout.WEST);
 		
 		workingArea.setLayout(null);
+		workingArea.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseReleased(final MouseEvent e) {
+				if(pressing) {
+					pressing = false;
+					button = 0;
+					
+					workingArea.repaint();
+				}
+			};
+		});
 		add(new JScrollPane(workingArea), BorderLayout.CENTER);
 		
 		final JScrollPane sprites = new JScrollPane(new SpritesPanel());
