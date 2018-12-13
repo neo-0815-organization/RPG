@@ -666,7 +666,7 @@ public class WorldCreatorFrame extends JFrame {
 					paneXPlus++;
 				if(paneX - 1 >= 0)
 					paneXMinus--;
-				if(paneY + 1 < texturePanes.length)
+				if(paneY + 1 < texturePanes[0].length)
 					paneYPlus++;
 				if(paneY - 1 >= 0)
 					paneYMinus--;
