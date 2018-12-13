@@ -4,12 +4,15 @@ import java.awt.event.KeyEvent;
 
 import rpg.api.gfx.GameFrame;
 import rpg.api.listener.key.KeyboardListener;
+import rpg.api.scene.GameField;
+import rpg.api.vector.ModifiableVec2D;
 
 /**
  * The main class of this project.
  */
 public class RPG {
 	public static GameFrame gameFrame;
+	public static GameField gameField;
 	
 	public static void main(final String[] args) {
 		init();
@@ -23,20 +26,70 @@ public class RPG {
 	private static void init() {
 		gameFrame = new GameFrame();
 		registerKeys();
-		KeyboardListener.start();
+//		KeyboardListener.start();
 	}
 	
 	private static void registerKeys() {
 		KeyboardListener.registerKey(KeyEvent.VK_W, (state) -> {
 			switch(state) {
 			case PRESSED:
+				RPG.gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_W);
 				break;
 			case PRESSING:
-				System.out.println("PRESSING");
 				break;
 			case RELEASED:
 				break;
 			case RELEASING:
+//				System.out.println("Released");
+				RPG.gameField.getPlayerController().getEntity().setVelocity(ModifiableVec2D.ORIGIN.toModifiable());
+				break;
+			default:
+				break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_A, (state) -> {
+			switch(state) {
+			case PRESSED:
+				RPG.gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_A);
+				break;
+			case PRESSING:
+				break;
+			case RELEASED:
+				break;
+			case RELEASING:
+				RPG.gameField.getPlayerController().getEntity().setVelocity(ModifiableVec2D.ORIGIN.toModifiable());
+				break;
+			default:
+				break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_S, (state) -> {
+			switch(state) {
+			case PRESSED:
+				RPG.gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_S);
+				break;
+			case PRESSING:
+				break;
+			case RELEASED:
+				break;
+			case RELEASING:
+				RPG.gameField.getPlayerController().getEntity().setVelocity(ModifiableVec2D.ORIGIN.toModifiable());
+				break;
+			default:
+				break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_D, (state) -> {
+			switch(state) {
+			case PRESSED:
+				RPG.gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_D);
+				break;
+			case PRESSING:
+				break;
+			case RELEASED:
+				break;
+			case RELEASING:
+				RPG.gameField.getPlayerController().getEntity().setVelocity(ModifiableVec2D.ORIGIN.toModifiable());
 				break;
 			default:
 				break;

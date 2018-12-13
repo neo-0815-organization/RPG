@@ -10,7 +10,7 @@ public class KeyboardSensor extends KeyAdapter {
 	
 	@Override
 	public void keyPressed(final KeyEvent e) {
-		if(keyAction.get(e.getKeyCode()) != PRESSED) {
+		if(keyAction.get(e.getKeyCode()) == null || keyAction.get(e.getKeyCode()) != PRESSED) {
 			KeyboardListener.setState(e.getKeyCode(), KeyState.PRESSING);
 			
 			keyAction.put(e.getKeyCode(), PRESSED);
@@ -19,7 +19,7 @@ public class KeyboardSensor extends KeyAdapter {
 	
 	@Override
 	public void keyReleased(final KeyEvent e) {
-		if(keyAction.get(e.getKeyCode()) != RELEASED) {
+		if(keyAction.get(e.getKeyCode()) == null || keyAction.get(e.getKeyCode()) != RELEASED) {
 			KeyboardListener.setState(e.getKeyCode(), KeyState.RELEASING);
 			
 			keyAction.put(e.getKeyCode(), RELEASED);

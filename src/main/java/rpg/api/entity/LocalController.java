@@ -9,8 +9,13 @@ import rpg.api.vector.UnmodifiableVec2D;
  */
 public class LocalController implements Controller {
 	private Entity entity;
-	private double speed = 5.0;
+	private double speed = 5;
 	
+	public LocalController(Entity entity) {
+		super();
+		this.entity = entity;
+	}
+
 	@Override
 	public Entity getEntity() {
 		return entity;

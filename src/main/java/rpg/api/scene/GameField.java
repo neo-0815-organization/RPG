@@ -8,6 +8,7 @@ import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.LocalController;
+import rpg.api.listener.key.KeyboardListener;
 import rpg.api.tile.Tile;
 
 /**
@@ -18,7 +19,7 @@ import rpg.api.tile.Tile;
 public class GameField extends Scene {
 	public static boolean		inGame	= true;
 	public static final double  MAX_DELTA_TIME = 0.21,
-								MIN_DELTA_TIME = 0.00001;
+								MIN_DELTA_TIME = 0.015;
 	private final Background	background;
 	
 	
@@ -57,6 +58,7 @@ public class GameField extends Scene {
 	 * Starts a new Thread, which updates the Gamefield
 	 */
 	private void startUpdating() {
+		GameField me = this;
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
@@ -66,11 +68,14 @@ public class GameField extends Scene {
 					
 					
 					if(deltaTime > MAX_DELTA_TIME) deltaTime = MAX_DELTA_TIME;
-					if(deltaTime <= MIN_DELTA_TIME) deltaTime = MIN_DELTA_TIME;
+					if(deltaTime < MIN_DELTA_TIME) deltaTime = MIN_DELTA_TIME;
 					
 					update(deltaTime);
 					
-					System.out.print("");
+					RPG.gameFrame.drawScene(me);
+					KeyboardListener.updateKeys();
+					
+					System.out.println(deltaTime);
 				}
 			}
 		};
@@ -88,11 +93,14 @@ public class GameField extends Scene {
 			@Override
 			public void run() {
 				while (inGame) {
+					long systemTime = System.currentTimeMillis();
+					
 					RPG.gameFrame.drawScene(me);
+					System.out.println(System.currentTimeMillis() - systemTime);
 				}
 			}
 		};
-		draw.start();
+//		draw.start();
 	}
 	
 	/**
@@ -123,7 +131,15 @@ public class GameField extends Scene {
 	}
 	public void addPlayerController(LocalController c) {
 		entities.add(c.getEntity());
-		playerController = c;
+		setPlayerController(c);
 		
+	}
+
+	public LocalController getPlayerController() {
+		return playerController;
+	}
+
+	public void setPlayerController(LocalController playerController) {
+		this.playerController = playerController;
 	}
 }
