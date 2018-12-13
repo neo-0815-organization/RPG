@@ -331,7 +331,7 @@ public class WorldCreatorFrame extends JFrame {
 					writer.write(pane.image.getId());
 					writer.write(pane.image.getXShift());
 					writer.write(pane.image.getYShift());
-					writer.write(pane.image.getRotation());
+					writer.write(pane.image.getRotation().getId());
 					
 					updateProgressBar(++numberTiles);
 				}
@@ -388,7 +388,7 @@ public class WorldCreatorFrame extends JFrame {
 					pane = new TexturePane();
 					pane.setBounds(x * paneSize, y * paneSize, paneSize, paneSize);
 					
-					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read(), reader.read());
+					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read(), Rotation.getById(reader.read()));
 					
 					workingArea.add(pane);
 					texturePanes[x][y] = pane;
@@ -644,9 +644,9 @@ public class WorldCreatorFrame extends JFrame {
 																		case "rotate":
 																			if(image != null) {
 																				if(button == 1)
-																					setRotated(90);
+																					setRotated(1);
 																				else if(button == 3)
-																					setRotated(-90);
+																					setRotated(-1);
 																			}
 																			
 																			break;
@@ -703,7 +703,7 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public TexturePane(final BufferedImage image) {
-			this.image = new Image(image, 0, 0, 0);
+			this.image = new Image(image, 0, 0, Rotation.NONE);
 			
 			setLayout(null);
 			setBackground(new Color(199, 199, 199));
@@ -724,20 +724,20 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public void setImage(final BufferedImage image, int xShift, int yShift) {
-			setImage(image, xShift, yShift, 0);
+			setImage(image, xShift, yShift, Rotation.NONE);
 		}
 
-		public void setImage(final BufferedImage image, int xShift, int yShift, int rotation) {
+		public void setImage(final BufferedImage image, int xShift, int yShift, Rotation rotation) {
 			this.image = new Image(image, xShift, yShift, rotation);
 
 			repaint();
 		}
 		
-		public void setRotated(final int angle) {
-			setRotation(image.getRotation() + angle);
+		public void setRotated(final int direction) {
+			setRotation(image.getRotation().rotate(direction));
 		}
 		
-		public void setRotation(final int rotation) {
+		public void setRotation(final Rotation rotation) {
 			image.setRotation(rotation);
 			
 			repaint();
