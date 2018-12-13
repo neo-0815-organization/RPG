@@ -5,7 +5,9 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import rpg.RPG;
+import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
+import rpg.api.entity.LocalController;
 import rpg.api.tile.Tile;
 
 /**
@@ -26,7 +28,8 @@ public class GameField extends Scene {
 	private Thread update, draw;
 	
 	private LinkedList<Entity> entities = new LinkedList<>();
-	
+	private LinkedList<Controller> controller = new LinkedList<>();
+	private LocalController playerController;
 	
 	public GameField() {
 		background = new Background();
@@ -103,7 +106,7 @@ public class GameField extends Scene {
 	}
 	
 	/**
-	 * Shuts down the {@link GameField}'s threads <a href = "https://www.bmw.de"> Lol</a>.
+	 * Shuts down the {@link GameField}'s threads //<a href = "https://www.if-schleife.de"> Lol</a>.
 	 */
 	public void shutDown() {
 		update.interrupt();
@@ -111,10 +114,16 @@ public class GameField extends Scene {
 	}
 	
 	/**
-	 * ymsdfh.ausfdhg
+	 * ymsdfh.ausfdhg//1 nicer Komment
 	 * @param e
 	 */
-	public void addEntity(Entity e) {
-		entities.add(e);
+	public void addEntity(Controller c) {
+		entities.add(c.getEntity());
+		controller.add(c);
+	}
+	public void addPlayerController(LocalController c) {
+		entities.add(c.getEntity());
+		playerController = c;
+		
 	}
 }
