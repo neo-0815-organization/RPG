@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -329,10 +328,10 @@ public class WorldCreatorFrame extends JFrame {
 				for(final TexturePane element : texturePane) {
 					pane = element;
 					
-					writer.write(pane.imageId);
-					writer.write(pane.xShift);
-					writer.write(pane.yShift);
-					writer.write(pane.rotation);
+					writer.write(pane.image.getId());
+					writer.write(pane.image.getXShift());
+					writer.write(pane.image.getYShift());
+					writer.write(pane.image.getRotation());
 					
 					updateProgressBar(++numberTiles);
 				}
@@ -389,7 +388,7 @@ public class WorldCreatorFrame extends JFrame {
 					pane = new TexturePane();
 					pane.setBounds(x * paneSize, y * paneSize, paneSize, paneSize);
 					
-					pane.setRotatedImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read(), reader.read());
+					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read(), reader.read());
 					
 					workingArea.add(pane);
 					texturePanes[x][y] = pane;
@@ -440,7 +439,7 @@ public class WorldCreatorFrame extends JFrame {
 					@Override
 					public void run() {
 						for(int y = 0; y < texturePanes[x].length; y++) {
-							g.drawImage(texturePanes[x][y].image, x * 32, y * 32, 32, 32, null);
+							g.drawImage(texturePanes[x][y].image.getImage(), x * 32, y * 32, 32, 32, null);
 							
 							numberTiles++;
 						}
@@ -637,17 +636,18 @@ public class WorldCreatorFrame extends JFrame {
 																			break;
 																		case "bucket":
 																			if(button == 1)
-																				bucketFill(null, -1, -1, image, currentTexture);						// TODO add coordinates
+																				bucketFill(null, -1, -1, image.getImage(), currentTexture);						// TODO add coordinates
 																			else if(button == 3)
-																				bucketFill(null, -1, -1, image, null);									// TODO add coordinates
+																				bucketFill(null, -1, -1, image.getImage(), null);									// TODO add coordinates
 																			
 																			break;
 																		case "rotate":
-																			if(image != null)
+																			if(image != null) {
 																				if(button == 1)
 																					setRotated(90);
-																			else if(button == 3)
-																				setRotated(-90);
+																				else if(button == 3)
+																					setRotated(-90);
+																			}
 																			
 																			break;
 																	}
@@ -662,7 +662,7 @@ public class WorldCreatorFrame extends JFrame {
 				paneY = pane.getTileY();
 			}
 			
-			if(RPGWorldCreator.compareImages(pane.image, image)) {
+			if(RPGWorldCreator.compareImages(pane.image.getImage(), image)) {
 				if(newImage != null)
 					pane.setImage(newImage, currentTextureX, currentTextureY);
 				else
@@ -679,32 +679,31 @@ public class WorldCreatorFrame extends JFrame {
 					paneYMinus--;
 				
 				TexturePane nextPane = texturePanes[paneXPlus][paneY];
-				if(RPGWorldCreator.compareImages(nextPane.image, image))
+				if(RPGWorldCreator.compareImages(nextPane.image.getImage(), image))
 					bucketFill(nextPane, paneXPlus, paneY, image, newImage);
 				
 				nextPane = texturePanes[paneXMinus][paneY];
-				if(RPGWorldCreator.compareImages(nextPane.image, image))
+				if(RPGWorldCreator.compareImages(nextPane.image.getImage(), image))
 					bucketFill(nextPane, paneXMinus, paneY, image, newImage);
 				
 				nextPane = texturePanes[paneX][paneYPlus];
-				if(RPGWorldCreator.compareImages(nextPane.image, image))
+				if(RPGWorldCreator.compareImages(nextPane.image.getImage(), image))
 					bucketFill(nextPane, paneX, paneYPlus, image, newImage);
 				
 				nextPane = texturePanes[paneX][paneYMinus];
-				if(RPGWorldCreator.compareImages(nextPane.image, image))
+				if(RPGWorldCreator.compareImages(nextPane.image.getImage(), image))
 					bucketFill(nextPane, paneX, paneYMinus, image, newImage);
 			}
 		}
 		
-		private BufferedImage	image;
-		private int				imageId	= -1, rotation = 0, xShift = 0, yShift = 0;
+		private Image image;
 		
 		public TexturePane() {
 			this(null);
 		}
 		
 		public TexturePane(final BufferedImage image) {
-			this.image = image;
+			this.image = new Image(image, 0, 0, 0);
 			
 			setLayout(null);
 			setBackground(new Color(199, 199, 199));
@@ -716,40 +715,31 @@ public class WorldCreatorFrame extends JFrame {
 		public void paintComponent(final Graphics g) {
 			super.paintComponent(g);
 			
-			if(image != null)
-				g.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
-		}
-		
-		public void setImage(final BufferedImage image, int xShift, int yShift) {
-			this.image = image != null ? image.getSubimage(xShift, yShift, 32, 32) : null;
-			imageId = image != null ? RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image)) : -1;
-			this.xShift = xShift;
-			this.yShift = yShift;
-			
-			repaint();
+			if(image.getImage() != null)
+				g.drawImage(image.getImage().getScaledInstance(getWidth(), getHeight(), java.awt.Image.SCALE_DEFAULT), 0, 0, null);
 		}
 		
 		public void setImage(final BufferedImage image) {
 			setImage(image, 0, 0);
 		}
 		
-		public void setRotated(final int angle) {
-			if(image == null) return;
-			
-			setImage(RPGWorldCreator.rotateImage(image, angle));
-			
-			rotation += angle;
+		public void setImage(final BufferedImage image, int xShift, int yShift) {
+			setImage(image, xShift, yShift, 0);
 		}
 
-		public void setRotatedImage(final BufferedImage image, int xShift, int yShift, int rotation) {
-			this.image = image != null ? image.getSubimage(xShift, yShift, 32, 32) : null;
+		public void setImage(final BufferedImage image, int xShift, int yShift, int rotation) {
+			this.image = new Image(image, xShift, yShift, rotation);
 
-			imageId = image != null ? RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image)) : -1;
-			if(this.image != null) this.image = RPGWorldCreator.rotateImage(this.image, rotation);
-
-			this.xShift = xShift;
-			this.yShift = yShift;
-
+			repaint();
+		}
+		
+		public void setRotated(final int angle) {
+			setRotation(image.getRotation() + angle);
+		}
+		
+		public void setRotation(final int rotation) {
+			image.setRotation(rotation);
+			
 			repaint();
 		}
 		
@@ -758,6 +748,7 @@ public class WorldCreatorFrame extends JFrame {
 				for(int y = 0; y < texturePanes[x].length; y++)
 					if(texturePanes[x][y] == this)
 						return x;
+			
 			return -1;
 		}
 		
@@ -766,6 +757,7 @@ public class WorldCreatorFrame extends JFrame {
 				for(int y = 0; y < texturePane.length; y++)
 					if(texturePane[y] == this)
 						return y;
+			
 			return -1;
 		}
 	}
