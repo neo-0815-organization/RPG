@@ -100,6 +100,8 @@ public class WorldCreatorFrame extends JFrame {
 																					if(saveFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
 																						openedFile = saveFileChooser.getSelectedFile();
 																						
+																						if(!openedFile.getName().endsWith(".world")) openedFile = new File(openedFile.getAbsolutePath() + ".world");
+																						
 																						saveFile();
 																					}
 																					
@@ -109,8 +111,13 @@ public class WorldCreatorFrame extends JFrame {
 																					exportFileChooser.setAcceptAllFileFilterUsed(false);
 																					exportFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Files (*.png)", "png"));
 																					
-																					if(exportFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION)
-																						exportFile(exportFileChooser.getSelectedFile());
+																					if(exportFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
+																						File exportFile = exportFileChooser.getSelectedFile();
+																						
+																						if(!exportFile.getName().endsWith(".png")) exportFile = new File(exportFile.getAbsolutePath() + ".png");
+																						
+																						exportFile(exportFile);
+																					}
 																					
 																					break;
 																				case "open":
