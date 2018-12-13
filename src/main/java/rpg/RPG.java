@@ -1,6 +1,9 @@
 package rpg;
 
+import java.awt.event.KeyEvent;
+
 import rpg.api.gfx.GameFrame;
+import rpg.api.listener.key.KeyboardListener;
 
 /**
  * The main class of this project.
@@ -19,5 +22,25 @@ public class RPG {
 	 */
 	private static void init() {
 		gameFrame = new GameFrame();
+		registerKeys();
+		KeyboardListener.start();
+	}
+	
+	private static void registerKeys() {
+		KeyboardListener.registerKey(KeyEvent.VK_W, (state) -> {
+			switch(state) {
+			case PRESSED:
+				break;
+			case PRESSING:
+				System.out.println("PRESSING");
+				break;
+			case RELEASED:
+				break;
+			case RELEASING:
+				break;
+			default:
+				break;
+			}
+		});
 	}
 }

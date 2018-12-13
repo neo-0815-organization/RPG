@@ -11,7 +11,11 @@ public class KeyboardListener {
 		@Override
 		public void run() {
 			while(!interrupted())
-				states.entrySet().parallelStream().filter(entry -> entry.getValue().isActive()).forEach(entry -> keys.get(entry.getKey()).onKey(entry.getValue()));
+				states.entrySet().parallelStream().filter(entry -> entry.getValue().isActive()).forEach(entry -> {
+					keys.get(entry.getKey()).onKey(entry.getValue());
+					
+					setState(entry.getKey(), entry.getValue().next());
+				});
 		};
 	};
 	

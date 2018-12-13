@@ -8,6 +8,7 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import rpg.api.listener.key.KeyboardSensor;
 import rpg.api.scene.Camera;
 import rpg.api.scene.Scene;
 
@@ -27,6 +28,8 @@ public class GameFrame extends JFrame {
 				System.exit(0);
 			}
 		});
+		
+		addKeyListener(new KeyboardSensor());
 		
 		setUndecorated(false);
 		setResizable(false);
