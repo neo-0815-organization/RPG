@@ -562,6 +562,7 @@ public class WorldCreatorFrame extends JFrame {
 		
 		private final ButtonGroup buttonGroup = new ButtonGroup();
 		
+		// TODO replace actual code with a jtree
 		public SpritesPanel() {
 			setLayout(new GridLayout(10, 3));
 			setBorder(new EmptyBorder(3, 3, 3, 3));
