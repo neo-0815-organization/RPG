@@ -37,10 +37,6 @@ public class RPGWorldCreator {
 				image = getImage(texturesFolder, name);
 				
 				textures.put(name.replace(".png", ""), count, image);
-				textures.put(name.replace(".png", "") + "1", count + 1, image);
-				textures.put(name.replace(".png", "") + "2", count + 2, image);
-				textures.put(name.replace(".png", "") + "3", count + 3, image);
-				textures.put(name.replace(".png", "") + "4", count + 4, image);
 				
 				count++;
 			}

@@ -769,7 +769,7 @@ public class WorldCreatorFrame extends JFrame {
 		public void paintComponent(final Graphics g) {
 			super.paintComponent(g);
 			
-			if(image.getImage() != null) g.drawImage(image.getImage().getScaledInstance(getWidth(), getHeight(), java.awt.Image.SCALE_DEFAULT), 0, 0, null);
+			if(image.getImage() != null) g.drawImage(RPGWorldCreator.scaleImage(image.getImage(), getWidth(), getHeight()), 0, 0, null);
 		}
 		
 		public void setImage(final BufferedImage image) {

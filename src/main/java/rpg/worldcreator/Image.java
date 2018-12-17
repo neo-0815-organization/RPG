@@ -1,13 +1,15 @@
 package rpg.worldcreator;
 
+import static rpg.worldcreator.Data.tileSize;
+
 import java.awt.image.BufferedImage;
 
 public class Image {
-	private BufferedImage image;
-	private int id, xShift, yShift;
+	private final BufferedImage image;
+	private final int id, xShift, yShift;
 	private Rotation rotation;
 	
-	public Image(BufferedImage image, int xShift, int yShift, Rotation rotation) {
+	public Image(final BufferedImage image, final int xShift, final int yShift, final Rotation rotation) {
 		this.image = image;
 		id = image != null ? RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image)) : -1;
 		this.xShift = xShift;
@@ -15,26 +17,26 @@ public class Image {
 		this.rotation = rotation;
 	}
 	
-	public Image(int id, int xShift, int yShift, Rotation rotation) {
+	public Image(final int id, final int xShift, final int yShift, final Rotation rotation) {
 		image = id < 0 ? RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(id)) : null;
 		this.id = id < -1 ? -1 : id;
 		this.xShift = xShift;
 		this.yShift = yShift;
 		this.rotation = rotation;
 	}
-
+	
 	public BufferedImage getOriginalImage() {
 		return image;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
-
+	
 	public int getXShift() {
 		return xShift;
 	}
-
+	
 	public int getYShift() {
 		return yShift;
 	}
@@ -43,13 +45,13 @@ public class Image {
 		return rotation;
 	}
 	
-	public void setRotation(Rotation rotation) {
+	public void setRotation(final Rotation rotation) {
 		this.rotation = rotation;
 	}
 	
 	public BufferedImage getImage() {
 		if(image == null) return null;
 		
-		return RPGWorldCreator.rotateImage(image.getSubimage(xShift, yShift, 32, 32), rotation.getAngle());
+		return RPGWorldCreator.rotateImage(image.getSubimage(xShift, yShift, tileSize, tileSize), rotation.getAngle());
 	}
 }
