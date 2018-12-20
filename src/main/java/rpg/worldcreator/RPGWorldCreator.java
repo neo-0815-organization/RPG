@@ -28,7 +28,7 @@ public class RPGWorldCreator {
 	}
 	
 	private static void loadTextures() {
-		final Consumer<String> consumer = new Consumer<>() {
+		final Consumer<String> consumer = new Consumer<String>() {
 			private BufferedImage image = null;
 			private int count = 0;
 			
