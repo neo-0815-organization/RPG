@@ -43,6 +43,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -77,7 +78,7 @@ public class WorldCreatorFrame extends JFrame {
 	};
 	private final JProgressBar progressBar = new JProgressBar();
 	private final HashMap<String, Cursor> cursors = new HashMap<>();
-	private final ActionListener commandActionListener = new ActionListener() {
+	protected final ActionListener commandActionListener = new ActionListener() {
 		
 		@Override
 		public void actionPerformed(final ActionEvent e) {
@@ -184,6 +185,8 @@ public class WorldCreatorFrame extends JFrame {
 					currentTextureX = Integer.valueOf(args[0]) * tileSize;
 					currentTextureY = Integer.valueOf(args[1]) * tileSize;
 					
+					currentPictureLayer = Integer.valueOf(args[2]);
+					
 					currentTextureShowPanel.repaint();
 					break;
 			}
@@ -193,7 +196,7 @@ public class WorldCreatorFrame extends JFrame {
 	private SpritePane[][] spritePanes;
 	private double factor = 1d;
 	private BufferedImage currentTexture;
-	private int currentTextureX, currentTextureY;
+	private int currentTextureX, currentTextureY, currentPictureLayer;
 	private File openedFile;
 	
 	public WorldCreatorFrame() {
@@ -257,10 +260,7 @@ public class WorldCreatorFrame extends JFrame {
 		});
 		add(new JScrollPane(workingArea), BorderLayout.CENTER);
 		
-		final JScrollPane sprites = new JScrollPane(new TexturesPanel());
-		sprites.setPreferredSize(new Dimension(150, 0));
-		sprites.setBorder(new LineBorder(Color.DARK_GRAY));
-		add(sprites, BorderLayout.EAST);
+		add(new LayersPane(), BorderLayout.EAST);
 		
 		progressBar.setForeground(Color.GREEN);
 		if(RPGWorldCreator.isDarkmode()) progressBar.setBackground(new Color(25, 29, 31));
@@ -392,7 +392,7 @@ public class WorldCreatorFrame extends JFrame {
 				final char[] name = new char[reader.read()];
 				reader.read(name);
 				
-				RPGWorldCreator.getTextures().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.texturesFolder, String.copyValueOf(name) + ".png"));
+				RPGWorldCreator.getTextures().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, "textures/" + String.copyValueOf(name) + ".png"));
 			}
 			
 			// read every panel from file
@@ -615,51 +615,23 @@ public class WorldCreatorFrame extends JFrame {
 		}
 	}
 	
-	private class TexturesPanel extends JPanel {
-		private static final long serialVersionUID = -8842399534328251555L;
+	private class LayersPane extends JTabbedPane {
 		
-		private final ButtonGroup buttonGroup = new ButtonGroup();
-		private final Dimension panelSize = new Dimension(0, 0);
-		
-		public TexturesPanel() {
-			setLayout(null);
-			setBorder(new EmptyBorder(3, 3, 3, 3));
-			
-			if(RPGWorldCreator.isDarkmode()) setBackground(new Color(25, 29, 31));
-			
+		public LayersPane() {
 			initComponents();
 		}
 		
 		private void initComponents() {
-			RPGWorldCreator.getTextures().forEach((name, id, image) -> {
-				final int xNumber = image.getWidth() / tileSize, yNumber = image.getHeight() / tileSize, padding = 3;
-				final double scaledSize = (134 - padding * 2) / xNumber;
-				final JPanel panel = new JPanel();
-				
-				panel.setBounds(padding, (int) (id * yNumber * scaledSize + padding * (id + 1)), (int) (xNumber * scaledSize), (int) (yNumber * scaledSize));
-				panel.setLayout(new GridLayout(yNumber, xNumber));
-				
-				if(panelSize.width < (int) (xNumber * scaledSize)) panelSize.width = (int) (xNumber * scaledSize) + padding;
-				panelSize.height += (int) (yNumber * scaledSize) + padding;
-				
-				for(int x = 0; x < xNumber; x++)
-					for(int y = 0; y < yNumber; y++) {
-						final JToggleButton button = new JToggleButton(new ImageIcon(RPGWorldCreator.scaleImage(image.getSubimage(x * tileSize, y * tileSize, tileSize, tileSize), (int) scaledSize, (int) scaledSize)));
-						button.addActionListener(prefixActionListener);
-						button.setActionCommand("texture:" + name + ":" + x + "|" + y);
-						button.setFocusPainted(true);
-						
-						buttonGroup.add(button);
-						panel.add(button);
-					}
-				
-				add(panel);
-			});
+			addLayer(RPGWorldCreator.getTextures(), 0, "Textures");
+			addLayer(RPGWorldCreator.getTiles(), 1, "Tiles");
 		}
 		
-		@Override
-		public Dimension getPreferredSize() {
-			return panelSize;
+		private void addLayer(final TwoValueMap<String, Integer, BufferedImage> pictures, final int layer, final String tabName) {
+			final JScrollPane pane = new JScrollPane(new LayerPanel(pictures, layer, INSTANCE));
+			pane.setPreferredSize(new Dimension(150, 0));
+			pane.setBorder(new LineBorder(Color.DARK_GRAY));
+			
+			add(tabName, pane);
 		}
 	}
 	
@@ -704,9 +676,8 @@ public class WorldCreatorFrame extends JFrame {
 						
 						break;
 					case "bucket":
-						// TODO set to current picture mode
-						if(button == 1) bucketFill(null, -1, -1, images[0].getImage(), currentTexture);
-						else if(button == 3) bucketFill(null, -1, -1, images[0].getImage(), null);
+						if(button == 1) bucketFill(null, -1, -1, images[currentPictureLayer].getImage(), currentTexture);
+						else if(button == 3) bucketFill(null, -1, -1, images[currentPictureLayer].getImage(), null);
 						
 						break;
 					case "rotate":
@@ -755,12 +726,8 @@ public class WorldCreatorFrame extends JFrame {
 		private final Image[] images = new Image[3];
 		
 		public SpritePane() {
-			this(null);
-		}
-		
-		public SpritePane(final BufferedImage image) {
-			// TODO set to current picture mode
-			images[0] = new Image(image, 0, 0, Rotation.NONE);
+			for(int i = 0; i < images.length; i++)
+				images[i] = new Image(null, 0, 0, Rotation.NONE);
 			
 			setLayout(null);
 			setBackground(new Color(199, 199, 199));
@@ -785,12 +752,11 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public void setImage(final BufferedImage image, final int xShift, final int yShift, final Rotation rotation) {
-			// TODO set to current picture mode
-			setImage(0, image, xShift, yShift, rotation);
+			setImage(currentPictureLayer, image, xShift, yShift, rotation);
 		}
 		
-		public void setImage(final int index, final BufferedImage image, final int xShift, final int yShift, final Rotation rotation) {
-			images[index] = new Image(image, xShift, yShift, rotation);
+		public void setImage(final int layer, final BufferedImage image, final int xShift, final int yShift, final Rotation rotation) {
+			images[layer] = new Image(image, xShift, yShift, rotation);
 			
 			repaint();
 		}

@@ -13,36 +13,41 @@ import javax.imageio.ImageIO;
 
 public class RPGWorldCreator {
 	private static final HashMap<String, BufferedImage> images = new HashMap<>();
-	private static final TwoValueMap<String, Integer, BufferedImage> textures = new TwoValueMap<>();
+	private static final TwoValueMap<String, Integer, BufferedImage> textures = new TwoValueMap<>(), tiles = new TwoValueMap<>();
 	private static final boolean darkMode = false;
 	
-	public static final String texturesFolder = "/assets/worldcreator/textures";
+	public static final String assetsFolder = "/assets/worldcreator/";
 	
 	private static WorldCreatorFrame wcFrame;
 	
 	public static void main(final String[] args) {
-		loadTextures();
+		loadImages();
 		
 		wcFrame = new WorldCreatorFrame();
 		wcFrame.setVisible(true);
 	}
 	
-	private static void loadTextures() {
+	private static void loadImages() {
+		loadPictures("textures", textures);
+		loadPictures("tiles", tiles);
+	}
+	
+	private static void loadPictures(final String dir, final TwoValueMap<String, Integer, BufferedImage> map) {
 		final Consumer<String> consumer = new Consumer<String>() {
 			private BufferedImage image = null;
 			private int count = 0;
 			
 			@Override
 			public void accept(final String name) {
-				image = getImage(texturesFolder, name);
+				image = getImage(assetsFolder, dir + "/" + name);
 				
-				textures.put(name.replace(".png", ""), count, image);
+				map.put(name.replace(".png", ""), count, image);
 				
 				count++;
 			}
 		};
 		
-		new BufferedReader(new InputStreamReader(RPGWorldCreator.class.getResourceAsStream(texturesFolder + "/textures.txt"))).lines().parallel().forEach(consumer);
+		new BufferedReader(new InputStreamReader(RPGWorldCreator.class.getResourceAsStream(assetsFolder + dir + "/images.txt"))).lines().parallel().forEach(consumer);
 	}
 	
 	public static BufferedImage getImage(final String file) {
@@ -115,6 +120,10 @@ public class RPGWorldCreator {
 	
 	public static TwoValueMap<String, Integer, BufferedImage> getTextures() {
 		return textures;
+	}
+	
+	public static TwoValueMap<String, Integer, BufferedImage> getTiles() {
+		return tiles;
 	}
 	
 	public static boolean isDarkmode() {
