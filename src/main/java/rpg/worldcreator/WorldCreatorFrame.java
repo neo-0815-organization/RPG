@@ -94,9 +94,9 @@ public class WorldCreatorFrame extends JFrame {
 					
 					final Dimension dimension = newMapDialog.getDimension();
 					if(dimension != null) {
-						texturePanes = new SpritePane[dimension.width][dimension.height];
+						spritePanes = new SpritePane[dimension.width][dimension.height];
 						
-						updateTexturePanes();
+						createSpritePanes();
 						updateTitle("untitled.world");
 					}
 					
@@ -152,7 +152,7 @@ public class WorldCreatorFrame extends JFrame {
 					
 					break;
 				case "clear":
-					if(texturePanes != null) Arrays.stream(texturePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setImage(null));
+					if(spritePanes != null) Arrays.stream(spritePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setImage(null));
 					
 					break;
 				case "refresh":
@@ -190,7 +190,7 @@ public class WorldCreatorFrame extends JFrame {
 		}
 	};
 	
-	private SpritePane[][] texturePanes;
+	private SpritePane[][] spritePanes;
 	private double factor = 1d;
 	private BufferedImage currentTexture;
 	private int currentTextureX, currentTextureY;
@@ -315,7 +315,7 @@ public class WorldCreatorFrame extends JFrame {
 			numberTiles = 0;
 			time = System.currentTimeMillis();
 			
-			final int size = (int) (tileSize * factor), widthTiles = texturePanes.length, heightTiles = texturePanes[0].length;
+			final int size = (int) (tileSize * factor), widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
 			
 			progressBar.setMaximum(widthTiles * heightTiles);
 			updateProgressBar(0);
@@ -337,12 +337,12 @@ public class WorldCreatorFrame extends JFrame {
 			});
 			
 			// write every panel to opened file
-			writer.write(texturePanes.length);
-			writer.write(texturePanes[0].length);
+			writer.write(spritePanes.length);
+			writer.write(spritePanes[0].length);
 			
 			SpritePane pane;
-			for(final SpritePane[] texturePane : texturePanes)
-				for(final SpritePane element : texturePane) {
+			for(final SpritePane[] spritePane : spritePanes)
+				for(final SpritePane element : spritePane) {
 					pane = element;
 					
 					// TODO replace with loop (all indeces)
@@ -396,13 +396,13 @@ public class WorldCreatorFrame extends JFrame {
 			}
 			
 			// read every panel from file
-			texturePanes = new SpritePane[reader.read()][reader.read()];
+			spritePanes = new SpritePane[reader.read()][reader.read()];
 			
 			final int paneSize = (int) (tileSize * factor);
 			
 			SpritePane pane;
-			for(int x = 0; x < texturePanes.length; x++)
-				for(int y = 0; y < texturePanes[x].length; y++) {
+			for(int x = 0; x < spritePanes.length; x++)
+				for(int y = 0; y < spritePanes[x].length; y++) {
 					pane = new SpritePane();
 					pane.setBounds(x * paneSize, y * paneSize, paneSize, paneSize);
 					
@@ -410,7 +410,7 @@ public class WorldCreatorFrame extends JFrame {
 					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read(), Rotation.getById(reader.read()));
 					
 					workingArea.add(pane);
-					texturePanes[x][y] = pane;
+					spritePanes[x][y] = pane;
 					
 					updateProgressBar(++numberTiles);
 				}
@@ -434,7 +434,7 @@ public class WorldCreatorFrame extends JFrame {
 		numberTiles = 0;
 		time = System.currentTimeMillis();
 		
-		final int size = (int) (tileSize * factor), widthTiles = texturePanes.length, heightTiles = texturePanes[0].length;
+		final int size = (int) (tileSize * factor), widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
 		
 		progressBar.setMaximum(widthTiles * heightTiles);
 		updateProgressBar(0);
@@ -449,15 +449,15 @@ public class WorldCreatorFrame extends JFrame {
 			final BufferedImage image = new BufferedImage(widthTiles * size, heightTiles * size, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = image.createGraphics();
 			
-			for(int x = 0; x < texturePanes.length; x++)
+			for(int x = 0; x < spritePanes.length; x++)
 				new Thread("ExportThread-" + x) {
 					
 					private final int x = Integer.valueOf(getName().replace("ExportThread-", ""));
 					
 					@Override
 					public void run() {
-						for(int y = 0; y < texturePanes[x].length; y++) {
-							g.drawImage(texturePanes[x][y].images[0].getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
+						for(int y = 0; y < spritePanes[x].length; y++) {
+							g.drawImage(spritePanes[x][y].images[0].getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
 							
 							numberTiles++;
 						}
@@ -486,12 +486,12 @@ public class WorldCreatorFrame extends JFrame {
 		}
 	}
 	
-	private void updateTexturePanes() {
+	private void createSpritePanes() {
 		finishedThreads = 0;
 		numberTiles = 0;
 		time = System.currentTimeMillis();
 		
-		final int size = (int) (tileSize * factor), widthTiles = texturePanes.length, heightTiles = texturePanes[0].length;
+		final int size = (int) (tileSize * factor), widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
 		
 		progressBar.setMaximum(widthTiles * heightTiles);
 		updateProgressBar(0);
@@ -510,7 +510,7 @@ public class WorldCreatorFrame extends JFrame {
 						paneToAdd.setBounds(x * size, y * size, size, size);
 						
 						workingArea.add(paneToAdd);
-						texturePanes[x][y] = paneToAdd;
+						spritePanes[x][y] = paneToAdd;
 						
 						numberTiles++;
 					}
@@ -542,7 +542,7 @@ public class WorldCreatorFrame extends JFrame {
 		numberTiles = 0;
 		time = System.currentTimeMillis();
 		
-		final int size = (int) (tileSize * factor), widthTiles = texturePanes.length, heightTiles = texturePanes[0].length;
+		final int size = (int) (tileSize * factor), widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
 		
 		progressBar.setMaximum(widthTiles * heightTiles);
 		updateProgressBar(0);
@@ -554,7 +554,7 @@ public class WorldCreatorFrame extends JFrame {
 				@Override
 				public void run() {
 					for(int y = 0; y < heightTiles; y++) {
-						texturePanes[x][y].setBounds(x * size, y * size, size, size);
+						spritePanes[x][y].setBounds(x * size, y * size, size, size);
 						
 						numberTiles++;
 					}
@@ -733,21 +733,21 @@ public class WorldCreatorFrame extends JFrame {
 				else pane.setImage(null);
 				
 				int paneXPlus = paneX, paneXMinus = paneX, paneYPlus = paneY, paneYMinus = paneY;
-				if(paneX + 1 < texturePanes.length) paneXPlus++;
+				if(paneX + 1 < spritePanes.length) paneXPlus++;
 				if(paneX - 1 >= 0) paneXMinus--;
-				if(paneY + 1 < texturePanes[0].length) paneYPlus++;
+				if(paneY + 1 < spritePanes[0].length) paneYPlus++;
 				if(paneY - 1 >= 0) paneYMinus--;
 				
-				SpritePane nextPane = texturePanes[paneXPlus][paneY];
+				SpritePane nextPane = spritePanes[paneXPlus][paneY];
 				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneXPlus, paneY, image, newImage);
 				
-				nextPane = texturePanes[paneXMinus][paneY];
+				nextPane = spritePanes[paneXMinus][paneY];
 				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneXMinus, paneY, image, newImage);
 				
-				nextPane = texturePanes[paneX][paneYPlus];
+				nextPane = spritePanes[paneX][paneYPlus];
 				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneX, paneYPlus, image, newImage);
 				
-				nextPane = texturePanes[paneX][paneYMinus];
+				nextPane = spritePanes[paneX][paneYMinus];
 				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneX, paneYMinus, image, newImage);
 			}
 		}
@@ -806,17 +806,17 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public int getTileX() {
-			for(int x = 0; x < texturePanes.length; x++)
-				for(int y = 0; y < texturePanes[x].length; y++)
-					if(texturePanes[x][y] == this) return x;
+			for(int x = 0; x < spritePanes.length; x++)
+				for(int y = 0; y < spritePanes[x].length; y++)
+					if(spritePanes[x][y] == this) return x;
 				
 			return -1;
 		}
 		
 		public int getTileY() {
-			for(final SpritePane[] texturePane : texturePanes)
-				for(int y = 0; y < texturePane.length; y++)
-					if(texturePane[y] == this) return y;
+			for(final SpritePane[] spritePane : spritePanes)
+				for(int y = 0; y < spritePane.length; y++)
+					if(spritePane[y] == this) return y;
 				
 			return -1;
 		}
