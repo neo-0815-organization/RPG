@@ -61,7 +61,16 @@ public class WorldCreatorFrame extends JFrame {
 	private final WorldCreatorFrame INSTANCE = this;
 	private final NewMapDialog newMapDialog = new NewMapDialog(INSTANCE);
 	
-	private final JPanel workingArea = new JPanel(), currentTextureShowPanel = new JPanel() {
+	private final JPanel workingArea = new JPanel() {
+		private static final long serialVersionUID = -1342757438932065165L;
+		
+		@Override
+		public Dimension getPreferredSize() {
+			if(spritePanes != null) return new Dimension(spritePanes[0][0].getWidth() * spritePanes.length, spritePanes[0][0].getWidth() * spritePanes[0].length);
+			
+			return super.getPreferredSize();
+		}
+	}, currentTextureShowPanel = new JPanel() {
 		private static final long serialVersionUID = 3649405991511062410L;
 		
 		@Override
@@ -215,10 +224,10 @@ public class WorldCreatorFrame extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
-			registerCursor("pencil", new Point(4, 27));
-			registerCursor("eraser", new Point(5, 26));
-			registerCursor("bucket", new Point(1, 20));
-			registerCursor("rotate", new Point(16, 12));
+			registerCursor("pencil", new Point(3, 28));
+			registerCursor("eraser", new Point(6, 25));
+			registerCursor("bucket", new Point(5, 21));
+			registerCursor("rotate", new Point(16, 15));
 			
 			workingArea.setCursor(cursors.get("pencil"));
 		}catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException e) {
@@ -258,7 +267,10 @@ public class WorldCreatorFrame extends JFrame {
 				}
 			};
 		});
-		add(new JScrollPane(workingArea), BorderLayout.CENTER);
+		final JScrollPane scrollWorkingArea = new JScrollPane(workingArea);
+		scrollWorkingArea.getVerticalScrollBar().setUnitIncrement(32);
+		scrollWorkingArea.getHorizontalScrollBar().setUnitIncrement(32);
+		add(scrollWorkingArea, BorderLayout.CENTER);
 		
 		add(new LayersPane(), BorderLayout.EAST);
 		
@@ -282,11 +294,16 @@ public class WorldCreatorFrame extends JFrame {
 		
 		final JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);
-		addMenuItem(editMenu, "Zoom...", KeyEvent.VK_Z, -1, "zoom");
+		addMenuItem(editMenu, "Zoom...", KeyEvent.VK_Z, KeyEvent.VK_Z, "zoom");
 		addMenuItem(editMenu, "Clear...", KeyEvent.VK_C, -1, "clear");
 		editMenu.addSeparator();
 		addMenuItem(editMenu, "Refresh", KeyEvent.VK_R, KeyEvent.VK_F5, "refresh");
 		menuBar.add(editMenu);
+		
+		final JMenu aboutMenu = new JMenu("About");
+		aboutMenu.setMnemonic(KeyEvent.VK_A);
+		addMenuItem(aboutMenu, "Version: " + Data.version, -1, -1, null);
+		menuBar.add(aboutMenu);
 		
 		setJMenuBar(menuBar);
 	}
@@ -323,18 +340,27 @@ public class WorldCreatorFrame extends JFrame {
 			if(openedFile == null || !openedFile.exists()) openedFile.createNewFile();
 			
 			final FileWriter writer = new FileWriter(openedFile);
+			final TriConsumer<String, Integer, BufferedImage> writeConsumer = new TriConsumer<String, Integer, BufferedImage>() {
+				
+				@Override
+				public void accept(final String name, final Integer id, final BufferedImage image) {
+					try {
+						writer.write(id);
+						writer.write(name.length());
+						writer.write(name.toCharArray());
+					}catch(final IOException e) {
+						e.printStackTrace();
+					}
+				}
+			};
 			
 			// write texture paths to opened file
 			writer.write(RPGWorldCreator.getTextures().size());
-			RPGWorldCreator.getTextures().forEach((name, id, image) -> {
-				try {
-					writer.write(id);
-					writer.write(name.length());
-					writer.write(name.toCharArray());
-				}catch(final IOException e) {
-					e.printStackTrace();
-				}
-			});
+			RPGWorldCreator.getTextures().forEach(writeConsumer);
+			
+			// write tile paths to opened file
+			writer.write(RPGWorldCreator.getTiles().size());
+			RPGWorldCreator.getTiles().forEach(writeConsumer);
 			
 			// write every panel to opened file
 			writer.write(spritePanes.length);
@@ -386,13 +412,24 @@ public class WorldCreatorFrame extends JFrame {
 			
 			// read texture paths from opened file
 			RPGWorldCreator.getTextures().clear();
-			final int size = reader.read();
-			for(int i = 0; i < size; i++) {
+			final int texturesLength = reader.read();
+			for(int i = 0; i < texturesLength; i++) {
 				final int id = reader.read();
 				final char[] name = new char[reader.read()];
 				reader.read(name);
 				
 				RPGWorldCreator.getTextures().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, "textures/" + String.copyValueOf(name) + ".png"));
+			}
+			
+			// read tile paths from opened file
+			RPGWorldCreator.getTiles().clear();
+			final int tilesLength = reader.read();
+			for(int i = 0; i < tilesLength; i++) {
+				final int id = reader.read();
+				final char[] name = new char[reader.read()];
+				reader.read(name);
+				
+				RPGWorldCreator.getTiles().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, "tiles/" + String.copyValueOf(name) + ".png"));
 			}
 			
 			// read every panel from file
@@ -616,6 +653,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private class LayersPane extends JTabbedPane {
+		private static final long serialVersionUID = 6575636653675456721L;
 		
 		public LayersPane() {
 			initComponents();
