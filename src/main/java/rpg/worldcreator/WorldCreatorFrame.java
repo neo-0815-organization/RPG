@@ -82,7 +82,7 @@ public class WorldCreatorFrame extends JFrame {
 			
 			newSize -= 10;
 			
-			if(currentTexture != null) g.drawImage(RPGWorldCreator.scaleImage(currentTexture.getSubimage(currentTextureX, currentTextureY, tileSize, tileSize), newSize, newSize), 5, 5, null);
+			if(currentTexture != null) g.drawImage(RPGWorldCreator.scaleImage(currentTexture.getImage(), newSize, newSize), 5, 5, null);
 		}
 	};
 	private final JProgressBar progressBar = new JProgressBar();
@@ -155,9 +155,7 @@ public class WorldCreatorFrame extends JFrame {
 					break;
 				case "zoom":
 					try {
-						factor = Double.parseDouble(JOptionPane.showInputDialog("Change zoom", factor));
-						
-						applyZoom();
+						applyZoom(Double.parseDouble(JOptionPane.showInputDialog("Change zoom", factor)));
 					}catch(final NullPointerException ex) {}
 					
 					break;
@@ -190,10 +188,7 @@ public class WorldCreatorFrame extends JFrame {
 					
 					break;
 				case "texture":
-					currentTexture = RPGWorldCreator.getTextures().getSecond(command);
-					currentTextureX = Integer.valueOf(args[0]) * tileSize;
-					currentTextureY = Integer.valueOf(args[1]) * tileSize;
-					
+					currentTexture = new Image(RPGWorldCreator.getTextures().getSecond(command), RPGWorldCreator.getTextures().getFirst(command), Integer.valueOf(args[0]) * tileSize, Integer.valueOf(args[1]) * tileSize, Rotation.NONE, factor);
 					currentPictureLayer = Integer.valueOf(args[2]);
 					
 					currentTextureShowPanel.repaint();
@@ -204,8 +199,8 @@ public class WorldCreatorFrame extends JFrame {
 	
 	private SpritePane[][] spritePanes;
 	private double factor = 1d;
-	private BufferedImage currentTexture;
-	private int currentTextureX, currentTextureY, currentPictureLayer;
+	private Image currentTexture;
+	private int currentPictureLayer;
 	private File openedFile;
 	
 	public WorldCreatorFrame() {
@@ -438,13 +433,16 @@ public class WorldCreatorFrame extends JFrame {
 			final int paneSize = (int) (tileSize * factor);
 			
 			SpritePane pane;
+			int id;
 			for(int x = 0; x < spritePanes.length; x++)
 				for(int y = 0; y < spritePanes[x].length; y++) {
-					pane = new SpritePane();
+					pane = new SpritePane(x, y);
 					pane.setBounds(x * paneSize, y * paneSize, paneSize, paneSize);
 					
-					// TODO replace with loop (all indeces)
-					pane.setImage(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(reader.read())), reader.read(), reader.read(), Rotation.getById(reader.read()));
+					id = reader.read();
+					
+					// TODO replace with loop (all layers)
+					pane.setImage(0, new Image(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(id)), id, reader.read(), reader.read(), Rotation.getById(reader.read()), factor));
 					
 					workingArea.add(pane);
 					spritePanes[x][y] = pane;
@@ -543,7 +541,7 @@ public class WorldCreatorFrame extends JFrame {
 				@Override
 				public void run() {
 					for(int y = 0; y < heightTiles; y++) {
-						paneToAdd = new SpritePane();
+						paneToAdd = new SpritePane(x, y);
 						paneToAdd.setBounds(x * size, y * size, size, size);
 						
 						workingArea.add(paneToAdd);
@@ -574,44 +572,13 @@ public class WorldCreatorFrame extends JFrame {
 		JOptionPane.showMessageDialog(workingArea, "Created " + widthTiles + "x" + heightTiles + " (" + (System.currentTimeMillis() - time) + " ms)", "Created", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	private void applyZoom() {
-		finishedThreads = 0;
-		numberTiles = 0;
-		time = System.currentTimeMillis();
-		
-		final int size = (int) (tileSize * factor), widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
-		
-		progressBar.setMaximum(widthTiles * heightTiles);
-		updateProgressBar(0);
-		
-		for(int x = 0; x < widthTiles; x++)
-			new Thread("ZoomThread-" + x) {
-				private final int x = Integer.valueOf(getName().replace("ZoomThread-", ""));
-				
-				@Override
-				public void run() {
-					for(int y = 0; y < heightTiles; y++) {
-						spritePanes[x][y].setBounds(x * size, y * size, size, size);
-						
-						numberTiles++;
-					}
-					
-					finishedThreads++;
-				}
-			}.start();
-		
-		while(true) {
-			updateProgressBar(numberTiles);
-			
-			if(finishedThreads == widthTiles) {
-				updateProgressBar(progressBar.getMaximum());
-				
-				break;
-			}
-		}
+	private void applyZoom(final double factor) {
+		Arrays.stream(spritePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setScaleFactor(factor));
 		
 		workingArea.revalidate();
 		workingArea.repaint();
+		
+		this.factor = factor;
 	}
 	
 	private class ToolPanel extends JPanel {
@@ -705,7 +672,7 @@ public class WorldCreatorFrame extends JFrame {
 			public void mouseEntered(final MouseEvent e) {
 				if(pressing) switch(getCursor().getName()) {
 					case "pencil":
-						if(button == 1) setImage(currentTexture, currentTextureX, currentTextureY);
+						if(button == 1) setImage(currentTexture.copy());
 						else if(button == 3) setImage(null);
 						
 						break;
@@ -714,8 +681,8 @@ public class WorldCreatorFrame extends JFrame {
 						
 						break;
 					case "bucket":
-						if(button == 1) bucketFill(null, -1, -1, images[currentPictureLayer].getImage(), currentTexture);
-						else if(button == 3) bucketFill(null, -1, -1, images[currentPictureLayer].getImage(), null);
+						if(button == 1) bucketFill(images[currentPictureLayer], currentTexture.copy());
+						else if(button == 3) bucketFill(images[currentPictureLayer], null);
 						
 						break;
 					case "rotate":
@@ -727,45 +694,47 @@ public class WorldCreatorFrame extends JFrame {
 			};
 		};
 		
-		private void bucketFill(SpritePane pane, int paneX, int paneY, final BufferedImage image, final BufferedImage newImage) {
-			if(pane == null) {
-				pane = this;
-				
-				paneX = pane.getTileX();
-				paneY = pane.getTileY();
-			}
+		private void bucketFill(final Image imageToReplace, final Image newImage) {
+			final HashMap<SpritePane, Integer> tilesToFill = new HashMap<>();
 			
-			if(RPGWorldCreator.compareImages(pane.images[0].getImage(), newImage == null ? null : newImage.getSubimage(currentTextureX, currentTextureY, tileSize, tileSize))) return;
+			bucketFill(tilesToFill, imageToReplace, newImage);
 			
-			if(RPGWorldCreator.compareImages(pane.images[0].getImage(), image)) {
-				if(newImage != null) pane.setImage(newImage, currentTextureX, currentTextureY);
+			tilesToFill.keySet().parallelStream().forEach(pane -> {
+				if(newImage != null) pane.setImage(newImage);
 				else pane.setImage(null);
+			});
+		}
+		
+		private void bucketFill(final HashMap<SpritePane, Integer> tilesToFill, final Image imageToReplace, final Image newImage) {
+			if(tilesToFill.containsKey(this)) return;
+			
+			if(images[currentPictureLayer].equals(imageToReplace)) {
+				tilesToFill.put(this, 0);
 				
-				int paneXPlus = paneX, paneXMinus = paneX, paneYPlus = paneY, paneYMinus = paneY;
-				if(paneX + 1 < spritePanes.length) paneXPlus++;
-				if(paneX - 1 >= 0) paneXMinus--;
-				if(paneY + 1 < spritePanes[0].length) paneYPlus++;
-				if(paneY - 1 >= 0) paneYMinus--;
-				
-				SpritePane nextPane = spritePanes[paneXPlus][paneY];
-				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneXPlus, paneY, image, newImage);
-				
-				nextPane = spritePanes[paneXMinus][paneY];
-				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneXMinus, paneY, image, newImage);
-				
-				nextPane = spritePanes[paneX][paneYPlus];
-				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneX, paneYPlus, image, newImage);
-				
-				nextPane = spritePanes[paneX][paneYMinus];
-				if(RPGWorldCreator.compareImages(nextPane.images[0].getImage(), image)) bucketFill(nextPane, paneX, paneYMinus, image, newImage);
+				SpritePane nextPane;
+				int newX, newY;
+				for(final Point point : Data.fillOffsets) {
+					newX = paneX + point.x;
+					newY = paneY + point.y;
+					
+					if(newX < 0 || newX >= spritePanes.length || newY < 0 || newY >= spritePanes[0].length) continue;
+					
+					nextPane = spritePanes[newX][newY];
+					
+					if(nextPane.images[currentPictureLayer].equals(imageToReplace)) nextPane.bucketFill(tilesToFill, imageToReplace, newImage);
+				}
 			}
 		}
 		
 		private final Image[] images = new Image[3];
+		private final int paneX, paneY;
 		
-		public SpritePane() {
+		public SpritePane(final int paneX, final int paneY) {
+			this.paneX = paneX;
+			this.paneY = paneY;
+			
 			for(int i = 0; i < images.length; i++)
-				images[i] = new Image(null, 0, 0, Rotation.NONE);
+				images[i] = Image.nullImage;
 			
 			setLayout(null);
 			setBackground(new Color(199, 199, 199));
@@ -778,51 +747,37 @@ public class WorldCreatorFrame extends JFrame {
 			super.paintComponent(g);
 			
 			for(final Image image : images)
-				if(image != null && image.getImage() != null) g.drawImage(RPGWorldCreator.scaleImage(image.getImage(), getWidth(), getHeight()), 0, 0, null);
+				if(image != null && image.getImage() != null) g.drawImage(image.getImage(), 0, 0, null);
 		}
 		
-		public void setImage(final BufferedImage image) {
-			setImage(image, 0, 0);
+		public void setImage(final Image image) {
+			setImage(currentPictureLayer, image);
 		}
 		
-		public void setImage(final BufferedImage image, final int xShift, final int yShift) {
-			setImage(image, xShift, yShift, Rotation.NONE);
-		}
-		
-		public void setImage(final BufferedImage image, final int xShift, final int yShift, final Rotation rotation) {
-			setImage(currentPictureLayer, image, xShift, yShift, rotation);
-		}
-		
-		public void setImage(final int layer, final BufferedImage image, final int xShift, final int yShift, final Rotation rotation) {
-			images[layer] = new Image(image, xShift, yShift, rotation);
+		public void setImage(final int layer, Image image) {
+			if(image == null) image = Image.nullImage;
+			
+			images[layer] = image;
 			
 			repaint();
 		}
 		
 		public void setRotated(final int direction) {
-			setRotation(images[0].getRotation().rotate(direction));
+			setRotation(images[currentPictureLayer].getRotation().rotate(direction));
 		}
 		
 		public void setRotation(final Rotation rotation) {
-			images[0].setRotation(rotation);
+			images[currentPictureLayer].setRotation(rotation);
 			
 			repaint();
 		}
 		
-		public int getTileX() {
-			for(int x = 0; x < spritePanes.length; x++)
-				for(int y = 0; y < spritePanes[x].length; y++)
-					if(spritePanes[x][y] == this) return x;
-				
-			return -1;
-		}
-		
-		public int getTileY() {
-			for(final SpritePane[] spritePane : spritePanes)
-				for(int y = 0; y < spritePane.length; y++)
-					if(spritePane[y] == this) return y;
-				
-			return -1;
+		public void setScaleFactor(final double scaleFactor) {
+			Arrays.stream(images).parallel().forEach(image -> image.setScaleFactor(scaleFactor));
+			
+			final int size = (int) (tileSize * scaleFactor);
+			
+			setBounds(paneX * size, paneY * size, size, size);
 		}
 	}
 	

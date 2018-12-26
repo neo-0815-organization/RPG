@@ -7,22 +7,22 @@ import java.awt.image.BufferedImage;
 public class Image {
 	private final BufferedImage image;
 	private final int id, xShift, yShift;
-	private Rotation rotation;
 	
-	public Image(final BufferedImage image, final int xShift, final int yShift, final Rotation rotation) {
-		this.image = image;
-		id = image != null ? RPGWorldCreator.getTextures().getFirst(RPGWorldCreator.getTextures().keyWithValueTwo(image)) : -1;
-		this.xShift = xShift;
-		this.yShift = yShift;
-		this.rotation = rotation;
+	private BufferedImage subImage;
+	private Rotation rotation;
+	private double scaleFactor;
+	
+	public Image(final int id, final int xShift, final int yShift, final Rotation rotation, final double scaleFactor) {
+		this(id >= 0 ? RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(id)) : null, id, xShift, yShift, rotation, scaleFactor);
 	}
 	
-	public Image(final int id, final int xShift, final int yShift, final Rotation rotation) {
-		image = id < 0 ? RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(id)) : null;
-		this.id = id < -1 ? -1 : id;
+	public Image(final BufferedImage image, final int id, final int xShift, final int yShift, final Rotation rotation, final double scaleFactor) {
+		this.image = image;
+		this.id = id;
 		this.xShift = xShift;
 		this.yShift = yShift;
 		this.rotation = rotation;
+		this.scaleFactor = scaleFactor;
 	}
 	
 	public BufferedImage getOriginalImage() {
@@ -49,9 +49,34 @@ public class Image {
 		this.rotation = rotation;
 	}
 	
+	public double getScaleFactor() {
+		return scaleFactor;
+	}
+	
+	public void setScaleFactor(final double scaleFactor) {
+		this.scaleFactor = scaleFactor;
+	}
+	
 	public BufferedImage getImage() {
 		if(image == null) return null;
+		if(subImage == null) subImage = image.getSubimage(xShift, yShift, tileSize, tileSize);
 		
-		return RPGWorldCreator.rotateImage(image.getSubimage(xShift, yShift, tileSize, tileSize), rotation.getAngle());
+		return RPGWorldCreator.scaleImage(RPGWorldCreator.rotateImage(subImage, rotation.getAngle()), (int) (subImage.getWidth() * scaleFactor), (int) (subImage.getHeight() * scaleFactor));
 	}
+	
+	public Image copy() {
+		return new Image(image, id, xShift, yShift, rotation, scaleFactor);
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if(!(obj instanceof Image)) return false;
+		final Image image = (Image) obj;
+		
+		if(id < 0 && image.id < 0) return true;
+		
+		return id == image.id && xShift == image.xShift && yShift == image.yShift && rotation == image.rotation;
+	}
+	
+	public static final Image nullImage = new Image(-1, 0, 0, Rotation.NONE, 1d);
 }
