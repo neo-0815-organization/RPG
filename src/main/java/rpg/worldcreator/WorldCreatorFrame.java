@@ -366,7 +366,7 @@ public class WorldCreatorFrame extends JFrame {
 				for(final SpritePane element : spritePane) {
 					pane = element;
 					
-					// TODO replace with loop (all indeces)
+					// TODO replace with loop (all layers)
 					writer.write(pane.images[0].getId());
 					writer.write(pane.images[0].getXShift());
 					writer.write(pane.images[0].getYShift());
@@ -469,7 +469,7 @@ public class WorldCreatorFrame extends JFrame {
 		numberTiles = 0;
 		time = System.currentTimeMillis();
 		
-		final int size = (int) (tileSize * factor), widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
+		final int widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
 		
 		progressBar.setMaximum(widthTiles * heightTiles);
 		updateProgressBar(0);
@@ -481,7 +481,7 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		try {
-			final BufferedImage image = new BufferedImage(widthTiles * size, heightTiles * size, BufferedImage.TYPE_INT_ARGB);
+			final BufferedImage image = new BufferedImage(widthTiles * tileSize, heightTiles * tileSize, BufferedImage.TYPE_INT_ARGB);
 			final Graphics2D g = image.createGraphics();
 			
 			for(int x = 0; x < spritePanes.length; x++)
@@ -492,7 +492,8 @@ public class WorldCreatorFrame extends JFrame {
 					@Override
 					public void run() {
 						for(int y = 0; y < spritePanes[x].length; y++) {
-							g.drawImage(spritePanes[x][y].images[0].getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
+							for(final Image image : spritePanes[x][y].images)
+								g.drawImage(image.getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
 							
 							numberTiles++;
 						}
