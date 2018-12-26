@@ -43,9 +43,9 @@ public enum Rotation {
 		return null;
 	}
 	
-	public Rotation rotate(int direction) {
-		if(direction > 0) return rotateClockwise();
-		if(direction < 0) return rotateCounterclockwise();
+	public Rotation rotate(final int direction) {
+		if(direction > 0) return rotateClockwise().rotate(direction - 1);
+		if(direction < 0) return rotateCounterclockwise().rotate(direction + 1);
 		
 		return this;
 	}

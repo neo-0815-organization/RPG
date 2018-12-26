@@ -6,28 +6,29 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TwoValueMap<K, V1, V2> {
 	private final HashMap<K, Values> map = new HashMap<>();
 	
-	public void put(K key, V1 valueOne, V2 valueTwo) {
+	public void put(final K key, final V1 valueOne, final V2 valueTwo) {
 		map.put(key, new Values(valueOne, valueTwo));
 	}
 	
-	public V1 getFirst(K key) {
+	public V1 getFirst(final K key) {
 		return map.get(key).valueOne;
 	}
 	
-	public V2 getSecond(K key) {
+	public V2 getSecond(final K key) {
 		return map.get(key).valueTwo;
 	}
 	
-	public boolean containsKey(K key) {
+	public boolean containsKey(final K key) {
 		return map.containsKey(key);
 	}
 	
-	public K keyWithValueOne(V1 valueOne) {
-		AtomicReference<K> returnKey = new AtomicReference<>();
+	public K keyWithValueOne(final V1 valueOne) {
+		final AtomicReference<K> returnKey = new AtomicReference<>();
 		
 		forEach(new TriConsumer<K, V1, V2>() {
 			
-			public void accept(K key, V1 v1, V2 v2) {
+			@Override
+			public void accept(final K key, final V1 v1, final V2 v2) {
 				if(valueOne.equals(v1)) returnKey.set(key);
 			};
 		});
@@ -35,12 +36,13 @@ public class TwoValueMap<K, V1, V2> {
 		return returnKey.get();
 	}
 	
-	public K keyWithValueTwo(V2 valueTwo) {
-		AtomicReference<K> returnKey = new AtomicReference<>();
+	public K keyWithValueTwo(final V2 valueTwo) {
+		final AtomicReference<K> returnKey = new AtomicReference<>();
 		
 		forEach(new TriConsumer<K, V1, V2>() {
 			
-			public void accept(K key, V1 v1, V2 v2) {
+			@Override
+			public void accept(final K key, final V1 v1, final V2 v2) {
 				if(valueTwo.equals(v2)) returnKey.set(key);
 			};
 		});
@@ -56,7 +58,7 @@ public class TwoValueMap<K, V1, V2> {
 		map.clear();
 	}
 	
-	public void forEach(TriConsumer<? super K, ? super V1, ? super V2> action) {
+	public void forEach(final TriConsumer<? super K, ? super V1, ? super V2> action) {
 		if(action == null) throw new NullPointerException();
 		
 		map.forEach((k, v) -> {
@@ -65,10 +67,10 @@ public class TwoValueMap<K, V1, V2> {
 	}
 	
 	private class Values {
-		private V1 valueOne;
-		private V2 valueTwo;
+		private final V1 valueOne;
+		private final V2 valueTwo;
 		
-		public Values(V1 valueOne, V2 valueTwo) {
+		public Values(final V1 valueOne, final V2 valueTwo) {
 			this.valueOne = valueOne;
 			this.valueTwo = valueTwo;
 		}

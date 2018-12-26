@@ -188,8 +188,8 @@ public class WorldCreatorFrame extends JFrame {
 					
 					break;
 				case "texture":
-					currentTexture = new Image(RPGWorldCreator.getTextures().getSecond(command), RPGWorldCreator.getTextures().getFirst(command), Integer.valueOf(args[0]) * tileSize, Integer.valueOf(args[1]) * tileSize, Rotation.NONE, factor);
-					currentPictureLayer = Integer.valueOf(args[2]);
+					currentLayer = Integer.valueOf(args[2]);
+					currentTexture = new Image(RPGWorldCreator.getImageMap(currentLayer).getSecond(command), RPGWorldCreator.getImageMap(currentLayer).getFirst(command), Integer.valueOf(args[0]) * tileSize, Integer.valueOf(args[1]) * tileSize, Rotation.NONE, factor);
 					
 					currentTextureShowPanel.repaint();
 					break;
@@ -200,7 +200,7 @@ public class WorldCreatorFrame extends JFrame {
 	private SpritePane[][] spritePanes;
 	private double factor = 1d;
 	private Image currentTexture;
-	private int currentPictureLayer;
+	private int currentLayer;
 	private File openedFile;
 	
 	public WorldCreatorFrame() {
@@ -687,8 +687,8 @@ public class WorldCreatorFrame extends JFrame {
 						
 						break;
 					case "bucket":
-						if(button == 1) bucketFill(images[currentPictureLayer], currentTexture.copy());
-						else if(button == 3) bucketFill(images[currentPictureLayer], null);
+						if(button == 1) bucketFill(images[currentLayer], currentTexture.copy());
+						else if(button == 3) bucketFill(images[currentLayer], null);
 						
 						break;
 					case "rotate":
@@ -714,7 +714,7 @@ public class WorldCreatorFrame extends JFrame {
 		private void bucketFill(final HashMap<SpritePane, Integer> tilesToFill, final Image imageToReplace, final Image newImage) {
 			if(tilesToFill.containsKey(this)) return;
 			
-			if(images[currentPictureLayer].equals(imageToReplace)) {
+			if(images[currentLayer].equals(imageToReplace)) {
 				tilesToFill.put(this, 0);
 				
 				SpritePane nextPane;
@@ -727,7 +727,7 @@ public class WorldCreatorFrame extends JFrame {
 					
 					nextPane = spritePanes[newX][newY];
 					
-					if(nextPane.images[currentPictureLayer].equals(imageToReplace)) nextPane.bucketFill(tilesToFill, imageToReplace, newImage);
+					if(nextPane.images[currentLayer].equals(imageToReplace)) nextPane.bucketFill(tilesToFill, imageToReplace, newImage);
 				}
 			}
 		}
@@ -757,7 +757,7 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public void setImage(final Image image) {
-			setImage(currentPictureLayer, image);
+			setImage(currentLayer, image);
 		}
 		
 		public void setImage(final int layer, Image image) {
@@ -769,11 +769,11 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public void setRotated(final int direction) {
-			setRotation(images[currentPictureLayer].getRotation().rotate(direction));
+			setRotation(images[currentLayer].getRotation().rotate(direction));
 		}
 		
 		public void setRotation(final Rotation rotation) {
-			images[currentPictureLayer].setRotation(rotation);
+			images[currentLayer].setRotation(rotation);
 			
 			repaint();
 		}

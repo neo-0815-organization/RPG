@@ -118,6 +118,19 @@ public class RPGWorldCreator {
 		return true;
 	}
 	
+	public static TwoValueMap<String, Integer, BufferedImage> getImageMap(final int index) {
+		switch(index) {
+			case 0:
+				return textures;
+			case 1:
+				return tiles;
+			case 2:
+				return null;
+		}
+		
+		return null;
+	}
+	
 	public static TwoValueMap<String, Integer, BufferedImage> getTextures() {
 		return textures;
 	}
