@@ -270,8 +270,13 @@ public class WorldCreatorFrame extends JFrame {
 		add(new LayersPane(), BorderLayout.EAST);
 		
 		progressBar.setForeground(Color.GREEN);
-		if(RPGWorldCreator.isDarkmode()) progressBar.setBackground(new Color(25, 29, 31));
 		add(progressBar, BorderLayout.SOUTH);
+		
+		if(RPGWorldCreator.isDarkmode()) {
+			workingArea.setBackground(new Color(44, 49, 53));
+			currentTextureShowPanel.setBackground(new Color(44, 49, 53));
+			progressBar.setBackground(new Color(25, 29, 31));
+		}
 	}
 	
 	private void initMenuBar() {
