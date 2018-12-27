@@ -622,6 +622,8 @@ public class WorldCreatorFrame extends JFrame {
 	private void applyZoom(final double factor) {
 		Arrays.stream(spritePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setScaleFactor(factor));
 		
+		currentTexture.setScaleFactor(factor);
+		
 		workingArea.revalidate();
 		workingArea.repaint();
 		
