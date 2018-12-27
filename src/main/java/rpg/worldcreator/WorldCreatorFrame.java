@@ -88,7 +88,7 @@ public class WorldCreatorFrame extends JFrame {
 			
 			newSize -= 10;
 			
-			if(currentTexture != null) g.drawImage(RPGWorldCreator.scaleImage(currentTexture.getImage(), newSize, newSize), 5, 5, null);
+			if(!currentTexture.isNull()) g.drawImage(RPGWorldCreator.scaleImage(currentTexture.getImage(), newSize, newSize), 5, 5, null);
 		}
 	};
 	private final JProgressBar progressBar = new JProgressBar();
@@ -155,7 +155,7 @@ public class WorldCreatorFrame extends JFrame {
 				case "zoom":
 					try {
 						applyZoom(Double.parseDouble(JOptionPane.showInputDialog("Change zoom", factor)));
-					}catch(final NullPointerException ex) {}
+					}catch(final NumberFormatException ex) {}
 					
 					break;
 				case "clear":
@@ -203,7 +203,7 @@ public class WorldCreatorFrame extends JFrame {
 	
 	private SpritePane[][] spritePanes;
 	private double factor = 1d;
-	private Image currentTexture;
+	private Image currentTexture = Image.nullImage;
 	private int currentLayer = 1;
 	private File openedFile;
 	
