@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -55,7 +56,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import rpg.worldcreator.dialogs.NewMapDialog;
 
 public class WorldCreatorFrame extends JFrame {
-	
 	private static final long serialVersionUID = -5092028467904882919L;
 	
 	private final WorldCreatorFrame INSTANCE = this;
@@ -170,6 +170,9 @@ public class WorldCreatorFrame extends JFrame {
 					workingArea.repaint();
 					
 					break;
+				case "update":
+					updateFile(openedFile);
+					break;
 			}
 			
 			if(!command.equals("new") && !command.equals("exit")) updateProgressBar(0);
@@ -189,7 +192,9 @@ public class WorldCreatorFrame extends JFrame {
 					break;
 				case "texture":
 					currentLayer = Integer.valueOf(args[2]);
-					currentTexture = new Image(RPGWorldCreator.getImageMap(currentLayer).getSecond(command), RPGWorldCreator.getImageMap(currentLayer).getFirst(command), Integer.valueOf(args[0]) * tileSize, Integer.valueOf(args[1]) * tileSize, Rotation.NONE, factor);
+					
+					if(RPGWorldCreator.getImageMap(currentLayer).containsKey(command)) currentTexture = new Image(RPGWorldCreator.getImageMap(currentLayer).getSecond(command), RPGWorldCreator.getImageMap(currentLayer).getFirst(command), Integer.valueOf(args[0]) * tileSize, Integer.valueOf(args[1]) * tileSize, Rotation.NONE, factor);
+					else currentTexture = Image.nullImage;
 					
 					currentTextureShowPanel.repaint();
 					break;
@@ -200,7 +205,7 @@ public class WorldCreatorFrame extends JFrame {
 	private SpritePane[][] spritePanes;
 	private double factor = 1d;
 	private Image currentTexture;
-	private int currentLayer;
+	private int currentLayer = 1;
 	private File openedFile;
 	
 	public WorldCreatorFrame() {
@@ -289,6 +294,8 @@ public class WorldCreatorFrame extends JFrame {
 		addMenuItem(fileMenu, "Save...", KeyEvent.VK_S, KeyEvent.VK_S, "save");
 		addMenuItem(fileMenu, "Export...", KeyEvent.VK_E, KeyEvent.VK_E, "export");
 		fileMenu.addSeparator();
+		addMenuItem(fileMenu, "Update...", KeyEvent.VK_U, -1, "update");
+		fileMenu.addSeparator();
 		addMenuItem(fileMenu, "Exit...", KeyEvent.VK_X, KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK, "exit");
 		menuBar.add(fileMenu);
 		
@@ -354,13 +361,15 @@ public class WorldCreatorFrame extends JFrame {
 				}
 			};
 			
-			// write texture paths to opened file
-			writer.write(RPGWorldCreator.getTextures().size());
-			RPGWorldCreator.getTextures().forEach(writeConsumer);
+			// write image paths to opened file
+			writer.write(RPGWorldCreator.getLayerCount());
+			for(int i = 1; i < RPGWorldCreator.getLayerCount(); i++) {
+				writer.write(RPGWorldCreator.getImageMap(i).size());
+				RPGWorldCreator.getImageMap(i).forEach(writeConsumer);
+			}
 			
-			// write tile paths to opened file
-			writer.write(RPGWorldCreator.getTiles().size());
-			RPGWorldCreator.getTiles().forEach(writeConsumer);
+			writer.write(RPGWorldCreator.getImageMap(0).size());
+			RPGWorldCreator.getImageMap(0).forEach(writeConsumer);
 			
 			// write every panel to opened file
 			writer.write(spritePanes.length);
@@ -371,11 +380,12 @@ public class WorldCreatorFrame extends JFrame {
 				for(final SpritePane element : spritePane) {
 					pane = element;
 					
-					// TODO replace with loop (all layers)
-					writer.write(pane.images[0].getId());
-					writer.write(pane.images[0].getXShift());
-					writer.write(pane.images[0].getYShift());
-					writer.write(pane.images[0].getRotation().getId());
+					for(int i = 0; i < RPGWorldCreator.getLayerCount(); i++) {
+						writer.write(pane.images[i].getId());
+						writer.write(pane.images[i].getXShift());
+						writer.write(pane.images[i].getYShift());
+						writer.write(pane.images[i].getRotation().getId());
+					}
 					
 					updateProgressBar(++numberTiles);
 				}
@@ -410,26 +420,29 @@ public class WorldCreatorFrame extends JFrame {
 		try {
 			final BufferedReader reader = new BufferedReader(new FileReader(file));
 			
-			// read texture paths from opened file
-			RPGWorldCreator.getTextures().clear();
-			final int texturesLength = reader.read();
-			for(int i = 0; i < texturesLength; i++) {
-				final int id = reader.read();
-				final char[] name = new char[reader.read()];
-				reader.read(name);
+			final int layerCount = reader.read();
+			int imageCount;
+			for(int i = 1; i < layerCount; i++) {
+				RPGWorldCreator.getImageMap(i).clear();
+				imageCount = reader.read();
 				
-				RPGWorldCreator.getTextures().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, "textures/" + String.copyValueOf(name) + ".png"));
+				for(int j = 0; j < imageCount; j++) {
+					final int id = reader.read();
+					final char[] name = new char[reader.read()];
+					reader.read(name);
+					
+					RPGWorldCreator.getImageMap(i).put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(i) + "/" + String.valueOf(name) + ".png"));
+				}
 			}
 			
-			// read tile paths from opened file
-			RPGWorldCreator.getTiles().clear();
-			final int tilesLength = reader.read();
-			for(int i = 0; i < tilesLength; i++) {
+			RPGWorldCreator.getImageMap(0).clear();
+			imageCount = reader.read();
+			for(int i = 0; i < imageCount; i++) {
 				final int id = reader.read();
 				final char[] name = new char[reader.read()];
 				reader.read(name);
 				
-				RPGWorldCreator.getTiles().put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, "tiles/" + String.copyValueOf(name) + ".png"));
+				RPGWorldCreator.getImageMap(0).put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(0) + "/" + String.valueOf(name) + ".png"));
 			}
 			
 			// read every panel from file
@@ -444,10 +457,13 @@ public class WorldCreatorFrame extends JFrame {
 					pane = new SpritePane(x, y);
 					pane.setBounds(x * paneSize, y * paneSize, paneSize, paneSize);
 					
-					id = reader.read();
-					
-					// TODO replace with loop (all layers)
-					pane.setImage(0, new Image(RPGWorldCreator.getTextures().getSecond(RPGWorldCreator.getTextures().keyWithValueOne(id)), id, reader.read(), reader.read(), Rotation.getById(reader.read()), factor));
+					for(int i = 0; i < layerCount; i++) {
+						id = reader.read();
+						
+						if(id == 65_535) id = -1;
+						
+						pane.setImage(i, new Image(RPGWorldCreator.getImageMap(i).getSecond(RPGWorldCreator.getImageMap(i).keyWithValueOne(id)), id, reader.read(), reader.read(), Rotation.getById(reader.read()), factor));
+					}
 					
 					workingArea.add(pane);
 					spritePanes[x][y] = pane;
@@ -458,12 +474,12 @@ public class WorldCreatorFrame extends JFrame {
 			reader.close();
 			
 			updateProgressBar(progressBar.getMaximum());
-			updateTitle(openedFile.getName());
+			updateTitle(file.getName());
 			
 			workingArea.revalidate();
 			workingArea.repaint();
 			
-			JOptionPane.showMessageDialog(workingArea, "Opened file '" + openedFile.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Opened", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(workingArea, "Opened file '" + file.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Opened", JOptionPane.INFORMATION_MESSAGE);
 		}catch(final IOException e) {
 			e.printStackTrace();
 		}
@@ -497,8 +513,7 @@ public class WorldCreatorFrame extends JFrame {
 					@Override
 					public void run() {
 						for(int y = 0; y < spritePanes[x].length; y++) {
-							for(final Image image : spritePanes[x][y].images)
-								g.drawImage(image.getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
+							g.drawImage(spritePanes[x][y].images[1].getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
 							
 							numberTiles++;
 						}
@@ -525,6 +540,32 @@ public class WorldCreatorFrame extends JFrame {
 		}catch(final IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void updateFile(final File file) {
+		time = System.currentTimeMillis();
+		
+		progressBar.setMaximum(100);
+		updateProgressBar(0);
+		
+		final ArrayList<TwoValueMap<String, Integer, BufferedImage>> maps = new ArrayList<>();
+		for(int i = 0; i < RPGWorldCreator.getLayerCount(); i++) {
+			maps.add(RPGWorldCreator.getImageMap(i).copy());
+			
+			RPGWorldCreator.getImageMap(i).clear();
+			
+			final HashMap<String, Integer> ids = new HashMap<>();
+			maps.get(i).forEach((name, id, image) -> ids.put(name, id));
+			
+			RPGWorldCreator.loadPictures(RPGWorldCreator.getMapDir(i), RPGWorldCreator.getImageMap(i), ids);
+		}
+		
+		updateProgressBar(progressBar.getMaximum());
+		
+		workingArea.revalidate();
+		workingArea.repaint();
+		
+		JOptionPane.showMessageDialog(workingArea, "Updated file '" + file.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Updated", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private void createSpritePanes() {
@@ -633,8 +674,9 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		private void initComponents() {
-			addLayer(RPGWorldCreator.getTextures(), 0, "Textures");
-			addLayer(RPGWorldCreator.getTiles(), 1, "Tiles");
+			addLayer(RPGWorldCreator.getTextures(), 1, "Textures");
+			addLayer(RPGWorldCreator.getTiles(), 2, "Tiles");
+			addLayer(RPGWorldCreator.getFluids(), 0, "Fluids");
 		}
 		
 		private void addLayer(final TwoValueMap<String, Integer, BufferedImage> pictures, final int layer, final String tabName) {

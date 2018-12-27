@@ -7,14 +7,20 @@ public class TwoValueMap<K, V1, V2> {
 	private final HashMap<K, Values> map = new HashMap<>();
 	
 	public void put(final K key, final V1 valueOne, final V2 valueTwo) {
+		if(key == null) return;
+		
 		map.put(key, new Values(valueOne, valueTwo));
 	}
 	
 	public V1 getFirst(final K key) {
+		if(key == null) return null;
+		
 		return map.get(key).valueOne;
 	}
 	
 	public V2 getSecond(final K key) {
+		if(key == null) return null;
+		
 		return map.get(key).valueTwo;
 	}
 	
@@ -64,6 +70,15 @@ public class TwoValueMap<K, V1, V2> {
 		map.forEach((k, v) -> {
 			action.accept(k, v.valueOne, v.valueTwo);
 		});
+	}
+	
+	public TwoValueMap<K, V1, V2> copy() {
+		final TwoValueMap<K, V1, V2> map = new TwoValueMap<>();
+		
+		for(final K key : this.map.keySet())
+			map.map.put(key, this.map.get(key));
+		
+		return map;
 	}
 	
 	private class Values {

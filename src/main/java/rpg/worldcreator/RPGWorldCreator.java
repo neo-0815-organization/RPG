@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 
 public class RPGWorldCreator {
 	private static final HashMap<String, BufferedImage> images = new HashMap<>();
-	private static final TwoValueMap<String, Integer, BufferedImage> textures = new TwoValueMap<>(), tiles = new TwoValueMap<>();
+	private static final TwoValueMap<String, Integer, BufferedImage> fluids = new TwoValueMap<>(), textures = new TwoValueMap<>(), tiles = new TwoValueMap<>();
 	private static final boolean darkMode = false;
 	
 	public static final String assetsFolder = "/assets/worldcreator/";
@@ -28,20 +28,28 @@ public class RPGWorldCreator {
 	}
 	
 	private static void loadImages() {
-		loadPictures("textures", textures);
-		loadPictures("tiles", tiles);
+		loadPictures("fluids", fluids, new HashMap<>());
+		loadPictures("textures", textures, new HashMap<>());
+		loadPictures("tiles", tiles, new HashMap<>());
 	}
 	
-	private static void loadPictures(final String dir, final TwoValueMap<String, Integer, BufferedImage> map) {
+	protected static void loadPictures(final String dir, final TwoValueMap<String, Integer, BufferedImage> map, final HashMap<String, Integer> ids) {
 		final Consumer<String> consumer = new Consumer<String>() {
 			private BufferedImage image = null;
 			private int count = 0;
 			
 			@Override
-			public void accept(final String name) {
+			public void accept(String name) {
 				image = getImage(assetsFolder, dir + "/" + name);
+				name = name.replace(".png", "");
 				
-				map.put(name.replace(".png", ""), count, image);
+				if(ids.containsKey(name)) map.put(name, ids.get(name), image);
+				else {
+					while(ids.containsValue(count))
+						count++;
+					
+					map.put(name, count, image);
+				}
 				
 				count++;
 			}
@@ -118,17 +126,40 @@ public class RPGWorldCreator {
 		return true;
 	}
 	
-	public static TwoValueMap<String, Integer, BufferedImage> getImageMap(final int index) {
+	public static int getLayerCount() {
+		return 3;
+	}
+	
+	public static String getMapDir(final int index) {
+		if(getImageMap(index) == null) return null;
+		
 		switch(index) {
 			case 0:
-				return textures;
+				return "fluids";
 			case 1:
-				return tiles;
+				return "textures";
 			case 2:
-				return null;
+				return "tiles";
 		}
 		
 		return null;
+	}
+	
+	public static TwoValueMap<String, Integer, BufferedImage> getImageMap(final int index) {
+		switch(index) {
+			case 0:
+				return fluids;
+			case 1:
+				return textures;
+			case 2:
+				return tiles;
+		}
+		
+		return null;
+	}
+	
+	public static TwoValueMap<String, Integer, BufferedImage> getFluids() {
+		return fluids;
 	}
 	
 	public static TwoValueMap<String, Integer, BufferedImage> getTextures() {
