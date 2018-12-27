@@ -381,7 +381,7 @@ public class WorldCreatorFrame extends JFrame {
 					pane = element;
 					
 					for(int i = 0; i < RPGWorldCreator.getLayerCount(); i++) {
-						writer.write(pane.images[i].getId());
+						writer.write(pane.images[i].getId() != -1 ? pane.images[i].getId() : 127);
 						writer.write(pane.images[i].getXShift());
 						writer.write(pane.images[i].getYShift());
 						writer.write(pane.images[i].getRotation().getId());
@@ -460,7 +460,7 @@ public class WorldCreatorFrame extends JFrame {
 					for(int i = 0; i < layerCount; i++) {
 						id = reader.read();
 						
-						if(id == 65_535) id = -1;
+						if(id == 127) id = -1;
 						
 						pane.setImage(i, new Image(RPGWorldCreator.getImageMap(i).getSecond(RPGWorldCreator.getImageMap(i).keyWithValueOne(id)), id, reader.read(), reader.read(), Rotation.getById(reader.read()), factor));
 					}
