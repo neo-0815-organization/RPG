@@ -130,6 +130,10 @@ public class RPGWorldCreator {
 		return 3;
 	}
 	
+	public static int[] getMappingIndeces() {
+		return new int[] { 0, 2 };
+	}
+	
 	public static String getMapDir(final int index) {
 		if(getImageMap(index) == null) return null;
 		

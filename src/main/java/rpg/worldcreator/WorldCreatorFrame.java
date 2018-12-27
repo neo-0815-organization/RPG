@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -122,7 +123,7 @@ public class WorldCreatorFrame extends JFrame {
 						
 						break;
 					}
-					
+				case "save_as":
 					final JFileChooser saveFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(""));
 					saveFileChooser.setAcceptAllFileFilterUsed(false);
 					saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.wc)", "wc"));
@@ -290,6 +291,7 @@ public class WorldCreatorFrame extends JFrame {
 		addMenuItem(fileMenu, "New...", KeyEvent.VK_N, KeyEvent.VK_N, "new");
 		addMenuItem(fileMenu, "Open...", KeyEvent.VK_O, KeyEvent.VK_O, "open");
 		addMenuItem(fileMenu, "Save...", KeyEvent.VK_S, KeyEvent.VK_S, "save");
+		addMenuItem(fileMenu, "Save As...", KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK, "save_as");
 		addMenuItem(fileMenu, "Export...", KeyEvent.VK_E, KeyEvent.VK_E, "export");
 		fileMenu.addSeparator();
 		addMenuItem(fileMenu, "Update...", KeyEvent.VK_U, -1, "update");
@@ -530,6 +532,10 @@ public class WorldCreatorFrame extends JFrame {
 				exportPNG(zos);
 				zos.closeEntry();
 				
+				zos.putNextEntry(new ZipEntry("mapping"));
+				exportMapping(zos);
+				zos.closeEntry();
+				
 				zos.putNextEntry(new ZipEntry("tiles"));
 				zos.closeEntry();
 				
@@ -578,6 +584,36 @@ public class WorldCreatorFrame extends JFrame {
 				g.dispose();
 				
 				ImageIO.write(image, "PNG", os);
+			}catch(final IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void exportMapping(final OutputStream os) {
+			try {
+				final OutputStreamWriter writer = new OutputStreamWriter(os);
+				final TriConsumer<String, Integer, BufferedImage> writeConsumer = new TriConsumer<String, Integer, BufferedImage>() {
+					
+					@Override
+					public void accept(final String name, final Integer id, final BufferedImage image) {
+						try {
+							writer.write(id);
+							writer.write(name.length());
+							writer.write(name.toCharArray());
+						}catch(final IOException e) {
+							e.printStackTrace();
+						}
+					}
+				};
+				
+				writer.write(RPGWorldCreator.getMappingIndeces().length);
+				for(final int i : RPGWorldCreator.getMappingIndeces()) {
+					writer.write(i);
+					writer.write(RPGWorldCreator.getImageMap(i).size());
+					RPGWorldCreator.getImageMap(i).forEach(writeConsumer);
+				}
+				
+				writer.flush();
 			}catch(final IOException e) {
 				e.printStackTrace();
 			}
