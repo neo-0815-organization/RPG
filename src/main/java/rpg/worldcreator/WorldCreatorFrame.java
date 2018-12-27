@@ -23,13 +23,17 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
@@ -59,6 +63,7 @@ public class WorldCreatorFrame extends JFrame {
 	private static final long serialVersionUID = -5092028467904882919L;
 	
 	private final WorldCreatorFrame INSTANCE = this;
+	private final Export export = new Export();
 	private final NewMapDialog newMapDialog = new NewMapDialog(INSTANCE);
 	
 	private final JPanel workingArea = new JPanel() {
@@ -107,7 +112,7 @@ public class WorldCreatorFrame extends JFrame {
 						spritePanes = new SpritePane[dimension.width][dimension.height];
 						
 						createSpritePanes();
-						updateTitle("untitled.world");
+						updateTitle("untitled.wc");
 					}
 					
 					break;
@@ -120,12 +125,10 @@ public class WorldCreatorFrame extends JFrame {
 					
 					final JFileChooser saveFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(""));
 					saveFileChooser.setAcceptAllFileFilterUsed(false);
-					saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
+					saveFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.wc)", "wc"));
 					
 					if(saveFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
-						openedFile = saveFileChooser.getSelectedFile();
-						
-						if(!openedFile.getName().endsWith(".world")) openedFile = new File(openedFile.getAbsolutePath() + ".world");
+						openedFile = Utility.addExtension(saveFileChooser.getSelectedFile(), (FileNameExtensionFilter) saveFileChooser.getFileFilter());
 						
 						saveFile();
 					}
@@ -135,20 +138,15 @@ public class WorldCreatorFrame extends JFrame {
 					final JFileChooser exportFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(""));
 					exportFileChooser.setAcceptAllFileFilterUsed(false);
 					exportFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG Files (*.png)", "png"));
+					exportFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
 					
-					if(exportFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) {
-						File exportFile = exportFileChooser.getSelectedFile();
-						
-						if(!exportFile.getName().endsWith(".png")) exportFile = new File(exportFile.getAbsolutePath() + ".png");
-						
-						exportFile(exportFile);
-					}
+					if(exportFileChooser.showSaveDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) exportFile(Utility.addExtension(exportFileChooser.getSelectedFile(), (FileNameExtensionFilter) exportFileChooser.getFileFilter()));
 					
 					break;
 				case "open":
 					final JFileChooser openFileChooser = new JFileChooser(openedFile != null ? openedFile.getParentFile() : new File(""));
 					openFileChooser.setAcceptAllFileFilterUsed(false);
-					openFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.world)", "world"));
+					openFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("WORLD Files (*.wc)", "wc"));
 					
 					if(openFileChooser.showOpenDialog(INSTANCE) == JFileChooser.APPROVE_OPTION) openFile(openFileChooser.getSelectedFile());
 					
@@ -502,43 +500,87 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		try {
-			final BufferedImage image = new BufferedImage(widthTiles * tileSize, heightTiles * tileSize, BufferedImage.TYPE_INT_ARGB);
-			final Graphics2D g = image.createGraphics();
-			
-			for(int x = 0; x < spritePanes.length; x++)
-				new Thread("ExportThread-" + x) {
-					
-					private final int x = Integer.valueOf(getName().replace("ExportThread-", ""));
-					
-					@Override
-					public void run() {
-						for(int y = 0; y < spritePanes[x].length; y++) {
-							g.drawImage(spritePanes[x][y].images[1].getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
-							
-							numberTiles++;
-						}
-						
-						finishedThreads++;
-					};
-				}.start();
-			
-			while(true) {
-				updateProgressBar(numberTiles);
-				
-				if(finishedThreads == widthTiles) {
-					updateProgressBar(progressBar.getMaximum());
-					
+			final String extension = file.getAbsolutePath().split("\\.")[file.getAbsolutePath().split("\\.").length - 1];
+			switch(extension) {
+				case "world":
+					export.exportZIP(file);
 					break;
-				}
+				case "png":
+					final FileOutputStream fos = new FileOutputStream(file);
+					
+					export.exportPNG(fos);
+					
+					fos.close();
+					break;
 			}
-			
-			g.dispose();
-			
-			ImageIO.write(image, "PNG", file);
-			
-			JOptionPane.showMessageDialog(workingArea, "Exported to '" + file.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Exported", JOptionPane.INFORMATION_MESSAGE);
 		}catch(final IOException e) {
 			e.printStackTrace();
+		}
+		
+		JOptionPane.showMessageDialog(workingArea, "Exported to '" + file.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Exported", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private class Export {
+		
+		private void exportZIP(final File file) {
+			try {
+				final ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(file));
+				
+				zos.putNextEntry(new ZipEntry("background"));
+				exportPNG(zos);
+				zos.closeEntry();
+				
+				zos.putNextEntry(new ZipEntry("tiles"));
+				zos.closeEntry();
+				
+				zos.putNextEntry(new ZipEntry("fluids"));
+				zos.closeEntry();
+				
+				zos.close();
+			}catch(final IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		private void exportPNG(final OutputStream os) {
+			try {
+				final int widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
+				final BufferedImage image = new BufferedImage(widthTiles * tileSize, heightTiles * tileSize, BufferedImage.TYPE_INT_ARGB);
+				final Graphics2D g = image.createGraphics();
+				
+				for(int x = 0; x < spritePanes.length; x++)
+					new Thread("ExportThread-" + x) {
+						
+						private final int x = Integer.valueOf(getName().replace("ExportThread-", ""));
+						
+						@Override
+						public void run() {
+							for(int y = 0; y < spritePanes[x].length; y++) {
+								g.drawImage(spritePanes[x][y].images[1].getImage(), x * tileSize, y * tileSize, tileSize, tileSize, null);
+								
+								numberTiles++;
+							}
+							
+							finishedThreads++;
+						};
+					}.start();
+				
+				while(true) {
+					updateProgressBar(numberTiles);
+					
+					if(finishedThreads == widthTiles) {
+						updateProgressBar(progressBar.getMaximum());
+						
+						break;
+					}
+				}
+				
+				g.dispose();
+				
+				ImageIO.write(image, "PNG", os);
+			}catch(final IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -694,7 +736,6 @@ public class WorldCreatorFrame extends JFrame {
 	private int button = 0;
 	
 	private class SpritePane extends JPanel {
-		
 		private static final long serialVersionUID = -2548204979994837953L;
 		private final MouseListener tilePaneMouseListener = new MouseAdapter() {
 			

@@ -68,9 +68,15 @@ public class Image {
 		return new Image(image, id, xShift, yShift, rotation, scaleFactor);
 	}
 	
+	public boolean isNull() {
+		return equals(nullImage) || image == null;
+	}
+	
 	@Override
 	public boolean equals(final Object obj) {
 		if(!(obj instanceof Image)) return false;
+		if(this == obj) return true;
+		
 		final Image image = (Image) obj;
 		
 		if(id < 0 && image.id < 0) return true;
