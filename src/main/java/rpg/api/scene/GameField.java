@@ -1,13 +1,12 @@
 package rpg.api.scene;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
-import rpg.api.entity.LocalController;
+import rpg.api.entity.PlayerController;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.tile.Tile;
 
@@ -17,20 +16,18 @@ import rpg.api.tile.Tile;
  * @author Erik Diers, Tim Ludwig, Neo Hornberger
  */
 public class GameField extends Scene {
-	public static boolean		inGame	= true;
-	public static final double  MAX_DELTA_TIME = 0.21,
-								MIN_DELTA_TIME = 0.015;
-	private final Background	background;
+	public static boolean inGame = true;
+	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
+	private final Background background;
 	
-	
-	private double	deltaTime;
-	private long	lastFrame	= System.currentTimeMillis();
+	private double deltaTime;
+	private long lastFrame = System.currentTimeMillis();
 	
 	private Thread update, draw;
 	
-	private LinkedList<Entity> entities = new LinkedList<>();
-	private LinkedList<Controller> controller = new LinkedList<>();
-	private LocalController playerController;
+	private final LinkedList<Entity> entities = new LinkedList<>();
+	private final LinkedList<Controller> controller = new LinkedList<>();
+	private PlayerController playerController;
 	
 	public GameField() {
 		background = new Background();
@@ -39,33 +36,25 @@ public class GameField extends Scene {
 		startDrawing();
 	}
 	
-	public GameField(BufferedImage backgorundImage) {
-		background = new Background(backgorundImage);
-		
-		startUpdating();
-		startDrawing();
-	}
-	
-	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		background.draw(g2d);
 		
-		for (Entity e: entities) e.draw(g2d);
+		for(final Entity e : entities)
+			e.draw(g2d);
 	}
 	
 	/**
 	 * Starts a new Thread, which updates the Gamefield
 	 */
 	private void startUpdating() {
-		GameField me = this;
+		final GameField me = this;
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
 				while(inGame) {
 					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
 					lastFrame = System.currentTimeMillis();
-					
 					
 					if(deltaTime > MAX_DELTA_TIME) deltaTime = MAX_DELTA_TIME;
 					if(deltaTime < MIN_DELTA_TIME) deltaTime = MIN_DELTA_TIME;
@@ -84,62 +73,59 @@ public class GameField extends Scene {
 	}
 	
 	/**
-	 * Starts the loop as a thread that draws everything. 
+	 * Starts the loop as a thread that draws everything.
 	 */
 	private void startDrawing() {
-		GameField me = this;
+		final GameField me = this;
 		draw = new Thread("Draw") {
 			
 			@Override
 			public void run() {
-				while (inGame) {
-					long systemTime = System.currentTimeMillis();
+				while(inGame) {
+					final long systemTime = System.currentTimeMillis();
 					
 					RPG.gameFrame.drawScene(me);
 					System.out.println(System.currentTimeMillis() - systemTime);
 				}
 			}
 		};
-//		draw.start();
+		//		draw.start();
 	}
 	
 	/**
 	 * Updates all {@link Tile}s and {@link Entity}s.
 	 */
-	private void update(double deltaTime) {
+	private void update(final double deltaTime) {
 		background.updateBackground(deltaTime);
 		
-		for (int i = 0; i < entities.size(); i++)
+		for(int i = 0; i < entities.size(); i++)
 			entities.get(i).update(deltaTime);
 	}
 	
 	/**
-	 * Shuts down the {@link GameField}'s threads //<a href = "https://www.if-schleife.de"> Lol</a>.
+	 * Shuts down the {@link GameField}'s threads.
 	 */
-	public void shutDown() {
+	public void shutdown() {
 		update.interrupt();
 		draw.interrupt();
 	}
 	
-	/**
-	 * ymsdfh.ausfdhg//1 nicer Komment
-	 * @param e
-	 */
-	public void addEntity(Controller c) {
+	public void addEntity(final Controller c) {
 		entities.add(c.getEntity());
 		controller.add(c);
 	}
-	public void addPlayerController(LocalController c) {
+	
+	public void addPlayerController(final PlayerController c) {
 		entities.add(c.getEntity());
 		setPlayerController(c);
 		
 	}
-
-	public LocalController getPlayerController() {
+	
+	public PlayerController getPlayerController() {
 		return playerController;
 	}
-
-	public void setPlayerController(LocalController playerController) {
+	
+	public void setPlayerController(final PlayerController playerController) {
 		this.playerController = playerController;
 	}
 }
