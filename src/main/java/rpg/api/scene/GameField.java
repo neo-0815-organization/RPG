@@ -1,10 +1,14 @@
 package rpg.api.scene;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 import rpg.RPG;
+import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
+import rpg.api.entity.LocalController;
+import rpg.api.listener.key.KeyboardListener;
 import rpg.api.tile.Tile;
 
 /**
@@ -14,7 +18,8 @@ import rpg.api.tile.Tile;
  */
 public class GameField extends Scene {
 	public static boolean		inGame	= true;
-	public static final double  maxDeltaTime = 0.21;
+	public static final double  MAX_DELTA_TIME = 0.21,
+								MIN_DELTA_TIME = 0.015;
 	private final Background	background;
 	
 	
@@ -23,38 +28,58 @@ public class GameField extends Scene {
 	
 	private Thread update, draw;
 	
-	private ArrayList<Entity> entities = new ArrayList<>();
-	
+	private LinkedList<Entity> entities = new LinkedList<>();
+	private LinkedList<Controller> controller = new LinkedList<>();
+	private LocalController playerController;
 	
 	public GameField() {
 		background = new Background();
+		
 		startUpdating();
 		startDrawing();
 	}
+	
+	public GameField(BufferedImage backgorundImage) {
+		background = new Background(backgorundImage);
+		
+		startUpdating();
+		startDrawing();
+	}
+	
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		background.draw(g2d);
 		
-		for (Entity e: entities)e.draw(g2d);
+		for (Entity e: entities) e.draw(g2d);
 	}
 	
 	/**
 	 * Starts a new Thread, which updates the Gamefield
 	 */
 	private void startUpdating() {
+		GameField me = this;
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
-				while(inGame)
+				while(inGame) {
 					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
 					lastFrame = System.currentTimeMillis();
 					
-					if(deltaTime > maxDeltaTime) deltaTime = maxDeltaTime;
+					
+					if(deltaTime > MAX_DELTA_TIME) deltaTime = MAX_DELTA_TIME;
+					if(deltaTime < MIN_DELTA_TIME) deltaTime = MIN_DELTA_TIME;
 					
 					update(deltaTime);
+					
+					RPG.gameFrame.drawScene(me);
+					KeyboardListener.updateKeys();
+					
+					System.out.println(deltaTime);
+				}
 			}
 		};
+		
 		update.start();
 	}
 	
@@ -68,11 +93,14 @@ public class GameField extends Scene {
 			@Override
 			public void run() {
 				while (inGame) {
+					long systemTime = System.currentTimeMillis();
+					
 					RPG.gameFrame.drawScene(me);
+					System.out.println(System.currentTimeMillis() - systemTime);
 				}
 			}
 		};
-		draw.start();
+//		draw.start();
 	}
 	
 	/**
@@ -80,14 +108,38 @@ public class GameField extends Scene {
 	 */
 	private void update(double deltaTime) {
 		background.updateBackground(deltaTime);
-		for (Entity e:entities)e.update(deltaTime);
+		
+		for (int i = 0; i < entities.size(); i++)
+			entities.get(i).update(deltaTime);
 	}
 	
 	/**
-	 * Shuts down the {@link GameField}'s threads <a href = "https://www.bmw.de"> Lol</a>.
+	 * Shuts down the {@link GameField}'s threads //<a href = "https://www.if-schleife.de"> Lol</a>.
 	 */
 	public void shutDown() {
 		update.interrupt();
 		draw.interrupt();
+	}
+	
+	/**
+	 * ymsdfh.ausfdhg//1 nicer Komment
+	 * @param e
+	 */
+	public void addEntity(Controller c) {
+		entities.add(c.getEntity());
+		controller.add(c);
+	}
+	public void addPlayerController(LocalController c) {
+		entities.add(c.getEntity());
+		setPlayerController(c);
+		
+	}
+
+	public LocalController getPlayerController() {
+		return playerController;
+	}
+
+	public void setPlayerController(LocalController playerController) {
+		this.playerController = playerController;
 	}
 }

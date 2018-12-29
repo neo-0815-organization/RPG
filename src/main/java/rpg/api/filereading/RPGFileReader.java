@@ -9,36 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class RPGFileReader {
-	private static BufferedReader reader;
-	
-	private static Stream<String> lines() {
-		return reader.lines();
-	}
-	
-	private static Stream<String> parallel() {
-		return lines().parallel();
-	}
-	
-	private static Stream<String[]> entrys(final String seperator) {
-		return parallel().map(line -> line.split(seperator));
-	}
-	
-	private static Stream<String[]> filterCheck(final String seperator, final int splitCount) {
-		return entrys(seperator).filter(entry -> checkEntry(entry, splitCount));
-	}
-	
-	private static Stream<String[]> filterCheck(final String seperator, String key, final int splitCount) {
-		return entrys(seperator).filter(entry -> checkEntry(entry, key, splitCount));
-	}
-	
-	private static boolean checkEntry(final String[] entry, final int splitCount) {
-		return entry.length == splitCount && Stream.of(entry).parallel().allMatch(s -> !s.isEmpty());
-	}
-	
-	private static boolean checkEntry(final String[] entry, final String key, final int splitCount) {
-		return entry.length == splitCount && entry[0] == key && Stream.of(entry).parallel().allMatch(s -> !s.isEmpty());
-	}
-	
+
 	/**
 	 * Reads a {@link File}, splitting the lines seperately in to key and value
 	 * pairs, seperated by a seperator.
@@ -52,7 +23,7 @@ public class RPGFileReader {
 	 */
 	public static void readLineSplit(final File readFile, final String seperator, final ILineRead onRead) {
 		try {
-			reader = new BufferedReader(new FileReader(readFile));
+			BufferedReader reader = new BufferedReader(new FileReader(readFile));
 			
 			String line = null;
 			String[] lineSplit = null;
@@ -87,12 +58,16 @@ public class RPGFileReader {
 		Map<String, String> result = null;
 		
 		try {
-			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			result = filterCheck(seperator, 2)
-					 .collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
-							 											 entry -> entry[1]));
+			result = reader
+					.lines()
+					.parallel()
+					.map(line -> line.split(seperator))
+					.filter(entry -> entry.length == 2)
+					.collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
+																		entry -> entry[1]));
 			//@formatter:on
 			
 			reader.close();
@@ -120,11 +95,15 @@ public class RPGFileReader {
 		Map<String, String[]> result = null;
 		
 		try {
-			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			result = filterCheck(seperator, splitCount)
-					 .collect(Collectors.<String[], String, String[]>toMap(entry -> entry[0],
+			result = reader
+					.lines()
+					.parallel()
+					.map(line -> line.split(seperator))
+					.filter(entry -> entry.length == splitCount)
+					.collect(Collectors.<String[], String, String[]>toMap(entry -> entry[0],
 																		   entry -> {
 																			   final String[] list = new String[splitCount - 1];
 																					 
@@ -159,11 +138,16 @@ public class RPGFileReader {
 		String result = "";
 		
 		try {
-			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			result = filterCheck(seperator, key, 2)
-					 .findFirst().get()[1];
+			result = reader
+					.lines()
+					.parallel()
+					.map(line -> line.split(seperator))
+					.filter(entry -> entry.length == 2 && entry[0].equals(key))
+					.findFirst()
+					.get()[1];
 			//@formatter:on
 			
 			reader.close();
@@ -193,11 +177,16 @@ public class RPGFileReader {
 		final String[] result = new String[splitCount - 1];
 		
 		try {
-			reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
 			
 			//@formatter:off
-			final String[] elements = filterCheck(seperator, key, splitCount)
-									  .findFirst().get();
+			final String[] elements = reader.lines()
+											.parallel()
+											.map(line -> line.split(seperator))
+											.filter(entry -> entry.length == splitCount && entry[0].equals(key))
+											.peek(System.out::println)
+											.findFirst()
+											.get(); 
 			//@formatter:on
 			
 			for(int i = 0; i < result.length;i++)
@@ -207,7 +196,7 @@ public class RPGFileReader {
 		} catch(final IOException e) {
 			e.printStackTrace();
 		}
-		
+		 
 		return result;
 	}
 }

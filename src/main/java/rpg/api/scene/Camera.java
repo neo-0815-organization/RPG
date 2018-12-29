@@ -15,4 +15,5 @@ import rpg.api.vector.Vec2D;
 public class Camera {
 	public static UnmodifiableVec2D location = Vec2D.ORIGIN;
 	public static Dimension frameSize = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final double scale = 2D;
 }

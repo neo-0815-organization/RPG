@@ -8,7 +8,9 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import rpg.api.listener.key.KeyboardSensor;
 import rpg.api.scene.Camera;
+import rpg.api.scene.Scene;
 
 public class GameFrame extends JFrame {
 	private static final long		serialVersionUID	= 1861206115390613807L;
@@ -27,25 +29,32 @@ public class GameFrame extends JFrame {
 			}
 		});
 		
-		setUndecorated(true);
+		addKeyListener(new KeyboardSensor());
+		
+		setUndecorated(false);
 		setResizable(false);
+		
+		setVisible(true);
 		
 		createBufferStrategy(2);
 		drawBuffStrat = getBufferStrategy();
 		
-		setVisible(true);
 	}
 	
 	public Graphics2D getDrawingGraphics() {
-		return (Graphics2D) drawBuffStrat.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D) drawBuffStrat.getDrawGraphics();
+		g2d.scale(Camera.scale, Camera.scale);
+		return g2d;
 	}
 	
 	public void showGraphics() {
 		drawBuffStrat.show();
 	}
 	
-	public void drawScene(final IDrawable scene) {
+	public void drawScene(final Scene scene) {
 		final Graphics2D g2d = getDrawingGraphics();
+		
+		g2d.clearRect(0, 0, getWidth(), getHeight());
 		
 		scene.draw(g2d);
 		

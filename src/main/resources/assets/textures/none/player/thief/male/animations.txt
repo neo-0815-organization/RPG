@@ -1,0 +1,1 @@
+walking/right:64:true
