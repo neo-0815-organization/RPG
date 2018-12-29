@@ -9,8 +9,8 @@ package rpg.api.gfx;
 public enum SpriteTheme {
 	// Zwerge
 	MOERSBERGE("dwarfs/moersberge"),
-	BURG_MOERSBERG("dwarfs/burg_moersberg"),
-	STADT_MOERSBERG("dwarfs/stadt_moersberg"),
+	CASTLE_MOERSBERG("dwarfs/castle_moersberg"),
+	DWARG_CITY("dwarfs/dwarf_city"),
 	MOERSBERGWERKE("dwarfs/moersbergwerke"),
 	
 	// Feen
