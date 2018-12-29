@@ -63,10 +63,10 @@ public abstract class Entity implements INameable, ISprite {
 	/**
 	 * Sets the {@link Vec2D} representing the location of this {@link Entity}.
 	 *
-	 * @param the {@link Vec2D} representing the location of this
-	 *         {@link Entity}
+	 * @param the
+	 *            {@link Vec2D} representing the location of this {@link Entity}
 	 */
-	public void setLocation(Vec2D<?> location) {
+	public void setLocation(final Vec2D<?> location) {
 		this.location = location.toModifiable();
 	}
 	
@@ -82,12 +82,13 @@ public abstract class Entity implements INameable, ISprite {
 	/**
 	 * Sets the looking {@link Direction} of this {@link Entity}.
 	 *
-	 * @param the looking {@link Direction} of this {@link Entity}
+	 * @param the
+	 *            looking {@link Direction} of this {@link Entity}
 	 */
-	public void setLookingDirection(Direction lookingDirection) {
+	public void setLookingDirection(final Direction lookingDirection) {
 		this.lookingDirection = lookingDirection;
 	}
-
+	
 	/**
 	 * Gets the looking {@link Vec2D} of this {@link Entity}.
 	 *
@@ -96,7 +97,7 @@ public abstract class Entity implements INameable, ISprite {
 	public ModifiableVec2D getLookingVector() {
 		return lookingDirection.getVector();
 	}
-
+	
 	/**
 	 * Gets the velocity {@link Vec2D} of this {@link Entity}.
 	 *
@@ -109,9 +110,10 @@ public abstract class Entity implements INameable, ISprite {
 	/**
 	 * Sets the velocity {@link Vec2D} of this {@link Entity}.
 	 *
-	 * @param the velocity {@link Vec2D} of this {@link Entity}
+	 * @param the
+	 *            velocity {@link Vec2D} of this {@link Entity}
 	 */
-	public void setVelocity(ModifiableVec2D velocity) {
+	public void setVelocity(final ModifiableVec2D velocity) {
 		this.velocity = velocity;
 	}
 	
@@ -127,9 +129,10 @@ public abstract class Entity implements INameable, ISprite {
 	/**
 	 * Sets the {@link UUID} of this {@link Entity}.
 	 *
-	 * @param the {@link UUID} of this {@link Entity}
+	 * @param the
+	 *            {@link UUID} of this {@link Entity}
 	 */
-	public void setUniqueId(UUID uuid) {
+	public void setUniqueId(final UUID uuid) {
 		this.uuid = uuid;
 	}
 	
@@ -157,9 +160,10 @@ public abstract class Entity implements INameable, ISprite {
 	/**
 	 * Sets the {@link String} of this {@link Entity}.
 	 *
-	 * @param the {@link String} of this {@link Entity}
+	 * @param the
+	 *            {@link String} of this {@link Entity}
 	 */
-	public void setImageName(String imageName) {
+	public void setImageName(final String imageName) {
 		this.imageName = imageName;
 	}
 	
@@ -170,23 +174,25 @@ public abstract class Entity implements INameable, ISprite {
 	
 	/**
 	 * This update-methods updates the entity.
-	 * @param deltaTime time since last frame in sec.
+	 * 
+	 * @param deltaTime
+	 *            time since last frame in sec.
 	 */
-	public void update(double deltaTime) {
+	public void update(final double deltaTime) {
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
 		
-//		System.out.print(velocity.toString());
-//		System.out.println(" >> " + deltaTime);
-  }
-  
-  /**
+		//		System.out.print(velocity.toString());
+		//		System.out.println(" >> " + deltaTime);
+	}
+	
+	/**
 	 * Sets the {@link Sprite} of this {@link Entity}.
 	 *
-	 * @param the {@link Sprite} of this {@link Entity}
+	 * @param the
+	 *            {@link Sprite} of this {@link Entity}
 	 */
-	public void setSprite(Sprite sprite) {
+	public void setSprite(final Sprite sprite) {
 		this.sprite = sprite;
-
 	}
 	
 	@Override

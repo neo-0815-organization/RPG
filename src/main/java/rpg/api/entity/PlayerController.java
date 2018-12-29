@@ -8,7 +8,7 @@ import rpg.api.vector.UnmodifiableVec2D;
  * The class LocalController used to control a {@link Player}.
  */
 public class PlayerController extends LocalController {
-	private final double speed = 5d;
+	private final double speed = 1.5d;
 	
 	public PlayerController(final Player player) {
 		super(player);
@@ -18,15 +18,19 @@ public class PlayerController extends LocalController {
 		switch(keyCode) {
 			case KeyEvent.VK_W:
 				setVelocity(UnmodifiableVec2D.createXY(0, -1).scale(speed));
+				getPlayer().sprite.setAnimation("walking/up");
 				break;
 			case KeyEvent.VK_A:
 				setVelocity(UnmodifiableVec2D.createXY(-1, 0).scale(speed));
+				getPlayer().sprite.setAnimation("walking/left");
 				break;
 			case KeyEvent.VK_S:
 				setVelocity(UnmodifiableVec2D.createXY(0, 1).scale(speed));
+				getPlayer().sprite.setAnimation("walking/down");
 				break;
 			case KeyEvent.VK_D:
 				setVelocity(UnmodifiableVec2D.createXY(1, 0).scale(speed));
+				getPlayer().sprite.setAnimation("walking/right");
 				break;
 		}
 	}

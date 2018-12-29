@@ -18,7 +18,7 @@ import rpg.api.tile.Tile;
 public class GameField extends Scene {
 	public static boolean inGame = true;
 	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
-	private final Background background;
+	public static Background background;
 	
 	private double deltaTime;
 	private long lastFrame = System.currentTimeMillis();

@@ -42,6 +42,8 @@ public class Background implements IImage {
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
+		if(name == null) return;
+		
 		draw(g2d, Vec2D.ORIGIN);
 		
 		for(final Tile t : tiles)

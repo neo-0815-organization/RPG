@@ -24,6 +24,7 @@ public class RPG {
 	 */
 	private static void init() {
 		gameFrame = new GameFrame();
+		gameField = new GameField();
 		registerKeys();
 		//		KeyboardListener.start();
 	}

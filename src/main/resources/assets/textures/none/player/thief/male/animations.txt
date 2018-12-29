@@ -1,1 +1,4 @@
-walking/right:64:true
+walking/right:49:true
+walking/left:49:true
+walking/down:49:true
+walking/up:49:true
