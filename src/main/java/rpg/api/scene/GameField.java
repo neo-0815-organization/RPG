@@ -111,14 +111,8 @@ public class GameField extends Scene {
 	}
 	
 	public void addEntity(final Controller c) {
-		entities.add(c.getEntity());
 		controller.add(c);
-	}
-	
-	public void addPlayerController(final PlayerController c) {
 		entities.add(c.getEntity());
-		setPlayerController(c);
-		
 	}
 	
 	public PlayerController getPlayerController() {
@@ -127,5 +121,8 @@ public class GameField extends Scene {
 	
 	public void setPlayerController(final PlayerController playerController) {
 		this.playerController = playerController;
+		
+		entities.add(playerController.getEntity());
+		
 	}
 }

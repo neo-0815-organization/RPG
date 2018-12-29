@@ -6,21 +6,20 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 import rpg.api.listener.key.KeyboardSensor;
 import rpg.api.scene.Camera;
 import rpg.api.scene.Scene;
 
 public class GameFrame extends JFrame {
-	private static final long		serialVersionUID	= 1861206115390613807L;
-	private final BufferStrategy	drawBuffStrat;
+	private static final long serialVersionUID = 1861206115390613807L;
+	private final BufferStrategy drawBuffStrat;
 	
 	public GameFrame() {
 		super("RPG");
 		
 		setBounds(0, 0, (int) Camera.frameSize.getWidth(), (int) Camera.frameSize.getHeight());
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent we) {
@@ -42,7 +41,7 @@ public class GameFrame extends JFrame {
 	}
 	
 	public Graphics2D getDrawingGraphics() {
-		Graphics2D g2d = (Graphics2D) drawBuffStrat.getDrawGraphics();
+		final Graphics2D g2d = (Graphics2D) drawBuffStrat.getDrawGraphics();
 		g2d.scale(Camera.scale, Camera.scale);
 		return g2d;
 	}
