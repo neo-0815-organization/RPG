@@ -8,10 +8,12 @@ import rpg.api.eventhandling.events.Event;
  * @see Event
  * @author Tim Ludwig
  */
+@FunctionalInterface
 public interface EventListener {
 	
 	/**
-	 * Gets the {@link EventType} this {@link EventListener} is supposed to receive.
+	 * Gets the {@link EventType} this {@link EventListener} is supposed to
+	 * receive.
 	 *
 	 * @return the {@link EventType}
 	 */
@@ -23,7 +25,7 @@ public interface EventListener {
 	 * The method to execute on receiving an {@link Event}.
 	 *
 	 * @param event
-	 *     the {@link Event} received
+	 *            the {@link Event} received
 	 */
 	void onEvent(final Event event);
 }

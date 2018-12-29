@@ -10,11 +10,10 @@ import java.io.File;
 public class Locale {
 	public static final Locale NONE = createLocale("", "");
 	
-	public static final Locale	AMERICAN_ENGLISH	= createLocale("en", "US");
-	public static final Locale	GERMAN				= createLocale("de", "DE");
+	public static final Locale AMERICAN_ENGLISH = createLocale("en", "US");
+	public static final Locale GERMAN = createLocale("de", "DE");
 	
-	private final String language,
-			country;
+	private final String language, country;
 	
 	private Locale(final String language, final String country) {
 		this.language = language.toLowerCase();
@@ -54,7 +53,7 @@ public class Locale {
 	 * Gets the name of the {@link File} corresponding to this {@link Locale}.
 	 *
 	 * @return the name of the {@link File} corresponding to this {@link Locale}
-	 * (la_CO.lang)
+	 *         (la_CO.lang)
 	 */
 	public String getFilename() {
 		if(this == NONE) return null;
@@ -75,9 +74,10 @@ public class Locale {
 	 * Creates a new {@link Locale}.
 	 *
 	 * @param language
-	 *     the language code which the new {@link Locale} should represent
+	 *            the language code which the new {@link Locale} should
+	 *            represent
 	 * @param country
-	 *     the country code which the new {@link Locale} should represent
+	 *            the country code which the new {@link Locale} should represent
 	 * @return the new {@link Locale}
 	 */
 	private static Locale createLocale(final String language, final String country) {

@@ -23,7 +23,7 @@ public class GameFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent we) {
-				// Code to run on WindowCloseing
+				// code to run on WindowClosing
 				System.exit(0);
 			}
 		});

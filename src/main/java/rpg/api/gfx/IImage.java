@@ -45,12 +45,12 @@ public interface IImage extends IDrawable {
 	 */
 	default void draw(final Graphics2D g2d, final Vec2D<?> location) {
 		//@formatter:off
-		final int x = location.getX().getValuePixel(),
-				y = location.getY().getValuePixel(),
-				camX = Camera.location.getX().getValuePixel(),
-				camY = Camera.location.getY().getValuePixel(),
-				w = getWidth(),
-				h = getHeight(),
+		final int   x = location.getX().getValuePixel(),
+				    y = location.getY().getValuePixel(),
+				 camX = Camera.location.getX().getValuePixel(),
+				 camY = Camera.location.getY().getValuePixel(),
+				    w = getWidth(),
+				    h = getHeight(),
 				camXW = (int) (camX + Camera.frameSize.getWidth()),
 				camYH = (int) (camY + Camera.frameSize.getHeight());
 		//@formatter:on

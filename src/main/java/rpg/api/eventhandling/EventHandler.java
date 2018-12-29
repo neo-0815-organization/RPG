@@ -11,14 +11,14 @@ import rpg.api.eventhandling.events.Event;
  * @author Tim Ludwig
  */
 public class EventHandler {
-	private static HashMap<EventType, ArrayList<EventListener>>	listener			= new HashMap<>();
-	private static HashMap<EventType, Boolean>					eventTypeRegistered	= initEventTypeRegistered();
+	private static HashMap<EventType, ArrayList<EventListener>> listener = new HashMap<>();
+	private static HashMap<EventType, Boolean> eventTypeRegistered = initEventTypeRegistered();
 	
 	/**
 	 * Inits the known {@link EventType}s as unregistered.
 	 *
 	 * @return the {@link HashMap} showing if the {@link EnventType}s are
-	 * registered.
+	 *         registered.
 	 */
 	private static HashMap<EventType, Boolean> initEventTypeRegistered() {
 		final HashMap<EventType, Boolean> eventTypeRegistered = new HashMap<>();
@@ -33,7 +33,7 @@ public class EventHandler {
 	 * Checks if the {@link EventType} is registered.
 	 *
 	 * @param eventType
-	 *     the {@link EventType} to check
+	 *            the {@link EventType} to check
 	 * @return {@code true} if the {@link EventType} is registered.
 	 */
 	private boolean isEventTypeRegistered(final EventType eventType) {
@@ -44,7 +44,7 @@ public class EventHandler {
 	 * Gets the {@link EventListener}s for the {@link EventType}.
 	 *
 	 * @param eventType
-	 *     the type
+	 *            the type
 	 * @return the {@link EventListener}s for the {@link EventType} eventType
 	 */
 	private ArrayList<EventListener> getListenersForEventType(final EventType eventType) {
@@ -55,7 +55,7 @@ public class EventHandler {
 	 * Handles the {@link Event}.
 	 *
 	 * @param event
-	 *     the {@link Event} to handle
+	 *            the {@link Event} to handle
 	 */
 	public void handle(final Event event) {
 		final EventType t = event.getEventType();
@@ -67,6 +67,7 @@ public class EventHandler {
 			public void run() {
 				for(final EventListener l : getListenersForEventType(t))
 					new Thread(new Runnable() {
+						
 						@Override
 						public void run() {
 							l.onEvent(event);
@@ -80,7 +81,7 @@ public class EventHandler {
 	 * Registers the {@link EventListener}.
 	 *
 	 * @param eventListener
-	 *     the {@link EventListener} to register
+	 *            the {@link EventListener} to register
 	 */
 	public void registerEventListener(final EventListener eventListener) {
 		final EventType eT = eventListener.getEventType();

@@ -4,7 +4,7 @@ package rpg.api.gfx;
  * Used to differentiate between different thematic areas in
  * {@link Sprite}-loading.
  *
- * @author Tim Ludwig
+ * @author Tim Ludwig, Neo Hornberger, Alexander Schallenberg
  */
 public enum SpriteTheme {
 	// Zwerge

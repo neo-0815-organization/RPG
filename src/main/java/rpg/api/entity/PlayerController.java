@@ -8,7 +8,7 @@ import rpg.api.vector.UnmodifiableVec2D;
  * The class LocalController used to control a {@link Player}.
  */
 public class PlayerController extends LocalController {
-	private final double speed = 0.8d;
+	private final double speed = 1d;
 	
 	public PlayerController(final Player player) {
 		super(player);

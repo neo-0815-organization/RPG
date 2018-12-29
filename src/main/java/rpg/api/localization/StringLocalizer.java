@@ -1,8 +1,5 @@
 package rpg.api.localization;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.IllegalFormatConversionException;
 import java.util.MissingFormatArgumentException;
 
@@ -14,7 +11,7 @@ import rpg.api.filereading.RPGFileReader;
  * @author Neo Hornberger
  */
 public class StringLocalizer {
-	private static final File langDir = getLangDir();
+	private static final String langDir = "/assets/lang/";
 	
 	private static LocalizationTable activeTable = new LocalizationTable();
 	private static Locale activeLocale = Locale.getDefault();
@@ -88,25 +85,7 @@ public class StringLocalizer {
 	 * Updates the {@link LocalizationTable}.
 	 */
 	public static void updateTable() {
-		RPGFileReader.readLineSplit(new File(langDir, activeLocale.getFilename()), "=", (key, value, lineNumber) -> activeTable.setValueAndLineNumber(key, value, lineNumber));
-	}
-	
-	/**
-	 * Gets the directory where the language files are located.
-	 *
-	 * @return the directory where the language files are located
-	 */
-	private static File getLangDir() {
-		final URL url = StringLocalizer.class.getResource("/assets/lang/");
-		
-		File file = null;
-		try {
-			file = new File(url.toURI());
-		}catch(final URISyntaxException e) {
-			file = new File(url.getPath());
-		}
-		
-		return file;
+		RPGFileReader.readLineSplit(langDir + activeLocale.getFilename(), "=", activeTable::setValueAndLineNumber);
 	}
 	
 	/**

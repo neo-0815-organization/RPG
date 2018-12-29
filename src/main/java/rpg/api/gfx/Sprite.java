@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 
 import rpg.api.filereading.RPGFileReader;
+import rpg.api.filereading.ResourceGetter;
 
 /**
  * Encapsulates multiple {@link Animation}s in one {@link Sprite}.
@@ -93,7 +94,7 @@ public class Sprite {
 		BufferedImage animation;
 		
 		try {
-			animation = ImageIO.read(getClass().getResource(getPath() + "/" + animationName + ".png"));
+			animation = ImageIO.read(ResourceGetter.resource(getPath() + "/" + animationName + ".png"));
 		}catch(final IOException ex) {
 			throw new IllegalArgumentException("File '" + animationName + ".png' doesn't exist in the directory '" + getPath() + "'.");
 		}

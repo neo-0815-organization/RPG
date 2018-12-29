@@ -5,10 +5,9 @@ import java.io.IOException;
 import rpg.api.entity.Entity;
 
 public class EntityData extends GameData {
+	private final Entity e;
 	
-	private Entity e;
-
-	public EntityData(Entity e, String path) {
+	public EntityData(final Entity e, final String path) {
 		super(path + "/" + e.getUniqueId().toString() + ".data");
 		
 		this.e = e;

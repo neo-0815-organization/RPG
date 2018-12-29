@@ -10,22 +10,21 @@ import java.util.ArrayList;
  * @author Neo Hornberger
  */
 public class LocalizationException extends RuntimeException {
-	private static final long	serialVersionUID	= 7639671735833895387L;
-	private final String		baseMessage			= "Error in path '%path%'";
+	private static final long serialVersionUID = 7639671735833895387L;
+	private final String baseMessage = "Error in path '%path%'";
 	
-	private final int		line;
-	private final String	path,
-			file,
-			specifier;
-	private final Class<?>	specifierClass;
+	private final int line;
+	private final String path, file, specifier;
+	private final Class<?> specifierClass;
 	
 	/**
-	 * Constructs a new {@link LocalizationException} with a 'path' and a 'file'.
+	 * Constructs a new {@link LocalizationException} with a 'path' and a
+	 * 'file'.
 	 *
 	 * @param path
-	 *     the path of the {@link File} in which the error has occured
+	 *            the path of the {@link File} in which the error has occured
 	 * @param file
-	 *     the name of the {@link File} in which the error has occured
+	 *            the name of the {@link File} in which the error has occured
 	 * @see #LocalizationException(String, String, int)
 	 */
 	public LocalizationException(final String path, final String file) {
@@ -33,16 +32,16 @@ public class LocalizationException extends RuntimeException {
 	}
 	
 	/**
-	 * Constructs a new {@link LocalizationException} with a 'path', a 'file' and a
-	 * 'line'.
+	 * Constructs a new {@link LocalizationException} with a 'path', a 'file'
+	 * and a 'line'.
 	 *
 	 * @param path
-	 *     the path of the {@link File} in which the error has occured
+	 *            the path of the {@link File} in which the error has occured
 	 * @param file
-	 *     the name of the {@link File} in which the error has occured
+	 *            the name of the {@link File} in which the error has occured
 	 * @param line
-	 *     the line on which the error has occured (if {@code line < 0}
-	 *     linenumber won't be shown in the error message)
+	 *            the line on which the error has occured (if {@code line < 0}
+	 *            linenumber won't be shown in the error message)
 	 * @see #LocalizationException(String, String, String, int)
 	 */
 	public LocalizationException(final String path, final String file, final int line) {
@@ -50,17 +49,17 @@ public class LocalizationException extends RuntimeException {
 	}
 	
 	/**
-	 * Constructs a new {@link LocalizationException} with a 'path', a 'file' and a
-	 * 'specifier'.
+	 * Constructs a new {@link LocalizationException} with a 'path', a 'file'
+	 * and a 'specifier'.
 	 *
 	 * @param path
-	 *     the path of the {@link File} in which the error has occured
+	 *            the path of the {@link File} in which the error has occured
 	 * @param file
-	 *     the name of the {@link File} in which the error has occured
+	 *            the name of the {@link File} in which the error has occured
 	 * @param specifier
-	 *     the specifier that was matched incorrectly (if
-	 *     {@code specifier == null || specifier.isEmpty()} the specifier won't
-	 *     be shown in the error message)
+	 *            the specifier that was matched incorrectly (if
+	 *            {@code specifier == null || specifier.isEmpty()} the specifier
+	 *            won't be shown in the error message)
 	 * @see #LocalizationException(String, String, String, int)
 	 */
 	public LocalizationException(final String path, final String file, final String specifier) {
@@ -72,16 +71,16 @@ public class LocalizationException extends RuntimeException {
 	 * 'specifier' and a 'line'.
 	 *
 	 * @param path
-	 *     the path of the {@link File} in which the error has occured
+	 *            the path of the {@link File} in which the error has occured
 	 * @param file
-	 *     the name of the {@link File} in which the error has occured
+	 *            the name of the {@link File} in which the error has occured
 	 * @param specifier
-	 *     the specifier that was matched incorrectly (if
-	 *     {@code specifier == null || specifier.isEmpty()} the specifier won't
-	 *     be shown in the error message)
+	 *            the specifier that was matched incorrectly (if
+	 *            {@code specifier == null || specifier.isEmpty()} the specifier
+	 *            won't be shown in the error message)
 	 * @param line
-	 *     the line on which the error has occured (if {@code line < 0}
-	 *     linenumber won't be shown in the error message)
+	 *            the line on which the error has occured (if {@code line < 0}
+	 *            linenumber won't be shown in the error message)
 	 * @see #LocalizationException(String, String, String, Class<?>, int)
 	 */
 	public LocalizationException(final String path, final String file, final String specifier, final int line) {
@@ -93,19 +92,20 @@ public class LocalizationException extends RuntimeException {
 	 * 'specifier', a {@link Class} 'specifierClass' and a 'line'.
 	 *
 	 * @param path
-	 *     the path of the {@link File} in which the error has occured
+	 *            the path of the {@link File} in which the error has occured
 	 * @param file
-	 *     the name of the {@link File} in which the error has occured
+	 *            the name of the {@link File} in which the error has occured
 	 * @param specifier
-	 *     the specifier that was matched incorrectly (if
-	 *     {@code specifier == null || specifier.isEmpty()} the specifier won't
-	 *     be shown in the error message)
+	 *            the specifier that was matched incorrectly (if
+	 *            {@code specifier == null || specifier.isEmpty()} the specifier
+	 *            won't be shown in the error message)
 	 * @param specifierClass
-	 *     the {@link Class} of the specifier (if {@code specifierClass == null}
-	 *     the class of the specifier won't be shown in the error message)
+	 *            the {@link Class} of the specifier (if
+	 *            {@code specifierClass == null} the class of the specifier
+	 *            won't be shown in the error message)
 	 * @param line
-	 *     the line on which the error has occured (if {@code line < 0}
-	 *     linenumber won't be shown in the error message)
+	 *            the line on which the error has occured (if {@code line < 0}
+	 *            linenumber won't be shown in the error message)
 	 */
 	public LocalizationException(final String path, final String file, final String specifier, final Class<?> specifierClass, final int line) {
 		this.path = path;
@@ -135,7 +135,7 @@ public class LocalizationException extends RuntimeException {
 	 * A method to help build the error message.
 	 *
 	 * @param field
-	 *     the field which is wanted
+	 *            the field which is wanted
 	 * @return the wanted component of the error message
 	 */
 	private String getFieldValue(final String field) {

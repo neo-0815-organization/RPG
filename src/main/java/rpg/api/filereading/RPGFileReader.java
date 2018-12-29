@@ -2,14 +2,12 @@ package rpg.api.filereading;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class RPGFileReader {
-
+	
 	/**
 	 * Reads a {@link File}, splitting the lines seperately in to key and value
 	 * pairs, seperated by a seperator.
@@ -21,9 +19,9 @@ public class RPGFileReader {
 	 * @param onRead
 	 *            the method to run on every line read. see {@link ILineRead}
 	 */
-	public static void readLineSplit(final File readFile, final String seperator, final ILineRead onRead) {
+	public static void readLineSplit(final String path, final String seperator, final ILineRead onRead) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(readFile));
+			final BufferedReader reader = ResourceGetter.bufferedReader(path);
 			
 			String line = null;
 			String[] lineSplit = null;
@@ -38,7 +36,7 @@ public class RPGFileReader {
 			// reader.lines().filter(line -> !line.equals("")).map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
 			
 			reader.close();
-		} catch(final IOException ex) {
+		}catch(final IOException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -58,7 +56,7 @@ public class RPGFileReader {
 		Map<String, String> result = null;
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			final BufferedReader reader = ResourceGetter.bufferedReader(path);
 			
 			//@formatter:off
 			result = reader
@@ -71,7 +69,7 @@ public class RPGFileReader {
 			//@formatter:on
 			
 			reader.close();
-		} catch(final IOException e) {
+		}catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -95,7 +93,7 @@ public class RPGFileReader {
 		Map<String, String[]> result = null;
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			final BufferedReader reader = ResourceGetter.bufferedReader(path);
 			
 			//@formatter:off
 			result = reader
@@ -115,7 +113,7 @@ public class RPGFileReader {
 			//@formatter:on
 			
 			reader.close();
-		} catch(final IOException e) {
+		}catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -138,7 +136,7 @@ public class RPGFileReader {
 		String result = "";
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			final BufferedReader reader = ResourceGetter.bufferedReader(path);
 			
 			//@formatter:off
 			result = reader
@@ -151,7 +149,7 @@ public class RPGFileReader {
 			//@formatter:on
 			
 			reader.close();
-		} catch(final IOException e) {
+		}catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -177,7 +175,7 @@ public class RPGFileReader {
 		final String[] result = new String[splitCount - 1];
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(RPGFileReader.class.getResource(path).getFile())));
+			final BufferedReader reader = ResourceGetter.bufferedReader(path);
 			
 			//@formatter:off
 			final String[] elements = reader.lines()
@@ -186,17 +184,17 @@ public class RPGFileReader {
 											.filter(entry -> entry.length == splitCount && entry[0].equals(key))
 											.peek(System.out::println)
 											.findFirst()
-											.get(); 
+											.get();
 			//@formatter:on
 			
-			for(int i = 0; i < result.length;i++)
+			for(int i = 0; i < result.length; i++)
 				result[i] = elements[i + 1];
 			
 			reader.close();
-		} catch(final IOException e) {
+		}catch(final IOException e) {
 			e.printStackTrace();
 		}
-		 
+		
 		return result;
 	}
 }
