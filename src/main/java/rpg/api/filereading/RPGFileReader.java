@@ -182,7 +182,6 @@ public class RPGFileReader {
 											.parallel()
 											.map(line -> line.split(seperator))
 											.filter(entry -> entry.length == splitCount && entry[0].equals(key))
-											.peek(System.out::println)
 											.findFirst()
 											.get();
 			//@formatter:on
