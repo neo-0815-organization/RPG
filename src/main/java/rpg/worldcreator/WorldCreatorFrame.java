@@ -397,7 +397,7 @@ public class WorldCreatorFrame extends JFrame {
 			
 			JOptionPane.showMessageDialog(workingArea, "Saved to '" + openedFile.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Saved", JOptionPane.INFORMATION_MESSAGE);
 		}catch(final IOException e) {
-			e.printStackTrace();
+			showError(e);
 		}
 	}
 	
@@ -481,7 +481,7 @@ public class WorldCreatorFrame extends JFrame {
 			
 			JOptionPane.showMessageDialog(workingArea, "Opened file '" + file.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Opened", JOptionPane.INFORMATION_MESSAGE);
 		}catch(final IOException e) {
-			e.printStackTrace();
+			showError(e);
 		}
 	}
 	
@@ -516,7 +516,7 @@ public class WorldCreatorFrame extends JFrame {
 					break;
 			}
 		}catch(final IOException e) {
-			e.printStackTrace();
+			showError(e);
 		}
 		
 		JOptionPane.showMessageDialog(workingArea, "Exported to '" + file.getAbsolutePath() + "' (" + (System.currentTimeMillis() - time) + " ms)", "Exported", JOptionPane.INFORMATION_MESSAGE);
@@ -537,14 +537,16 @@ public class WorldCreatorFrame extends JFrame {
 				zos.closeEntry();
 				
 				zos.putNextEntry(new ZipEntry("tiles"));
+				exportTiles(zos);
 				zos.closeEntry();
 				
 				zos.putNextEntry(new ZipEntry("fluids"));
+				exportFluids(zos);
 				zos.closeEntry();
 				
 				zos.close();
 			}catch(final IOException e) {
-				e.printStackTrace();
+				showError(e);
 			}
 		}
 		
@@ -585,7 +587,7 @@ public class WorldCreatorFrame extends JFrame {
 				
 				ImageIO.write(image, "PNG", os);
 			}catch(final IOException e) {
-				e.printStackTrace();
+				showError(e);
 			}
 		}
 		
@@ -615,7 +617,55 @@ public class WorldCreatorFrame extends JFrame {
 				
 				writer.flush();
 			}catch(final IOException e) {
-				e.printStackTrace();
+				showError(e);
+			}
+		}
+		
+		private void exportFluids(final OutputStream os) {
+			try {
+				final OutputStreamWriter writer = new OutputStreamWriter(os);
+				final ArrayList<SpritePane> panes = new ArrayList<>();
+				
+				Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[0].isNull()).forEach(panes::add);
+				
+				writer.write(panes.size());
+				panes.stream().forEach(pane -> {
+					try {
+						writer.write(pane.paneX);
+						writer.write(pane.paneY);
+						writer.write(pane.images[0].getId());
+					}catch(final IOException e) {
+						e.printStackTrace();
+					}
+				});
+				
+				writer.flush();
+			}catch(final IOException e) {
+				showError(e);
+			}
+		}
+		
+		private void exportTiles(final OutputStream os) {
+			try {
+				final OutputStreamWriter writer = new OutputStreamWriter(os);
+				final ArrayList<SpritePane> panes = new ArrayList<>();
+				
+				Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[2].isNull()).forEach(panes::add);
+				
+				writer.write(panes.size());
+				panes.stream().forEach(pane -> {
+					try {
+						writer.write(pane.paneX);
+						writer.write(pane.paneY);
+						writer.write(pane.images[2].getId());
+					}catch(final IOException e) {
+						e.printStackTrace();
+					}
+				});
+				
+				writer.flush();
+			}catch(final IOException e) {
+				showError(e);
 			}
 		}
 	}
@@ -924,6 +974,14 @@ public class WorldCreatorFrame extends JFrame {
 	
 	private void registerCursor(final String name, final Point hotSpot, final Toolkit toolkit) {
 		cursors.put(name, toolkit.createCustomCursor(RPGWorldCreator.getImage("assets/worldcreator/cursors/" + name + ".png"), hotSpot, name));
+	}
+	
+	private void showError(final Exception e) {
+		showError(e.getMessage());
+	}
+	
+	private void showError(final String error) {
+		JOptionPane.showMessageDialog(workingArea, error, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	@Override

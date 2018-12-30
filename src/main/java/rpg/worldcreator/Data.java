@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public class Data {
 	// @formatter:off
-	public static final String version = "1.011";
+	public static final String version = "1.012";
 	public static final int tileSize = 32;
 	public static final Point[] fillOffsets = new Point[] {
 							new Point(0, -1),
