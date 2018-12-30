@@ -251,6 +251,17 @@ public class GameData {
 		return null;
 	}
 	
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder("{\n");
+		
+		data.entrySet().stream().map(entry -> "  " + entry.getKey() + "=" + entry.getValue() + ",\n").forEach(builder::append);
+		
+		builder.replace(builder.length() - 2, builder.length() - 1, "");
+		
+		return builder.append("}").toString();
+	}
+	
 	/**
 	 * Gets the {@link Map} of keys and values currently stored in this
 	 * {@link GameData}.
