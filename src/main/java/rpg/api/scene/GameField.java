@@ -96,7 +96,7 @@ public class GameField extends Scene {
 	 * Updates all {@link Tile}s and {@link Entity}s.
 	 */
 	private void update(final double deltaTime) {
-		background.updateBackground(deltaTime);
+		background.update(deltaTime);
 		
 		for(int i = 0; i < entities.size(); i++)
 			entities.get(i).update(deltaTime);

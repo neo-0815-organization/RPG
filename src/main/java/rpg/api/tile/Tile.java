@@ -15,9 +15,9 @@ import rpg.api.vector.ModifiableVec2D;
  * @author Tim Ludwig, Erik Diers
  */
 public abstract class Tile implements ISprite {
-	protected ModifiableVec2D	location;
-	protected Sprite			sprite;
-	protected Hitbox			hbox;
+	protected ModifiableVec2D location;
+	protected Sprite sprite;
+	protected Hitbox hbox;
 	
 	/**
 	 * Gets the location of this tile {@link ModifiableVec2D}
@@ -28,14 +28,13 @@ public abstract class Tile implements ISprite {
 		return location;
 	}
 	
-	/**This update-method is used to update tiles, whenever it is needed.
-	 * It doesnt need to be overriden.
+	/**
+	 * This update-method is used to update tiles, whenever it is needed.
 	 * 
-	 * @param deltaTime time since last frame in sec.
+	 * @param deltaTime
+	 *            time since last frame in sec.
 	 */
-	public void update(double deltaTime) {
-		return;
-	}
+	public void update(final double deltaTime) {}
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
