@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import rpg.api.filereading.ResourceGetter;
 import rpg.api.gfx.IImage;
 import rpg.api.tile.Tile;
+import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
@@ -77,30 +78,30 @@ public class Background implements IImage {
 			while(zis.available() > 0)
 				baos.write(zis.read());
 			
-			streams.put(entry.getName(), new ByteArrayInputStream(baos.toByteArray()));
+			streams.put(entry.getName(), new ByteArrayInputStream(baos.toByteArray(), 0, baos.size() - 1));
 		}
 		
 		background = ImageIO.read(streams.get("background"));
 		
-		final HashMap<Integer, HashMap<Integer, String>> neededTiles = new HashMap<>();
-		final ByteArrayInputStream stream = streams.get("mapping");
-		
 		// read mapping
-		final int mapCount = stream.read();
+		final ByteArrayInputStream mappingStream = streams.get("mapping");
+		final HashMap<Integer, HashMap<Integer, String>> neededTiles = new HashMap<>();
+		
+		final int mapCount = mappingStream.read();
 		int layerID, length, tileID;
 		HashMap<Integer, String> map;
 		byte[] name;
 		for(int i = 0; i < mapCount; i++) {
-			layerID = stream.read();
-			length = stream.read();
+			layerID = mappingStream.read();
+			length = mappingStream.read();
 			
 			map = new HashMap<>(length);
 			
 			for(int j = 0; j < length; j++) {
-				tileID = stream.read();
-				name = new byte[stream.read()];
+				tileID = mappingStream.read();
+				name = new byte[mappingStream.read()];
 				
-				stream.read(name);
+				mappingStream.read(name);
 				
 				map.put(tileID, new String(name));
 			}
@@ -109,8 +110,41 @@ public class Background implements IImage {
 		}
 		
 		// read & create fluids
+		final ByteArrayInputStream fluidStream = streams.get("fluids");
+		
+		final int fluidCount = fluidStream.read();
+		Tile fluid;
+		for(int i = 0; i < fluidCount; i++) {
+			final ModifiableVec2D location = ModifiableVec2D.createXY(fluidStream.read(), fluidStream.read());
+			final int id = fluidStream.read();
+			
+			fluid = new Tile() {};
+			
+			fluids.add(fluid);
+		}
 		
 		// read & create tiles
+		final ByteArrayInputStream tileStream = streams.get("tiles");
+		
+		final int tileCount = tileStream.read();
+		Tile tile;
+		for(int i = 0; i < tileCount; i++) {
+			final ModifiableVec2D location = ModifiableVec2D.createXY(tileStream.read(), tileStream.read());
+			final int id = tileStream.read();
+			
+			tile = new Tile() {};
+			
+			tiles.add(tile);
+		}
+		
+		zis.close();
+		streams.values().parallelStream().forEach(bais -> {
+			try {
+				bais.close();
+			}catch(final IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	@Override
