@@ -159,7 +159,10 @@ public class WorldCreatorFrame extends JFrame {
 					
 					break;
 				case "clear":
-					if(spritePanes != null) Arrays.stream(spritePanes).parallel().flatMap(array -> Arrays.stream(array)).forEach(pane -> pane.setImage(null));
+					if(spritePanes != null) Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).forEach(pane -> {
+						for(int i = 0; i < pane.images.length; i++)
+							pane.setImage(i, null);
+					});
 					
 					break;
 				case "refresh":
@@ -858,7 +861,7 @@ public class WorldCreatorFrame extends JFrame {
 						
 						break;
 					case "bucket":
-						if(button == 1) bucketFill(images[currentLayer], currentTexture.copy());
+						if(button == 1) bucketFill(images[currentLayer], currentTexture);
 						else if(button == 3) bucketFill(images[currentLayer], null);
 						
 						break;
@@ -877,7 +880,7 @@ public class WorldCreatorFrame extends JFrame {
 			bucketFill(tilesToFill, imageToReplace, newImage);
 			
 			tilesToFill.keySet().parallelStream().forEach(pane -> {
-				if(newImage != null) pane.setImage(newImage);
+				if(newImage != null) pane.setImage(newImage.copy());
 				else pane.setImage(null);
 			});
 		}
