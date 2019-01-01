@@ -2,6 +2,8 @@ package rpg.api.gfx;
 
 import java.awt.Canvas;
 import java.awt.Graphics2D;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -15,7 +17,7 @@ import rpg.api.scene.Scene;
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1861206115390613807L;
 	private final BufferStrategy drawBuffStrat;
-	private final boolean fullScreen = false;
+	private final boolean fullScreen = true;
 	
 	public GameFrame() {
 		super("RPG");
@@ -31,6 +33,13 @@ public class GameFrame extends JFrame {
 		});
 		
 		addKeyListener(new KeyboardSensor());
+		addFocusListener(new FocusAdapter() {
+			
+			@Override
+			public void focusLost(final FocusEvent e) {
+				e.getComponent().requestFocus();
+			}
+		});
 		
 		setUndecorated(fullScreen);
 		setResizable(false);
