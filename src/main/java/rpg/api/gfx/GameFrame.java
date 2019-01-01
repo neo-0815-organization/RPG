@@ -1,5 +1,6 @@
 package rpg.api.gfx;
 
+import java.awt.Canvas;
 import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -14,6 +15,7 @@ import rpg.api.scene.Scene;
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1861206115390613807L;
 	private final BufferStrategy drawBuffStrat;
+	private final boolean fullScreen = false;
 	
 	public GameFrame() {
 		super("RPG");
@@ -30,14 +32,16 @@ public class GameFrame extends JFrame {
 		
 		addKeyListener(new KeyboardSensor());
 		
-		setUndecorated(false);
+		setUndecorated(fullScreen);
 		setResizable(false);
+		
+		final Canvas c = new Canvas();
+		getContentPane().add(c);
 		
 		setVisible(true);
 		
-		createBufferStrategy(2);
-		drawBuffStrat = getBufferStrategy();
-		
+		c.createBufferStrategy(2);
+		drawBuffStrat = c.getBufferStrategy();
 	}
 	
 	public Graphics2D getDrawingGraphics() {
