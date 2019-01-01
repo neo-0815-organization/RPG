@@ -16,8 +16,9 @@ import rpg.api.scene.Scene;
 
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1861206115390613807L;
+	private static final boolean fullScreen = false;
+	
 	private final BufferStrategy drawBuffStrat;
-	private final boolean fullScreen = false;
 	
 	public GameFrame() {
 		super("RPG");
