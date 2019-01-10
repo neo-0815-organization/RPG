@@ -17,7 +17,7 @@ public abstract class Hitbox {
 	 * <code>offsets[n] | n > 0</code> is measured relative to the {@link Vec2D}
 	 * <code>offsets[0]</code>.
 	 */
-	private UnmodifiableVec2D[] offsets;
+	protected UnmodifiableVec2D[] offsets;
 	
 	/**
 	 * Creates a Hitbox.
@@ -60,35 +60,7 @@ public abstract class Hitbox {
 	 *         {@link Hitbox} <code>colliderHitbox</code>
 	 */
 	public boolean checkCollision(final Hitbox colliderHitbox, final UnmodifiableVec2D colliderPosition) {
-		if(this instanceof CircleHitbox || colliderHitbox instanceof CircleHitbox) {
-			if(this instanceof CircleHitbox && colliderHitbox instanceof CircleHitbox) {
-				final double r1 = ((CircleHitbox) this).radius, r2 = ((CircleHitbox) colliderHitbox).radius;
-				return r1 * r1 + 2 * r1 * r2 + r2 * r2 > colliderPosition.add(getOffset(0)).subtract(colliderHitbox.getOffset(0)).magnitudeSquared();
-			}else {
-				CircleHitbox circle;
-				Hitbox nonCircle;
-				final ModifiableVec2D collPos = colliderPosition.toModifiable();
-				
-				if(this instanceof CircleHitbox) {
-					circle = (CircleHitbox) this;
-					nonCircle = colliderHitbox;
-					collPos.scale(-1);
-				}else {
-					circle = (CircleHitbox) colliderHitbox;
-					nonCircle = this;
-				}
-				
-				UnmodifiableVec2D point;
-				
-				for(int i = 0; i < nonCircle.offsets.length; i++) {
-					point = nonCircle.getPoint(i);
-					
-					if(circle.checkCollision(point.subtract(collPos))) return true;
-				}
-				return false;
-				
-			}
-		}else for(int i = 0; i < offsets.length; i++)
+		for(int i = 0; i < offsets.length; i++)
 			if(colliderHitbox.checkCollision(colliderPosition.subtract(getPoint(i).scale(-1)))) return true;
 		
 		return false;

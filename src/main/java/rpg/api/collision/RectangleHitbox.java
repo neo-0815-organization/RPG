@@ -11,7 +11,7 @@ public class RectangleHitbox extends Hitbox{
 	public RectangleHitbox(UnmodifiableVec2D offset, UnmodifiableVec2D offSetWidth, UnmodifiableVec2D offsetHeight) {
 		super(1, offset, offSetWidth, offsetHeight, offSetWidth.add(offsetHeight));
 	}
-
+	
 	@Override
 	public boolean checkCollision(Vec2D<?> colliderPoint) {
 		return (getOffset(0).getX().getValuePixel() <= colliderPoint.getX().getValuePixel() && getPoint(1).getX().getValuePixel() >= colliderPoint.getX().getValuePixel()) &&

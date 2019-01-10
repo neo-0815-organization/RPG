@@ -58,6 +58,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import rpg.api.collision.Hitbox;
+import rpg.worldcreator.dialogs.EditHitboxDialog;
 import rpg.worldcreator.dialogs.NewMapDialog;
 
 public class WorldCreatorFrame extends JFrame {
@@ -230,6 +232,7 @@ public class WorldCreatorFrame extends JFrame {
 			registerCursor("eraser", new Point(6, 25));
 			registerCursor("bucket", new Point(5, 21));
 			registerCursor("rotate", new Point(16, 15));
+			registerCursor("hitbox", new Point(5, 22));
 			
 			workingArea.setCursor(cursors.get("pencil"));
 		}catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException e) {
@@ -671,6 +674,10 @@ public class WorldCreatorFrame extends JFrame {
 				showError(e);
 			}
 		}
+		
+		private void exportHitboxes(final OutputStream os) {
+			
+		}
 	}
 	
 	private void updateFile(final File file) {
@@ -768,7 +775,7 @@ public class WorldCreatorFrame extends JFrame {
 		private final ButtonGroup buttonGroup = new ButtonGroup();
 		
 		public ToolPanel() {
-			setLayout(new GridLayout(5, 1));
+			setLayout(new GridLayout(6, 1));
 			setBorder(new EmptyBorder(3, 3, 3, 3));
 			
 			if(RPGWorldCreator.isDarkmode()) setBackground(new Color(25, 29, 31));
@@ -781,6 +788,7 @@ public class WorldCreatorFrame extends JFrame {
 			buttonGroup.add(new JToggleButton("Eraser"));
 			buttonGroup.add(new JToggleButton("Bucket"));
 			buttonGroup.add(new JToggleButton("Rotate"));
+			buttonGroup.add(new JToggleButton("Hitbox"));
 			
 			final Enumeration<AbstractButton> buttons = buttonGroup.getElements();
 			AbstractButton button = null;
@@ -870,6 +878,15 @@ public class WorldCreatorFrame extends JFrame {
 						else if(button == 3) setRotated(-1);
 						
 						break;
+					case "hitbox":
+						if(button == 1) {
+							pressing = false;
+							
+							final EditHitboxDialog hitboxDialog = new EditHitboxDialog(INSTANCE);
+							hitboxDialog.setVisible(true);
+						}else if(button == 3) hitbox = null;
+						
+						break;
 				}
 			};
 		};
@@ -908,6 +925,7 @@ public class WorldCreatorFrame extends JFrame {
 		
 		private final Image[] images = new Image[3];
 		private final int paneX, paneY;
+		private Hitbox hitbox;
 		
 		public SpritePane(final int paneX, final int paneY) {
 			this.paneX = paneX;
