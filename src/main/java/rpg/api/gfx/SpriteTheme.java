@@ -8,17 +8,17 @@ package rpg.api.gfx;
  */
 public enum SpriteTheme {
 	// Zwerge
+	DWARF_CITY("dwarfs/dwarf_city"),
+		CASTLE_MOERSBERG("dwarfs/castle_moersberg"),
+		SMELTERY("dwarfs/smeltery"),
+		SMITHERY("dwarfs/smithery"),
 	MOERSBERGE("dwarfs/moersberge"),
-	CASTLE_MOERSBERG("dwarfs/castle_moersberg"),
-	DWARG_CITY("dwarfs/dwarf_city"),
 	MOERSBERGWERKE("dwarfs/moersbergwerke"),
 	
-	// Feen
+	// Feen(/Oreanen)
 	SCHALLENBERGE("fairies/schallenberge"),
-	//	HUEBEL("fairies/huebel"),
-	
-	// Oreanen
-	SEYHAN("oreans/seyhan"),
+		SEYHAN("fairies/seyhan"),
+	SWAMP("fairies/swamp"),
 	
 	// Gestrandete
 	DUEHNE("stranded/duehne"),
