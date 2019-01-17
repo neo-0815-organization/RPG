@@ -1,23 +1,32 @@
 package rpg.api.gfx.framework;
 
-import java.awt.Container;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 import rpg.RPG;
-import rpg.api.gfx.GameFrame;
+import rpg.api.gfx.ImageUtility;
 import rpg.api.scene.Scene;
 
 public class Menu extends Scene{
 	JPanel menu = new JPanel();
 	private boolean isOpen = true;
 	
+	
+	public Menu() {
+		menu.setBounds(0, 0, RPG.gameFrame.getWidth(), RPG.gameFrame.getHeight());
+		RPG.gameFrame.add(menu, 0);
+		RPG.gameFrame.revalidate();
+	}
+	
 	@Override
 	public void draw(Graphics2D g2d) {
-		menu.paintAll(g2d);
+		RPG.gameFrame.repaint();
 	}
 	
 	public void setOpen(boolean flag) {
@@ -28,18 +37,16 @@ public class Menu extends Scene{
 		menu.add(c);
 	}
 	
-	public void show() {
-		while (isOpen)
-			RPG.gameFrame.drawScene(this);
+	public void setBackground(BufferedImage img) {
+		JLabel label = new JLabel(new ImageIcon(ImageUtility.scale(img, menu.getWidth(), menu.getHeight())));
+		label.setBounds(0, 0, menu.getWidth(), menu.getHeight());
+		menu.add(label);
 	}
 	
-	public static void main(String[] args) {
-		RPG.gameFrame = new GameFrame();
-		Menu m = new Menu();
-		m.addComponent(new JButton("LoL"));
-		m.menu.setVisible(true);
-		m.menu.setBounds(300, 300, 300, 300);;
-		m.show();
+	public void show() {
+		while (isOpen) {
+			RPG.gameFrame.drawScene(this);
+		}
 	}
-
+	
 }

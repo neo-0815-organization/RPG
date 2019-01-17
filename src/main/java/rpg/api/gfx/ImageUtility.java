@@ -45,7 +45,7 @@ public class ImageUtility {
 	
 	public static boolean compare(final BufferedImage imageOne, final BufferedImage imageTwo) {
 		if(imageOne == imageTwo) return true;
-		if(imageOne == null ^ imageTwo == null) return false;
+		if(imageOne == null || imageTwo == null) return false;
 		if(imageOne.getWidth() != imageTwo.getWidth() || imageOne.getHeight() != imageTwo.getHeight()) return false;
 		
 		for(int x = 0; x < imageOne.getWidth(); x++)

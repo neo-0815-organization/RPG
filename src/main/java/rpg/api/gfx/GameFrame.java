@@ -18,7 +18,7 @@ public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1861206115390613807L;
 	private static final boolean fullScreen = false;
 	
-	private final BufferStrategy drawBuffStrat;
+	private BufferStrategy drawBuffStrat;
 	
 	public GameFrame() {
 		super("RPG");

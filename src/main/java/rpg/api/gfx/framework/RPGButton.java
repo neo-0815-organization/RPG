@@ -1,35 +1,56 @@
 package rpg.api.gfx.framework;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
+import javax.swing.ButtonModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import rpg.RPG;
+import rpg.api.filereading.ResourceGetter;
+import rpg.api.gfx.GameFrame;
+import rpg.api.gfx.ImageUtility;
+import rpg.api.localization.StringLocalizer;
+
+/**
+ * This 
+ *
+ */
 public class RPGButton extends JButton{
 	private static final long serialVersionUID = 6887580054889086469L;
-	BufferedImage image;
+	private static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 24);
+	private static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.image("/assets/textures/menu/button.png");
 	
-	public RPGButton(BufferedImage img) {
-		image = img;
+	private final BufferedImage image;
+	
+	public RPGButton(String title) {
+		this(title, BUTTON_TEMPLATE);
 	}
 	
+	public RPGButton(String title, BufferedImage image) {
+		this(title, DEFAULT_FONT, image);
+	}
 	
-	public void setImage(BufferedImage image, boolean enableBounderyCorrection) {
+	public RPGButton(String title, Font font, BufferedImage image) {
+		super(StringLocalizer.localize(title));
+		
 		this.image = image;
-		if(enableBounderyCorrection) {
-			setBounds(getBounds().x, getBounds().y, image.getWidth(), image.getHeight());
-		}
-	}
-	
-	public BufferedImage getImage() {
-		return image;
+		
+		setFont(font);
+		setVerticalTextPosition(JButton.CENTER);
+		setHorizontalTextPosition(JButton.CENTER);
 	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
-		((Graphics2D)g).drawImage(image, getBounds().x, getBounds().y, null);
-//		super.paintComponent(g);
+	public void setBounds(int x, int y, int width, int height) {
+		super.setBounds(x, y, width, height);
+		setIcon(new ImageIcon(ImageUtility.scale(image, width, height)));
 	}
+	
 	
 }
