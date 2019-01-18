@@ -12,10 +12,12 @@ import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.filereading.ResourceGetter;
 import rpg.api.gfx.IImage;
 import rpg.api.tile.Tile;
 import rpg.api.vector.ModifiableVec2D;
+import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
@@ -135,6 +137,33 @@ public class Background implements IImage {
 			tile = new Tile() {};
 			
 			tiles.add(tile);
+		}
+		
+		// read & create hitboxes
+		final ByteArrayInputStream hitboxStream = streams.get("hitboxes");
+		
+		final int hitboxCount = hitboxStream.read();
+		final Hitbox hitbox;
+		for(int i = 0; i < hitboxCount; i++) {
+			final ModifiableVec2D location = ModifiableVec2D.createXY(hitboxStream.read(), hitboxStream.read());
+			final byte[] typeName = new byte[hitboxStream.read()];
+			
+			hitboxStream.read(typeName);
+			
+			final int pointCount = hitboxStream.read();
+			final ArrayList<UnmodifiableVec2D> points = new ArrayList<>(pointCount);
+			
+			for(int j = 0; j < pointCount; j++)
+				points.add(UnmodifiableVec2D.createXY(Double.longBitsToDouble(hitboxStream.read() << 32 | hitboxStream.read() & 0xFFFFFFFFL), Double.longBitsToDouble(hitboxStream.read() << 32 | hitboxStream.read() & 0xFFFFFFFFL)));
+			
+			switch(new String(typeName)) {
+				case "rectangle":
+					break;
+				case "triangle":
+					break;
+				case "circle":
+					break;
+			}
 		}
 		
 		zis.close();

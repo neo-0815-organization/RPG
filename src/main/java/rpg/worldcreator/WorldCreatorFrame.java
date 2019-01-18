@@ -58,7 +58,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import rpg.api.collision.Hitbox;
 import rpg.worldcreator.dialogs.EditHitboxDialog;
 import rpg.worldcreator.dialogs.NewMapDialog;
 
@@ -156,7 +155,9 @@ public class WorldCreatorFrame extends JFrame {
 					break;
 				case "zoom":
 					try {
-						applyZoom(Double.parseDouble(JOptionPane.showInputDialog("Change zoom", factor)));
+						final String zoom = JOptionPane.showInputDialog("Change zoom", factor);
+						
+						if(zoom != null) applyZoom(Double.parseDouble(zoom));
 					}catch(final NumberFormatException ex) {}
 					
 					break;
@@ -393,6 +394,24 @@ public class WorldCreatorFrame extends JFrame {
 						writer.write(pane.images[i].getRotation().getId());
 					}
 					
+					writer.write(pane.hitbox.getType().toLowerCase().length());
+					writer.write(pane.hitbox.getType().toLowerCase());
+					writer.write(pane.hitbox.getPoints().size());
+					
+					pane.hitbox.getPoints().stream().forEach(point -> {
+						try {
+							final long x = Double.doubleToRawLongBits(point.getX().getValueTiles()), y = Double.doubleToRawLongBits(point.getY().getValueTiles());
+							
+							writer.write((int) (x >> 32));
+							writer.write((int) x);
+							
+							writer.write((int) (y >> 32));
+							writer.write((int) y);
+						}catch(final IOException e) {
+							e.printStackTrace();
+						}
+					});
+					
 					updateProgressBar(++numberTiles);
 				}
 			
@@ -550,6 +569,10 @@ public class WorldCreatorFrame extends JFrame {
 				exportFluids(zos);
 				zos.closeEntry();
 				
+				zos.putNextEntry(new ZipEntry("hitboxes"));
+				exportHitboxes(zos);
+				zos.closeEntry();
+				
 				zos.close();
 			}catch(final IOException e) {
 				showError(e);
@@ -676,7 +699,41 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		private void exportHitboxes(final OutputStream os) {
-			
+			try {
+				final OutputStreamWriter writer = new OutputStreamWriter(os);
+				final ArrayList<SpritePane> panes = new ArrayList<>();
+				
+				Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.hitbox.isNull()).forEach(panes::add);
+				
+				writer.write(panes.size());
+				panes.stream().forEach(pane -> {
+					try {
+						writer.write(pane.paneX);
+						writer.write(pane.paneY);
+						writer.write(pane.hitbox.getType().toLowerCase().length());
+						writer.write(pane.hitbox.getType().toLowerCase());
+						writer.write(pane.hitbox.getPoints().size());
+						
+						pane.hitbox.getPoints().stream().forEach(point -> {
+							try {
+								final long x = Double.doubleToRawLongBits(point.getX().getValueTiles()), y = Double.doubleToRawLongBits(point.getY().getValueTiles());
+								
+								writer.write((int) (x >> 32));
+								writer.write((int) x);
+								
+								writer.write((int) (y >> 32));
+								writer.write((int) y);
+							}catch(final IOException e) {
+								e.printStackTrace();
+							}
+						});
+					}catch(final IOException e) {
+						e.printStackTrace();
+					}
+				});
+			}catch(final IOException e) {
+				showError(e);
+			}
 		}
 	}
 	
@@ -832,8 +889,9 @@ public class WorldCreatorFrame extends JFrame {
 	private boolean pressing = false;
 	private int button = 0;
 	
-	private class SpritePane extends JPanel {
+	public class SpritePane extends JPanel {
 		private static final long serialVersionUID = -2548204979994837953L;
+		private final SpritePane paneInstance = this;
 		private final MouseListener tilePaneMouseListener = new MouseAdapter() {
 			
 			@Override
@@ -882,10 +940,14 @@ public class WorldCreatorFrame extends JFrame {
 						if(button == 1) {
 							pressing = false;
 							
-							final EditHitboxDialog hitboxDialog = new EditHitboxDialog(INSTANCE);
+							final EditHitboxDialog hitboxDialog = new EditHitboxDialog(INSTANCE, paneInstance);
 							hitboxDialog.setVisible(true);
-						}else if(button == 3) hitbox = null;
+							
+							hitbox = hitboxDialog.getHitbox();
+							hitbox.setScale(factor);
+						}else if(button == 3) hitbox = WorldCreatorHitbox.nullBox;
 						
+						repaint();
 						break;
 				}
 			};
@@ -925,14 +987,16 @@ public class WorldCreatorFrame extends JFrame {
 		
 		private final Image[] images = new Image[3];
 		private final int paneX, paneY;
-		private Hitbox hitbox;
+		private WorldCreatorHitbox hitbox;
 		
-		public SpritePane(final int paneX, final int paneY) {
+		private SpritePane(final int paneX, final int paneY) {
 			this.paneX = paneX;
 			this.paneY = paneY;
 			
 			for(int i = 0; i < images.length; i++)
 				images[i] = Image.nullImage;
+			
+			hitbox = WorldCreatorHitbox.nullBox;
 			
 			setLayout(null);
 			setBackground(new Color(199, 199, 199));
@@ -946,6 +1010,8 @@ public class WorldCreatorFrame extends JFrame {
 			
 			for(final Image image : images)
 				if(image != null && image.getImage() != null) g.drawImage(image.getImage(), 0, 0, null);
+			
+			hitbox.draw(g);
 		}
 		
 		public void setImage(final Image image) {
@@ -972,10 +1038,15 @@ public class WorldCreatorFrame extends JFrame {
 		
 		public void setScaleFactor(final double scaleFactor) {
 			Arrays.stream(images).parallel().forEach(image -> image.setScaleFactor(scaleFactor));
+			hitbox.setScale(scaleFactor);
 			
 			final int size = (int) (tileSize * scaleFactor);
 			
 			setBounds(paneX * size, paneY * size, size, size);
+		}
+		
+		public WorldCreatorHitbox getHitboxCopy() {
+			return hitbox.copy();
 		}
 	}
 	
