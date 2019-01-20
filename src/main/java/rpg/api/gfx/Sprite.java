@@ -91,13 +91,9 @@ public class Sprite {
 	 *             match the height of the {@link File} found
 	 */
 	private void addAnimation(final String animationName, final int frameHeight, final boolean loop) throws IllegalArgumentException {
-		BufferedImage animation;
+		BufferedImage animation = ResourceGetter.image(getPath() + "/" + animationName + ".png");
 		
-		try {
-			animation = ImageIO.read(ResourceGetter.resource(getPath() + "/" + animationName + ".png"));
-		}catch(final IOException ex) {
-			throw new IllegalArgumentException("File '" + animationName + ".png' doesn't exist in the directory '" + getPath() + "'.");
-		}
+		if(animation == null) throw new IllegalArgumentException("File '" + animationName + ".png' doesn't exist in the directory '" + getPath() + "'.");
 		
 		final int animWidth = animation.getWidth(), animHeight = animation.getHeight();
 		
