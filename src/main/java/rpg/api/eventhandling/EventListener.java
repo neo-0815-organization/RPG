@@ -15,7 +15,7 @@ public interface EventListener {
 	 * Gets the {@link EventType} this {@link EventListener} is supposed to
 	 * receive.
 	 *
-	 * @return the {@link EventType}
+	 * @return the {@link EventType} this {@link EventListener} receives
 	 */
 	default EventType getEventType() {
 		return EventType.GENERAL_EVENT;

@@ -1,24 +1,25 @@
 package rpg.api.eventhandling;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import rpg.api.eventhandling.events.Event;
 
 /**
- * The Class EventHandler.
+ * The class EventHandler, used for handling {@link Event}s of different
+ * {@link EventType}s.
  *
  * @author Tim Ludwig
  */
 public class EventHandler {
-	private static HashMap<EventType, ArrayList<EventListener>> listener = new HashMap<>();
-	private static HashMap<EventType, Boolean> eventTypeRegistered = initEventTypeRegistered();
+	private static HashMap<EventType, LinkedList<EventListener>>	listener			= new HashMap<>();
+	private static HashMap<EventType, Boolean>						eventTypeRegistered	= initEventTypeRegistered();
 	
 	/**
-	 * Inits the known {@link EventType}s as unregistered.
+	 * Initiates the known {@link EventType}s as unregistered.
 	 *
-	 * @return the {@link HashMap} showing if the {@link EnventType}s are
-	 *         registered.
+	 * @return the {@link HashMap} containing the registration state of the
+	 *         {@link EnventType}s.
 	 */
 	private static HashMap<EventType, Boolean> initEventTypeRegistered() {
 		final HashMap<EventType, Boolean> eventTypeRegistered = new HashMap<>();
@@ -30,7 +31,7 @@ public class EventHandler {
 	}
 	
 	/**
-	 * Checks if the {@link EventType} is registered.
+	 * Checks if the {@link EventType} 'eventType' is registered.
 	 *
 	 * @param eventType
 	 *            the {@link EventType} to check
@@ -41,18 +42,18 @@ public class EventHandler {
 	}
 	
 	/**
-	 * Gets the {@link EventListener}s for the {@link EventType}.
+	 * Gets the {@link EventListener}s for the {@link EventType} 'eventType'.
 	 *
 	 * @param eventType
-	 *            the type
-	 * @return the {@link EventListener}s for the {@link EventType} eventType
+	 *            the type of the {@link Event} to search for {@link EventListener}s
+	 * @return the {@link EventListener}s for the {@link EventType} 'eventType'
 	 */
-	private ArrayList<EventListener> getListenersForEventType(final EventType eventType) {
+	private LinkedList<EventListener> getListenersForEventType(final EventType eventType) {
 		return listener.get(eventType);
 	}
 	
 	/**
-	 * Handles the {@link Event}.
+	 * Handles the {@link Event} 'event'.
 	 *
 	 * @param event
 	 *            the {@link Event} to handle
@@ -62,23 +63,14 @@ public class EventHandler {
 		
 		if(!isEventTypeRegistered(t)) return;
 		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for(final EventListener l : getListenersForEventType(t))
-					new Thread(new Runnable() {
-						
-						@Override
-						public void run() {
-							l.onEvent(event);
-						}
-					}, "Listener " + l + " handling " + t).start();
-			}
+		new Thread((Runnable) () -> {
+			for(final EventListener l : getListenersForEventType(t))
+				new Thread((Runnable) () -> l.onEvent(event), "Listener " + l + " handling " + t).start();
 		}, "Handling " + event).start();
 	}
 	
 	/**
-	 * Registers the {@link EventListener}.
+	 * Registers the {@link EventListener} 'eventListener'.
 	 *
 	 * @param eventListener
 	 *            the {@link EventListener} to register
@@ -87,7 +79,7 @@ public class EventHandler {
 		final EventType eT = eventListener.getEventType();
 		
 		if(!listener.containsKey(eT)) {
-			listener.put(eT, new ArrayList<>());
+			listener.put(eT, new LinkedList<>());
 			eventTypeRegistered.put(eT, true);
 		}
 		
