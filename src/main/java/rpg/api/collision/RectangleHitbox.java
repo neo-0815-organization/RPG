@@ -13,7 +13,6 @@ public class RectangleHitbox extends Hitbox {
 	public RectangleHitbox(final UnmodifiableVec2D offset, final UnmodifiableVec2D offsetWidth, final UnmodifiableVec2D offsetHeight) {
 		super(offset, offsetWidth, offsetHeight);
 	}
-	
 	public RectangleHitbox(final UnmodifiableVec2D offset, final UnmodifiableVec2D offsetWidth, final UnmodifiableVec2D offsetHeight, final int precision) {
 		super(precision, offset, offsetWidth, offsetHeight, offsetWidth.add(offsetHeight));
 	}

@@ -46,7 +46,7 @@ public class NewMapDialog extends JDialog {
 		super(frame, "New", true);
 		
 		setSize(290, 160);
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(frame);
 		setResizable(false);
 		setLayout(null);
 		
