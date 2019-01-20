@@ -6,7 +6,16 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * A text file reading utility.
+ * 
+ * @author Tim Ludwig
+ */
 public class RPGFileReader {
+	
+	public static long lineCount(String path) {
+		return ResourceGetter.bufferedReader(path).lines().count();
+	}
 	
 	/**
 	 * Reads a {@link File}, splitting the lines seperately in to key and value
@@ -33,10 +42,8 @@ public class RPGFileReader {
 				lineNumber++;
 			}
 			
-			// reader.lines().filter(line -> !line.equals("")).map(currentLine -> currentLine.split(seperator)).forEach(entry -> onRead.onLineRead(entry[0], entry[1], 0 /* TODO line number? */));
-			
 			reader.close();
-		}catch(final IOException ex) {
+		} catch(final IOException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -69,7 +76,7 @@ public class RPGFileReader {
 			//@formatter:on
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -113,7 +120,7 @@ public class RPGFileReader {
 			//@formatter:on
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -149,7 +156,7 @@ public class RPGFileReader {
 			//@formatter:on
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -190,7 +197,7 @@ public class RPGFileReader {
 				result[i] = elements[i + 1];
 			
 			reader.close();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		

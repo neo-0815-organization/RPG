@@ -87,12 +87,31 @@ public abstract class Vec2D<T extends Vec2D<?>> implements Cloneable {
 	}
 	
 	/**
+	 * Gets the x component of this {@link Vec2D}.
+	 *
+	 * @return the x component of this {@link Vec2D}
+	 */
+	
+	public double getValueX() {
+		return x;
+	}
+	
+	/**
 	 * Gets the y component of this {@link Vec2D}.
 	 *
 	 * @return the y component of this {@link Vec2D}
 	 */
 	public DistanceValue getY() {
 		return new DistanceValue(y);
+	}
+	
+	/**
+	 * Gets the y component of this {@link Vec2D}.
+	 *
+	 * @return the y component of this {@link Vec2D}
+	 */
+	public double getValueY() {
+		return y;
 	}
 	
 	/**
@@ -119,7 +138,7 @@ public abstract class Vec2D<T extends Vec2D<?>> implements Cloneable {
 	public T clone() {
 		try {
 			return (T) super.clone();
-		}catch(final CloneNotSupportedException e) {
+		} catch(final CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 		

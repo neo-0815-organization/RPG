@@ -3,32 +3,22 @@ package rpg.api.collision;
 import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 
-public class RectangleHitbox extends Hitbox{
-	public RectangleHitbox(UnmodifiableVec2D offset, UnmodifiableVec2D offSetWidth, UnmodifiableVec2D offsetHeight, int precision) {
-		super(precision, offset, offSetWidth, offsetHeight, offSetWidth.add(offsetHeight));
-	}
+/**
+ * This {@link Hitbox} subclass explicitly describing a rectangle.
+ * 
+ * @author
+ */
+public class RectangleHitbox extends Hitbox {
 	
-	public RectangleHitbox(UnmodifiableVec2D offset, UnmodifiableVec2D offSetWidth, UnmodifiableVec2D offsetHeight) {
-		super(1, offset, offSetWidth, offsetHeight, offSetWidth.add(offsetHeight));
+	public RectangleHitbox(final UnmodifiableVec2D offset, final UnmodifiableVec2D offsetWidth, final UnmodifiableVec2D offsetHeight) {
+		super(offset, offsetWidth, offsetHeight);
+	}
+	public RectangleHitbox(final UnmodifiableVec2D offset, final UnmodifiableVec2D offsetWidth, final UnmodifiableVec2D offsetHeight, final int precision) {
+		super(precision, offset, offsetWidth, offsetHeight, offsetWidth.add(offsetHeight));
 	}
 	
 	@Override
-	public boolean checkCollision(Vec2D<?> colliderPoint) {
-		return (getOffset(0).getX().getValuePixel() <= colliderPoint.getX().getValuePixel() && getPoint(1).getX().getValuePixel() >= colliderPoint.getX().getValuePixel()) &&
-				(getOffset(0).getY().getValuePixel() <= colliderPoint.getY().getValuePixel() && getPoint(2).getY().getValuePixel() >= colliderPoint.getY().getValuePixel());
+	public boolean checkCollision(final Vec2D<?> colliderPoint) {
+		return getPosition().getValueX() <= colliderPoint.getValueX() && getPoint(1).getValueX() >= colliderPoint.getValueX() && getPosition().getValueY() <= colliderPoint.getValueY() && getPoint(2).getValueY() >= colliderPoint.getValueY();
 	}
-
-//	private UnmodifiableVec2D getWidth() {
-//		return getOffset(1);
-//	}
-//	
-//	private UnmodifiableVec2D getHeight() {
-//		return getOffset(2);
-//	}
-	
-	@Override
-	public String toString() {
-		return super.toString()+ " Loc: "+getOffset(0)+ " Width:"+getOffset(1)+ " Height:" + getOffset(2);
-	}
-	
 }

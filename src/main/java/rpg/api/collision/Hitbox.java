@@ -7,25 +7,40 @@ import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
- * @author Jan Unterhuber, Tim Ludwig, Erik Diers
+ * The class Hitbox used only in collision management.
+ * 
+ * @author Jan Unterhuber, Tim Ludwig, Neo Hornberger, Erik Diers
  */
 public abstract class Hitbox {
 	/**
-	 * The array of points represented as a {@link Vec2D} specifying this
-	 * {@link Hitbox}. <code>offsets[0]</code> is measured relative to the
-	 * {@link Entity} or {@link Tile} being boxed by this {@link Hitbox}, while
-	 * <code>offsets[n] | n > 0</code> is measured relative to the {@link Vec2D}
-	 * <code>offsets[0]</code>.
+	 * The array of {@link Vec2D} defining this {@link Hitbox}.
+	 * {@code offsets[0]} is measured relative to the {@link Entity} or
+	 * {@link Tile} represented by this {@link Hitbox}, while
+	 * {@code offsets[n] : n > 0} is measured relative to {@code offsets[0]}.
 	 */
 	protected UnmodifiableVec2D[] offsets;
 	
 	/**
-	 * Creates a Hitbox.
+	 * Constructs a new {@link Hitbox} with the precision {@code 1} and the
+	 * defining {@link Vec2D}[] 'points'.
+	 * 
+	 * @param points
+	 *            the {@link Vec2D}[] defining this {@link Hitbox}
+	 * @see #Hitbox(int, UnmodifiableVec2D...)
+	 */
+	protected Hitbox(final UnmodifiableVec2D... points) {
+		this(1, points);
+	}
+	
+	/**
+	 * Constructs a new {@link Hitbox} with the precision 'precision' and the
+	 * defining {@link Vec2D}[] 'points'.
 	 * 
 	 * @param precision
-	 *            means the number of Collision vectors...TODO This need to be
-	 *            Changed
+	 *            the number of reference {@link Vec2D}s used for collision
+	 *            checks
 	 * @param points
+	 *            the {@link Vec2D}[] defining this {@link Hitbox}
 	 */
 	protected Hitbox(final int precision, final UnmodifiableVec2D... points) {
 		offsets = points;
@@ -47,17 +62,26 @@ public abstract class Hitbox {
 	}
 	
 	/**
-	 * Checks whether this {@link Hitbox} collides with an other {@link Hitbox}.
+	 * Checks whether this {@link Hitbox} collides with another {@link Hitbox}.
 	 * 
 	 * @param colliderHitbox
-	 *            the {@link Hitbox} to check for collision
+	 *            the {@link Hitbox} to check for collision with
 	 * @param colliderPosition
 	 *            the position of the {@link Entity} or {@link Tile} the
-	 *            {@link Hitbox} <code>colliderHitbox</code> represents,
-	 *            relative to the position of the {@link Entity} or {@link Tile}
-	 *            represented by this {@link Hitbox}
-	 * @return <code>true</code> if this {@link Hitbox} collides with the
-	 *         {@link Hitbox} <code>colliderHitbox</code>
+	 *            'colliderHitbox' represents, relative to the position of the
+	 *            {@link Entity} or {@link Tile} represented by this
+	 *            {@link Hitbox}
+	 * @return
+	 *         <ul>
+	 *         <li>{@code true} if this {@link Hitbox} collides with the
+	 *         'colliderHitbox'</li>
+	 *         <li>{@code false}
+	 *         <ul>
+	 *         <li>if {@code this} does not collide with the
+	 *         'colliderHitbox'</li>
+	 *         <li>if the collision check misses the collision</li>
+	 *         </ul>
+	 *         </ul>
 	 */
 	public boolean checkCollision(final Hitbox colliderHitbox, final UnmodifiableVec2D colliderPosition) {
 		for(int i = 0; i < offsets.length; i++)
@@ -70,32 +94,46 @@ public abstract class Hitbox {
 	 * Checks whether this {@link Hitbox} collides with a point.
 	 * 
 	 * @param colliderPoint
-	 *            the position of a point, relative to the position of the
+	 *            a {@link Vec2D}, relative to the position of the
 	 *            {@link Entity} or {@link Tile} represented by this
-	 *            {@link Hitbox}, to check for collision, represented as a
-	 *            {@link Vec2D}
-	 * @return <code>true</code> if this {@link Hitbox} collides with the point
-	 *         <code>colliderPoint</code>
+	 *            {@link Hitbox}, to check for collision
+	 * @return {@code true} if this {@link Hitbox} collides with the point
+	 *         'colliderPoint'
 	 */
 	public abstract boolean checkCollision(Vec2D<?> colliderPoint);
 	
 	/**
-	 * Returns the position of an corner as an {@link UnmodifiableVec2D}
+	 * Returns the position of a point on the boundary, relative to the position
+	 * of the {@link Entity} or {@link Tile} represented by this {@link Hitbox}.
 	 * 
 	 * @param i
-	 * @return
+	 *            the index of the point to get
+	 * @return an {@link UnmodifiableVec2D}, the i-th point on the boundary of
+	 *         this {@link Hitbox}
 	 */
 	protected UnmodifiableVec2D getPoint(final int i) {
 		return getOffset(0).add(i == 0 ? Vec2D.ORIGIN : getOffset(i));
 	}
 	
+	/**
+	 * Returns the position of this {@link Hitbox}.
+	 * 
+	 * @return the position of this {@link Hitbox} relative to the
+	 *         {@link Entity} or {@link Tile} represented by this {@link Hitbox}
+	 */
+	protected UnmodifiableVec2D getPosition() {
+		return getOffset(0);
+	}
+	
+	/**
+	 * Returns the offset of a point on the boundary of this {@link Hitbox}.
+	 * 
+	 * @param i
+	 *            the index of the offset to get
+	 * @return the {@link UnmodifiableVec2D} offset of the i-th point on the
+	 *         boundary of this {@link Hitbox}
+	 */
 	protected UnmodifiableVec2D getOffset(final int i) {
 		return offsets[i];
 	}
-	
-	//	public static void main(String[] args) {
-	//		RectangleHitbox rect = new RectangleHitbox(UnmodifiableVec2D.ORIGIN, UnmodifiableVec2D.createXY(10, 0), UnmodifiableVec2D.createXY(0, 2), 10);
-	//		RectangleHitbox rect2 = new RectangleHitbox(UnmodifiableVec2D.ORIGIN, UnmodifiableVec2D.createXY(2, 0), UnmodifiableVec2D.createXY(0, 10), 10);
-	//		System.out.println(rect.checkCollision(rect2, UnmodifiableVec2D.createXY(-3, 3)));
-	//	}
 }

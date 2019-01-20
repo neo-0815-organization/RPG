@@ -3,7 +3,7 @@ package rpg.api.eventhandling.events;
 import rpg.api.eventhandling.EventType;
 
 /**
- * The Interface Event.
+ * The interface Event.
  *
  * @author Tim Ludiwg
  */

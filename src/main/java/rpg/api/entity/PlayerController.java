@@ -5,15 +5,31 @@ import java.awt.event.KeyEvent;
 import rpg.api.vector.UnmodifiableVec2D;
 
 /**
- * The class LocalController used to control a {@link Player}.
+ * The class used to control a {@link Player}.
+ * 
+ * @author Neo Hornberger
  */
 public class PlayerController extends LocalController {
 	private final double speed = 1d;
 	
+	/**
+	 * Constructs a new {@link LocalController} which is controlling the
+	 * {@link Player} 'player'.
+	 * 
+	 * @param player
+	 *            the {@link Player} to control
+	 */
 	public PlayerController(final Player player) {
 		super(player);
 	}
 	
+	/**
+	 * Controls the movement of the {@link Player} which is controlled by this
+	 * {@link PlayerController}.
+	 * 
+	 * @param keyCode
+	 *            the key code to handle
+	 */
 	public void controlPlayerMovement(final int keyCode) {
 		switch(keyCode) {
 			case KeyEvent.VK_W:
@@ -35,6 +51,12 @@ public class PlayerController extends LocalController {
 		}
 	}
 	
+	/**
+	 * Returns the {@link Player}, controlled by this {@link PlayerController}.
+	 * 
+	 * @return the {@link Player}, controlled by this {@link PlayerController}
+	 * @see LocalController#getEntity()
+	 */
 	public Player getPlayer() {
 		return (Player) getEntity();
 	}

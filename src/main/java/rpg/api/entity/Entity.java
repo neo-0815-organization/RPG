@@ -16,13 +16,19 @@ import rpg.api.vector.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
 public abstract class Entity implements INameable, ISprite {
-	protected ModifiableVec2D location;
-	protected Sprite sprite;
-	protected Direction lookingDirection;
-	protected ModifiableVec2D velocity = ModifiableVec2D.ORIGIN.toModifiable();
-	protected String displayName, imageName;
-	protected UUID uuid;
+	protected ModifiableVec2D	location;
+	protected Sprite			sprite;
+	protected Direction			lookingDirection;
+	protected ModifiableVec2D	velocity	= ModifiableVec2D.ORIGIN.toModifiable();
+	protected String			displayName, imageName;
+	protected UUID				uuid;
 	
+	/**
+	 * Constructs a new {@link Entity} with the display name 'name'.
+	 * 
+	 * @param name
+	 *            the display name to set
+	 */
 	public Entity(final String name) {
 		setDisplayName(name);
 	}
@@ -173,16 +179,13 @@ public abstract class Entity implements INameable, ISprite {
 	}
 	
 	/**
-	 * This update-methods updates the entity.
+	 * Updates this {@link Entity}.
 	 * 
 	 * @param deltaTime
-	 *            time since last frame in sec.
+	 *            time since last frame in sec
 	 */
 	public void update(final double deltaTime) {
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
-		
-		//		System.out.print(velocity.toString());
-		//		System.out.println(" >> " + deltaTime);
 	}
 	
 	/**
