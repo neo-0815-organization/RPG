@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
  */
 public class RPGFileReader {
 	
+	public static long lineCount(String path) {
+		return ResourceGetter.bufferedReader(path).lines().count();
+	}
+	
 	/**
 	 * Reads a {@link File}, splitting the lines seperately in to key and value
 	 * pairs, seperated by a seperator.
