@@ -7,25 +7,70 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 
+/**
+ * A utility class to manage the retrieval of resources.
+ * 
+ * @author Neo Hornberger
+ */
 public class ResourceGetter {
 	
-	public static InputStream resource(final String name) {
-		return ResourceGetter.class.getResourceAsStream(name);
+	/**
+	 * Returns the {@link InputStream} of the requested resource.
+	 * 
+	 * @param path
+	 *            the path to the resource
+	 * @return the {@link InputStream} of the requested resource; {@code null}
+	 *         if no resource is found at this path
+	 */
+	public static InputStream getResource(final String path) {
+		return ResourceGetter.class.getResourceAsStream(path);
 	}
 	
-	public static InputStreamReader reader(final String name) {
-		return new InputStreamReader(resource(name));
+	/**
+	 * Returns the {@link InputStreamReader} of the requested resource.
+	 * 
+	 * @param path
+	 *            the path to the resource
+	 * @return the {@link InputStreamReader} of the requested resource;
+	 *         {@code null} if no resource is found at this path
+	 * @see #getResource(String)
+	 */
+	public static InputStreamReader getInputStreamReader(final String path) {
+		return new InputStreamReader(getResource(path));
 	}
 	
-	public static BufferedReader bufferedReader(final String name) {
-		return new BufferedReader(reader(name));
+	/**
+	 * Returns the {@link BufferedReader} of the requested resource.
+	 * 
+	 * @param path
+	 *            the path to the resource
+	 * @return the {@link BufferedReader} of the requested resource;
+	 *         {@code null} if no resource is found at this path
+	 * @see #getInputStreamReader(String)
+	 */
+	public static BufferedReader getBufferedReader(final String path) {
+		return new BufferedReader(getInputStreamReader(path));
 	}
 	
-	public static BufferedImage image(final String name) {
+	/**
+	 * Returns the {@link Image} of the requested resource.
+	 * 
+	 * @param path
+	 *            the path to the resource
+	 * @return the {@link BufferedImage} of the requested resource; {@code null}
+	 *         <ul>
+	 *         <li>if no resource is found at this path</li>
+	 *         <li>if an error occurs during reading or when unable to create the
+	 *         required {@link ImageInputStream}</li>
+	 *         </ul>
+	 * @see #getResource(String)
+	 */
+	public static BufferedImage getImage(final String path) {
 		try {
-			return ImageIO.read(resource(name));
-		} catch (IOException e) {
+			return ImageIO.read(getResource(path));
+		} catch(final IOException e) {
 			e.printStackTrace();
 		}
 		

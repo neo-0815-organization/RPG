@@ -28,7 +28,10 @@ public class GameData {
 	private HashMap<String, Object> data;
 	
 	/**
-	 * Constructor of the class {@link GameData}.
+	 * Constructs a new representation of data.
+	 * 
+	 * @param path
+	 *            the path to the {@link File}
 	 */
 	public GameData(final String path) {
 		file = new File(getClass().getResource("/").getFile() + "/" + path);

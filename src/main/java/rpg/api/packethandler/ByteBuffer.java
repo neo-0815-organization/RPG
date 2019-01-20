@@ -115,10 +115,10 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Writes the String 's' to the buffer.
+	 * Writes the {@link String} 's' to the buffer.
 	 *
 	 * @param s
-	 *            the String to write
+	 *            the {@link String} to write
 	 * @see #writeString(String, boolean)
 	 */
 	public void writeString(final String s) {
@@ -179,7 +179,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads one byte from the buffer and interpretes it as a byte.
+	 * Reads one byte from the buffer and interprets it as a byte.
 	 *
 	 * @return the byte read
 	 */
@@ -192,7 +192,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads four bytes from the buffer and interpretes them as an int.
+	 * Reads four bytes from the buffer and interprets them as an int.
 	 *
 	 * @return the int read
 	 * @see #read()
@@ -202,7 +202,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads one int from the buffer and interpretes it as a char.
+	 * Reads one int from the buffer and interprets it as a char.
 	 *
 	 * @return the char read
 	 * @see #readInt()
@@ -212,7 +212,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads two bytes from the buffer and interpretes them as a short.
+	 * Reads two bytes from the buffer and interprets them as a short.
 	 *
 	 * @return the short read
 	 * @see #read()
@@ -222,7 +222,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads eight bytes from the buffer and interpretes them as a long.
+	 * Reads eight bytes from the buffer and interprets them as a long.
 	 *
 	 * @return the long read
 	 * @see #read()
@@ -244,7 +244,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads 'length' chars from the buffer and interpretes them as a String.
+	 * Reads 'length' chars from the buffer and interprets them as a String.
 	 *
 	 * @return the {@link String} read
 	 * @see #readChar()
@@ -259,7 +259,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads one long from the buffer and interpretes it as a double.
+	 * Reads one long from the buffer and interprets it as a double.
 	 *
 	 * @return the double read
 	 * @see #readLong()
@@ -269,7 +269,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads one int from the buffer and interpretes it as a float.
+	 * Reads one int from the buffer and interprets it as a float.
 	 *
 	 * @return the float read
 	 * @see #readInt()
@@ -279,7 +279,7 @@ public class ByteBuffer {
 	}
 	
 	/**
-	 * Reads one byte from the buffer and interpretes it as a boolean.
+	 * Reads one byte from the buffer and interprets it as a boolean.
 	 *
 	 * @return the boolean read
 	 * @see #read()

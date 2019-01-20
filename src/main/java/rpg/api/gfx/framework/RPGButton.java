@@ -24,7 +24,7 @@ import rpg.api.localization.StringLocalizer;
 public class RPGButton extends JButton{
 	private static final long serialVersionUID = 6887580054889086469L;
 	private static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 24);
-	private static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.image("/assets/textures/menu/button.png");
+	private static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png");
 	
 	private final BufferedImage image;
 	

@@ -9,7 +9,7 @@ import rpg.api.filereading.ResourceGetter;
 import rpg.api.gfx.GameFrame;
 
 public class StartMenu extends Menu {
-	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.image("/assets/textures/menu/Hintergrund.png");
+	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.getImage("/assets/textures/menu/Hintergrund.png");
 	
 	public StartMenu() {
 		RPGButton singleplayer = new RPGButton("button.singleplayer");

@@ -3,7 +3,9 @@ package rpg.api.filereading;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -13,8 +15,8 @@ import java.util.stream.Collectors;
  */
 public class RPGFileReader {
 	
-	public static long lineCount(String path) {
-		return ResourceGetter.bufferedReader(path).lines().count();
+	public static long lineCount(final String path) {
+		return ResourceGetter.getBufferedReader(path).lines().count();
 	}
 	
 	/**
@@ -30,17 +32,24 @@ public class RPGFileReader {
 	 */
 	public static void readLineSplit(final String path, final String seperator, final ILineRead onRead) {
 		try {
-			final BufferedReader reader = ResourceGetter.bufferedReader(path);
+			final BufferedReader reader = ResourceGetter.getBufferedReader(path);
 			
-			String line = null;
-			String[] lineSplit = null;
-			int lineNumber = 1;
+//			String line = null;
+//			String[] lineSplit = null;
+//			int lineNumber = 1;
+//
+//			while((line = reader.readLine()) != null) {
+//				if((lineSplit = line.split(seperator)).length == 2) onRead.onLineRead(lineSplit[0], lineSplit[1], lineNumber);
+//
+//				lineNumber++;
+//			}
 			
-			while((line = reader.readLine()) != null) {
-				if((lineSplit = line.split(seperator)).length == 2) onRead.onLineRead(lineSplit[0], lineSplit[1], lineNumber);
+			final AtomicReference<Integer> lineNumber = new AtomicReference<>(0);
+			reader.lines().map(line -> {
+				lineNumber.set(lineNumber.get() + 1);
 				
-				lineNumber++;
-			}
+				return new SimpleEntry<>(lineNumber.get(), line);
+			}).parallel().map(line -> new SimpleEntry<>(line.getKey(), line.getValue().split(seperator))).filter(line -> line.getValue().length == 2).forEach(line -> onRead.onLineRead(line.getValue()[0], line.getValue()[1], line.getKey()));
 			
 			reader.close();
 		} catch(final IOException ex) {
@@ -63,7 +72,7 @@ public class RPGFileReader {
 		Map<String, String> result = null;
 		
 		try {
-			final BufferedReader reader = ResourceGetter.bufferedReader(path);
+			final BufferedReader reader = ResourceGetter.getBufferedReader(path);
 			
 			//@formatter:off
 			result = reader
@@ -100,7 +109,7 @@ public class RPGFileReader {
 		Map<String, String[]> result = null;
 		
 		try {
-			final BufferedReader reader = ResourceGetter.bufferedReader(path);
+			final BufferedReader reader = ResourceGetter.getBufferedReader(path);
 			
 			//@formatter:off
 			result = reader
@@ -143,7 +152,7 @@ public class RPGFileReader {
 		String result = "";
 		
 		try {
-			final BufferedReader reader = ResourceGetter.bufferedReader(path);
+			final BufferedReader reader = ResourceGetter.getBufferedReader(path);
 			
 			//@formatter:off
 			result = reader
@@ -182,7 +191,7 @@ public class RPGFileReader {
 		final String[] result = new String[splitCount - 1];
 		
 		try {
-			final BufferedReader reader = ResourceGetter.bufferedReader(path);
+			final BufferedReader reader = ResourceGetter.getBufferedReader(path);
 			
 			//@formatter:off
 			final String[] elements = reader.lines()

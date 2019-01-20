@@ -69,7 +69,7 @@ public class Background implements IImage {
 	}
 	
 	private void loadFromFile() throws IOException {
-		final ZipInputStream zis = new ZipInputStream(ResourceGetter.resource("/assets/worlds/" + name + ".world"));
+		final ZipInputStream zis = new ZipInputStream(ResourceGetter.getResource("/assets/worlds/" + name + ".world"));
 		final HashMap<String, ByteArrayInputStream> streams = new HashMap<>();
 		
 		ZipEntry entry;
