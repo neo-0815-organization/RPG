@@ -2,8 +2,6 @@ package rpg.api.gfx.framework;
 
 import java.awt.image.BufferedImage;
 
-import javax.swing.JPanel;
-
 import rpg.RPG;
 import rpg.api.filereading.ResourceGetter;
 import rpg.api.gfx.GameFrame;

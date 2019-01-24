@@ -2,7 +2,6 @@ package rpg.api.collision;
 
 import rpg.api.entity.Entity;
 import rpg.api.tile.Tile;
-import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 

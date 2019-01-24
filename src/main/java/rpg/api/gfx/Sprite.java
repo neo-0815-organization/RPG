@@ -2,13 +2,10 @@ package rpg.api.gfx;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-
-import javax.imageio.ImageIO;
 
 import rpg.api.filereading.RPGFileReader;
 import rpg.api.filereading.ResourceGetter;
