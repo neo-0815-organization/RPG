@@ -6,12 +6,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class ImageUtility {
-
+	
 	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight) {
 		return scale(image, newWidth, newHeight, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 	}
 	
 	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight, final Object interpolation) {
+		if(image == null) return null;
 		if(image.getWidth() == newWidth && image.getHeight() == newHeight) return image;
 		
 		final BufferedImage newImage = new BufferedImage(newWidth, newHeight, image.getType());
@@ -25,6 +26,7 @@ public class ImageUtility {
 	}
 	
 	public static BufferedImage rotate(final BufferedImage image, final int angle) {
+		if(image == null) return null;
 		if(angle % 360 == 0) return image;
 		
 		final BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());

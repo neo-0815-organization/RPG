@@ -58,6 +58,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import rpg.api.gfx.ImageUtility;
 import rpg.worldcreator.dialogs.EditHitboxDialog;
 import rpg.worldcreator.dialogs.NewMapDialog;
 
@@ -89,7 +90,7 @@ public class WorldCreatorFrame extends JFrame {
 			
 			newSize -= 10;
 			
-			if(!currentTexture.isNull()) g.drawImage(RPGWorldCreator.scaleImage(currentTexture.getImage(), newSize, newSize), 5, 5, null);
+			if(!currentTexture.isNull()) g.drawImage(ImageUtility.scale(currentTexture.getImage(), newSize, newSize), 5, 5, null);
 		}
 	};
 	private final JProgressBar progressBar = new JProgressBar();
@@ -1043,6 +1044,18 @@ public class WorldCreatorFrame extends JFrame {
 			final int size = (int) (tileSize * scaleFactor);
 			
 			setBounds(paneX * size, paneY * size, size, size);
+		}
+		
+		public BufferedImage getImages() {
+			if(images[1].isNull()) return null;
+			
+			final BufferedImage image1 = images[1].getImage(), result = new BufferedImage(image1.getWidth(), image1.getHeight(), image1.getType());
+			final Graphics g = result.getGraphics();
+			
+			for(final Image image : images)
+				if(image != null && image.getImage() != null) g.drawImage(image.getImage(), 0, 0, null);
+			
+			return result;
 		}
 		
 		public WorldCreatorHitbox getHitboxCopy() {

@@ -4,6 +4,8 @@ import static rpg.worldcreator.Data.tileSize;
 
 import java.awt.image.BufferedImage;
 
+import rpg.api.gfx.ImageUtility;
+
 public class Image {
 	private final BufferedImage image;
 	private final int id, xShift, yShift;
@@ -61,7 +63,7 @@ public class Image {
 		if(image == null) return null;
 		if(subImage == null) subImage = image.getSubimage(xShift, yShift, tileSize, tileSize);
 		
-		return RPGWorldCreator.scaleImage(RPGWorldCreator.rotateImage(subImage, rotation.getAngle()), (int) (subImage.getWidth() * scaleFactor), (int) (subImage.getHeight() * scaleFactor));
+		return ImageUtility.scale(ImageUtility.rotate(subImage, rotation.getAngle()), (int) (subImage.getWidth() * scaleFactor), (int) (subImage.getHeight() * scaleFactor));
 	}
 	
 	public Image copy() {
