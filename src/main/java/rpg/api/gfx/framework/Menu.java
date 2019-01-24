@@ -13,14 +13,25 @@ import rpg.RPG;
 import rpg.api.gfx.ImageUtility;
 import rpg.api.scene.Scene;
 
+/**
+ * Abstract class for all kinds of menus
+ * !Menu freezes the game and disables the Canvas!
+ * 
+ * @author gruppe 3
+ *
+ */
 public class Menu extends Scene{
 	JPanel menu = new JPanel();
 	private boolean isOpen = true;
 	
-	
+	/**
+	 * Creats a new Menu -Nice
+	 */
 	public Menu() {
 		menu.setBounds(0, 0, RPG.gameFrame.getWidth(), RPG.gameFrame.getHeight());
-		RPG.gameFrame.add(menu, 0);
+		
+		RPG.gameFrame.setCanvasVisibility(false);
+		RPG.gameFrame.add(menu);
 		RPG.gameFrame.revalidate();
 	}
 	
@@ -29,20 +40,36 @@ public class Menu extends Scene{
 		RPG.gameFrame.repaint();
 	}
 	
+	/**
+	 * Sets whether the menu is open and refreshes itself
+	 * @param flag [true|false]
+	 */
 	public void setOpen(boolean flag) {
 		isOpen = flag;
 	}
 	
+	/**
+	 * This menu adds a default Java component to the menu
+	 * @param c
+	 */
 	public void addComponent(JComponent c) {
 		menu.add(c);
 	}
 	
+	/**
+	 * Sets the Background-image
+	 * @param img
+	 */
 	public void setBackground(BufferedImage img) {
 		JLabel label = new JLabel(new ImageIcon(ImageUtility.scale(img, menu.getWidth(), menu.getHeight())));
 		label.setBounds(0, 0, menu.getWidth(), menu.getHeight());
 		menu.add(label);
 	}
 	
+	/**
+	 * start showing the menu.
+	 * This will freeze the game until the menu is closed.
+	 */
 	public void show() {
 		while (isOpen) {
 			RPG.gameFrame.drawScene(this);

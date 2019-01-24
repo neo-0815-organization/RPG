@@ -1,24 +1,17 @@
 package rpg.api.gfx.framework;
 
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
-import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import rpg.RPG;
 import rpg.api.filereading.ResourceGetter;
-import rpg.api.gfx.GameFrame;
 import rpg.api.gfx.ImageUtility;
 import rpg.api.localization.StringLocalizer;
 
 /**
- * This 
+ * RPGButton is a game-specific JButton
  *
  */
 public class RPGButton extends JButton{
@@ -28,22 +21,54 @@ public class RPGButton extends JButton{
 	
 	private final BufferedImage image;
 	
+	public RPGButton() {
+		this(null, DEFAULT_FONT, null);
+	}
+	
 	public RPGButton(String title) {
 		this(title, BUTTON_TEMPLATE);
 	}
 	
+	/**
+	 * A button with a background image
+	 * @param image
+	 */
+	public RPGButton(BufferedImage image) {
+		this(null, image);
+	}
+	
+	/**
+	 * A button with a background image and a title
+	 * @param title
+	 * @param image
+	 */
 	public RPGButton(String title, BufferedImage image) {
 		this(title, DEFAULT_FONT, image);
 	}
 	
+	/**
+	 * A button with a background image and a title in a specific font
+	 * @param title
+	 * @param font
+	 * @param image
+	 */
 	public RPGButton(String title, Font font, BufferedImage image) {
-		super(StringLocalizer.localize(title));
+		super(title == null ? null : StringLocalizer.localize(title + ".name"));
 		
 		this.image = image;
 		
+		setOpaque(false);
+		setContentAreaFilled(false);
 		setFont(font);
 		setVerticalTextPosition(JButton.CENTER);
 		setHorizontalTextPosition(JButton.CENTER);
+	}
+	
+	/**
+	 * Makes the border of the button invisible
+	 */
+	public void disableBorder() {
+		setBorder(null);
 	}
 	
 	@Override
