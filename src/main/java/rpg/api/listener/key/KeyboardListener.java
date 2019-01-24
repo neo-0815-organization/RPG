@@ -6,14 +6,14 @@ public class KeyboardListener {
 	private static HashMap<Integer, OnKey> keys = new HashMap<>();
 	private static HashMap<Integer, KeyState> states = new HashMap<>();
 	
-	private static Thread thread = new Thread("KeyboardListenerThread") {
-		
-		@Override
-		public void run() {
-			while(!interrupted())
-				updateKeys();
-		};
-	};
+//	private static Thread thread = new Thread("KeyboardListenerThread") {
+//		
+//		@Override
+//		public void run() {
+//			while(!interrupted())
+//				updateKeys();
+//		};
+//	};
 	
 	public static void updateKeys() {
 		states.entrySet().parallelStream().filter(entry -> entry.getValue().isActive()).forEach(entry -> {
@@ -34,7 +34,8 @@ public class KeyboardListener {
 		states.put(keyCode, state);
 	}
 	
+	@Deprecated
 	public static void start() {
-		thread.start();
+//		thread.start();
 	}
 }

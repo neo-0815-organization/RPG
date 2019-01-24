@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-import rpg.RPG;
 import rpg.api.filereading.ResourceGetter;
-import rpg.api.gfx.GameFrame;
 import rpg.api.scene.Camera;
 
 
@@ -23,6 +21,13 @@ public class StartMenu extends Menu {
 	public StartMenu() {
 		RPGButton singleplayer = new RPGButton("button.singleplayer");
 		singleplayer.setBounds(0, 0, 500, 100);
+		singleplayer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setOpen(false);
+			}
+		});
 		addComponent(singleplayer);
 		
 		RPGButton multiplayer = new RPGButton("button.multiplayer");

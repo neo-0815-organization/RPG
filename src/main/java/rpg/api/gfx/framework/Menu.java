@@ -8,7 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 import rpg.RPG;
 import rpg.api.gfx.ImageUtility;
 import rpg.api.scene.Scene;
@@ -21,6 +20,7 @@ import rpg.api.scene.Scene;
  *
  */
 public class Menu extends Scene{
+	private static int menuCount;
 	JPanel menu = new JPanel();
 	private boolean isOpen = true;
 	
@@ -70,9 +70,22 @@ public class Menu extends Scene{
 	 * start showing the menu.
 	 * This will freeze the game until the menu is closed.
 	 */
-	public void show() {
+	public final void show() {
+		menuCount++;
 		while (isOpen) {
 			RPG.gameFrame.drawScene(this);
+		}
+		close();
+	}
+	
+	/**
+	 * Closes the menu. When the last menu is closed, the canvas became visible
+	 */
+	public void close() {
+		menuCount--;
+		RPG.gameFrame.remove(menu);
+		if (menuCount == 0) {
+			RPG.gameFrame.setCanvasVisibility(true);
 		}
 	}
 	

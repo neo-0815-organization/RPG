@@ -33,7 +33,7 @@ public class GameField extends Scene {
 		background = new Background();
 		
 		startUpdating();
-		startDrawing();
+//		startDrawing();
 	}
 	
 	@Override

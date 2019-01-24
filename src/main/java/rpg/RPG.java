@@ -3,6 +3,7 @@ package rpg;
 import java.awt.event.KeyEvent;
 
 import rpg.api.gfx.GameFrame;
+import rpg.api.gfx.framework.StartMenu;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.scene.GameField;
 import rpg.api.vector.ModifiableVec2D;
@@ -18,15 +19,21 @@ public class RPG {
 		init();
 	}
 	
+
 	/* This method should not be edited! Thanks! */
 	/**
 	 * This Method initiates the game. - it sets up the GameFrame
 	 */
 	private static void init() {
 		gameFrame = new GameFrame();
+		showStartMenu();
 		gameField = new GameField();
 		registerKeys();
 		//		KeyboardListener.start();
+	}
+
+	private static void showStartMenu() {
+		new StartMenu().show();
 	}
 	
 	private static void registerKeys() {
