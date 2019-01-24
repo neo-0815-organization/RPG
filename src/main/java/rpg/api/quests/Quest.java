@@ -7,7 +7,12 @@ import java.util.Map;
 import rpg.api.entity.CharacterType;
 import rpg.api.eventhandling.EventTrigger;
 import rpg.api.filereading.RPGFileReader;
+import rpg.api.localization.StringLocalizer;
 
+/**
+ * The class Quest
+ * @author Tim Ludwig
+ */
 public class Quest {
 	private int id, xp;
 	private String title, text;
@@ -15,11 +20,11 @@ public class Quest {
 	private boolean repeatable;
 	private EventTrigger startTrigger, endTrigger;
 
-	public Quest(int id, int xp, String title, String text, CharacterType type, boolean repeatable,	EventTrigger startTrigger, EventTrigger endTrigger) {
+	public Quest(int id, int xp, CharacterType type, boolean repeatable,	EventTrigger startTrigger, EventTrigger endTrigger) {
 		this.id = id;
 		this.xp = xp;
-		this.title = title;
-		this.text = text;
+		this.title = StringLocalizer.localize("quest." + id + ".title");
+		this.text = StringLocalizer.localize("quest." + id + ".text");
 		this.type = type;
 		this.repeatable = repeatable;
 		this.startTrigger = startTrigger;
