@@ -41,7 +41,7 @@ public class WorldCreatorHitbox {
 	public void setType(final String type) {
 		this.type = type;
 		
-		if(isNull()) points.clear();
+		points.clear();
 	}
 	
 	public ArrayList<Vec2D<?>> getPoints() {

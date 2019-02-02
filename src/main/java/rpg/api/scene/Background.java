@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import rpg.api.collision.Hitbox;
 import rpg.api.filereading.ResourceGetter;
 import rpg.api.gfx.IImage;
+import rpg.api.packethandler.ByteBuffer;
 import rpg.api.tile.Tile;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.UnmodifiableVec2D;
@@ -85,40 +86,41 @@ public class Background implements IImage {
 		
 		background = ImageIO.read(streams.get("background"));
 		
+		final ByteBuffer buf = new ByteBuffer();
+		
 		// read mapping
-		final ByteArrayInputStream mappingStream = streams.get("mapping");
+		buf.readFromInputStream(streams.get("mapping"));
 		final HashMap<Integer, HashMap<Integer, String>> neededTiles = new HashMap<>();
 		
-		final int mapCount = mappingStream.read();
+		final int mapCount = buf.readInt();
 		int layerID, length, tileID;
 		HashMap<Integer, String> map;
-		byte[] name;
+		String name;
 		for(int i = 0; i < mapCount; i++) {
-			layerID = mappingStream.read();
-			length = mappingStream.read();
+			layerID = buf.readInt();
+			length = buf.readInt();
 			
 			map = new HashMap<>(length);
 			
 			for(int j = 0; j < length; j++) {
-				tileID = mappingStream.read();
-				name = new byte[mappingStream.read()];
+				tileID = buf.readInt();
+				name = buf.readString();
 				
-				mappingStream.read(name);
-				
-				map.put(tileID, new String(name));
+				map.put(tileID, name);
 			}
 			
 			neededTiles.put(layerID, map);
 		}
 		
 		// read & create fluids
-		final ByteArrayInputStream fluidStream = streams.get("fluids");
+		buf.clear();
+		buf.readFromInputStream(streams.get("fluids"));
 		
-		final int fluidCount = fluidStream.read();
+		final int fluidCount = buf.readInt();
 		Tile fluid;
 		for(int i = 0; i < fluidCount; i++) {
-			final ModifiableVec2D location = ModifiableVec2D.createXY(fluidStream.read(), fluidStream.read());
-			final int id = fluidStream.read();
+			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
+			final int id = buf.readInt();
 			
 			fluid = new Tile() {};
 			
@@ -126,13 +128,14 @@ public class Background implements IImage {
 		}
 		
 		// read & create tiles
-		final ByteArrayInputStream tileStream = streams.get("tiles");
+		buf.clear();
+		buf.readFromInputStream(streams.get("tiles"));
 		
-		final int tileCount = tileStream.read();
+		final int tileCount = buf.readInt();
 		Tile tile;
 		for(int i = 0; i < tileCount; i++) {
-			final ModifiableVec2D location = ModifiableVec2D.createXY(tileStream.read(), tileStream.read());
-			final int id = tileStream.read();
+			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
+			final int id = buf.readInt();
 			
 			tile = new Tile() {};
 			
@@ -140,29 +143,33 @@ public class Background implements IImage {
 		}
 		
 		// read & create hitboxes
-		final ByteArrayInputStream hitboxStream = streams.get("hitboxes");
+		buf.clear();
+		buf.readFromInputStream(streams.get("hitboxes"));
 		
-		final int hitboxCount = hitboxStream.read();
+		final int hitboxCount = buf.readInt();
 		final Hitbox hitbox;
 		for(int i = 0; i < hitboxCount; i++) {
-			final ModifiableVec2D location = ModifiableVec2D.createXY(hitboxStream.read(), hitboxStream.read());
-			final byte[] typeName = new byte[hitboxStream.read()];
+			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
+			final int hitboxesOnLocation = buf.readInt();
 			
-			hitboxStream.read(typeName);
-			
-			final int pointCount = hitboxStream.read();
-			final ArrayList<UnmodifiableVec2D> points = new ArrayList<>(pointCount);
-			
-			for(int j = 0; j < pointCount; j++)
-				points.add(UnmodifiableVec2D.createXY(Double.longBitsToDouble(hitboxStream.read() << 32 | hitboxStream.read() & 0xFFFFFFFFL), Double.longBitsToDouble(hitboxStream.read() << 32 | hitboxStream.read() & 0xFFFFFFFFL)));
-			
-			switch(new String(typeName)) {
-				case "rectangle":
-					break;
-				case "triangle":
-					break;
-				case "circle":
-					break;
+			for(int j = 0; j < hitboxesOnLocation; j++) {
+				final int tileLayer = buf.readInt();
+				final String typeName = buf.readString();
+				
+				final int pointCount = buf.readInt();
+				final ArrayList<UnmodifiableVec2D> points = new ArrayList<>(pointCount);
+				
+				for(int k = 0; k < pointCount; k++)
+					points.add(UnmodifiableVec2D.createXY(buf.readDouble(), buf.readDouble()));
+				
+				switch(new String(typeName)) {
+					case "rectangle":
+						break;
+					case "triangle":
+						break;
+					case "circle":
+						break;
+				}
 			}
 		}
 		

@@ -21,14 +21,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -59,6 +56,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import rpg.api.gfx.ImageUtility;
+import rpg.api.packethandler.ByteBuffer;
+import rpg.api.vector.UnmodifiableVec2D;
 import rpg.worldcreator.dialogs.EditHitboxDialog;
 import rpg.worldcreator.dialogs.NewMapDialog;
 
@@ -166,6 +165,9 @@ public class WorldCreatorFrame extends JFrame {
 					if(spritePanes != null) Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).forEach(pane -> {
 						for(int i = 0; i < pane.images.length; i++)
 							pane.setImage(i, null);
+						
+						for(int i = 0; i < pane.hitboxes.length; i++)
+							pane.hitboxes[i] = WorldCreatorHitbox.nullBox;
 					});
 					
 					break;
@@ -354,34 +356,30 @@ public class WorldCreatorFrame extends JFrame {
 			
 			if(openedFile == null || !openedFile.exists()) openedFile.createNewFile();
 			
-			final FileWriter writer = new FileWriter(openedFile);
+			final FileOutputStream fos = new FileOutputStream(openedFile);
+			final ByteBuffer buf = new ByteBuffer();
 			final TriConsumer<String, Integer, BufferedImage> writeConsumer = new TriConsumer<String, Integer, BufferedImage>() {
 				
 				@Override
 				public void accept(final String name, final Integer id, final BufferedImage image) {
-					try {
-						writer.write(id);
-						writer.write(name.length());
-						writer.write(name.toCharArray());
-					}catch(final IOException e) {
-						e.printStackTrace();
-					}
+					buf.writeInt(id);
+					buf.writeString(name);
 				}
 			};
 			
 			// write image paths to opened file
-			writer.write(RPGWorldCreator.getLayerCount());
+			buf.writeInt(RPGWorldCreator.getLayerCount());
 			for(int i = 1; i < RPGWorldCreator.getLayerCount(); i++) {
-				writer.write(RPGWorldCreator.getImageMap(i).size());
+				buf.writeInt(RPGWorldCreator.getImageMap(i).size());
 				RPGWorldCreator.getImageMap(i).forEach(writeConsumer);
 			}
 			
-			writer.write(RPGWorldCreator.getImageMap(0).size());
+			buf.writeInt(RPGWorldCreator.getImageMap(0).size());
 			RPGWorldCreator.getImageMap(0).forEach(writeConsumer);
 			
 			// write every panel to opened file
-			writer.write(spritePanes.length);
-			writer.write(spritePanes[0].length);
+			buf.writeInt(spritePanes.length);
+			buf.writeInt(spritePanes[0].length);
 			
 			SpritePane pane;
 			for(final SpritePane[] spritePane : spritePanes)
@@ -389,34 +387,33 @@ public class WorldCreatorFrame extends JFrame {
 					pane = element;
 					
 					for(int i = 0; i < RPGWorldCreator.getLayerCount(); i++) {
-						writer.write(pane.images[i].getId() != -1 ? pane.images[i].getId() : 127);
-						writer.write(pane.images[i].getXShift());
-						writer.write(pane.images[i].getYShift());
-						writer.write(pane.images[i].getRotation().getId());
+						buf.writeInt(pane.images[i].getId() != -1 ? pane.images[i].getId() : 127);
+						buf.writeInt(pane.images[i].getXShift());
+						buf.writeInt(pane.images[i].getYShift());
+						buf.write(pane.images[i].getRotation().getId());
 					}
 					
-					writer.write(pane.hitbox.getType().toLowerCase().length());
-					writer.write(pane.hitbox.getType().toLowerCase());
-					writer.write(pane.hitbox.getPoints().size());
-					
-					pane.hitbox.getPoints().stream().forEach(point -> {
-						try {
-							final long x = Double.doubleToRawLongBits(point.getX().getValueTiles()), y = Double.doubleToRawLongBits(point.getY().getValueTiles());
+					for(int i = 0; i < RPGWorldCreator.getLayerCount(); i++) {
+						if(pane.hitboxes[i].isNull()) {
+							buf.writeInt(0);
 							
-							writer.write((int) (x >> 32));
-							writer.write((int) x);
-							
-							writer.write((int) (y >> 32));
-							writer.write((int) y);
-						}catch(final IOException e) {
-							e.printStackTrace();
+							continue;
 						}
-					});
+						
+						buf.writeString(pane.hitboxes[i].getType().toLowerCase());
+						buf.writeInt(pane.hitboxes[i].getPoints().size());
+						
+						pane.hitboxes[i].getPoints().stream().forEach(point -> {
+							buf.writeDouble(point.getX().getValueTiles());
+							buf.writeDouble(point.getY().getValueTiles());
+						});
+					}
 					
 					updateProgressBar(++numberTiles);
 				}
 			
-			writer.close();
+			buf.writeToOutputStream(fos);
+			fos.close();
 			
 			updateProgressBar(progressBar.getMaximum());
 			updateTitle(openedFile.getName());
@@ -428,67 +425,81 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	public void openFile(final File file) {
-		finishedThreads = 0;
-		numberTiles = 0;
-		time = System.currentTimeMillis();
-		
-		progressBar.setMaximum(100);
-		updateProgressBar(0);
-		
-		if(file == null) {
-			JOptionPane.showMessageDialog(INSTANCE, "The selected file is 'null'!!", "Open File", JOptionPane.ERROR_MESSAGE);
-			
-			return;
-		}else openedFile = file;
-		
-		Arrays.stream(workingArea.getComponents()).parallel().filter(comp -> comp instanceof SpritePane).forEach(comp -> workingArea.remove(comp));
-		
 		try {
-			final BufferedReader reader = new BufferedReader(new FileReader(file));
+			finishedThreads = 0;
+			numberTiles = 0;
+			time = System.currentTimeMillis();
 			
-			final int layerCount = reader.read();
+			progressBar.setMaximum(100);
+			updateProgressBar(0);
+			
+			if(file == null) {
+				JOptionPane.showMessageDialog(INSTANCE, "The selected file is 'null'!!", "Open File", JOptionPane.ERROR_MESSAGE);
+				
+				return;
+			}else openedFile = file;
+			
+			Arrays.stream(workingArea.getComponents()).parallel().filter(comp -> comp instanceof SpritePane).forEach(comp -> workingArea.remove(comp));
+			
+			final ByteBuffer buf = new ByteBuffer();
+			final FileInputStream fis = new FileInputStream(file);
+			
+			buf.readFromInputStream(fis);
+			
+			final int layerCount = buf.readInt();
 			int imageCount;
 			for(int i = 1; i < layerCount; i++) {
 				RPGWorldCreator.getImageMap(i).clear();
-				imageCount = reader.read();
+				imageCount = buf.readInt();
 				
 				for(int j = 0; j < imageCount; j++) {
-					final int id = reader.read();
-					final char[] name = new char[reader.read()];
-					reader.read(name);
+					final int id = buf.readInt();
+					final String name = buf.readString();
 					
-					RPGWorldCreator.getImageMap(i).put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(i) + "/" + String.valueOf(name) + ".png"));
+					RPGWorldCreator.getImageMap(i).put(name, id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(i) + "/" + name + ".png"));
 				}
 			}
 			
 			RPGWorldCreator.getImageMap(0).clear();
-			imageCount = reader.read();
+			imageCount = buf.readInt();
 			for(int i = 0; i < imageCount; i++) {
-				final int id = reader.read();
-				final char[] name = new char[reader.read()];
-				reader.read(name);
+				final int id = buf.readInt();
+				final String name = buf.readString();
 				
-				RPGWorldCreator.getImageMap(0).put(String.copyValueOf(name), id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(0) + "/" + String.valueOf(name) + ".png"));
+				RPGWorldCreator.getImageMap(0).put(name, id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(0) + "/" + name + ".png"));
 			}
 			
 			// read every panel from file
-			spritePanes = new SpritePane[reader.read()][reader.read()];
+			spritePanes = new SpritePane[buf.readInt()][buf.readInt()];
 			
 			final int paneSize = (int) (tileSize * factor);
 			
 			SpritePane pane;
-			int id;
+			int id, points;
+			String name;
 			for(int x = 0; x < spritePanes.length; x++)
 				for(int y = 0; y < spritePanes[x].length; y++) {
 					pane = new SpritePane(x, y);
 					pane.setBounds(x * paneSize, y * paneSize, paneSize, paneSize);
 					
 					for(int i = 0; i < layerCount; i++) {
-						id = reader.read();
+						id = buf.readInt();
 						
 						if(id == 127) id = -1;
 						
-						pane.setImage(i, new Image(RPGWorldCreator.getImageMap(i).getSecond(RPGWorldCreator.getImageMap(i).keyWithValueOne(id)), id, reader.read(), reader.read(), Rotation.getById(reader.read()), factor));
+						pane.setImage(i, new Image(RPGWorldCreator.getImageMap(i).getSecond(RPGWorldCreator.getImageMap(i).keyWithValueOne(id)), id, buf.readInt(), buf.readInt(), Rotation.getById(buf.read()), factor));
+					}
+					
+					for(int i = 0; i < layerCount; i++) {
+						name = buf.readString();
+						
+						if(name.length() == 0) continue;
+						
+						pane.hitboxes[i].setType(new String(name));
+						
+						points = buf.readInt();
+						for(int j = 0; j < points; j++)
+							pane.hitboxes[i].getPoints().add(UnmodifiableVec2D.createXY(buf.readDouble(), buf.readDouble()));
 					}
 					
 					workingArea.add(pane);
@@ -497,7 +508,7 @@ public class WorldCreatorFrame extends JFrame {
 					updateProgressBar(++numberTiles);
 				}
 			
-			reader.close();
+			fis.close();
 			
 			updateProgressBar(progressBar.getMaximum());
 			updateTitle(file.getName());
@@ -622,116 +633,107 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		private void exportMapping(final OutputStream os) {
-			try {
-				final OutputStreamWriter writer = new OutputStreamWriter(os);
-				final TriConsumer<String, Integer, BufferedImage> writeConsumer = new TriConsumer<String, Integer, BufferedImage>() {
-					
-					@Override
-					public void accept(final String name, final Integer id, final BufferedImage image) {
-						try {
-							writer.write(id);
-							writer.write(name.length());
-							writer.write(name.toCharArray());
-						}catch(final IOException e) {
-							e.printStackTrace();
-						}
-					}
-				};
+			final ByteBuffer buf = new ByteBuffer();
+			final TriConsumer<String, Integer, BufferedImage> writeConsumer = new TriConsumer<String, Integer, BufferedImage>() {
 				
-				writer.write(RPGWorldCreator.getMappingIndeces().length);
-				for(final int i : RPGWorldCreator.getMappingIndeces()) {
-					writer.write(i);
-					writer.write(RPGWorldCreator.getImageMap(i).size());
-					RPGWorldCreator.getImageMap(i).forEach(writeConsumer);
+				@Override
+				public void accept(final String name, final Integer id, final BufferedImage image) {
+					buf.writeInt(id);
+					buf.writeString(name);
 				}
-				
-				writer.flush();
+			};
+			
+			buf.writeInt(RPGWorldCreator.getMappingIndeces().length);
+			for(final int i : RPGWorldCreator.getMappingIndeces()) {
+				buf.writeInt(i);
+				buf.writeInt(RPGWorldCreator.getImageMap(i).size());
+				RPGWorldCreator.getImageMap(i).forEach(writeConsumer);
+			}
+			
+			try {
+				buf.writeToOutputStream(os);
 			}catch(final IOException e) {
 				showError(e);
 			}
 		}
 		
 		private void exportFluids(final OutputStream os) {
+			final ByteBuffer buf = new ByteBuffer();
+			final ArrayList<SpritePane> panes = new ArrayList<>();
+			
+			Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[0].isNull()).forEach(panes::add);
+			
+			buf.writeInt(panes.size());
+			panes.stream().forEach(pane -> {
+				buf.writeInt(pane.paneX);
+				buf.writeInt(pane.paneY);
+				buf.writeInt(pane.images[0].getId());
+			});
+			
 			try {
-				final OutputStreamWriter writer = new OutputStreamWriter(os);
-				final ArrayList<SpritePane> panes = new ArrayList<>();
-				
-				Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[0].isNull()).forEach(panes::add);
-				
-				writer.write(panes.size());
-				panes.stream().forEach(pane -> {
-					try {
-						writer.write(pane.paneX);
-						writer.write(pane.paneY);
-						writer.write(pane.images[0].getId());
-					}catch(final IOException e) {
-						e.printStackTrace();
-					}
-				});
-				
-				writer.flush();
+				buf.writeToOutputStream(os);
 			}catch(final IOException e) {
 				showError(e);
 			}
 		}
 		
 		private void exportTiles(final OutputStream os) {
+			final ByteBuffer buf = new ByteBuffer();
+			final ArrayList<SpritePane> panes = new ArrayList<>();
+			
+			Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[2].isNull()).forEach(panes::add);
+			
+			buf.writeInt(panes.size());
+			panes.stream().forEach(pane -> {
+				buf.writeInt(pane.paneX);
+				buf.writeInt(pane.paneY);
+				buf.writeInt(pane.images[2].getId());
+			});
+			
 			try {
-				final OutputStreamWriter writer = new OutputStreamWriter(os);
-				final ArrayList<SpritePane> panes = new ArrayList<>();
-				
-				Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[2].isNull()).forEach(panes::add);
-				
-				writer.write(panes.size());
-				panes.stream().forEach(pane -> {
-					try {
-						writer.write(pane.paneX);
-						writer.write(pane.paneY);
-						writer.write(pane.images[2].getId());
-					}catch(final IOException e) {
-						e.printStackTrace();
-					}
-				});
-				
-				writer.flush();
+				buf.writeToOutputStream(os);
 			}catch(final IOException e) {
 				showError(e);
 			}
 		}
 		
 		private void exportHitboxes(final OutputStream os) {
+			final ByteBuffer buf = new ByteBuffer();
+			final ArrayList<SpritePane> panes = new ArrayList<>();
+			
+			Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> {
+				for(final WorldCreatorHitbox hitbox : pane.hitboxes)
+					if(!hitbox.isNull()) return true;
+				
+				return false;
+			}).forEach(panes::add);
+			
+			buf.writeInt(panes.size());
+			panes.stream().forEach(pane -> {
+				buf.writeInt(pane.paneX);
+				buf.writeInt(pane.paneY);
+				
+				int hitboxCount = 0;
+				for(final WorldCreatorHitbox hitbox : pane.hitboxes)
+					if(!hitbox.isNull()) hitboxCount++;
+				buf.writeInt(hitboxCount);
+				
+				for(int i = 0; i < pane.hitboxes.length; i++) {
+					if(pane.hitboxes[i].isNull()) continue;
+					
+					buf.writeInt(i);
+					buf.writeString(pane.hitboxes[i].getType().toLowerCase());
+					buf.writeInt(pane.hitboxes[i].getPoints().size());
+					
+					pane.hitboxes[i].getPoints().stream().forEach(point -> {
+						buf.writeDouble(point.getX().getValueTiles());
+						buf.writeDouble(point.getY().getValueTiles());
+					});
+				}
+			});
+			
 			try {
-				final OutputStreamWriter writer = new OutputStreamWriter(os);
-				final ArrayList<SpritePane> panes = new ArrayList<>();
-				
-				Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.hitbox.isNull()).forEach(panes::add);
-				
-				writer.write(panes.size());
-				panes.stream().forEach(pane -> {
-					try {
-						writer.write(pane.paneX);
-						writer.write(pane.paneY);
-						writer.write(pane.hitbox.getType().toLowerCase().length());
-						writer.write(pane.hitbox.getType().toLowerCase());
-						writer.write(pane.hitbox.getPoints().size());
-						
-						pane.hitbox.getPoints().stream().forEach(point -> {
-							try {
-								final long x = Double.doubleToRawLongBits(point.getX().getValueTiles()), y = Double.doubleToRawLongBits(point.getY().getValueTiles());
-								
-								writer.write((int) (x >> 32));
-								writer.write((int) x);
-								
-								writer.write((int) (y >> 32));
-								writer.write((int) y);
-							}catch(final IOException e) {
-								e.printStackTrace();
-							}
-						});
-					}catch(final IOException e) {
-						e.printStackTrace();
-					}
-				});
+				buf.writeToOutputStream(os);
 			}catch(final IOException e) {
 				showError(e);
 			}
@@ -944,9 +946,9 @@ public class WorldCreatorFrame extends JFrame {
 							final EditHitboxDialog hitboxDialog = new EditHitboxDialog(INSTANCE, paneInstance);
 							hitboxDialog.setVisible(true);
 							
-							hitbox = hitboxDialog.getHitbox();
-							hitbox.setScale(factor);
-						}else if(button == 3) hitbox = WorldCreatorHitbox.nullBox;
+							hitboxes[2] = hitboxDialog.getHitbox(2);
+							hitboxes[2].setScale(factor);
+						}else if(button == 3) hitboxes[2] = WorldCreatorHitbox.nullBox;
 						
 						repaint();
 						break;
@@ -988,7 +990,7 @@ public class WorldCreatorFrame extends JFrame {
 		
 		private final Image[] images = new Image[3];
 		private final int paneX, paneY;
-		private WorldCreatorHitbox hitbox;
+		private final WorldCreatorHitbox[] hitboxes = new WorldCreatorHitbox[3];
 		
 		private SpritePane(final int paneX, final int paneY) {
 			this.paneX = paneX;
@@ -997,7 +999,8 @@ public class WorldCreatorFrame extends JFrame {
 			for(int i = 0; i < images.length; i++)
 				images[i] = Image.nullImage;
 			
-			hitbox = WorldCreatorHitbox.nullBox;
+			for(int i = 0; i < hitboxes.length; i++)
+				hitboxes[i] = WorldCreatorHitbox.nullBox.copy();
 			
 			setLayout(null);
 			setBackground(new Color(199, 199, 199));
@@ -1012,7 +1015,8 @@ public class WorldCreatorFrame extends JFrame {
 			for(final Image image : images)
 				if(image != null && image.getImage() != null) g.drawImage(image.getImage(), 0, 0, null);
 			
-			hitbox.draw(g);
+			for(final WorldCreatorHitbox hitbox : hitboxes)
+				hitbox.draw(g);
 		}
 		
 		public void setImage(final Image image) {
@@ -1039,7 +1043,7 @@ public class WorldCreatorFrame extends JFrame {
 		
 		public void setScaleFactor(final double scaleFactor) {
 			Arrays.stream(images).parallel().forEach(image -> image.setScaleFactor(scaleFactor));
-			hitbox.setScale(scaleFactor);
+			Arrays.stream(hitboxes).parallel().forEach(hitbox -> hitbox.setScale(scaleFactor));
 			
 			final int size = (int) (tileSize * scaleFactor);
 			
@@ -1058,8 +1062,8 @@ public class WorldCreatorFrame extends JFrame {
 			return result;
 		}
 		
-		public WorldCreatorHitbox getHitboxCopy() {
-			return hitbox.copy();
+		public WorldCreatorHitbox getHitboxCopy(final int i) {
+			return hitboxes[i].copy();
 		}
 	}
 	
