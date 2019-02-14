@@ -13,10 +13,13 @@ import rpg.api.scene.Camera;
  * @author EriDie
  *
  */
-public class StartMenu extends Menu {
-	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.getImage("/assets/textures/menu/Hintergrund.png"), 
-									   SETTINGS_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_options.png"),
-									   EXIT_IMAGE =  ResourceGetter.getImage("/assets/textures/menu/button_exit.png");
+public final class StartMenu extends Menu {
+	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.getImage("/assets/textures/menu/background.png"), 
+									   SETTINGS_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_options.png");
+			static final BufferedImage EXIT_IMAGE =  ResourceGetter.getImage("/assets/textures/menu/button_exit.png");
+	
+	private boolean openPref;
+	
 	
 	public StartMenu() {
 		RPGButton singleplayer = new RPGButton("button.singleplayer");
@@ -52,10 +55,27 @@ public class StartMenu extends Menu {
 		RPGButton options = new RPGButton(SETTINGS_IMAGE);
 		options.setBounds(0, Camera.frameSize.height - finalRadius, finalRadius, finalRadius);
 		options.disableBorder();
+		options.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openPref = true;
+			}
+		});
+		
 		addComponent(options);
 		
 		setBackground(BACKGROUND_IMAGE);
 	}
+	
+	@Override
+	public void updateMenu() {
+		if (openPref) {
+			openSubMenu(new PreferencesMenu());
+			openPref = false;
+		}
+	}
+	
 	
 //	public static void main(String[] args) {
 //		RPG.gameFrame = new GameFrame();

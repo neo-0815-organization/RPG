@@ -8,18 +8,20 @@ import javax.swing.JButton;
 
 import rpg.api.filereading.ResourceGetter;
 import rpg.api.gfx.ImageUtility;
+import rpg.api.localization.INameable;
 import rpg.api.localization.StringLocalizer;
 
 /**
  * RPGButton is a game-specific JButton
  *
  */
-public class RPGButton extends JButton{
+public class RPGButton extends JButton {
 	private static final long serialVersionUID = 6887580054889086469L;
 	private static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 24);
-	private static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png");
+	static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png");
 	
-	private final BufferedImage image;
+	private BufferedImage image;
+	private String title;
 	
 	public RPGButton() {
 		this(null, DEFAULT_FONT, null);
@@ -56,6 +58,7 @@ public class RPGButton extends JButton{
 		super(title == null ? null : StringLocalizer.localize(title + ".name"));
 		
 		this.image = image;
+		this.title = title;
 		
 		setOpaque(false);
 		setContentAreaFilled(false);
@@ -71,11 +74,18 @@ public class RPGButton extends JButton{
 		setBorder(null);
 	}
 	
+	public void setBackgroundImage(BufferedImage img) {
+		this.image = img;
+		setBounds(getX(), getY(), getWidth(), getHeight());
+	}
+	
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		super.setBounds(x, y, width, height);
 		setIcon(new ImageIcon(ImageUtility.scale(image, width, height)));
 	}
 	
-	
+	public void updateTitle() {
+		setText(StringLocalizer.localize(title + ".name"));
+	}
 }

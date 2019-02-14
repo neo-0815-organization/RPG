@@ -1,6 +1,8 @@
 package rpg;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.prefs.Preferences;
 
 import rpg.api.gfx.GameFrame;
 import rpg.api.gfx.framework.StartMenu;
@@ -14,6 +16,7 @@ import rpg.api.vector.ModifiableVec2D;
 public class RPG {
 	public static GameFrame gameFrame;
 	public static GameField gameField;
+//	public static Preferences prefs;
 	
 	public static void main(final String[] args) {
 		init();

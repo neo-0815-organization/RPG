@@ -25,7 +25,7 @@ public class Menu extends Scene{
 	private boolean isOpen = true;
 	
 	/**
-	 * Creats a new Menu -Nice
+	 * Creates a new Menu -Nice
 	 */
 	public Menu() {
 		menu.setBounds(0, 0, RPG.gameFrame.getWidth(), RPG.gameFrame.getHeight());
@@ -33,6 +33,8 @@ public class Menu extends Scene{
 		RPG.gameFrame.setCanvasVisibility(false);
 		RPG.gameFrame.add(menu);
 		RPG.gameFrame.revalidate();
+		
+		menu.setLayout(null);
 	}
 	
 	@Override
@@ -73,9 +75,14 @@ public class Menu extends Scene{
 	public final void show() {
 		menuCount++;
 		while (isOpen) {
+			updateMenu();
 			RPG.gameFrame.drawScene(this);
 		}
 		close();
+	}
+	
+	protected void updateMenu() {
+		
 	}
 	
 	/**
@@ -89,4 +96,9 @@ public class Menu extends Scene{
 		}
 	}
 	
+	public void openSubMenu(Menu menu) {
+		this.menu.setVisible(false);
+		menu.show();
+		this.menu.setVisible(true);
+	}
 }
