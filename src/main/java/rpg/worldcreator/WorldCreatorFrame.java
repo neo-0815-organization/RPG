@@ -158,7 +158,9 @@ public class WorldCreatorFrame extends JFrame {
 						final String zoom = JOptionPane.showInputDialog("Change zoom", factor);
 						
 						if(zoom != null) applyZoom(Double.parseDouble(zoom));
-					}catch(final NumberFormatException ex) {}
+					}catch(final NumberFormatException ex) {
+						showError(ex);
+					}
 					
 					break;
 				case "clear":
@@ -387,7 +389,8 @@ public class WorldCreatorFrame extends JFrame {
 					pane = element;
 					
 					for(int i = 0; i < RPGWorldCreator.getLayerCount(); i++) {
-						buf.writeInt(pane.images[i].getId() != -1 ? pane.images[i].getId() : 127);
+						//						buf.writeInt(pane.images[i].getId() != -1 ? pane.images[i].getId() : 127);
+						buf.writeInt(pane.images[i].getId());
 						buf.writeInt(pane.images[i].getXShift());
 						buf.writeInt(pane.images[i].getYShift());
 						buf.write(pane.images[i].getRotation().getId());
@@ -485,7 +488,7 @@ public class WorldCreatorFrame extends JFrame {
 					for(int i = 0; i < layerCount; i++) {
 						id = buf.readInt();
 						
-						if(id == 127) id = -1;
+						//						if(id == 127) id = -1;
 						
 						pane.setImage(i, new Image(RPGWorldCreator.getImageMap(i).getSecond(RPGWorldCreator.getImageMap(i).keyWithValueOne(id)), id, buf.readInt(), buf.readInt(), Rotation.getById(buf.read()), factor));
 					}
@@ -1051,9 +1054,14 @@ public class WorldCreatorFrame extends JFrame {
 		}
 		
 		public BufferedImage getImages() {
-			if(images[1].isNull()) return null;
+			int id = -1;
 			
-			final BufferedImage image1 = images[1].getImage(), result = new BufferedImage(image1.getWidth(), image1.getHeight(), image1.getType());
+			for(int i = 0; i < images.length; i++)
+				if(!images[i].isNull()) id = i;
+			
+			if(id == -1) return null;
+			
+			final BufferedImage templateImage = images[id].getImage(), result = new BufferedImage(templateImage.getWidth(), templateImage.getHeight(), templateImage.getType());
 			final Graphics g = result.getGraphics();
 			
 			for(final Image image : images)
@@ -1086,7 +1094,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private void showError(final Exception e) {
-		showError(e.getMessage());
+		showError(e.getClass().getName() + "\n\n" + e.getMessage());
 	}
 	
 	private void showError(final String error) {

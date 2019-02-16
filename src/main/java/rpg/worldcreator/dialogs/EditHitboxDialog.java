@@ -136,7 +136,6 @@ public class EditHitboxDialog extends JDialog {
 			setLayout(new BorderLayout());
 			
 			types = new JComboBox<>(getTypes());
-			if(!this.hitbox.isNull()) types.setSelectedItem(this.hitbox.getType());
 			types.addItemListener(new ItemListener() {
 				private boolean first = true;
 				private String type;
@@ -206,8 +205,9 @@ public class EditHitboxDialog extends JDialog {
 				}
 			});
 			previewHolder.add(refreshButton, BorderLayout.SOUTH);
-			
 			add(previewHolder, BorderLayout.WEST);
+			
+			if(!this.hitbox.isNull()) types.setSelectedItem(this.hitbox.getType().substring(0, 1).toUpperCase() + this.hitbox.getType().substring(1));
 		}
 		
 		public void updateHitbox() {
