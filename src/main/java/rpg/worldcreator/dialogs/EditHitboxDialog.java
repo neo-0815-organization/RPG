@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.HashMap;
 
@@ -245,13 +247,18 @@ public class EditHitboxDialog extends JDialog {
 			setLayout(null);
 			
 			final int textFieldWidth = (width - 45) / 2;
+			final DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance();
+			final DecimalFormatSymbols symbols = format.getDecimalFormatSymbols();
+			
+			symbols.setDecimalSeparator('.');
+			format.setDecimalFormatSymbols(symbols);
 			
 			if(twoTuple) {
 				final JLabel openingParenthesis = new JLabel("(");
 				openingParenthesis.setBounds(0, 0, 10, height);
 				add(openingParenthesis);
 				
-				x = new JFormattedTextField(NumberFormat.getNumberInstance());
+				x = new JFormattedTextField(format);
 				x.setBounds(15, 0, textFieldWidth, height);
 				add(x);
 				
@@ -259,7 +266,7 @@ public class EditHitboxDialog extends JDialog {
 				semicolon.setBounds(20 + textFieldWidth, 0, 10, height);
 				add(semicolon);
 				
-				y = new JFormattedTextField(NumberFormat.getNumberInstance());
+				y = new JFormattedTextField(format);
 				y.setBounds(width - 15 - textFieldWidth, 0, textFieldWidth, height);
 				add(y);
 				
@@ -267,7 +274,7 @@ public class EditHitboxDialog extends JDialog {
 				closingParenthesis.setBounds(width - 10, 0, 10, height);
 				add(closingParenthesis);
 			}else {
-				x = new JFormattedTextField(NumberFormat.getNumberInstance());
+				x = new JFormattedTextField(format);
 				x.setBounds(width / 2 - textFieldWidth / 2, 0, textFieldWidth, height);
 				add(x);
 			}
