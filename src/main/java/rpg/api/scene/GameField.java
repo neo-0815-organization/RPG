@@ -2,6 +2,7 @@ package rpg.api.scene;
 
 import java.awt.Graphics2D;
 import java.util.LinkedList;
+import java.util.List;
 
 import rpg.RPG;
 import rpg.api.entity.Controller;
@@ -26,6 +27,7 @@ public class GameField extends Scene {
 	private Thread update, draw;
 	
 	private final LinkedList<Entity> entities = new LinkedList<>();
+	private final LinkedList<Tile> tiles = new LinkedList<>();
 	private final LinkedList<Controller> controller = new LinkedList<>();
 	private PlayerController playerController;
 	
@@ -42,6 +44,9 @@ public class GameField extends Scene {
 		
 		for(final Entity e : entities)
 			e.draw(g2d);
+		
+		for(final Tile t : tiles)
+			t.draw(g2d);
 	}
 	
 	/**
@@ -100,6 +105,20 @@ public class GameField extends Scene {
 		
 		for(int i = 0; i < entities.size(); i++)
 			entities.get(i).update(deltaTime);
+		
+		for(int i = 0; i < tiles.size(); i++) {
+			tiles.get(i).update(deltaTime);
+		}
+	}
+	
+	public List<Tile> checkCollisionTiles(Entity e) {
+		LinkedList<Tile> ts = new LinkedList<>();
+		
+		for(Tile t : tiles) {
+			System.out.println(t); 
+		}
+		
+		return ts;
 	}
 	
 	/**
@@ -113,6 +132,10 @@ public class GameField extends Scene {
 	public void addEntity(final Controller c) {
 		controller.add(c);
 		entities.add(c.getEntity());
+	}
+	
+	public void addTile(final Tile t) {
+		tiles.add(t);
 	}
 	
 	public PlayerController getPlayerController() {

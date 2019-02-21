@@ -1,12 +1,17 @@
 package rpg.api.tile;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import rpg.api.collision.Hitbox;
+import rpg.api.collision.ICollideable;
+import rpg.api.collision.RectangleHitbox;
 import rpg.api.entity.Entity;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 import rpg.api.vector.ModifiableVec2D;
+import rpg.api.vector.UnmodifiableVec2D;
+import rpg.api.vector.Vec2D;
 
 /**
  * The abstract class Tile represents everything a player can interact with
@@ -14,17 +19,16 @@ import rpg.api.vector.ModifiableVec2D;
  *
  * @author Tim Ludwig, Erik Diers
  */
-public abstract class Tile implements ISprite {
-	protected ModifiableVec2D location;
+public abstract class Tile implements ISprite, ICollideable {
+	protected UnmodifiableVec2D location;
 	protected Sprite sprite;
-	protected Hitbox hbox;
 	
 	/**
 	 * Gets the location of this tile {@link ModifiableVec2D}
 	 * 
 	 * @return the location of this tile
 	 */
-	public ModifiableVec2D getLocation() {
+	public UnmodifiableVec2D getLocation() {
 		return location;
 	}
 	
@@ -38,7 +42,9 @@ public abstract class Tile implements ISprite {
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
-		draw(g2d, location);
+		draw(g2d, getLocation());
+		System.out.println("draw");
+		g2d.setColor(Color.BLACK);
 	}
 	
 	@Override

@@ -39,6 +39,8 @@ public interface ISprite extends IDrawable {
 	 *            the location to draw at
 	 */
 	default void draw(final Graphics2D g2d, final Vec2D<?> location) {
+		if(getSprite() == null) return;
+		
 		//@formatter:off
 		final int 	x = location.getX().getValuePixel(),
 					y = location.getY().getValuePixel(),

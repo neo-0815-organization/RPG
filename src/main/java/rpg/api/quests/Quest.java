@@ -18,17 +18,14 @@ public class Quest {
 	private String title, text;
 	private CharacterType type;
 	private boolean repeatable;
-	private EventTrigger startTrigger, endTrigger;
 
-	public Quest(int id, int xp, CharacterType type, boolean repeatable,	EventTrigger startTrigger, EventTrigger endTrigger) {
+	public Quest(int id, int xp, CharacterType type, boolean repeatable) {
 		this.id = id;
 		this.xp = xp;
 		this.title = StringLocalizer.localize("quest." + id + ".title");
 		this.text = StringLocalizer.localize("quest." + id + ".text");
 		this.type = type;
 		this.repeatable = repeatable;
-		this.startTrigger = startTrigger;
-		this.endTrigger = endTrigger;
 	}
 	
 	public static class Loader {
