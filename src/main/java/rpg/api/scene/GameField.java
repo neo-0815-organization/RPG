@@ -63,6 +63,7 @@ public class GameField extends Scene {
 					
 					RPG.gameFrame.drawScene(me);
 					KeyboardListener.updateKeys();
+					Camera.update();
 					
 					System.out.println(deltaTime);
 				}

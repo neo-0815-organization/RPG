@@ -17,6 +17,7 @@ import rpg.api.filereading.ResourceGetter;
  * Encapsulates multiple {@link Animation}s in one {@link Sprite}.
  *
  * @author Tim Ludwig
+ * -> Erik->update
  */
 public class Sprite {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
@@ -26,12 +27,24 @@ public class Sprite {
 	private final String name;
 	private SpriteTheme loadedTheme = SpriteTheme.NONE;
 	
-	public Sprite(final String name, final SpriteTheme theme) {
+	private double currentFrameDelay, frameDelay;
+	
+	public Sprite(final String name, final SpriteTheme theme, double frameDelay) {
 		this.name = name;
+		this.frameDelay = frameDelay;
 		
 		loadTheme(theme);
 		
 		loadedSprites.put(getName(), this);
+	}
+	
+	
+	public void update(double deltaTime) {
+		currentFrameDelay += deltaTime;
+		if (currentFrameDelay > frameDelay) {
+			currentFrameDelay -= frameDelay;
+			nextFrame();
+		}
 	}
 	
 	/**

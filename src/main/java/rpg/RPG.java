@@ -105,5 +105,20 @@ public class RPG {
 					break;
 			}
 		});
+		KeyboardListener.registerKey(KeyEvent.VK_ESCAPE, (state) -> {
+			switch(state) {
+				case PRESSED:
+					break;
+				case PRESSING:
+					System.exit(0);
+					break;
+				case RELEASED:
+					break;
+				case RELEASING:
+					break;
+				default:
+					break;
+			}
+		});
 	}
 }

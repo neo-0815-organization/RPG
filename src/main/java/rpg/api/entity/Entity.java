@@ -186,6 +186,7 @@ public abstract class Entity implements INameable, ISprite {
 	 */
 	public void update(final double deltaTime) {
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
+		sprite.update(deltaTime);
 	}
 	
 	/**

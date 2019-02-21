@@ -1,5 +1,7 @@
 package rpg.api.vector;
 
+import rpg.api.units.DistanceValue;
+
 public class ModifiableVec2D extends Vec2D<ModifiableVec2D> {
 	
 	/**
@@ -55,11 +57,19 @@ public class ModifiableVec2D extends Vec2D<ModifiableVec2D> {
 		return this;
 	}
 	
-	public void setX(final double x) {
+	public void setX(final DistanceValue x) {
+		this.x = x.getValueTiles();
+	}
+	
+	public void setValueX(final double x) {
 		this.x = x;
 	}
 	
-	public void setY(final double y) {
+	public void setY(final DistanceValue y) {
+		this.y = y.getValueTiles();
+	}
+	
+	public void setValueY(final double y) {
 		this.y = y;
 	}
 }
