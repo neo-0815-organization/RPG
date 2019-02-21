@@ -949,6 +949,9 @@ public class WorldCreatorFrame extends JFrame {
 							final EditHitboxDialog hitboxDialog = new EditHitboxDialog(INSTANCE, paneInstance);
 							hitboxDialog.setVisible(true);
 							
+							hitboxes[0] = hitboxDialog.getHitbox(0);
+							hitboxes[0].setScale(factor);
+							
 							hitboxes[2] = hitboxDialog.getHitbox(2);
 							hitboxes[2].setScale(factor);
 						}else if(button == 3) hitboxes[2] = WorldCreatorHitbox.nullBox;

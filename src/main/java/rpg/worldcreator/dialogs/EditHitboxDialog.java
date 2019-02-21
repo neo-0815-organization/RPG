@@ -72,19 +72,19 @@ public class EditHitboxDialog extends JDialog {
 		final JPanel rectanglePanel = new JPanel();
 		rectanglePanel.setLayout(null);
 		
-		final PointInput rect1 = new PointInput("First Point", true, 350, 25);
+		final PointInput rect1 = new PointInput("Top Left", true, 350, 25);
 		rect1.setLocation(100, 100);
 		rectanglePanel.add(rect1);
 		
-		final PointInput rect2 = new PointInput("First Point", true, 350, 25);
+		final PointInput rect2 = new PointInput("Top Right", true, 350, 25);
 		rect2.setLocation(100, 150);
 		rectanglePanel.add(rect2);
 		
-		final PointInput rect3 = new PointInput("First Point", true, 350, 25);
+		final PointInput rect3 = new PointInput("Bottom Left", true, 350, 25);
 		rect3.setLocation(100, 200);
 		rectanglePanel.add(rect3);
 		
-		final PointInput rect4 = new PointInput("First Point", true, 350, 25);
+		final PointInput rect4 = new PointInput("Bottom Right", true, 350, 25);
 		rect4.setLocation(100, 250);
 		rectanglePanel.add(rect4);
 		
@@ -98,11 +98,11 @@ public class EditHitboxDialog extends JDialog {
 		tri1.setLocation(100, 100);
 		trianglePanel.add(tri1);
 		
-		final PointInput tri2 = new PointInput("First Point", true, 350, 25);
+		final PointInput tri2 = new PointInput("Second Point", true, 350, 25);
 		tri2.setLocation(100, 150);
 		trianglePanel.add(tri2);
 		
-		final PointInput tri3 = new PointInput("First Point", true, 350, 25);
+		final PointInput tri3 = new PointInput("Third Point", true, 350, 25);
 		tri3.setLocation(100, 200);
 		trianglePanel.add(tri3);
 		
@@ -112,11 +112,11 @@ public class EditHitboxDialog extends JDialog {
 		final JPanel circlePanel = new JPanel();
 		circlePanel.setLayout(null);
 		
-		final PointInput cir1 = new PointInput("First Point", true, 350, 25);
+		final PointInput cir1 = new PointInput("Center Point", true, 350, 25);
 		cir1.setLocation(100, 100);
 		circlePanel.add(cir1);
 		
-		final PointInput cir2 = new PointInput("First Point", false, 350, 25);
+		final PointInput cir2 = new PointInput("Radius", false, 350, 25);
 		cir2.setLocation(100, 150);
 		circlePanel.add(cir2);
 		
@@ -278,7 +278,7 @@ public class EditHitboxDialog extends JDialog {
 				add(closingParenthesis);
 			}else {
 				x = new JFormattedTextField(format);
-				x.setBounds(width / 2 - textFieldWidth / 2, 0, textFieldWidth, height);
+				x.setBounds(width / 2 - textFieldWidth / 2 + 40, 0, textFieldWidth, height);
 				add(x);
 			}
 		}
