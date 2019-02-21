@@ -5,12 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Formatter;
+import java.util.Scanner;
 
 import javax.swing.JLabel;
 
-import rpg.RPG;
 import rpg.api.filereading.ResourceGetter;
 import rpg.api.localization.Locale;
 import rpg.api.localization.StringLocalizer;
@@ -22,11 +23,12 @@ public class PreferencesMenu extends Menu{
 	private static String SETTING_FILE = "H:/Desktop/settings.preferences";
 	private boolean englishSelected;
 	private JLabel counter;
+	private RPGButton language;
 	private int count;
 	
 	public PreferencesMenu() {
 		englishSelected = true;
-		RPGButton language = new RPGButton(ENGLISH);
+		language = new RPGButton(ENGLISH);
 		language.setBounds(500, 200, 512, 256);
 		language.addActionListener(new ActionListener() {
 			
@@ -67,6 +69,8 @@ public class PreferencesMenu extends Menu{
 		addComponent(exit);
 
 		setBackground(RPGButton.BUTTON_TEMPLATE);
+		
+		load();
 	}
 	
 	public void changeLanguage(boolean englishSelected) {
@@ -87,16 +91,42 @@ public class PreferencesMenu extends Menu{
 			}
 		
 		try {
-			FileWriter writer = new FileWriter(pref);
+			Formatter formatter = new Formatter(pref);
+			formatter.format("%b %d", englishSelected, count);
+			
+			formatter.close();
+//			FileWriter writer = new FileWriter(pref);
+			
 			
 //			for(String key : map.keySet()) {
 //				writer.write(key + "=" + map.get(key));
 //			}
 			
-			writer.close();
+//			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
+	}
+	
+	public void load() {
+		File pref = new File(SETTING_FILE);
+		try {
+			Scanner sc = new Scanner(pref);
+			englishSelected = sc.nextBoolean();
+			count = sc.nextInt();
+			
+			if (englishSelected) {
+				language.setBackgroundImage(ENGLISH);
+			} else {
+				language.setBackgroundImage(GERMAN);
+
+			}
+			
+			sc.close();
+		} catch (FileNotFoundException e) {
+			System.err.println("No settings file found. Created a new one!");
+		}
+		
 	}
 	
 	@Override
