@@ -12,7 +12,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -51,7 +50,7 @@ public class EditHitboxDialog extends JDialog {
 		
 		initTypePanels();
 		
-		setSize(600, 500);
+		setSize(700, 500);
 		setLocationRelativeTo(frame);
 		setLayout(new BorderLayout());
 		
@@ -73,19 +72,19 @@ public class EditHitboxDialog extends JDialog {
 		final JPanel rectanglePanel = new JPanel();
 		rectanglePanel.setLayout(null);
 		
-		final PointInput rect1 = new PointInput(true, 250, 25);
+		final PointInput rect1 = new PointInput("First Point", true, 350, 25);
 		rect1.setLocation(100, 100);
 		rectanglePanel.add(rect1);
 		
-		final PointInput rect2 = new PointInput(true, 250, 25);
+		final PointInput rect2 = new PointInput("First Point", true, 350, 25);
 		rect2.setLocation(100, 150);
 		rectanglePanel.add(rect2);
 		
-		final PointInput rect3 = new PointInput(true, 250, 25);
+		final PointInput rect3 = new PointInput("First Point", true, 350, 25);
 		rect3.setLocation(100, 200);
 		rectanglePanel.add(rect3);
 		
-		final PointInput rect4 = new PointInput(true, 250, 25);
+		final PointInput rect4 = new PointInput("First Point", true, 350, 25);
 		rect4.setLocation(100, 250);
 		rectanglePanel.add(rect4);
 		
@@ -95,15 +94,15 @@ public class EditHitboxDialog extends JDialog {
 		final JPanel trianglePanel = new JPanel();
 		trianglePanel.setLayout(null);
 		
-		final PointInput tri1 = new PointInput(true, 250, 25);
+		final PointInput tri1 = new PointInput("First Point", true, 350, 25);
 		tri1.setLocation(100, 100);
 		trianglePanel.add(tri1);
 		
-		final PointInput tri2 = new PointInput(true, 250, 25);
+		final PointInput tri2 = new PointInput("First Point", true, 350, 25);
 		tri2.setLocation(100, 150);
 		trianglePanel.add(tri2);
 		
-		final PointInput tri3 = new PointInput(true, 250, 25);
+		final PointInput tri3 = new PointInput("First Point", true, 350, 25);
 		tri3.setLocation(100, 200);
 		trianglePanel.add(tri3);
 		
@@ -113,11 +112,11 @@ public class EditHitboxDialog extends JDialog {
 		final JPanel circlePanel = new JPanel();
 		circlePanel.setLayout(null);
 		
-		final PointInput cir1 = new PointInput(true, 250, 25);
+		final PointInput cir1 = new PointInput("First Point", true, 350, 25);
 		cir1.setLocation(100, 100);
 		circlePanel.add(cir1);
 		
-		final PointInput cir2 = new PointInput(false, 250, 25);
+		final PointInput cir2 = new PointInput("First Point", false, 350, 25);
 		cir2.setLocation(100, 150);
 		circlePanel.add(cir2);
 		
@@ -240,30 +239,34 @@ public class EditHitboxDialog extends JDialog {
 		private final boolean twoTuple;
 		private JFormattedTextField x, y;
 		
-		public PointInput(final boolean twoTuple, final int width, final int height) {
+		public PointInput(final String title, final boolean twoTuple, final int width, final int height) {
 			this.twoTuple = twoTuple;
 			
 			setSize(width, height);
 			setLayout(null);
 			
-			final int textFieldWidth = (width - 45) / 2;
+			final int textFieldWidth = (width - 145) / 2;
 			final DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance();
 			final DecimalFormatSymbols symbols = format.getDecimalFormatSymbols();
 			
 			symbols.setDecimalSeparator('.');
 			format.setDecimalFormatSymbols(symbols);
 			
+			final JLabel titleLabel = new JLabel(title);
+			titleLabel.setBounds(0, 0, 75, height);
+			add(titleLabel);
+			
 			if(twoTuple) {
 				final JLabel openingParenthesis = new JLabel("(");
-				openingParenthesis.setBounds(0, 0, 10, height);
+				openingParenthesis.setBounds(80, 0, 10, height);
 				add(openingParenthesis);
 				
 				x = new JFormattedTextField(format);
-				x.setBounds(15, 0, textFieldWidth, height);
+				x.setBounds(95, 0, textFieldWidth, height);
 				add(x);
 				
 				final JLabel semicolon = new JLabel(";");
-				semicolon.setBounds(20 + textFieldWidth, 0, 10, height);
+				semicolon.setBounds(110 + textFieldWidth, 0, 10, height);
 				add(semicolon);
 				
 				y = new JFormattedTextField(format);
