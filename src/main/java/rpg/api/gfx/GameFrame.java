@@ -102,6 +102,7 @@ public class GameFrame extends JFrame {
 		
 		scene.draw(g2d);
 		
+		
 		showGraphics();
 		g2d.dispose();
 	}

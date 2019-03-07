@@ -50,7 +50,7 @@ public interface ISprite extends IDrawable {
 				camYH = camY + Camera.frameSize.height;
 		//@formatter:on
 		
-		//if((x > camX && x < camXW || xw > camX && xw < camXW) && (y > camY && y < camYH || yh > camY && yh < camYH))
+		if((x > camX && x < camXW || xw > camX && xw < camXW) && (y > camY && y < camYH || yh > camY && yh < camYH))
 			g2d.drawImage(getSprite().getCurrentAnimationFrame(), x - Camera.location.getX().getValuePixel(), y - Camera.location.getY().getValuePixel(), null);
 	}
 }

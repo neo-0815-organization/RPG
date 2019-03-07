@@ -22,8 +22,8 @@ public class Camera {
 	
 	public static void update() {
 		if (entityToFollow != null) {
-			location.setX(new DistanceValue(entityToFollow.getLocation().getX().getValuePixel() - frameSize.width / 4 + entityToFollow.getWidth() / 2));
-			location.setY(new DistanceValue(entityToFollow.getLocation().getY().getValuePixel() - frameSize.height / 4  + entityToFollow.getHeight() / 2));
+			location.setX(new DistanceValue(entityToFollow.getLocation().getX().getValuePixel() - frameSize.width / 4));
+			location.setY(new DistanceValue(entityToFollow.getLocation().getY().getValuePixel() - frameSize.height / 4));
 		}
 	}
 	

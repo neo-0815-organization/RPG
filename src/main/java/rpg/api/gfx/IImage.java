@@ -55,6 +55,6 @@ public interface IImage extends IDrawable {
 				camYH = (int) (camY + Camera.frameSize.getHeight());
 		//@formatter:on
 		
-		if((x < camX + w || x < camXW) && (y < camY + h || y < camYH)) g2d.drawImage(getImage(), x, y, null);
+		if((x < camX + w || x < camXW) && (y < camY + h || y < camYH)) g2d.drawImage(getImage(), x - Camera.location.getX().getValuePixel(), y - Camera.location.getY().getValuePixel(), null);
 	}
 }
