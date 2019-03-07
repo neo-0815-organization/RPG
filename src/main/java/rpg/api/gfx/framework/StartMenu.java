@@ -49,6 +49,7 @@ public final class StartMenu extends Menu {
 				System.exit(0);
 			}
 		});
+		exit.addFocusImage(SETTINGS_IMAGE);
 		addComponent(exit);
 		
 		

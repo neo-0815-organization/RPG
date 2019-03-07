@@ -17,13 +17,16 @@ import rpg.api.vector.Vec2D;
 public class Camera {
 	public static ModifiableVec2D location = Vec2D.ORIGIN.toModifiable();
 	public static final Dimension frameSize = Toolkit.getDefaultToolkit().getScreenSize();
-	public static final double scale = 2D;
+	
+	private static final double scaleConst = 1.75d;
+	public static final double scale = frameSize.width / 1920d * scaleConst;
+	
 	private static Entity entityToFollow;
 	
 	public static void update() {
 		if (entityToFollow != null) {
-			location.setX(new DistanceValue(entityToFollow.getLocation().getX().getValuePixel() - frameSize.width / 4));
-			location.setY(new DistanceValue(entityToFollow.getLocation().getY().getValuePixel() - frameSize.height / 4));
+			location.setX(new DistanceValue((int) Math.round(entityToFollow.getLocation().getX().getValuePixel() - frameSize.width / (2 * scale))));
+			location.setY(new DistanceValue((int) Math.round(entityToFollow.getLocation().getY().getValuePixel() - frameSize.height / (2 * scale))));
 		}
 	}
 	
