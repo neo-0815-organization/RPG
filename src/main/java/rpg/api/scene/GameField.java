@@ -29,11 +29,15 @@ public class GameField extends Scene {
 	private final LinkedList<Controller> controller = new LinkedList<>();
 	private PlayerController playerController;
 	
+	//	private final HUD hud;
+	
 	public GameField() {
 		background = new Background();
 		
 		startUpdating();
-//		startDrawing();
+		//		startDrawing();
+		
+		//		hud = new HUD();
 	}
 	
 	@Override
@@ -42,6 +46,8 @@ public class GameField extends Scene {
 		
 		for(final Entity e : entities)
 			e.draw(g2d);
+		
+		//		hud.draw(g2d);
 	}
 	
 	/**

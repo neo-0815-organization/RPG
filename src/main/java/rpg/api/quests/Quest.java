@@ -6,7 +6,7 @@ import java.util.Map;
 
 import rpg.api.entity.CharacterType;
 import rpg.api.eventhandling.EventTrigger;
-import rpg.api.filereading.RPGFileReader;
+import rpg.api.filehandling.RPGFileReader;
 
 public class Quest {
 	private int id, xp;

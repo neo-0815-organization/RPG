@@ -10,8 +10,8 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
-import rpg.api.filereading.RPGFileReader;
-import rpg.api.filereading.ResourceGetter;
+import rpg.api.filehandling.RPGFileReader;
+import rpg.api.filehandling.ResourceGetter;
 
 /**
  * Encapsulates multiple {@link Animation}s in one {@link Sprite}.

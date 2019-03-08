@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 import rpg.api.gfx.GameFrame;
-import rpg.api.gfx.framework.StartMenu;
+import rpg.api.gfx.menus.StartMenu;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.scene.GameField;
 import rpg.api.vector.ModifiableVec2D;

@@ -1,4 +1,4 @@
-package rpg.api.filereading;
+package rpg.api.filehandling;
 
 import java.io.File;
 
