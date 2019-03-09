@@ -3,26 +3,14 @@ package rpg.api.gfx;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import rpg.Statics;
 import rpg.api.filehandling.ResourceGetter;
-import rpg.api.vector.Vec2D;
 
 public class HUD implements IDrawable {
-	private final IImage overlay = new IImage() {
-		private final BufferedImage image = ResourceGetter.getImage("/assets/textures/hud/overlay.png");
-		
-		@Override
-		public void draw(final Graphics2D g2d) {
-			draw(g2d, Vec2D.ORIGIN);
-		}
-		
-		@Override
-		public BufferedImage getImage() {
-			return image;
-		}
-	};
+	private final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png"), Statics.scale * 0.85);
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
-		overlay.draw(g2d);
+		g2d.drawImage(overlay, 0, 0, null);
 	}
 }

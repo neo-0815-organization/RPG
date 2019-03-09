@@ -13,13 +13,13 @@ import rpg.api.gfx.ImageUtility;
 import rpg.api.scene.Scene;
 
 /**
- * Abstract class for all kinds of menus
- * !Menu freezes the game and disables the Canvas!
+ * Abstract class for all kinds of menus !Menu freezes the game and disables the
+ * Canvas!
  * 
  * @author gruppe 3
  *
  */
-public class Menu extends Scene{
+public class Menu extends Scene {
 	private static int menuCount;
 	JPanel menu = new JPanel();
 	private boolean isOpen = true;
@@ -38,43 +38,47 @@ public class Menu extends Scene{
 	}
 	
 	@Override
-	public void draw(Graphics2D g2d) {
+	public void draw(final Graphics2D g2d) {
 		RPG.gameFrame.repaint();
 	}
 	
 	/**
 	 * Sets whether the menu is open and refreshes itself
-	 * @param flag [true|false]
+	 * 
+	 * @param flag
+	 *            [true|false]
 	 */
-	public void setOpen(boolean flag) {
+	public void setOpen(final boolean flag) {
 		isOpen = flag;
 	}
 	
 	/**
 	 * This menu adds a default Java component to the menu
+	 * 
 	 * @param c
 	 */
-	public void addComponent(JComponent c) {
+	public void addComponent(final JComponent c) {
 		menu.add(c);
 	}
 	
 	/**
 	 * Sets the Background-image
+	 * 
 	 * @param img
 	 */
-	public void setBackground(BufferedImage img) {
-		JLabel label = new JLabel(new ImageIcon(ImageUtility.scale(img, menu.getWidth(), menu.getHeight())));
+	public void setBackground(final BufferedImage img) {
+		final JLabel label = new JLabel(new ImageIcon(ImageUtility.scale(img, menu.getWidth(), menu.getHeight())));
 		label.setBounds(0, 0, menu.getWidth(), menu.getHeight());
 		menu.add(label);
 	}
 	
 	/**
-	 * start showing the menu.
-	 * This will freeze the game until the menu is closed.
+	 * start showing the menu. This will freeze the game until the menu is
+	 * closed.
 	 */
 	public final void show() {
 		menuCount++;
-		while (isOpen) {
+		while(isOpen) {
 			updateMenu();
 			RPG.gameFrame.drawScene(this);
 		}
@@ -91,12 +95,10 @@ public class Menu extends Scene{
 	public void close() {
 		menuCount--;
 		RPG.gameFrame.remove(menu);
-		if (menuCount == 0) {
-			RPG.gameFrame.setCanvasVisibility(true);
-		}
+		if(menuCount == 0) RPG.gameFrame.setCanvasVisibility(true);
 	}
 	
-	public void openSubMenu(Menu menu) {
+	public void openSubMenu(final Menu menu) {
 		this.menu.setVisible(false);
 		menu.show();
 		this.menu.setVisible(true);

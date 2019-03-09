@@ -5,8 +5,22 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class ImageUtility {
+import rpg.Statics;
 
+public class ImageUtility {
+	
+	public static BufferedImage scale(final BufferedImage image) {
+		return scale(image, Statics.scale);
+	}
+	
+	public static BufferedImage scale(final BufferedImage image, final int scale) {
+		return scale(image, image.getWidth() * scale, image.getHeight() * scale);
+	}
+	
+	public static BufferedImage scale(final BufferedImage image, final double scale) {
+		return scale(image, (int) Math.round(image.getWidth() * scale), (int) Math.round(image.getHeight() * scale));
+	}
+	
 	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight) {
 		return scale(image, newWidth, newHeight, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 	}

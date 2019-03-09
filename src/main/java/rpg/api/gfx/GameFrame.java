@@ -18,7 +18,7 @@ import rpg.api.scene.Scene;
  * The gameframe is the instance to display all the graphics. It is working with
  * a Canvas for normal drawing, which is not visible, while menu are opend
  * 
- * @author EriDie
+ * @author Erik Diers, Neo Hornberger
  *
  */
 public class GameFrame extends JFrame {
@@ -34,6 +34,7 @@ public class GameFrame extends JFrame {
 		setBounds(0, 0, Statics.frameSize.width, Statics.frameSize.height);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
+			
 			@Override
 			public void windowClosing(final WindowEvent we) {
 				System.exit(0);

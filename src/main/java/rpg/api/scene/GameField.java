@@ -7,6 +7,7 @@ import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.PlayerController;
+import rpg.api.gfx.HUD;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.tile.Tile;
 
@@ -29,15 +30,13 @@ public class GameField extends Scene {
 	private final LinkedList<Controller> controller = new LinkedList<>();
 	private PlayerController playerController;
 	
-	//	private final HUD hud;
+	private final HUD hud = new HUD();
 	
 	public GameField() {
 		background = new Background();
 		
 		startUpdating();
 		//		startDrawing();
-		
-		//		hud = new HUD();
 	}
 	
 	@Override
@@ -47,7 +46,7 @@ public class GameField extends Scene {
 		for(final Entity e : entities)
 			e.draw(g2d);
 		
-		//		hud.draw(g2d);
+		hud.draw(g2d);
 	}
 	
 	/**
