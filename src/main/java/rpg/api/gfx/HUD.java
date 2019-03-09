@@ -7,7 +7,7 @@ import rpg.Statics;
 import rpg.api.filehandling.ResourceGetter;
 
 public class HUD implements IDrawable {
-	private final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png"), Statics.scale * 0.85);
+	private final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png"), Statics.scale * 0.83);
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
