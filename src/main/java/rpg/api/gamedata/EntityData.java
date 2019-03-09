@@ -31,12 +31,12 @@ public class EntityData extends GameData {
 	
 	@Override
 	public void save() throws IOException {
-		write(e.getLocation());
-		write(e.getLookingDirection());
-		write(e.getVelocity());
-		write(e.getDisplayName());
-		write(e.getImageName());
-		write(e.getUniqueId());
+		set("location", e.getLocation());
+		set("direction", e.getLookingDirection());
+		set("velocity", e.getVelocity());
+		set("display_name", e.getDisplayName());
+		set("image", e.getImageName());
+		set("uuid", e.getUniqueId());
 		
 		super.save();
 	}
