@@ -31,7 +31,7 @@ public class GameFrame extends JFrame {
 	public GameFrame() {
 		super("RPG");
 		
-		setBounds(0, 0, Statics.frameSize.width, Statics.frameSize.height);
+		setSize(Statics.frameSize.width, Statics.frameSize.height);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			
@@ -52,6 +52,7 @@ public class GameFrame extends JFrame {
 		
 		setUndecorated(fullScreen);
 		setResizable(false);
+		setLocationRelativeTo(null);
 		
 		canvas = new Canvas();
 		getContentPane().add(canvas);
