@@ -2,6 +2,7 @@ package rpg.api.filehandling;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
@@ -73,6 +74,41 @@ public class RPGFileReader {
 		
 		try {
 			final BufferedReader reader = ResourceGetter.getBufferedReader(path);
+			
+			//@formatter:off
+			result = reader
+					.lines()
+					.parallel()
+					.map(line -> line.split(separator))
+					.filter(entry -> entry.length == 2)
+					.collect(Collectors.<String[], String, String>toMap(entry -> entry[0],
+																		entry -> entry[1]));
+			//@formatter:on
+			
+			reader.close();
+		}catch(final IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Reads a {@link File}, splitting the lines seperately in to key and value
+	 * pairs, separated by a separator in the {@link File}.
+	 *
+	 * @param file
+	 *            the {@link File} to read
+	 * @param separator
+	 *            the separator separating key and value
+	 * @return a {@link Map} consisting of the key and value pairs read from the
+	 *         {@link File}
+	 */
+	public static Map<String, String> readLineSplit(final File file, final String separator) {
+		Map<String, String> result = null;
+		
+		try {
+			final BufferedReader reader = new BufferedReader(new FileReader(file));
 			
 			//@formatter:off
 			result = reader

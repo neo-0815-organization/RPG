@@ -7,12 +7,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.swing.JLabel;
 
 import rpg.Statics;
+import rpg.api.filehandling.RPGFileReader;
+import rpg.api.filehandling.RPGFileWriter;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
@@ -22,6 +25,7 @@ import rpg.api.localization.StringLocalizer;
 public class PreferencesMenu extends Menu {
 	private static final BufferedImage ENGLISH = ResourceGetter.getImage("/assets/textures/menu/language/language_english.png"), GERMAN = ResourceGetter.getImage("/assets/textures/menu/language/language_german.png");
 	private static String SETTING_FILE = "H:/Desktop/settings.preferences";
+	
 	private boolean englishSelected;
 	private final JLabel counter;
 	private final RPGButton language;
@@ -87,36 +91,34 @@ public class PreferencesMenu extends Menu {
 			e.printStackTrace();
 		}
 		
-		try {
-			final Formatter formatter = new Formatter(pref);
-			formatter.format("%b %d", englishSelected, count);
-			
-			formatter.close();
-			
-			//			RPGFileWriter.writeMap(pref, map, "=");
-		}catch(final IOException e) {
-			e.printStackTrace();
-		}
+		HashMap<String, Object> data = new HashMap<>();
+		data.put("lang_english", englishSelected);
+		data.put("count", count);
+		
+		RPGFileWriter.writeMap(pref, data, "=");
 	}
 	
 	public void load() {
 		final File pref = new File(SETTING_FILE);
 		
-		try {
-			final Scanner sc = new Scanner(pref);
-			englishSelected = sc.nextBoolean();
-			count = sc.nextInt();
-			
-			//			map = RPGFileReader.readLineSplit(pref.getPath(), "=");
-			
-			if(englishSelected) language.setBackgroundImage(ENGLISH);
-			else language.setBackgroundImage(GERMAN);
-			
-			sc.close();
-		}catch(final FileNotFoundException e) {
-			System.err.println("No settings file found. Created a new one!");
+		if(!pref.exists()) try {
+			pref.createNewFile();
+		}catch(final IOException e) {
+			e.printStackTrace();
 		}
 		
+		Map<String, String> data = RPGFileReader.readLineSplit(pref, "=");
+		
+		englishSelected = Boolean.valueOf(data.get("lang_english"));
+		
+		if(englishSelected) language.setBackgroundImage(ENGLISH);
+		else language.setBackgroundImage(GERMAN);
+		
+		try {
+			count = Integer.valueOf(data.get("count"));
+		}catch(NumberFormatException e) {
+			count = 0;
+		}
 	}
 	
 	@Override

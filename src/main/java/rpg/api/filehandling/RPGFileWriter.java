@@ -12,13 +12,13 @@ import java.util.Map;
  */
 public class RPGFileWriter {
 	
-	public static void writeMap(final File file, final Map<String, String> map, final String separator) {
+	public static void writeMap(final File file, final Map<String, Object> map, final String separator) {
 		try {
 			final FileWriter writer = new FileWriter(file);
 			
 			map.forEach((key, value) -> {
 				try {
-					writer.write(key + separator + value);
+					writer.write(key + separator + value + "\n");
 				}catch(final IOException e) {
 					e.printStackTrace();
 				}
