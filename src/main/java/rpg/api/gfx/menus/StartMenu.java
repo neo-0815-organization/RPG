@@ -16,8 +16,8 @@ import rpg.api.gfx.framework.RPGButton;
  *
  */
 public final class StartMenu extends Menu {
-	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.getImage("/assets/textures/menu/background.png"), SETTINGS_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_options.png");
-	static final BufferedImage EXIT_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_exit.png");
+	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.getImage("/assets/textures/menu/background.png"), SETTINGS_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_options.png"), SETTINGS_IMAGE_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_options_activated.png");
+	static final BufferedImage EXIT_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_exit.png"), EXIT_IMAGE_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_exit_activated.png");
 	
 	private boolean openPref;
 	
@@ -51,7 +51,7 @@ public final class StartMenu extends Menu {
 				System.exit(0);
 			}
 		});
-		exit.addFocusImage(SETTINGS_IMAGE);
+		exit.addFocusImage(EXIT_IMAGE_FOCUS);
 		addComponent(exit);
 		
 		final RPGButton options = new RPGButton(SETTINGS_IMAGE);
@@ -64,6 +64,7 @@ public final class StartMenu extends Menu {
 				openPref = true;
 			}
 		});
+		options.addFocusImage(SETTINGS_IMAGE_FOCUS);
 		addComponent(options);
 		
 		setBackground(BACKGROUND_IMAGE);

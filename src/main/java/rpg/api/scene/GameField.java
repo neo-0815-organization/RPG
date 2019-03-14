@@ -129,6 +129,6 @@ public class GameField extends Scene {
 		this.playerController = playerController;
 		
 		entities.add(playerController.getEntity());
-		
+		Camera.setFocusEntity(playerController.getEntity());
 	}
 }
