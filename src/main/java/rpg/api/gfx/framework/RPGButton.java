@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.border.Border;
 
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.ImageUtility;
@@ -19,8 +20,9 @@ import rpg.api.localization.StringLocalizer;
 public class RPGButton extends JButton {
 	private static final long serialVersionUID = 6887580054889086469L;
 	private static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 24);
+	private static Border DEFAULT_BORDER;
 	
-	public static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png");
+	public static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png"), BUTTON_OVAL = ResourceGetter.getImage("/assets/textures/menu/button_oval.png"), BUTTON_OVAL_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated.png");
 	
 	private BufferedImage image, focusImage;
 	private final String title;
@@ -30,7 +32,9 @@ public class RPGButton extends JButton {
 	}
 	
 	public RPGButton(final String title) {
-		this(title, BUTTON_TEMPLATE);
+		this(title, BUTTON_OVAL);
+		
+		setFocusImage(BUTTON_OVAL_FOCUS);
 	}
 	
 	/**
@@ -70,6 +74,37 @@ public class RPGButton extends JButton {
 		setFont(font);
 		setVerticalTextPosition(JButton.CENTER);
 		setHorizontalTextPosition(JButton.CENTER);
+		
+		setFocusImage(image);
+		
+		addMouseListener(new MouseAdapter() {
+			private BufferedImage temp;
+			
+			@Override
+			public void mouseEntered(final MouseEvent e) {
+				temp = focusImage;
+				focusImage = RPGButton.this.image;
+				
+				setBackgroundImage(temp);
+			}
+			
+			@Override
+			public void mouseExited(final MouseEvent e) {
+				temp = focusImage;
+				focusImage = RPGButton.this.image;
+				
+				setBackgroundImage(temp);
+			}
+		});
+		
+		if(DEFAULT_BORDER != null) DEFAULT_BORDER = getBorder();
+	}
+	
+	/**
+	 * Makes the border of the button visible
+	 */
+	public void enableBorder() {
+		setBorder(DEFAULT_BORDER);
 	}
 	
 	/**
@@ -102,27 +137,7 @@ public class RPGButton extends JButton {
 	 * @param focus
 	 */
 	
-	public void addFocusImage(final BufferedImage focus) {
+	public void setFocusImage(final BufferedImage focus) {
 		focusImage = focus;
-		
-		addMouseListener(new MouseAdapter() {
-			private BufferedImage temp;
-			
-			@Override
-			public void mouseEntered(final MouseEvent e) {
-				temp = focusImage;
-				focusImage = image;
-				
-				setBackgroundImage(temp);
-			}
-			
-			@Override
-			public void mouseExited(final MouseEvent e) {
-				temp = focusImage;
-				focusImage = image;
-				
-				setBackgroundImage(temp);
-			}
-		});
 	}
 }

@@ -69,7 +69,7 @@ public class PreferencesMenu extends Menu {
 				setOpen(false);
 			}
 		});
-		exit.addFocusImage(StartMenu.EXIT_IMAGE_FOCUS);
+		exit.setFocusImage(StartMenu.EXIT_IMAGE_FOCUS);
 		addComponent(exit);
 		
 		setBackground(RPGButton.BUTTON_TEMPLATE);

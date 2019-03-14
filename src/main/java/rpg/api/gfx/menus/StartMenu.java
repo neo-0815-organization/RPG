@@ -26,6 +26,7 @@ public final class StartMenu extends Menu {
 		
 		final RPGButton singleplayer = new RPGButton("button.singleplayer");
 		singleplayer.setBounds(0, 0, rectWidth, rectHeight);
+		singleplayer.disableBorder();
 		singleplayer.addActionListener(new ActionListener() {
 			
 			@Override
@@ -37,6 +38,7 @@ public final class StartMenu extends Menu {
 		
 		final RPGButton multiplayer = new RPGButton("button.multiplayer");
 		multiplayer.setBounds(Statics.frameSize.width - rectWidth, 0, rectWidth, rectHeight);
+		multiplayer.disableBorder();
 		addComponent(multiplayer);
 		
 		final int finalRadius = Statics.scale(85);
@@ -51,7 +53,7 @@ public final class StartMenu extends Menu {
 				System.exit(0);
 			}
 		});
-		exit.addFocusImage(EXIT_IMAGE_FOCUS);
+		exit.setFocusImage(EXIT_IMAGE_FOCUS);
 		addComponent(exit);
 		
 		final RPGButton options = new RPGButton(SETTINGS_IMAGE);
@@ -64,7 +66,7 @@ public final class StartMenu extends Menu {
 				openPref = true;
 			}
 		});
-		options.addFocusImage(SETTINGS_IMAGE_FOCUS);
+		options.setFocusImage(SETTINGS_IMAGE_FOCUS);
 		addComponent(options);
 		
 		setBackground(BACKGROUND_IMAGE);

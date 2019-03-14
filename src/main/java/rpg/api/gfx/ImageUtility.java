@@ -26,9 +26,13 @@ public class ImageUtility {
 	}
 	
 	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight, final Object interpolation) {
+		return scale(image, newWidth, newHeight, interpolation, BufferedImage.TYPE_INT_ARGB);
+	}
+	
+	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight, final Object interpolation, final int type) {
 		if(image.getWidth() == newWidth && image.getHeight() == newHeight) return image;
 		
-		final BufferedImage newImage = new BufferedImage(newWidth, newHeight, image.getType());
+		final BufferedImage newImage = new BufferedImage(newWidth, newHeight, type);
 		final Graphics2D g = newImage.createGraphics();
 		
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interpolation);
