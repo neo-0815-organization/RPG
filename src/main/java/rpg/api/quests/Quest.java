@@ -6,6 +6,7 @@ import java.util.Map;
 
 import rpg.RPG;
 import rpg.api.entity.CharacterType;
+import rpg.api.eventhandling.BundledListener;
 import rpg.api.eventhandling.EventTrigger;
 import rpg.api.filereading.RPGFileReader;
 import rpg.api.localization.StringLocalizer;
@@ -22,9 +23,9 @@ public class Quest {
 	private boolean repeatable, isFinished = false, inProgress = false;
 	
 	private IReward[] rewards;
-	private QuestEventListener[] startListener, endListener;
+	private BundledListener startListener, endListener;
 
-	public Quest(int id, String map, CharacterType type, boolean repeatable, QuestEventListener[] startListener, QuestEventListener[] endListener, IReward[] rewards) {
+	public Quest(int id, String map, CharacterType type, boolean repeatable, BundledListener startListener, BundledListener endListener, IReward[] rewards) {
 		this.id = id;
 		this.map = map;
 		this.title = StringLocalizer.localize("quest." + id + ".title");
@@ -37,28 +38,77 @@ public class Quest {
 		this.rewards = rewards;
 	}
 	
+	/**
+	 * Returns whether the Link{Quest} is avialable.
+	 * !Does not call canStart().
+	 * @return {@code true} if the Link{Quest} is available
+	 */
 	public boolean isAvailable() {
 		return (!isFinished || repeatable) && !inProgress && RPG.gameField.background.getName().equals(map);
 	}
 	
-	public boolean isTriggered() {
-		int triggered = 0;
-		for (QuestEventListener listener : startListener) {
-			if (listener.isTriggered())triggered++;
-		}
-		return triggered == startListener.length;
+	/**
+	 * Returns whether the conditions for starting the Link{Quest} are met,
+	 * !Does not call startQuest().
+	 * @return {@code true} if the Link{Quest} can start
+	 */
+	public boolean canStart() {
+		return startListener.isTriggered();
 	}
 	
-	public boolean isFinished() {
-		return isFinished; //TODO right return-statement
+	/**
+	 * Returns whether the conditions for finishing the Link{Quest} are met.
+	 * !Does not call endQuest().
+	 * @return {@code true} if the Link{Quest} can end
+	 */
+	public boolean canEnd() {
+		return endListener.isTriggered();
 	}
 	
+	/**
+	 * Finishes the Link{Quest} off and rewards the player.
+	 */
 	public void finishQuest() {
 		for (IReward r:rewards) 
 			r.rewardPlayer();
 
 		inProgress = false;
 		isFinished = true;
+	}
+	
+	/**
+	 * Returns whether the Link{Quest} is inProgress.
+	 * @return {@code true} if the Link{Quest} is in progress
+	 */
+	public boolean isInProgress() {
+		return inProgress;
+	}
+	
+	/**
+	 * Starts the Link{Quest}
+	 */
+	public void startQuest() {
+		inProgress = true;
+	}
+	
+	/**
+	 * Resets all listener belonging to this Link{Quest}
+	 */
+	public void resetListerner() {
+		startListener.reset();
+		endListener.reset();
+	}
+	
+	/**
+	 * Returns whether the Link{Quest} was finished at leat once
+	 * @return {@code true} if the Link{Quest} was finished at least once
+	 */
+	public boolean isFinished() {
+		return isFinished;
+	}
+	
+	public int getID() {
+		return id;
 	}
 	
 	public static class Loader {
