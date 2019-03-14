@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.Border;
 
+import rpg.Statics;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.ImageUtility;
 import rpg.api.localization.StringLocalizer;
@@ -19,7 +20,6 @@ import rpg.api.localization.StringLocalizer;
  */
 public class RPGButton extends JButton {
 	private static final long serialVersionUID = 6887580054889086469L;
-	private static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 24);
 	private static Border DEFAULT_BORDER;
 	
 	public static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png"), BUTTON_OVAL = ResourceGetter.getImage("/assets/textures/menu/button_oval.png"), BUTTON_OVAL_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (light).png");
@@ -28,7 +28,7 @@ public class RPGButton extends JButton {
 	private final String title;
 	
 	public RPGButton() {
-		this(null, DEFAULT_FONT, null);
+		this(null, null);
 	}
 	
 	public RPGButton(final String title) {
@@ -53,7 +53,7 @@ public class RPGButton extends JButton {
 	 * @param image
 	 */
 	public RPGButton(final String title, final BufferedImage image) {
-		this(title, DEFAULT_FONT, image);
+		this(title, Statics.defaultFont.deriveFont(Font.BOLD), image);
 	}
 	
 	/**

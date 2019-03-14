@@ -70,7 +70,7 @@ public class GameField extends Scene {
 					KeyboardListener.updateKeys();
 					Camera.update();
 					
-					System.out.println(deltaTime);
+					//					System.out.println(deltaTime);
 				}
 			}
 		};
