@@ -22,7 +22,7 @@ public class RPGButton extends JButton {
 	private static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 24);
 	private static Border DEFAULT_BORDER;
 	
-	public static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png"), BUTTON_OVAL = ResourceGetter.getImage("/assets/textures/menu/button_oval.png"), BUTTON_OVAL_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated.png");
+	public static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png"), BUTTON_OVAL = ResourceGetter.getImage("/assets/textures/menu/button_oval.png"), BUTTON_OVAL_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (light).png");
 	
 	private BufferedImage image, focusImage;
 	private final String title;
