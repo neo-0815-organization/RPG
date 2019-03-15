@@ -5,11 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import javax.swing.JLabel;
 
@@ -91,7 +89,7 @@ public class PreferencesMenu extends Menu {
 			e.printStackTrace();
 		}
 		
-		HashMap<String, Object> data = new HashMap<>();
+		final HashMap<String, Object> data = new HashMap<>();
 		data.put("lang_english", englishSelected);
 		data.put("count", count);
 		
@@ -107,7 +105,7 @@ public class PreferencesMenu extends Menu {
 			e.printStackTrace();
 		}
 		
-		Map<String, String> data = RPGFileReader.readLineSplit(pref, "=");
+		final Map<String, String> data = RPGFileReader.readLineSplit(pref, "=");
 		
 		englishSelected = Boolean.valueOf(data.get("lang_english"));
 		
@@ -116,7 +114,7 @@ public class PreferencesMenu extends Menu {
 		
 		try {
 			count = Integer.valueOf(data.get("count"));
-		}catch(NumberFormatException e) {
+		}catch(final NumberFormatException e) {
 			count = 0;
 		}
 	}
@@ -124,7 +122,7 @@ public class PreferencesMenu extends Menu {
 	@Override
 	public void close() {
 		save();
+		
 		super.close();
 	}
-	
 }

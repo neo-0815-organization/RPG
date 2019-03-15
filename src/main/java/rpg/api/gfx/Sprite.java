@@ -2,13 +2,10 @@ package rpg.api.gfx;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-
-import javax.imageio.ImageIO;
 
 import rpg.api.filehandling.RPGFileReader;
 import rpg.api.filehandling.ResourceGetter;
@@ -16,8 +13,7 @@ import rpg.api.filehandling.ResourceGetter;
 /**
  * Encapsulates multiple {@link Animation}s in one {@link Sprite}.
  *
- * @author Tim Ludwig
- * -> Erik->update
+ * @author Tim Ludwig -> Erik->update
  */
 public class Sprite {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
@@ -27,9 +23,11 @@ public class Sprite {
 	private final String name;
 	private SpriteTheme loadedTheme = SpriteTheme.NONE;
 	
-	private double currentFrameDelay, frameDelay;
+	private double currentFrameDelay;
 	
-	public Sprite(final String name, final SpriteTheme theme, double frameDelay) {
+	private final double frameDelay;
+	
+	public Sprite(final String name, final SpriteTheme theme, final double frameDelay) {
 		this.name = name;
 		this.frameDelay = frameDelay;
 		
@@ -38,10 +36,9 @@ public class Sprite {
 		loadedSprites.put(getName(), this);
 	}
 	
-	
-	public void update(double deltaTime) {
+	public void update(final double deltaTime) {
 		currentFrameDelay += deltaTime;
-		if (currentFrameDelay > frameDelay) {
+		if(currentFrameDelay > frameDelay) {
 			currentFrameDelay -= frameDelay;
 			nextFrame();
 		}
@@ -104,7 +101,7 @@ public class Sprite {
 	 *             match the height of the {@link File} found
 	 */
 	private void addAnimation(final String animationName, final int frameHeight, final boolean loop) throws IllegalArgumentException {
-		BufferedImage animation = ResourceGetter.getImage(getPath() + "/" + animationName + ".png");
+		final BufferedImage animation = ResourceGetter.getImage(getPath() + "/" + animationName + ".png", frameHeight);
 		
 		if(animation == null) throw new IllegalArgumentException("File '" + animationName + ".png' doesn't exist in the directory '" + getPath() + "'.");
 		

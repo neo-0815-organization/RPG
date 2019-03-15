@@ -79,11 +79,4 @@ public final class StartMenu extends Menu {
 			openPref = false;
 		}
 	}
-	
-	//	public static void main(String[] args) {
-	//		RPG.gameFrame = new GameFrame();
-	//		StartMenu menu = new StartMenu();
-	//
-	//		menu.show();
-	//	}
 }

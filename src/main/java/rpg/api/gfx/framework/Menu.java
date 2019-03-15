@@ -16,7 +16,7 @@ import rpg.api.scene.Scene;
  * Abstract class for all kinds of menus !Menu freezes the game and disables the
  * Canvas!
  * 
- * @author gruppe 3
+ * @author Erik Diers, Jan Unterhuber
  *
  */
 public class Menu extends Scene {
@@ -25,7 +25,7 @@ public class Menu extends Scene {
 	private boolean isOpen = true;
 	
 	/**
-	 * Creates a new Menu -Nice
+	 * Creates a new {@link Menu}
 	 */
 	public Menu() {
 		menu.setBounds(0, 0, RPG.gameFrame.getWidth(), RPG.gameFrame.getHeight());
