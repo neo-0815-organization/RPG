@@ -7,14 +7,20 @@ import rpg.api.eventhandling.EventType;
  *
  * @author Tim Ludiwg
  */
-public interface Event {
+public class Event {
+	public Object[] eventData;
+	public EventType type;
+	
+	public Event(EventType type, Object... eventData) {
+		this.eventData = eventData;
+	}
 	
 	/**
 	 * Gets the {@link EventType} of this {@link Event}.
 	 *
 	 * @return the {@link EventType} of this {@link Event}
 	 */
-	default EventType getEventType() {
-		return EventType.GENERAL_EVENT;
+	public final EventType getEventType() {
+		return type;
 	}
 }
