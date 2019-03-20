@@ -15,7 +15,10 @@ public class HUD implements IDrawable {
 	private static final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png")),
 									   xp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp.png"), Statics.scale * 1.1),
 									   hp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp.png"), Statics.scale * 1.1),
-									   mp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"), Statics.scale * 1.1);
+									   mp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"), Statics.scale * 1.1),
+									   xp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png")),
+									   hp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"), Statics.scale * 0.9),
+									   mp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png"));
 	// @formatter:on
 	
 	@Override
@@ -33,8 +36,12 @@ public class HUD implements IDrawable {
 			
 			g2d.drawImage(overlay, 0, 0, null);
 			
+			g2d.drawImage(xp_icon, Statics.scale(17 + 15 - 4), Statics.scale(73), null);
+			g2d.drawImage(hp_icon, Statics.scale(111 + 15 - 4), Statics.scale(16), null);
+			g2d.drawImage(mp_icon, Statics.scale(76 + 15 - 4), Statics.scale(64), null);
+			
 			g2d.setFont(Statics.defaultFont.deriveFont(26f));
-			drawCenteredString(g2d, "" + p.getXPLevel(), Statics.scale * 19, Statics.scale * 80, 30);
+			drawCenteredString(g2d, "" + p.getXPLevel(), Statics.scale * 17, Statics.scale * 80, 30);
 			drawCenteredString(g2d, "" + p.getHP(), Statics.scale * 111, Statics.scale * 18, 30);
 			drawCenteredString(g2d, "" + p.getMPLevel(), Statics.scale * 76, Statics.scale * 74, 30);
 		}
