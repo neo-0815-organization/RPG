@@ -89,6 +89,7 @@ public class Quest {
 	 */
 	public void startQuest() {
 		inProgress = true;
+		System.out.println("Quest has been started");
 	}
 	
 	/**

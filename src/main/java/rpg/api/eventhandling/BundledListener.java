@@ -1,7 +1,5 @@
 package rpg.api.eventhandling;
 
-import java.util.function.Function;
-
 import rpg.api.eventhandling.events.Event;
 /**
  * A BundledListener is a bundle of listeners.
@@ -9,7 +7,7 @@ import rpg.api.eventhandling.events.Event;
  * @author Erik Diers, Jan Unterhuber, Alexander Schallenberg
  *
  */
-public abstract class BundledListener {
+public class BundledListener {
 	private QuestEventListener[] listener;
 	
 	public BundledListener(EventCondition... listener) {
@@ -17,7 +15,12 @@ public abstract class BundledListener {
 		this.listener = new QuestEventListener[listener.length];
 		int i = 0;
 		for (EventCondition cond : listener) {
-			this.listener[i] = new QuestEventListener(cond);
+			this.listener[i] = new QuestEventListener(cond) {
+				@Override
+				public EventType getEventType() {
+					return super.getEventType();
+				}
+			};
 			rpg.api.eventhandling.EventHandler.registerEventListener(this.listener[i++]);
 		}
 		
@@ -52,11 +55,16 @@ public abstract class BundledListener {
 		
 		@Override
 		public void onEvent(Event event) {
-			if (condition.apply(event))triggered = true;
+			if (condition.eventTriggered(event))triggered = true;
 		}
 		
 		public void reset() {
 			triggered = false;
+		}
+		
+		@Override
+		public EventType getEventType() {
+			return condition.getEventType();
 		}
 		
 	}
@@ -65,6 +73,8 @@ public abstract class BundledListener {
 	 * Overwrite the method apply in order to set the method condition.
 	 *
 	 */
-	public static interface EventCondition extends Function<Event, Boolean> {
+	public static interface EventCondition {
+		boolean eventTriggered(Event e);
+		EventType getEventType();
 	}
 }

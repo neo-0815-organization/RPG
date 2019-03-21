@@ -4,11 +4,16 @@ import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 
+
 import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.PlayerController;
+import rpg.api.eventhandling.EventHandler;
+import rpg.api.eventhandling.EventType;
+import rpg.api.eventhandling.events.Event;
 import rpg.api.listener.key.KeyboardListener;
+import rpg.api.quests.QuestHandler;
 import rpg.api.tile.Tile;
 
 /**
@@ -69,7 +74,7 @@ public class GameField extends Scene {
 					RPG.gameFrame.drawScene(me);
 					KeyboardListener.updateKeys();
 					
-					System.out.println(deltaTime);
+					//System.out.println(deltaTime);
 				}
 			}
 		};
@@ -90,7 +95,7 @@ public class GameField extends Scene {
 					final long systemTime = System.currentTimeMillis();
 					
 					RPG.gameFrame.drawScene(me);
-					System.out.println(System.currentTimeMillis() - systemTime);
+				//	System.out.println(System.currentTimeMillis() - systemTime);
 				}
 			}
 		};
@@ -109,6 +114,14 @@ public class GameField extends Scene {
 		for(int i = 0; i < tiles.size(); i++) {
 			tiles.get(i).update(deltaTime);
 		}
+		
+		updateEvents();
+	}
+	
+	
+	public void updateEvents() {
+		EventHandler.handle(new Event(EventType.CURRENT_MAP_EVENT, background.getName()));
+		QuestHandler.update();
 	}
 	
 	public List<Tile> checkCollisionTiles(Entity e) {
@@ -120,6 +133,18 @@ public class GameField extends Scene {
 		
 		return ts;
 	}
+	
+	public List<Entity> checkCollisionEntities(Entity e) {
+		LinkedList<Entity> entList = new LinkedList<>();
+		
+		for(Entity ent : entities) {
+			entList.add(ent);
+		}
+		
+		return entList;
+	}
+	
+	
 	
 	/**
 	 * Shuts down the {@link GameField}'s threads.
