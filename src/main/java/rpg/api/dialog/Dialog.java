@@ -20,4 +20,10 @@ public class Dialog {
 		for(int i = 0; i < lineCount; i++)
 			lines.add(StringLocalizer.localize(locString + i));
 	}
+	
+	public String getLine(final int lineNumber) {
+		if(lineNumber < 0 || lineNumber >= lineCount) return "";
+		
+		return lines.get(lineNumber);
+	}
 }

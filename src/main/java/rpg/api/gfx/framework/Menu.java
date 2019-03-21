@@ -21,8 +21,10 @@ import rpg.api.scene.Scene;
  */
 public class Menu extends Scene {
 	private static int menuCount;
-	JPanel menu = new JPanel();
 	private boolean isOpen = true;
+	
+	protected JPanel menu = new JPanel();
+	protected Graphics2D graphics;
 	
 	/**
 	 * Creates a new {@link Menu}
@@ -37,6 +39,9 @@ public class Menu extends Scene {
 		menu.setLayout(null);
 	}
 	
+	/**
+	 * Don't use the parameter! Use {@code graphics}!
+	 */
 	@Override
 	public void draw(final Graphics2D g2d) {
 		RPG.gameFrame.repaint();
@@ -70,6 +75,8 @@ public class Menu extends Scene {
 		final JLabel label = new JLabel(new ImageIcon(ImageUtility.scale(img, menu.getWidth(), menu.getHeight())));
 		label.setBounds(0, 0, menu.getWidth(), menu.getHeight());
 		menu.add(label);
+		
+		menu.repaint();
 	}
 	
 	/**
@@ -78,6 +85,8 @@ public class Menu extends Scene {
 	 */
 	public final void show() {
 		menuCount++;
+
+		graphics = (Graphics2D) menu.getGraphics();
 		while(isOpen) {
 			updateMenu();
 			RPG.gameFrame.drawScene(this);
