@@ -9,9 +9,9 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * A utility class to manage the retrieval of resources.
@@ -82,33 +82,14 @@ public class ResourceGetter {
 		return null;
 	}
 	
-	/**
-	 * Returns the Midi {@link Sequence} of the requested resource.
-	 * 
-	 * @param path
-	 *                 the path to the resource
-	 * @return the {@link Sequence} of the requested resource, or {@code null}
-	 * @see MidiSystem#getSequence(InputStream)
-	 */
-	public static Sequence getSequence(final InputStream inputStream) {
+	public static AudioInputStream getAudio(final String path) {
 		try {
-			return MidiSystem.getSequence(inputStream);
-		} catch(InvalidMidiDataException | IOException e) {
+			return AudioSystem.getAudioInputStream(getResource(path));
+		} catch(UnsupportedAudioFileException | IOException e) {
 			e.printStackTrace();
 		}
 		
 		return null;
 	}
 	
-	/**
-	 * Returns the Midi {@link Sequence} of the requested resource.
-	 * 
-	 * @param path
-	 *                 the path to the resource
-	 * @return the {@link Sequence} of the requested resource, or {@code null}
-	 * @see MidiSystem#getSequence(InputStream)
-	 */
-	public static Sequence getSequence(final String path) {
-		return getSequence(getResource(path));
-	}
 }
