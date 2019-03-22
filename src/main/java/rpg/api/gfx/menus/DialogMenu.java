@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -34,20 +33,25 @@ public class DialogMenu extends Menu {
 		
 		final int width = Statics.frameSize.width / 2 - Statics.scale(50), height = Statics.scale(260);
 		
-		JPanel dialogpane = new JPanel();
+		final JPanel dialogpane = new JPanel();
 		dialogpane.setBounds(0, Statics.frameSize.height - height, width, height);
 		dialogpane.setBackground(Color.GREEN);
 		addComponent(dialogpane);
 		
 		dialogGraphics = (Graphics2D) dialogpane.getGraphics();
 		
-		menu.addKeyListener(new KeyAdapter() {
+		setKeyListener(new KeyAdapter() {
 			
 			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("KEY");
-				
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) actualLineNumber++;
+			public void keyPressed(final KeyEvent e) {
+				switch(e.getKeyCode()) {
+					case KeyEvent.VK_ENTER:
+						actualLineNumber++;
+						break;
+					case KeyEvent.VK_SPACE:
+						setOpen(false);
+						break;
+				}
 			}
 		});
 		
@@ -56,11 +60,11 @@ public class DialogMenu extends Menu {
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
-		graphics.drawImage(entityImage, Statics.scale(10), Statics.scale(10), null);
-		graphics.drawImage(playerImage, Statics.frameSize.width - Statics.scale(playerImage.getWidth() - 10), Statics.frameSize.height - Statics.scale(playerImage.getHeight() / 1.5), null);
+		graphics.drawImage(entityImage, Statics.scale(20), Statics.scale(10), null);
+		graphics.drawImage(playerImage, Statics.frameSize.width - Statics.scale(playerImage.getWidth()), Statics.frameSize.height - Statics.scale(playerImage.getHeight() / 1.5), null);
 		
-		for(int i = 0; i < 198; i++)
-			graphics.drawImage(entityImage, 10000, 10000, null);
+		//		for(int i = 0; i < 198; i++)
+		//			graphics.drawImage(entityImage, 10000, 10000, null);
 		
 		dialogGraphics.setFont(Statics.defaultFont);
 		

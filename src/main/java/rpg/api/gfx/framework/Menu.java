@@ -1,6 +1,7 @@
 package rpg.api.gfx.framework;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -21,7 +22,9 @@ import rpg.api.scene.Scene;
  */
 public class Menu extends Scene {
 	private static int menuCount;
+	
 	private boolean isOpen = true;
+	private KeyAdapter keyListener;
 	
 	protected JPanel menu = new JPanel();
 	protected Graphics2D graphics;
@@ -80,17 +83,32 @@ public class Menu extends Scene {
 	}
 	
 	/**
+	 * Sets the @link{KeyListener}
+	 * 
+	 * @param keyListener
+	 */
+	public void setKeyListener(final KeyAdapter keyListener) {
+		RPG.gameFrame.removeKeyListener(this.keyListener);
+		
+		this.keyListener = keyListener;
+		
+		RPG.gameFrame.addKeyListener(this.keyListener);
+	}
+	
+	/**
 	 * start showing the menu. This will freeze the game until the menu is
 	 * closed.
 	 */
 	public final void show() {
 		menuCount++;
-
+		
 		graphics = (Graphics2D) menu.getGraphics();
 		while(isOpen) {
 			updateMenu();
+			
 			RPG.gameFrame.drawScene(this);
 		}
+		
 		close();
 	}
 	
@@ -103,13 +121,17 @@ public class Menu extends Scene {
 	 */
 	public void close() {
 		menuCount--;
+		
 		RPG.gameFrame.remove(menu);
+		
 		if(menuCount == 0) RPG.gameFrame.setCanvasVisibility(true);
 	}
 	
 	public void openSubMenu(final Menu menu) {
 		this.menu.setVisible(false);
+		
 		menu.show();
+		
 		this.menu.setVisible(true);
 	}
 }

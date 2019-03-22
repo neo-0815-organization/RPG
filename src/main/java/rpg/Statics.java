@@ -17,7 +17,19 @@ public class Statics {
 		return (int) Math.round(value * scale);
 	}
 	
-	public static final Font defaultFont = new Font("Arial", 0, 24);
+	public static final Font defaultFont = new Font("Arial", 0, scale(24 / scaleConst));
+	
+	public static Font defaultFont(final int style) {
+		return defaultFont.deriveFont(style);
+	}
+	
+	public static Font defaultFont(final double size) {
+		return defaultFont.deriveFont((float) (scale * size / scaleConst));
+	}
+	
+	public static Font defaultFont(final int style, final double size) {
+		return defaultFont(size).deriveFont(style);
+	}
 	
 	public static final BufferedImage missingImage = missingImage(32, 32);
 	

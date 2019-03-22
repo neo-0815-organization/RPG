@@ -76,6 +76,7 @@ public final class StartMenu extends Menu {
 	public void updateMenu() {
 		if(openPref) {
 			openSubMenu(new PreferencesMenu());
+			
 			openPref = false;
 		}
 	}

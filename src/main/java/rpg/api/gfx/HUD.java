@@ -40,7 +40,7 @@ public class HUD implements IDrawable {
 			g2d.drawImage(hp_icon, Statics.scale(111 + 15 - 4), Statics.scale(16), null);
 			g2d.drawImage(mp_icon, Statics.scale(76 + 15 - 4), Statics.scale(64), null);
 			
-			g2d.setFont(Statics.defaultFont.deriveFont(26f));
+			g2d.setFont(Statics.defaultFont(27d));
 			drawCenteredString(g2d, "" + p.getXPLevel(), Statics.scale * 17, Statics.scale * 80, 30);
 			drawCenteredString(g2d, "" + p.getHP(), Statics.scale * 111, Statics.scale * 18, 30);
 			drawCenteredString(g2d, "" + p.getMPLevel(), Statics.scale * 76, Statics.scale * 74, 30);
