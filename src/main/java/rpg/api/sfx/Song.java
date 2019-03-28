@@ -1,23 +1,24 @@
 package rpg.api.sfx;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
+import java.util.Arrays;
 
 public class Song {
-	private final AudioClip loop, intro, outro;
+	public static final Song TETRIS = new Song("Tetris");
+	
+	private final String	name;
+	private final Track[]	tracks;
 	
 	public Song(final String name) {
-		loop = new AudioClip(name + "_loop.wav");
-		intro = new AudioClip(name + "_intro.wav");
-		outro = new AudioClip(name + "_outro.wav");
+		this.name = name;
+		tracks = new Track[] {new Track(name + "_intro.wav"), new Track(name + "_loop.wav"), new Track(name + "_outro.wav")};
 	}
 	
-	public void start() throws LineUnavailableException {
-		start(AudioSystem.getClip());
+	@Override
+	public String toString() {
+		return name + "_" + Arrays.toString(tracks).replaceAll(name + "_", "").replaceAll("\\..*", "");
 	}
 	
-	public void start(final Clip clip) {
-		intro.play(clip);
+	public Track[] getTracks() {
+		return tracks;
 	}
 }
