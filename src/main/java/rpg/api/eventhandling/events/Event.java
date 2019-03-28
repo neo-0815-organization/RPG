@@ -13,6 +13,7 @@ public class Event {
 	
 	public Event(EventType type, Object... eventData) {
 		this.eventData = eventData;
+		this.type = type;
 	}
 	
 	/**

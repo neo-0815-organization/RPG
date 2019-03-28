@@ -14,7 +14,7 @@ public class QuestHandler {
 	/**
 	 * Updating the QuestHandler means updating all quests.
 	 */
-	public void update() {
+	public static void update() {
 		for (Quest quest : allQuests) {
 			if (quest.isInProgress()) {
 				if (quest.canEnd()) quest.finishQuest();
