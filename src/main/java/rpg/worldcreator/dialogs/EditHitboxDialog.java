@@ -80,11 +80,11 @@ public class EditHitboxDialog extends JDialog {
 		rect2.setLocation(100, 150);
 		rectanglePanel.add(rect2);
 		
-		final PointInput rect3 = new PointInput("Bottom Left", true, 350, 25);
+		final PointInput rect3 = new PointInput("Bottom Right", true, 350, 25);
 		rect3.setLocation(100, 200);
 		rectanglePanel.add(rect3);
 		
-		final PointInput rect4 = new PointInput("Bottom Right", true, 350, 25);
+		final PointInput rect4 = new PointInput("Bottom Left", true, 350, 25);
 		rect4.setLocation(100, 250);
 		rectanglePanel.add(rect4);
 		
