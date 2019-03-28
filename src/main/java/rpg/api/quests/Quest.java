@@ -25,7 +25,7 @@ public class Quest {
 	private IReward[] rewards;
 	private BundledListener startListener, endListener;
 
-	public Quest(int id, String map, CharacterType type, boolean repeatable, BundledListener startListener, BundledListener endListener, IReward[] rewards) {
+	public Quest(int id, String map, CharacterType type, boolean repeatable, BundledListener startListener, BundledListener endListener, IReward... rewards) {
 		this.id = id;
 		this.map = map;
 		this.title = StringLocalizer.localize("quest." + id + ".title");
@@ -69,6 +69,7 @@ public class Quest {
 	 * Finishes the Link{Quest} off and rewards the player.
 	 */
 	public void finishQuest() {
+		System.out.println("Quest has been finished");
 		for (IReward r:rewards) 
 			r.rewardPlayer();
 

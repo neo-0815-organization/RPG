@@ -1,13 +1,17 @@
 package rpg.api.entity;
 
+
+import rpg.RPG;
 import rpg.api.collision.Hitbox;
+import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
+import rpg.api.eventhandling.events.Event;
 import rpg.api.units.DistanceValue;
 
 /**
  * The class represents a player.
  * 
- * @author Neo Hornberger
+ * @author Neo Hornberger und die anderen
  */
 public class Player extends Entity {
 	
@@ -24,7 +28,7 @@ public class Player extends Entity {
 	public Hitbox getHitbox() {
 		return hb;
 	}
-
+	
 	@Override
 	public void triggerEvent(EventType eventType, Object... objects) {}
 }

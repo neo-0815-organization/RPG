@@ -10,14 +10,14 @@ import rpg.api.units.DistanceValue;
 
 public class Ring extends Entity{
 
-//	private static final Sprite sprite = new Sprite("tiles", SpriteTheme.NONE);
+	private static final Sprite sprite = new Sprite("tiles/ring", SpriteTheme.NONE);
 	static {
-//		sprite.addAnimation("ring");
-//		sprite.setAnimation("ring");
+		sprite.addAnimation("ring");
+		sprite.setAnimation("ring");
 	}
 	
-	public Ring(Sprite sprite) {
-		super("ring");
+	public Ring() {
+		super("tiles.ring");
 		setSprite(sprite);
 		hb = new Hitbox(new DistanceValue(1),new DistanceValue(1));
 		

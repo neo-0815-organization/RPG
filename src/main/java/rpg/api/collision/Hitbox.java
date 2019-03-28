@@ -17,6 +17,10 @@ public class Hitbox implements EventTrigger {
 	public void triggerEvent(EventType eventType, Object... objects) {
 		
 	}
+	
+	public Hitbox(int tileWidth, int tileHeight) {
+		this(new DistanceValue(tileWidth), new DistanceValue(tileHeight));
+	}
 
 	public Hitbox(DistanceValue width, DistanceValue height) {
 		this.width = width;

@@ -47,8 +47,10 @@ public class GameField extends Scene {
 	public void draw(final Graphics2D g2d) {
 		background.draw(g2d);
 		
-		for(final Entity e : entities)
-			e.draw(g2d);
+		synchronized (entities) {
+			for(final Entity e : entities)
+				e.draw(g2d);
+		}
 		
 		for(final Tile t : tiles)
 			t.draw(g2d);
@@ -124,11 +126,13 @@ public class GameField extends Scene {
 		QuestHandler.update();
 	}
 	
+	
+	@Deprecated
 	public List<Tile> checkCollisionTiles(Entity e) {
 		LinkedList<Tile> ts = new LinkedList<>();
 		
 		for(Tile t : tiles) {
-			System.out.println(t); 
+			ts.add(t);
 		}
 		
 		return ts;
@@ -138,10 +142,25 @@ public class GameField extends Scene {
 		LinkedList<Entity> entList = new LinkedList<>();
 		
 		for(Entity ent : entities) {
-			entList.add(ent);
+			if (ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) {
+				entList.add(ent);
+			}
 		}
 		
 		return entList;
+	}
+	
+	public void removeEntity(String name) {
+		if(!name.contains(".name"))name += ".name";
+		
+		int i = 0;
+		for (Entity e : entities) {
+			if (e.getUnlocalizedName().equalsIgnoreCase(name)) {
+				entities.remove(i);
+				return;
+			}
+			i++;
+		}
 	}
 	
 	
