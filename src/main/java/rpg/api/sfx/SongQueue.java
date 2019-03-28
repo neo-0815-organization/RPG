@@ -8,19 +8,22 @@ public class SongQueue {
 	private static final LinkedList<Song>	songs	= new LinkedList<>();
 	public static final Thread				playBack;
 	private static Track[]					tracks;
+	private static boolean					stop;
 	
 	static {
 		playBack = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while(!songs.isEmpty()) {
+				stop = false;
+				
+				while(!songs.isEmpty() && !stop) {
 					tracks = songs.getFirst().getTracks();
 					
 					// i is incremented at the end of the loop;
 					for(int i = 0; i < tracks.length;) {
 						tracks[i].start(() -> resume());
 						
-						if(i == 1 && songs.size() == 1)
+						if(i == 1 && songs.size() == 1 && !stop)
 							Track.clip.loop(Clip.LOOP_CONTINUOUSLY);
 						else
 							Track.clip.loop(0);
@@ -38,7 +41,7 @@ public class SongQueue {
 								break;
 							else
 								i++;
-						} else if(i == tracks.length - 2)
+						} else if(i == tracks.length - 2 && !stop)
 							i = 1;
 						else
 							i++;
@@ -52,6 +55,13 @@ public class SongQueue {
 				notify();
 			}
 		}, "songPlayBackThread");
+	}
+	
+	public static void stop() {
+		System.out.println("Stopping");
+		
+		stop = true;
+		Track.clip.loop(0);
 	}
 	
 	public static void enq(final Song s) {
