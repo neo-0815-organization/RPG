@@ -22,7 +22,7 @@ public class RPGButton extends JButton {
 	private static final long serialVersionUID = 6887580054889086469L;
 	private static Border DEFAULT_BORDER;
 	
-	public static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png"), BUTTON_OVAL = ResourceGetter.getImage("/assets/textures/menu/button_oval.png"), BUTTON_OVAL_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (light).png");
+	public static final BufferedImage BUTTON_TEMPLATE = ResourceGetter.getImage("/assets/textures/menu/button.png"), BUTTON_OVAL = ResourceGetter.getImage("/assets/textures/menu/button_oval.png"), BUTTON_OVAL_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated.png");
 	
 	private BufferedImage image, focusImage;
 	private final String title;
@@ -53,7 +53,7 @@ public class RPGButton extends JButton {
 	 * @param image
 	 */
 	public RPGButton(final String title, final BufferedImage image) {
-		this(title, Statics.defaultFont.deriveFont(Font.BOLD), image);
+		this(title, Statics.defaultFont(Font.BOLD, 27d), image);
 	}
 	
 	/**
@@ -75,13 +75,13 @@ public class RPGButton extends JButton {
 		setVerticalTextPosition(JButton.CENTER);
 		setHorizontalTextPosition(JButton.CENTER);
 		
-		setFocusImage(image);
-		
 		addMouseListener(new MouseAdapter() {
 			private BufferedImage temp;
 			
 			@Override
 			public void mouseEntered(final MouseEvent e) {
+				if(focusImage == null) return;
+				
 				temp = focusImage;
 				focusImage = RPGButton.this.image;
 				
@@ -90,6 +90,8 @@ public class RPGButton extends JButton {
 			
 			@Override
 			public void mouseExited(final MouseEvent e) {
+				if(focusImage == null) return;
+				
 				temp = focusImage;
 				focusImage = RPGButton.this.image;
 				

@@ -17,6 +17,7 @@ import rpg.api.gfx.framework.RPGButton;
  */
 public final class StartMenu extends Menu {
 	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.getImage("/assets/textures/menu/background.png"), SETTINGS_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_options.png"), SETTINGS_IMAGE_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_options_activated.png");
+	private static final BufferedImage SP_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (cyan).png"), MP_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (orange).png");
 	static final BufferedImage EXIT_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_exit.png"), EXIT_IMAGE_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_exit_activated.png");
 	
 	private boolean openPref;
@@ -34,11 +35,13 @@ public final class StartMenu extends Menu {
 				setOpen(false);
 			}
 		});
+		singleplayer.setFocusImage(SP_FOCUS);
 		addComponent(singleplayer);
 		
 		final RPGButton multiplayer = new RPGButton("button.multiplayer");
 		multiplayer.setBounds(Statics.frameSize.width - rectWidth, 0, rectWidth, rectHeight);
 		multiplayer.disableBorder();
+		multiplayer.setFocusImage(MP_FOCUS);
 		addComponent(multiplayer);
 		
 		final int finalRadius = Statics.scale(85);

@@ -17,7 +17,7 @@ public class Statics {
 		return (int) Math.round(value * scale);
 	}
 	
-	public static final Font defaultFont = new Font("Arial", 0, scale(24 / scaleConst));
+	public static final Font defaultFont = new Font("Sans", 0, scale(24 / scaleConst));
 	
 	public static Font defaultFont(final int style) {
 		return defaultFont.deriveFont(style);

@@ -50,7 +50,7 @@ public class PreferencesMenu extends Menu {
 		addComponent(language);
 		
 		counter = new JLabel("");
-		counter.setFont(new Font("Serif", 0, 40));
+		counter.setFont(Statics.defaultFont(Font.BOLD | Font.ITALIC, 40d));
 		counter.setBounds(30, 950, 500, 100);
 		
 		addComponent(counter);
@@ -108,6 +108,7 @@ public class PreferencesMenu extends Menu {
 		final Map<String, String> data = RPGFileReader.readLineSplit(pref, "=");
 		
 		englishSelected = Boolean.valueOf(data.get("lang_english"));
+		changeLanguage(englishSelected);
 		
 		if(englishSelected) language.setBackgroundImage(ENGLISH);
 		else language.setBackgroundImage(GERMAN);
