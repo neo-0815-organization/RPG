@@ -57,7 +57,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import rpg.api.gfx.ImageUtility;
 import rpg.api.packethandler.ByteBuffer;
-import rpg.api.vector.UnmodifiableVec2D;
 import rpg.worldcreator.dialogs.EditHitboxDialog;
 import rpg.worldcreator.dialogs.NewMapDialog;
 
@@ -397,19 +396,12 @@ public class WorldCreatorFrame extends JFrame {
 					}
 					
 					for(int i = 0; i < RPGWorldCreator.getLayerCount(); i++) {
-						if(pane.hitboxes[i].isNull()) {
-							buf.writeInt(0);
-							
-							continue;
-						}
+						buf.writeBoolean(!pane.hitboxes[i].isNull());
 						
-						buf.writeString(pane.hitboxes[i].getType().toLowerCase());
-						buf.writeInt(pane.hitboxes[i].getPoints().size());
+						if(pane.hitboxes[i].isNull()) continue;
 						
-						pane.hitboxes[i].getPoints().stream().forEach(point -> {
-							buf.writeDouble(point.getX().getValueTiles());
-							buf.writeDouble(point.getY().getValueTiles());
-						});
+						buf.writeDouble(pane.hitboxes[i].getDimension().getWidth());
+						buf.writeDouble(pane.hitboxes[i].getDimension().getHeight());
 					}
 					
 					updateProgressBar(++numberTiles);
@@ -478,8 +470,8 @@ public class WorldCreatorFrame extends JFrame {
 			final int paneSize = (int) (tileSize * factor);
 			
 			SpritePane pane;
-			int id, points;
-			String name;
+			int id;
+			boolean type;
 			for(int x = 0; x < spritePanes.length; x++)
 				for(int y = 0; y < spritePanes[x].length; y++) {
 					pane = new SpritePane(x, y);
@@ -494,15 +486,12 @@ public class WorldCreatorFrame extends JFrame {
 					}
 					
 					for(int i = 0; i < layerCount; i++) {
-						name = buf.readString();
+						type = buf.readBoolean();
 						
-						if(name.length() == 0) continue;
-						
-						pane.hitboxes[i].setType(new String(name));
-						
-						points = buf.readInt();
-						for(int j = 0; j < points; j++)
-							pane.hitboxes[i].getPoints().add(UnmodifiableVec2D.createXY(buf.readDouble(), buf.readDouble()));
+						if(type) {
+							pane.hitboxes[i].setType(false);
+							pane.hitboxes[i].getDimension().setSize(buf.readDouble(), buf.readDouble());
+						}
 					}
 					
 					workingArea.add(pane);
@@ -725,13 +714,8 @@ public class WorldCreatorFrame extends JFrame {
 					if(pane.hitboxes[i].isNull()) continue;
 					
 					buf.writeInt(i);
-					buf.writeString(pane.hitboxes[i].getType().toLowerCase());
-					buf.writeInt(pane.hitboxes[i].getPoints().size());
-					
-					pane.hitboxes[i].getPoints().stream().forEach(point -> {
-						buf.writeDouble(point.getX().getValueTiles());
-						buf.writeDouble(point.getY().getValueTiles());
-					});
+					buf.writeDouble(pane.hitboxes[i].getDimension().getWidth());
+					buf.writeDouble(pane.hitboxes[i].getDimension().getHeight());
 				}
 			});
 			

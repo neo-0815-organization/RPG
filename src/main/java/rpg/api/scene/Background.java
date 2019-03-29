@@ -13,12 +13,13 @@ import java.util.zip.ZipInputStream;
 import javax.imageio.ImageIO;
 
 import rpg.api.collision.Hitbox;
+import rpg.api.eventhandling.EventType;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.IImage;
 import rpg.api.packethandler.ByteBuffer;
 import rpg.api.tile.Tile;
+import rpg.api.units.DistanceValue;
 import rpg.api.vector.ModifiableVec2D;
-import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
@@ -122,7 +123,11 @@ public class Background implements IImage {
 			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
 			final int id = buf.readInt();
 			
-			fluid = new Tile() {};
+			fluid = new Tile() {
+				
+				@Override
+				public void triggerEvent(final EventType eventType, final Object... objects) {}
+			};
 			
 			fluids.add(fluid);
 		}
@@ -137,7 +142,11 @@ public class Background implements IImage {
 			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
 			final int id = buf.readInt();
 			
-			tile = new Tile() {};
+			tile = new Tile() {
+				
+				@Override
+				public void triggerEvent(final EventType eventType, final Object... objects) {}
+			};
 			
 			tiles.add(tile);
 		}
@@ -154,22 +163,7 @@ public class Background implements IImage {
 			
 			for(int j = 0; j < hitboxesOnLocation; j++) {
 				final int tileLayer = buf.readInt();
-				final String typeName = buf.readString();
-				
-				final int pointCount = buf.readInt();
-				final ArrayList<UnmodifiableVec2D> points = new ArrayList<>(pointCount);
-				
-				for(int k = 0; k < pointCount; k++)
-					points.add(UnmodifiableVec2D.createXY(buf.readDouble(), buf.readDouble()));
-				
-				switch(new String(typeName)) {
-					case "rectangle":
-						break;
-					case "triangle":
-						break;
-					case "circle":
-						break;
-				}
+				final Hitbox hb = new Hitbox(new DistanceValue(buf.readDouble()), new DistanceValue(buf.readDouble()));
 			}
 		}
 		
@@ -187,7 +181,7 @@ public class Background implements IImage {
 	public BufferedImage getImage() {
 		return background;
 	}
-		
+	
 	public String getName() {
 		return name;
 	}
