@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
+import rpg.api.gfx.ImageUtility;
+
 public class LayerPanel extends JPanel {
 	private static final long serialVersionUID = -2665204565190419104L;
 	
@@ -48,7 +50,7 @@ public class LayerPanel extends JPanel {
 			
 			for(int x = 0; x < xNumber; x++)
 				for(int y = 0; y < yNumber; y++) {
-					final JToggleButton button = new JToggleButton(new ImageIcon(RPGWorldCreator.scaleImage(image.getSubimage(x * tileSize, y * tileSize, tileSize, tileSize), (int) scaledSize, (int) scaledSize)));
+					final JToggleButton button = new JToggleButton(new ImageIcon(ImageUtility.scale(image.getSubimage(x * tileSize, y * tileSize, tileSize, tileSize), (int) scaledSize, (int) scaledSize)));
 					button.addActionListener(frameInstance.prefixActionListener);
 					button.setActionCommand("texture:" + name + ":" + x + "|" + y + "|" + layer);
 					button.setFocusPainted(true);

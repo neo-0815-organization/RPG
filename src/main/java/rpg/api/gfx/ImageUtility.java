@@ -76,6 +76,7 @@ public class ImageUtility {
 	 * @return the rotated {@link BufferedImage}
 	 */
 	public static BufferedImage rotate(final BufferedImage image, final int angle) {
+		if(image == null) return null;
 		if(angle % 360 == 0) return image;
 		
 		final BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());

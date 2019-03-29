@@ -78,10 +78,10 @@ public class ByteBuffer {
 	 *
 	 * @param c
 	 *            the char to write
-	 * @see #writeInt(int)
+	 * @see #writeShort(short)
 	 */
 	public void writeChar(final char c) {
-		writeInt(c);
+		writeShort((short) c);
 	}
 	
 	/**
@@ -205,10 +205,10 @@ public class ByteBuffer {
 	 * Reads one int from the buffer and interprets it as a char.
 	 *
 	 * @return the char read
-	 * @see #readInt()
+	 * @see #readShort()
 	 */
 	public char readChar() {
-		return (char) readInt();
+		return (char) readShort();
 	}
 	
 	/**
@@ -325,6 +325,7 @@ public class ByteBuffer {
 	 */
 	public ByteBuffer writeToOutputStream(final OutputStream out) throws IOException {
 		out.write(toByteArray());
+		out.flush();
 		
 		return this;
 	}

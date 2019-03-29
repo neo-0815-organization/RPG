@@ -6,10 +6,11 @@ public enum Rotation {
 	UPSIDE_DOWN(2, 180),
 	RIGHT(3, 270);
 	
-	private final int id, angle;
+	private final byte id;
+	private final int angle;
 	
 	private Rotation(final int id, final int angle) {
-		this.id = id;
+		this.id = (byte) id;
 		this.angle = angle;
 	}
 	
@@ -50,7 +51,7 @@ public enum Rotation {
 		return this;
 	}
 	
-	public int getId() {
+	public byte getId() {
 		return id;
 	}
 	
