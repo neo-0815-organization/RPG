@@ -23,10 +23,7 @@ public class SongQueue {
 					for(int i = 0; i < tracks.length;) {
 						tracks[i].start(() -> resume());
 						
-						if(i == 1 && songs.size() == 1 && !stop)
-							Track.clip.loop(Clip.LOOP_CONTINUOUSLY);
-						else
-							Track.clip.loop(0);
+						Track.clip.loop(i == 1 && songs.size() == 1 && !stop ? Clip.LOOP_CONTINUOUSLY : 0);
 						
 						synchronized(this) {
 							try {
