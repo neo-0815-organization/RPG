@@ -6,7 +6,7 @@ package rpg.api.gfx;
  *
  * @author Tim Ludwig, Neo Hornberger, Alexander Schallenberg
  */
-public enum SpriteTheme {
+public enum SpriteTheme implements IPathModifier{
 	// Zwerge
 	DWARF_CITY("dwarfs/dwarf_city"),
 		CASTLE_MOERSBERG("dwarfs/castle_moersberg"),
@@ -21,7 +21,7 @@ public enum SpriteTheme {
 	SWAMP("fairies/swamp"),
 	
 	// Gestrandete
-	DUEHNE("stranded/duehne"),
+	DUNE("stranded/dune"),
 	
 	// Maracus
 	HORNBERGE("maracus/hornberge"),
@@ -33,18 +33,18 @@ public enum SpriteTheme {
 	TEST("test");
 	
 	private SpriteTheme(final String name) {
-		path = "/assets/textures/" + name;
+		pathModifier = name;
 	}
 	
-	private String path;
+	private String pathModifier;
 	
-	/**
-	 * Gets the path corresponding to this {@link SpriteTheme}.
-	 *
-	 * @return the path to all {@link Sprite}s corresponding to this
-	 *         {@link SpriteTheme}
-	 */
-	public String getPath() {
-		return path;
+	@Override
+	public String getPathModifier() {
+		return pathModifier;
+	}
+	
+	@Override
+	public String getPrePath() {
+		return "/assets/textures/";
 	}
 }

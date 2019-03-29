@@ -8,5 +8,7 @@ import rpg.api.eventhandling.events.Event;
  */
 public enum EventType {
 	GENERAL_EVENT,
-	TEST_EVENT;
+	TEST_EVENT,
+	COLLISION_EVENT,
+	CURRENT_MAP_EVENT;
 }

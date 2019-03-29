@@ -37,7 +37,7 @@ public class EventHandler {
 	 *            the {@link EventType} to check
 	 * @return {@code true} if the {@link EventType} is registered.
 	 */
-	private boolean isEventTypeRegistered(final EventType eventType) {
+	private static boolean isEventTypeRegistered(final EventType eventType) {
 		return eventTypeRegistered.get(eventType);
 	}
 	
@@ -48,7 +48,7 @@ public class EventHandler {
 	 *            the type of the {@link Event} to search for {@link EventListener}s
 	 * @return the {@link EventListener}s for the {@link EventType} 'eventType'
 	 */
-	private LinkedList<EventListener> getListenersForEventType(final EventType eventType) {
+	private static LinkedList<EventListener> getListenersForEventType(final EventType eventType) {
 		return listener.get(eventType);
 	}
 	
@@ -58,7 +58,7 @@ public class EventHandler {
 	 * @param event
 	 *            the {@link Event} to handle
 	 */
-	public void handle(final Event event) {
+	public static void handle(final Event event) {
 		final EventType t = event.getEventType();
 		
 		if(!isEventTypeRegistered(t)) return;
@@ -75,7 +75,7 @@ public class EventHandler {
 	 * @param eventListener
 	 *            the {@link EventListener} to register
 	 */
-	public void registerEventListener(final EventListener eventListener) {
+	public static void registerEventListener(final EventListener eventListener) {
 		final EventType eT = eventListener.getEventType();
 		
 		if(!listener.containsKey(eT)) {

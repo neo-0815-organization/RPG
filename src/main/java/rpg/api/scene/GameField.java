@@ -2,12 +2,19 @@ package rpg.api.scene;
 
 import java.awt.Graphics2D;
 import java.util.LinkedList;
+import java.util.List;
+
 
 import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.PlayerController;
+import rpg.api.gfx.HUD;
+import rpg.api.eventhandling.EventHandler;
+import rpg.api.eventhandling.EventType;
+import rpg.api.eventhandling.events.Event;
 import rpg.api.listener.key.KeyboardListener;
+import rpg.api.quests.QuestHandler;
 import rpg.api.tile.Tile;
 
 /**
@@ -26,22 +33,30 @@ public class GameField extends Scene {
 	private Thread update, draw;
 	
 	private final LinkedList<Entity> entities = new LinkedList<>();
+	private final LinkedList<Tile> tiles = new LinkedList<>();
 	private final LinkedList<Controller> controller = new LinkedList<>();
 	private PlayerController playerController;
+	
+	private final HUD hud = new HUD();
 	
 	public GameField() {
 		background = new Background();
 		
 		startUpdating();
-		startDrawing();
+		//		startDrawing();
 	}
 	
 	@Override
 	public void draw(final Graphics2D g2d) {
 		background.draw(g2d);
 		
-		for(final Entity e : entities)
-			e.draw(g2d);
+		synchronized (entities) {
+			for(final Entity e : entities)
+				e.draw(g2d);
+		}
+		
+		for(final Tile t : tiles)
+			t.draw(g2d);
 	}
 	
 	/**
@@ -63,8 +78,7 @@ public class GameField extends Scene {
 					
 					RPG.gameFrame.drawScene(me);
 					KeyboardListener.updateKeys();
-					
-					System.out.println(deltaTime);
+					Camera.update();
 				}
 			}
 		};
@@ -85,7 +99,7 @@ public class GameField extends Scene {
 					final long systemTime = System.currentTimeMillis();
 					
 					RPG.gameFrame.drawScene(me);
-					System.out.println(System.currentTimeMillis() - systemTime);
+				//	System.out.println(System.currentTimeMillis() - systemTime);
 				}
 			}
 		};
@@ -100,7 +114,58 @@ public class GameField extends Scene {
 		
 		for(int i = 0; i < entities.size(); i++)
 			entities.get(i).update(deltaTime);
+		
+		for(int i = 0; i < tiles.size(); i++) {
+			tiles.get(i).update(deltaTime);
+		}
+		
+		updateEvents();
 	}
+	
+	
+	public void updateEvents() {
+		EventHandler.handle(new Event(EventType.CURRENT_MAP_EVENT, background.getName()));
+		QuestHandler.update();
+	}
+	
+	
+	@Deprecated
+	public List<Tile> checkCollisionTiles(Entity e) {
+		LinkedList<Tile> ts = new LinkedList<>();
+		
+		for(Tile t : tiles) {
+			ts.add(t);
+		}
+		
+		return ts;
+	}
+	
+	public List<Entity> checkCollisionEntities(Entity e) {
+		LinkedList<Entity> entList = new LinkedList<>();
+		
+		for(Entity ent : entities) {
+			if (ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) {
+				entList.add(ent);
+			}
+		}
+		
+		return entList;
+	}
+	
+	public void removeEntity(String name) {
+		if(!name.contains(".name")) name += ".name";
+		
+		int i = 0;
+		for (Entity e : entities) {
+			if (e.getUnlocalizedName().equalsIgnoreCase(name)) {
+				entities.remove(i);
+				return;
+			}
+			i++;
+		}
+	}
+	
+	
 	
 	/**
 	 * Shuts down the {@link GameField}'s threads.
@@ -115,6 +180,10 @@ public class GameField extends Scene {
 		entities.add(c.getEntity());
 	}
 	
+	public void addTile(final Tile t) {
+		tiles.add(t);
+	}
+	
 	public PlayerController getPlayerController() {
 		return playerController;
 	}
@@ -123,6 +192,6 @@ public class GameField extends Scene {
 		this.playerController = playerController;
 		
 		entities.add(playerController.getEntity());
-		
+		Camera.setFocusEntity(playerController.getEntity());
 	}
 }

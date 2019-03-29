@@ -2,20 +2,24 @@ package rpg.api.listener.key;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Neo Hornberger, Tim Ludwig
+ */
 public class KeyboardListener {
 	private static HashMap<Integer, OnKey> keys = new HashMap<>();
 	private static HashMap<Integer, KeyState> states = new HashMap<>();
 	
-	private static Thread thread = new Thread("KeyboardListenerThread") {
-		
-		@Override
-		public void run() {
-			while(!interrupted())
-				updateKeys();
-		};
-	};
+//	private static Thread thread = new Thread("KeyboardListenerThread") {
+//		
+//		@Override
+//		public void run() {
+//			while(!interrupted())
+//				updateKeys();
+//		};
+//	};
 	
-	public static void updateKeys() {
+	public static synchronized void updateKeys() {
 		states.entrySet().parallelStream().filter(entry -> entry.getValue().isActive()).forEach(entry -> {
 			keys.get(entry.getKey()).onKey(entry.getValue());
 			
@@ -23,7 +27,7 @@ public class KeyboardListener {
 		});
 	}
 	
-	public static void registerKey(final int keyCode, final OnKey onKey) {
+	public static synchronized void registerKey(final int keyCode, final OnKey onKey) {
 		keys.put(keyCode, onKey);
 		states.put(keyCode, KeyState.RELEASED);
 	}
@@ -34,7 +38,8 @@ public class KeyboardListener {
 		states.put(keyCode, state);
 	}
 	
+	@Deprecated
 	public static void start() {
-		thread.start();
+//		thread.start();
 	}
 }

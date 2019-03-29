@@ -19,17 +19,18 @@ import rpg.api.packethandler.packet.time.PacketPong;
  * @author Neo Hornberger
  */
 public abstract class ListeningThread extends Thread {
-	private final InputStream	in;
-	private final OutputStream	out;
+	private final InputStream in;
+	private final OutputStream out;
 	
 	/**
 	 * Constructs the {@link ListeningThread} with the {@link Socket} 'socket'.
 	 *
 	 * @param socket
-	 *     the {@link Socket}s {@link InputStream} and {@link OutputStream} will be
-	 *     used to construct this {@link ListeningThread}
+	 *            the {@link Socket}s {@link InputStream} and
+	 *            {@link OutputStream} will be used to construct this
+	 *            {@link ListeningThread}
 	 * @throws IOException
-	 *     if an I/O error occures
+	 *             if an I/O error occures
 	 */
 	public ListeningThread(final Socket socket) throws IOException {
 		super("Listening-Thread -- " + socket.getLocalAddress() + ":" + socket.getLocalPort());
@@ -39,15 +40,15 @@ public abstract class ListeningThread extends Thread {
 	}
 	
 	/**
-	 * Constructs the {@link ListeningThread} with the {@link InputStream} 'in' and
-	 * the {@link OutputStream} 'out'.
+	 * Constructs the {@link ListeningThread} with the {@link InputStream} 'in'
+	 * and the {@link OutputStream} 'out'.
 	 *
 	 * @param in
-	 *     the {@link InputStream} that will be used to construct this
-	 *     {@link ListeningThread}
+	 *            the {@link InputStream} that will be used to construct this
+	 *            {@link ListeningThread}
 	 * @param out
-	 *     the {@link OutputStream} that will be used to construct this
-	 *     {@link ListeningThread}
+	 *            the {@link OutputStream} that will be used to construct this
+	 *            {@link ListeningThread}
 	 */
 	public ListeningThread(final InputStream in, final OutputStream out) {
 		super("Listening-Thread");
@@ -71,9 +72,9 @@ public abstract class ListeningThread extends Thread {
 					if(packet instanceof PacketPong) connection().onPong((PacketPong) packet);
 					connection().onPacketReceived(packet);
 					
-					if(packet.response() != null) connection().sendPacket(packet.response(), out);
+					if(packet.response() != null) connection().sendPacket(packet.response());
 				}
-			} catch(final IOException e) {
+			}catch(final IOException e) {
 				e.printStackTrace();
 			}
 	}

@@ -3,7 +3,7 @@ package rpg.api.localization;
 import java.util.IllegalFormatConversionException;
 import java.util.MissingFormatArgumentException;
 
-import rpg.api.filereading.RPGFileReader;
+import rpg.api.filehandling.RPGFileReader;
 
 /**
  * The class StringLocalizer used to localize {@link String}s.
@@ -61,6 +61,7 @@ public class StringLocalizer {
 	 *            arguments is variable and may be zero. The behaviour on a
 	 *            {@code null} argument depends on the
 	 *            <a href="../util/Formatter.html#syntax">conversion</a>
+	 * @throws LocalizationException
 	 * @return the localized and formated value of the path 'path'
 	 */
 	private static String format0(final String path, final boolean ignoreExceptions, final Object... objects) {
