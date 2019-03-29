@@ -3,7 +3,12 @@ package rpg.api.entity;
 import java.awt.Graphics2D;
 import java.util.UUID;
 
+import rpg.RPG;
 import rpg.api.Direction;
+import rpg.api.collision.Hitbox;
+import rpg.api.collision.ICollideable;
+import rpg.api.eventhandling.EventTrigger;
+import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 import rpg.api.localization.INameable;
@@ -15,13 +20,14 @@ import rpg.api.vector.Vec2D;
  *
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
-public abstract class Entity implements INameable, ISprite {
+public abstract class Entity implements INameable, ISprite, ICollideable, EventTrigger {
 	protected ModifiableVec2D	location;
 	protected Sprite			sprite;
 	protected Direction			lookingDirection;
 	protected ModifiableVec2D	velocity	= ModifiableVec2D.ORIGIN.toModifiable();
 	protected String			displayName, imageName;
 	protected UUID				uuid;
+	protected Hitbox 			hb;
 	
 	/**
 	 * Constructs a new {@link Entity} with the display name 'name'.
@@ -186,7 +192,12 @@ public abstract class Entity implements INameable, ISprite {
 	 */
 	public void update(final double deltaTime) {
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
+		
 		sprite.update(deltaTime);
+		
+		
+		RPG.gameField.checkCollisionTiles(this).forEach(t-> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
+		RPG.gameField.checkCollisionEntities(this).forEach(e-> triggerEvent(EventType.COLLISION_EVENT, e, this));
 	}
 	
 	/**

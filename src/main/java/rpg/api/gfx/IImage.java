@@ -17,8 +17,7 @@ public interface IImage extends IDrawable {
 	BufferedImage getImage();
 	
 	/**
-	 * Gets the width of the {@link BufferedImage} which this interface is
-	 * representing.
+	 * Gets the width of the {@link BufferedImage} corresponding to this {@link IImage}. 
 	 *
 	 * @return the width of the {@link BufferedImage}
 	 */
@@ -27,8 +26,7 @@ public interface IImage extends IDrawable {
 	}
 	
 	/**
-	 * Gets the height of the {@link BufferedImage} which this interface is
-	 * representing.
+	 * Gets the height of the {@link BufferedImage} corresponding to this {@link IImage}.
 	 *
 	 * @return the height of the {@link BufferedImage}
 	 */
@@ -37,7 +35,7 @@ public interface IImage extends IDrawable {
 	}
 	
 	/**
-	 * Draws the {@link BufferedImage} which this interface is representing.
+	 * Draws the {@link BufferedImage} corresponding to this {@link IImage}.
 	 *
 	 * @param g2d
 	 *            the {@link Graphics2D} object to draw on

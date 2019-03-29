@@ -7,6 +7,11 @@ import java.awt.image.BufferedImage;
 
 import rpg.Statics;
 
+/**
+ * Utility class for images.
+ * 
+ * @author Neo Hornberger
+ */
 public class ImageUtility {
 	
 	public static BufferedImage scale(final BufferedImage image) {
@@ -21,10 +26,31 @@ public class ImageUtility {
 		return scale(image, (int) Math.round(image.getWidth() * scale), (int) Math.round(image.getHeight() * scale));
 	}
 	
+	/**
+	 * Scales a {@link BufferedImage}.
+	 * 
+	 * @param image the {@link BufferedImage} to scale
+	 * @param newWidth the width to scale the {@link BufferedImage} to
+	 * @param newHeight the height to scale the {@link BufferedImage} to
+	 * 
+	 * @return the scaled {@link BufferedImage}
+	 * 
+	 * @see scale(BufferedImage, int, int, Object)
+	 */
 	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight) {
 		return scale(image, newWidth, newHeight, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 	}
 	
+	/**
+	 * Scales a {@link BufferedImage}.
+	 * 
+	 * @param image the {@link BufferedImage} to scale
+	 * @param newWidth the width to scale the {@link BufferedImage} to
+	 * @param newHeight the height to scale the {@link BufferedImage} to
+	 * @param valueInterpolation the {@link RenderingHints} to use
+	 * 
+	 * @return the scaled {@link BufferedImage}
+	 */
 	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight, final Object interpolation) {
 		return scale(image, newWidth, newHeight, interpolation, BufferedImage.TYPE_INT_ARGB);
 	}
@@ -35,13 +61,20 @@ public class ImageUtility {
 		final BufferedImage newImage = new BufferedImage(newWidth, newHeight, type);
 		final Graphics2D g = newImage.createGraphics();
 		
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interpolation);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, valueInterpolation);
 		g.drawImage(image, 0, 0, newWidth, newHeight, 0, 0, image.getWidth(), image.getHeight(), null);
 		g.dispose();
 		
 		return newImage;
 	}
 	
+	/**
+	 * Rotates a {@link BufferedImage}.
+	 * 
+	 * @param image the {@link BufferedImage} to rotate
+	 * @param angle the angle to rotate by (clockwise in degrees)
+	 * @return the rotated {@link BufferedImage}
+	 */
 	public static BufferedImage rotate(final BufferedImage image, final int angle) {
 		if(angle % 360 == 0) return image;
 		
@@ -61,6 +94,12 @@ public class ImageUtility {
 		return newImage;
 	}
 	
+	/**
+	 * Compares two {@link BufferedImage}s
+	 * @param imageOne one {@link BufferedImage}
+	 * @param imageTwo another {@link BufferedImage}
+	 * @return {@code true} <ul><li>if the contents of the two {@link BufferedImage}s are equal</li><li>if {@code (imageOne == imageTwo) == true}</li></ul>  
+	 */
 	public static boolean compare(final BufferedImage imageOne, final BufferedImage imageTwo) {
 		if(imageOne == imageTwo) return true;
 		if(imageOne == null || imageTwo == null) return false;

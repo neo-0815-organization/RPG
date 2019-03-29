@@ -10,7 +10,7 @@ import rpg.api.vector.UnmodifiableVec2D;
  * @author Neo Hornberger
  */
 public class PlayerController extends LocalController {
-	private final double speed = 1d;
+	private final double speed = 3D;
 	
 	/**
 	 * Constructs a new {@link LocalController} which is controlling the

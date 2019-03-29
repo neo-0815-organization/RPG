@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Encapsulates multiple {@link Frame}s in one class.
+ * Encapsulates multiple {@link Frame}s in one instance.
  *
  * @author Tim Ludwig
  */
@@ -14,6 +14,15 @@ public class Animation {
 	private final int frameHeight, frameWidth;
 	private Frame currentFrame = null;
 	
+	/**
+	 * Constructs a new {@link Animation}.
+	 * 
+	 * @param animationName the name of the new {@link Animation}
+	 * @param frameHeight the height of each frame in the new {@link Animation} in pixels
+	 * @param frameWidth the width of each frame in the new {@link Animation} in pixels
+	 * @param frames the {@link Frame}s in the new {@link Animation}
+	 * @param loop if loop is false the new {@link Animation} will stop playing upon reaching the last {@link Frame} 
+	 */
 	public Animation(final String animationName, final int frameHeight, final int frameWidth, final LinkedList<BufferedImage> frames, final boolean loop) {
 		this.animationName = animationName;
 		this.frameHeight = frameHeight;
@@ -105,10 +114,10 @@ public class Animation {
 		}
 		
 		/**
-		 * Sets the next {@link Frame} in the chain.
+		 * Changes the next {@link Frame} in the chain to a new {@link Frame}.
 		 *
 		 * @param nextFrame
-		 *            the next {@link Frame}
+		 *            the next {@link Frame} to change to
 		 */
 		public void setNextFrame(final Frame nextFrame) {
 			this.nextFrame = nextFrame;
@@ -124,10 +133,9 @@ public class Animation {
 		}
 		
 		/**
-		 * Gets the {@link BufferedImage} representing this frame in the
-		 * {@link Animation}.
+		 * Gets the {@link BufferedImage} corresponding to this frame.
 		 *
-		 * @return the {@link BufferedImage} representing this frame
+		 * @return the {@link BufferedImage} corresponding to this frame
 		 */
 		public BufferedImage getFrame() {
 			return frame;

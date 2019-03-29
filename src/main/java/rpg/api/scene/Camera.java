@@ -1,5 +1,6 @@
 package rpg.api.scene;
 
+<<<<<<< HEAD
 import rpg.Statics;
 import rpg.api.entity.Entity;
 import rpg.api.units.DistanceValue;
@@ -7,8 +8,7 @@ import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
- * The class Camera stores the ingame coordinate of the top left corner and the
- * width and height of the view.
+ * Stores display information of the view.
  *
  * @author Erik Diers, Tim Ludwig
  */

@@ -180,4 +180,8 @@ public class Background implements IImage {
 	public BufferedImage getImage() {
 		return background;
 	}
+		
+	public String getName() {
+		return name;
+	}
 }

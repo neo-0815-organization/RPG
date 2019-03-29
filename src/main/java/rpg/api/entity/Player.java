@@ -1,5 +1,13 @@
 package rpg.api.entity;
 
+
+import rpg.RPG;
+import rpg.api.collision.Hitbox;
+import rpg.api.eventhandling.EventHandler;
+import rpg.api.eventhandling.EventType;
+import rpg.api.eventhandling.events.Event;
+import rpg.api.units.DistanceValue;
+
 /**
  * The class represents a player.
  * 
@@ -15,6 +23,12 @@ public class Player extends LivingEntity {
 	 */
 	public Player() {
 		super("entity.player");
+		hb = new Hitbox(new DistanceValue(1), new DistanceValue(1));
+	} 
+
+	@Override
+	public Hitbox getHitbox() {
+		return hb;
 	}
 	
 	public float getXP() {
@@ -102,4 +116,7 @@ public class Player extends LivingEntity {
 	public void setMPLevel(final int mpLevel) {
 		this.mpLevel = mpLevel;
 	}
+	
+	@Override
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

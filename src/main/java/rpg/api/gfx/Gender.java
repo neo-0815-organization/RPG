@@ -1,22 +1,24 @@
 package rpg.api.gfx;
 
-public enum Gender {
+/**
+ * Used to differentiate between genders.
+ * 
+ * @author Neo Hornberger, Tim Ludwig
+ */
+public enum Gender implements IPathModifier{
 	FEMALE("female"),
 	MALE("male"),
 	
 	OTHER("");
 	
-	private final String name;
+	private final String pathModifier;
 	
-	private Gender(final String name) {
-		this.name = name;
+	private Gender(final String pathModifier) {
+		this.pathModifier = pathModifier;
 	}
 	
-	public String getPath() {
-		return "/" + name;
-	}
-	
-	public String getName() {
-		return name;
+	@Override
+	public String getPathModifier() {
+		return pathModifier;
 	}
 }
