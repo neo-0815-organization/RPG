@@ -23,12 +23,12 @@ public class Player extends LivingEntity {
 	 */
 	public Player() {
 		super("entity.player");
-		hb = new Hitbox(new DistanceValue(1), new DistanceValue(1));
+		hitbox = new Hitbox(new DistanceValue(1), new DistanceValue(1));
 	} 
 
 	@Override
 	public Hitbox getHitbox() {
-		return hb;
+		return hitbox;
 	}
 	
 	public float getXP() {

@@ -9,8 +9,8 @@ import rpg.api.gfx.SpriteTheme;
 import rpg.api.units.DistanceValue;
 
 public class Ring extends Entity {
-	
 	private static final Sprite sprite = new Sprite("tiles/ring", SpriteTheme.NONE);
+	
 	static {
 		sprite.addAnimation("ring");
 		sprite.setAnimation("ring");
@@ -21,17 +21,16 @@ public class Ring extends Entity {
 		
 		setSprite(sprite);
 		
-		hb = new Hitbox(new DistanceValue(1), new DistanceValue(1));
+		hitbox = new Hitbox(new DistanceValue(1), new DistanceValue(1));
 	}
 	
 	@Override
 	public Hitbox getHitbox() {
-		return hb;
+		return hitbox;
 	}
 	
 	@Override
 	public void triggerEvent(final EventType eventType, final Object... objects) {
 		EventHandler.handle(new Event(EventType.COLLISION_EVENT, objects));
 	}
-	
 }

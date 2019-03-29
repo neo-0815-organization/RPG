@@ -2,7 +2,6 @@ package rpg.worldcreator.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,10 +11,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.HashMap;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -24,7 +22,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.LineBorder;
 
 import rpg.api.gfx.ImageUtility;
-import rpg.api.vector.UnmodifiableVec2D;
 import rpg.worldcreator.Data;
 import rpg.worldcreator.WorldCreatorFrame;
 import rpg.worldcreator.WorldCreatorFrame.SpritePane;
@@ -35,7 +32,6 @@ public class EditHitboxDialog extends JDialog {
 	
 	private final SpritePane pane;
 	private final WorldCreatorHitbox fluidBox, tileBox;
-	private final HashMap<String, JPanel> typePanels = new HashMap<>();
 	
 	private final JTabbedPane layerPanels;
 	private final JPanel fluidsPanel, tilesPanel;
@@ -47,8 +43,6 @@ public class EditHitboxDialog extends JDialog {
 		
 		fluidBox = pane.getHitboxCopy(0);
 		tileBox = pane.getHitboxCopy(2);
-		
-		initTypePanels();
 		
 		setSize(700, 500);
 		setLocationRelativeTo(frame);
@@ -65,104 +59,46 @@ public class EditHitboxDialog extends JDialog {
 		add(layerPanels, BorderLayout.CENTER);
 	}
 	
-	private void initTypePanels() {
-		typePanels.put("None", new JPanel());
-		
-		// rectangular panel
-		final JPanel rectanglePanel = new JPanel();
-		rectanglePanel.setLayout(null);
-		
-		final PointInput rect1 = new PointInput("Top Left", true, 350, 25);
-		rect1.setLocation(100, 100);
-		rectanglePanel.add(rect1);
-		
-		final PointInput rect2 = new PointInput("Top Right", true, 350, 25);
-		rect2.setLocation(100, 150);
-		rectanglePanel.add(rect2);
-		
-		final PointInput rect3 = new PointInput("Bottom Right", true, 350, 25);
-		rect3.setLocation(100, 200);
-		rectanglePanel.add(rect3);
-		
-		final PointInput rect4 = new PointInput("Bottom Left", true, 350, 25);
-		rect4.setLocation(100, 250);
-		rectanglePanel.add(rect4);
-		
-		typePanels.put("Rectangle", rectanglePanel);
-		
-		// triangular panel
-		final JPanel trianglePanel = new JPanel();
-		trianglePanel.setLayout(null);
-		
-		final PointInput tri1 = new PointInput("First Point", true, 350, 25);
-		tri1.setLocation(100, 100);
-		trianglePanel.add(tri1);
-		
-		final PointInput tri2 = new PointInput("Second Point", true, 350, 25);
-		tri2.setLocation(100, 150);
-		trianglePanel.add(tri2);
-		
-		final PointInput tri3 = new PointInput("Third Point", true, 350, 25);
-		tri3.setLocation(100, 200);
-		trianglePanel.add(tri3);
-		
-		typePanels.put("Triangle", trianglePanel);
-		
-		// circular panel
-		final JPanel circlePanel = new JPanel();
-		circlePanel.setLayout(null);
-		
-		final PointInput cir1 = new PointInput("Center Point", true, 350, 25);
-		cir1.setLocation(100, 100);
-		circlePanel.add(cir1);
-		
-		final PointInput cir2 = new PointInput("Radius", false, 350, 25);
-		cir2.setLocation(100, 150);
-		circlePanel.add(cir2);
-		
-		typePanels.put("Circle", circlePanel);
-	}
-	
 	private class LayerPanel extends JPanel {
 		private static final long serialVersionUID = -7316328327119894614L;
 		
 		private final WorldCreatorHitbox hitbox;
 		
-		private final JComboBox<String> types;
+		private final JCheckBox editMode;
 		private final JPanel panelContainer, previewHolder;
+		private final PointInput width, height;
 		
 		public LayerPanel(final WorldCreatorHitbox hitbox) {
 			this.hitbox = hitbox;
 			
 			setLayout(new BorderLayout());
 			
-			types = new JComboBox<>(getTypes());
-			types.addItemListener(new ItemListener() {
-				private boolean first = true;
-				private String type;
+			editMode = new JCheckBox("Should have hitbox", true);
+			editMode.addItemListener(new ItemListener() {
 				
 				@Override
 				public void itemStateChanged(final ItemEvent e) {
-					if(!first) {
-						type = (String) e.getItem();
-						
-						panelContainer.removeAll();
-						panelContainer.add(typePanels.get(type));
-						panelContainer.revalidate();
-						panelContainer.repaint();
-						
-						hitbox.setType(type.equals("None") ? null : type);
-						
-						updateHitbox();
-					}
+					hitbox.setType(!editMode.isSelected());
 					
-					first = !first;
+					width.setEnabled(editMode.isSelected());
+					height.setEnabled(editMode.isSelected());
 				}
 			});
-			add(types, BorderLayout.NORTH);
+			add(editMode, BorderLayout.NORTH);
 			
 			panelContainer = new JPanel();
-			panelContainer.setLayout(new BorderLayout());
+			panelContainer.setLayout(null);
+			
+			width = new PointInput("Width", false, 350, 25);
+			width.setLocation(100, 100);
+			width.x.setValue(this.hitbox.getDimension().getWidth());
+			panelContainer.add(width);
+			
+			height = new PointInput("Height", false, 350, 25);
+			height.setLocation(100, 150);
+			height.x.setValue(this.hitbox.getDimension().getHeight());
+			panelContainer.add(height);
+			
 			add(panelContainer, BorderLayout.CENTER);
 			
 			final JPanel previewPanel = new JPanel() {
@@ -208,19 +144,11 @@ public class EditHitboxDialog extends JDialog {
 			previewHolder.add(refreshButton, BorderLayout.SOUTH);
 			add(previewHolder, BorderLayout.WEST);
 			
-			if(!this.hitbox.isNull()) types.setSelectedItem(this.hitbox.getType().substring(0, 1).toUpperCase() + this.hitbox.getType().substring(1));
+			editMode.setSelected(!this.hitbox.isNull());
 		}
 		
 		public void updateHitbox() {
-			hitbox.getPoints().clear();
-			
-			for(final Component comp : ((JPanel) panelContainer.getComponent(0)).getComponents())
-				if(comp instanceof PointInput) {
-					final PointInput point = (PointInput) comp;
-					
-					if(point.twoTuple) hitbox.getPoints().add(UnmodifiableVec2D.createXY(convertStringToDouble(point.x.getText()), convertStringToDouble(point.y.getText())));
-					else hitbox.getPoints().add(UnmodifiableVec2D.createXY(convertStringToDouble(point.x.getText()), 0));
-				}
+			hitbox.getDimension().setSize(convertStringToDouble(width.x.getText()), convertStringToDouble(height.x.getText()));
 			
 			previewHolder.revalidate();
 			previewHolder.repaint();
@@ -282,21 +210,14 @@ public class EditHitboxDialog extends JDialog {
 				add(x);
 			}
 		}
-	}
-	
-	public String[] getTypes() {
-		final String[] types = new String[typePanels.size()];
 		
-		types[0] = "None";
-		
-		int i = 1;
-		for(final String type : typePanels.keySet()) {
-			if(!type.equals("None")) types[i] = type;
+		@Override
+		public void setEnabled(final boolean enabled) {
+			super.setEnabled(enabled);
 			
-			i++;
+			x.setEnabled(enabled);
+			if(y != null) y.setEnabled(enabled);
 		}
-		
-		return types;
 	}
 	
 	public WorldCreatorHitbox getHitbox(final int layer) {
