@@ -1,11 +1,7 @@
 package rpg.api.entity;
 
-
-import rpg.RPG;
 import rpg.api.collision.Hitbox;
-import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
-import rpg.api.eventhandling.events.Event;
 import rpg.api.units.DistanceValue;
 
 /**
@@ -23,9 +19,10 @@ public class Player extends LivingEntity {
 	 */
 	public Player() {
 		super("entity.player");
-		hitbox = new Hitbox(new DistanceValue(1), new DistanceValue(1));
-	} 
-
+		
+		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
+	}
+	
 	@Override
 	public Hitbox getHitbox() {
 		return hitbox;
@@ -118,5 +115,5 @@ public class Player extends LivingEntity {
 	}
 	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {}
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
 }

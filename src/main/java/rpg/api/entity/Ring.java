@@ -21,7 +21,7 @@ public class Ring extends Entity {
 		
 		setSprite(sprite);
 		
-		hitbox = new Hitbox(new DistanceValue(1), new DistanceValue(1));
+		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
 	}
 	
 	@Override
