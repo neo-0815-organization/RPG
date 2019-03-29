@@ -36,15 +36,10 @@ public class SongQueue {
 							}
 						}
 						
-						if(songs.size() > 1) {
-							if(i == tracks.length - 1)
-								break;
-							else
-								i++;
-						} else if(i == tracks.length - 2 && !stop)
-							i = 1;
-						else
+						if(i != 1 || stop)
 							i++;
+						else if(songs.size() > 1 && i == 2)
+							break;
 					}
 					
 					songs.remove();
