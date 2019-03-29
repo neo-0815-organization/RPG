@@ -1,10 +1,10 @@
 package rpg.api.scene;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
-import rpg.api.tile.Tile;
-import rpg.api.vector.UnmodifiableVec2D;
+<<<<<<< HEAD
+import rpg.Statics;
+import rpg.api.entity.Entity;
+import rpg.api.units.DistanceValue;
+import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
@@ -13,18 +13,18 @@ import rpg.api.vector.Vec2D;
  * @author Erik Diers, Tim Ludwig
  */
 public class Camera {
-	/**
-	 * The ingame coordinate of the top left corner of the view (in {@link Tile}s).
-	 */
-	public static UnmodifiableVec2D location = Vec2D.ORIGIN;
+	public static ModifiableVec2D location = Vec2D.ORIGIN.toModifiable();
 	
-	/**
-	 * The {@link Dimension} of the view (in pixels).
-	 */
-	public static Dimension frameSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private static Entity entityToFollow;
 	
-	/**
-	 * The factor to scale by after drawing.
-	 */
-	public static final double scale = 2D;
+	public static void update() {
+		if(entityToFollow != null) {
+			location.setX(new DistanceValue(entityToFollow.getLocation().getX().getValuePixel() + (entityToFollow.getWidth() - Statics.frameSize.width) / Statics.scale(2)));
+			location.setY(new DistanceValue(entityToFollow.getLocation().getY().getValuePixel() + (entityToFollow.getHeight() - Statics.frameSize.height) / Statics.scale(2)));
+		}
+	}
+	
+	public static void setFocusEntity(final Entity e) {
+		entityToFollow = e;
+	}
 }

@@ -9,6 +9,7 @@ import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.PlayerController;
+import rpg.api.gfx.HUD;
 import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
 import rpg.api.eventhandling.events.Event;
@@ -36,11 +37,13 @@ public class GameField extends Scene {
 	private final LinkedList<Controller> controller = new LinkedList<>();
 	private PlayerController playerController;
 	
+	private final HUD hud = new HUD();
+	
 	public GameField() {
 		background = new Background();
 		
 		startUpdating();
-		startDrawing();
+		//		startDrawing();
 	}
 	
 	@Override
@@ -75,8 +78,7 @@ public class GameField extends Scene {
 					
 					RPG.gameFrame.drawScene(me);
 					KeyboardListener.updateKeys();
-					
-					//System.out.println(deltaTime);
+					Camera.update();
 				}
 			}
 		};
@@ -151,7 +153,7 @@ public class GameField extends Scene {
 	}
 	
 	public void removeEntity(String name) {
-		if(!name.contains(".name"))name += ".name";
+		if(!name.contains(".name")) name += ".name";
 		
 		int i = 0;
 		for (Entity e : entities) {
@@ -190,6 +192,6 @@ public class GameField extends Scene {
 		this.playerController = playerController;
 		
 		entities.add(playerController.getEntity());
-		
+		Camera.setFocusEntity(playerController.getEntity());
 	}
 }

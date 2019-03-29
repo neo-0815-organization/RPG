@@ -1,8 +1,11 @@
 package rpg;
 
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.prefs.Preferences;
 
 import rpg.api.gfx.GameFrame;
+import rpg.api.gfx.menus.StartMenu;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.scene.GameField;
 import rpg.api.vector.ModifiableVec2D;
@@ -13,20 +16,27 @@ import rpg.api.vector.ModifiableVec2D;
 public class RPG {
 	public static GameFrame gameFrame;
 	public static GameField gameField;
+//	public static Preferences prefs;
 	
 	public static void main(final String[] args) {
 		init();
 	}
 	
+
 	/* This method should not be edited! Thanks! */
 	/**
 	 * This Method initiates the game. - it sets up the GameFrame
 	 */
 	private static void init() {
 		gameFrame = new GameFrame();
+		showStartMenu();
 		gameField = new GameField();
 		registerKeys();
 		//		KeyboardListener.start();
+	}
+
+	private static void showStartMenu() {
+		new StartMenu().show();
 	}
 	
 	private static void registerKeys() {
@@ -90,6 +100,21 @@ public class RPG {
 					break;
 				case RELEASING:
 					gameField.getPlayerController().getPlayer().setVelocity(ModifiableVec2D.ORIGIN.toModifiable());
+					break;
+				default:
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_ESCAPE, (state) -> {
+			switch(state) {
+				case PRESSED:
+					break;
+				case PRESSING:
+					System.exit(0);
+					break;
+				case RELEASED:
+					break;
+				case RELEASING:
 					break;
 				default:
 					break;

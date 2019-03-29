@@ -8,7 +8,7 @@ import rpg.RPG;
 import rpg.api.entity.CharacterType;
 import rpg.api.eventhandling.BundledListener;
 import rpg.api.eventhandling.EventTrigger;
-import rpg.api.filereading.RPGFileReader;
+import rpg.api.filehandling.RPGFileReader;
 import rpg.api.localization.StringLocalizer;
 import rpg.api.scene.GameField;
 

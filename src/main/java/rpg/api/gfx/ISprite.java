@@ -2,6 +2,7 @@ package rpg.api.gfx;
 
 import java.awt.Graphics2D;
 
+import rpg.Statics;
 import rpg.api.scene.Camera;
 import rpg.api.vector.Vec2D;
 
@@ -48,10 +49,11 @@ public interface ISprite extends IDrawable {
 				 camY = Camera.location.getY().getValuePixel(),
 				   xw = x + getWidth(),
 				   yh = y + getHeight(),
-				camXW = camX + (int) Camera.frameSize.getWidth(),
-				camYH = camY + (int) Camera.frameSize.getHeight();
+				camXW = camX + Statics.frameSize.width,
+				camYH = camY + Statics.frameSize.height;
 		//@formatter:on
 		
-		if((x > camX && x < camXW || xw > camX && xw < camXW) && (y > camY && y < camYH || yh > camY && yh < camYH)) g2d.drawImage(getSprite().getCurrentAnimationFrame(), x, y, null);
+		if((x > camX && x < camXW || xw > camX && xw < camXW) && (y > camY && y < camYH || yh > camY && yh < camYH))
+			g2d.drawImage(getSprite().getCurrentAnimationFrame(), x - Camera.location.getX().getValuePixel(), y - Camera.location.getY().getValuePixel(), null);
 	}
 }

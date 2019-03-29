@@ -10,25 +10,33 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import rpg.Statics;
 import rpg.api.listener.key.KeyboardSensor;
-import rpg.api.scene.Camera;
 import rpg.api.scene.Scene;
 
+/**
+ * The gameframe is the instance to display all the graphics. It is working with
+ * a Canvas for normal drawing, which is not visible, while menu are opend
+ * 
+ * @author Erik Diers, Neo Hornberger
+ *
+ */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1861206115390613807L;
-	private static final boolean fullScreen = false;
+	private static final boolean fullScreen = true;
 	
-	private BufferStrategy drawBuffStrat;
+	private final Canvas canvas;
+	private final BufferStrategy drawBuffStrat;
 	
 	public GameFrame() {
 		super("RPG");
 		
-		setBounds(0, 0, (int) Camera.frameSize.getWidth(), (int) Camera.frameSize.getHeight());
+		setSize(Statics.frameSize.width, Statics.frameSize.height);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
+			
 			@Override
 			public void windowClosing(final WindowEvent we) {
-				// code to run on WindowClosing
 				System.exit(0);
 			}
 		});
@@ -44,26 +52,56 @@ public class GameFrame extends JFrame {
 		
 		setUndecorated(fullScreen);
 		setResizable(false);
+		setLocationRelativeTo(null);
 		
-		final Canvas c = new Canvas();
-		getContentPane().add(c);
+		canvas = new Canvas();
+		getContentPane().add(canvas);
 		
 		setVisible(true);
 		
-		c.createBufferStrategy(2);
-		drawBuffStrat = c.getBufferStrategy();
+		canvas.createBufferStrategy(2);
+		drawBuffStrat = canvas.getBufferStrategy();
 	}
 	
+	/**
+	 * Returns a Graphics2D instance, in which the content can be drawn. The
+	 * Graphics2D need to be shown in order to display them.<br>
+	 * ! This needs to be used wisely ! <br>
+	 * ! Dont forget to dispose Graphics !
+	 * 
+	 * @return Graphics2D
+	 */
 	public Graphics2D getDrawingGraphics() {
 		final Graphics2D g2d = (Graphics2D) drawBuffStrat.getDrawGraphics();
-		g2d.scale(Camera.scale, Camera.scale);
+		
+		g2d.scale(Statics.scale, Statics.scale);
+		
 		return g2d;
 	}
 	
+	/**
+	 * Displays Graphics2D on the screen.
+	 * 
+	 * @see #getDrawingGraphics()
+	 */
 	public void showGraphics() {
 		drawBuffStrat.show();
 	}
 	
+	/**
+	 * Sets the visibility of the canvas, this should only be used by menus.
+	 * 
+	 * @param visibility
+	 */
+	public void setCanvasVisibility(final boolean visibility) {
+		canvas.setVisible(visibility);
+	}
+	
+	/**
+	 * Draws a Scene on the screen.
+	 * 
+	 * @param scene
+	 */
 	public void drawScene(final Scene scene) {
 		final Graphics2D g2d = getDrawingGraphics();
 		
