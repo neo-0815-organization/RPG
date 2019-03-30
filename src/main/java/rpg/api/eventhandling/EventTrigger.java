@@ -1,5 +1,5 @@
 package rpg.api.eventhandling;
 
-public class EventTrigger {
-
+public interface EventTrigger {
+	public void triggerEvent(EventType eventType, Object... objects);
 }

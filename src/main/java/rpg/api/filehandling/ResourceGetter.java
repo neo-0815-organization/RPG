@@ -1,4 +1,4 @@
-package rpg.api.filereading;
+package rpg.api.filehandling;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -12,6 +12,8 @@ import javax.imageio.stream.ImageInputStream;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import rpg.Statics;
 
 /**
  * A utility class to manage the retrieval of resources.
@@ -62,20 +64,49 @@ public class ResourceGetter {
 	 * Returns the {@link Image} of the requested resource.
 	 * 
 	 * @param path
-	 *                 the path to the resource
-	 * @return the {@link BufferedImage} of the requested resource, or<br>
-	 *         {@code null}
-	 *         <ul>
-	 *         <li>if no resource is found at this path</li>
-	 *         <li>if an error occurs during reading or when unable to create the
-	 *         required {@link ImageInputStream}</li>
-	 *         </ul>
+	 *            the path to the resource
+	 * @return the {@link BufferedImage} of the requested resource; {@code null}
+	 *         if an error occurs during reading or when unable to create the
+	 *         required {@link ImageInputStream}; {@link Statics#missingImage}
+	 *         if no resource is found at this path
 	 * @see #getResource(String)
 	 */
 	public static BufferedImage getImage(final String path) {
+		final InputStream is = getResource(path);
+		
+		if(is == null) return Statics.missingImage;
+		
 		try {
-			return ImageIO.read(getResource(path));
-		} catch(final IOException e) {
+			return ImageIO.read(is);
+		}catch(final IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Returns the {@link Image} of the requested resource.
+	 * 
+	 * @param path
+	 *            the path to the resource
+	 * @param size
+	 *            the size of the missing image
+	 * @return the {@link BufferedImage} of the requested resource; {@code null}
+	 *         if an error occurs during reading or when unable to create the
+	 *         required {@link ImageInputStream};
+	 *         {@link Statics#missingImage(int, int)} if no resource is found at
+	 *         this path
+	 * @see #getResource(String)
+	 */
+	public static BufferedImage getImage(final String path, final int size) {
+		final InputStream is = getResource(path);
+		
+		if(is == null) return Statics.missingImage(size, size);
+		
+		try {
+			return ImageIO.read(is);
+		}catch(final IOException e) {
 			e.printStackTrace();
 		}
 		

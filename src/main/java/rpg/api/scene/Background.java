@@ -13,7 +13,7 @@ import java.util.zip.ZipInputStream;
 import javax.imageio.ImageIO;
 
 import rpg.api.collision.Hitbox;
-import rpg.api.filereading.ResourceGetter;
+import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.IImage;
 import rpg.api.tile.Tile;
 import rpg.api.vector.ModifiableVec2D;
@@ -179,5 +179,9 @@ public class Background implements IImage {
 	@Override
 	public BufferedImage getImage() {
 		return background;
+	}
+		
+	public String getName() {
+		return name;
 	}
 }

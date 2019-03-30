@@ -5,12 +5,26 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import rpg.Statics;
+
 /**
  * Utility class for images.
  * 
  * @author Neo Hornberger
  */
 public class ImageUtility {
+	
+	public static BufferedImage scale(final BufferedImage image) {
+		return scale(image, Statics.scale);
+	}
+	
+	public static BufferedImage scale(final BufferedImage image, final int scale) {
+		return scale(image, image.getWidth() * scale, image.getHeight() * scale);
+	}
+	
+	public static BufferedImage scale(final BufferedImage image, final double scale) {
+		return scale(image, (int) Math.round(image.getWidth() * scale), (int) Math.round(image.getHeight() * scale));
+	}
 	
 	/**
 	 * Scales a {@link BufferedImage}.
@@ -37,10 +51,14 @@ public class ImageUtility {
 	 * 
 	 * @return the scaled {@link BufferedImage}
 	 */
-	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight, final Object valueInterpolation) {
+	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight, final Object interpolation) {
+		return scale(image, newWidth, newHeight, interpolation, BufferedImage.TYPE_INT_ARGB);
+	}
+	
+	public static BufferedImage scale(final BufferedImage image, final int newWidth, final int newHeight, final Object interpolation, final int type) {
 		if(image.getWidth() == newWidth && image.getHeight() == newHeight) return image;
 		
-		final BufferedImage newImage = new BufferedImage(newWidth, newHeight, image.getType());
+		final BufferedImage newImage = new BufferedImage(newWidth, newHeight, type);
 		final Graphics2D g = newImage.createGraphics();
 		
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, valueInterpolation);

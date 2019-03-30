@@ -13,6 +13,10 @@ public class DistanceValue extends Value {
 		super(value, DISTANCE_FACTORS);
 	}
 	
+	public DistanceValue(final int value) {
+		super(value / DISTANCE_PIXEL_FACTOR, DISTANCE_FACTORS);
+	}
+	
 	/**
 	 * Gets the value stored in this {@link DistanceValue} converted to tiles
 	 *
