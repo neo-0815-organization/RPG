@@ -56,6 +56,7 @@ public class NewMapDialog extends JDialog {
 	private void initComponents() {
 		final JTextPane widthLabel = new JTextPane();
 		widthLabel.setEditable(false);
+		widthLabel.setFocusable(false);
 		widthLabel.setEditorKit(new HTMLEditorKit());
 		widthLabel.setOpaque(false);
 		widthLabel.setSelectionColor(new Color(0, 0, 0, 0));
@@ -70,6 +71,7 @@ public class NewMapDialog extends JDialog {
 		
 		final JTextPane heightLabel = new JTextPane();
 		heightLabel.setEditable(false);
+		heightLabel.setFocusable(false);
 		heightLabel.setEditorKit(new HTMLEditorKit());
 		heightLabel.setOpaque(false);
 		heightLabel.setSelectionColor(new Color(0, 0, 0, 0));
@@ -86,17 +88,17 @@ public class NewMapDialog extends JDialog {
 		seperator.setBounds(8, 80, 260, 5);
 		add(seperator);
 		
-		final JButton cancel = new JButton("Cancel");
-		cancel.setActionCommand("cancel");
-		cancel.addActionListener(buttonActionListener);
-		cancel.setBounds(10, 90, 125, 25);
-		add(cancel);
-		
 		final JButton create = new JButton("Create");
 		create.setActionCommand("create");
 		create.addActionListener(buttonActionListener);
-		create.setBounds(140, 90, 125, 25);
+		create.setBounds(10, 90, 125, 25);
 		add(create);
+		
+		final JButton cancel = new JButton("Cancel");
+		cancel.setActionCommand("cancel");
+		cancel.addActionListener(buttonActionListener);
+		cancel.setBounds(140, 90, 125, 25);
+		add(cancel);
 	}
 	
 	public Dimension getDimension() {

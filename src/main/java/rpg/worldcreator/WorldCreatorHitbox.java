@@ -2,50 +2,42 @@ package rpg.worldcreator;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
-
-import rpg.api.vector.Vec2D;
+import java.awt.geom.Dimension2D;
 
 public class WorldCreatorHitbox {
 	private double scale = 1d;
 	
-	private ArrayList<Vec2D<?>> points = new ArrayList<>();
-	private String type;
+	private Dimension dim = new Dimension();
+	private boolean type;
 	
-	public WorldCreatorHitbox(final String type) {
+	public WorldCreatorHitbox() {
+		this(false);
+	}
+	
+	public WorldCreatorHitbox(final boolean type) {
 		this.type = type;
 	}
 	
 	public void draw(final Graphics g) {
-		final int[] x = new int[points.size()], y = new int[points.size()];
+		g.setColor(new Color(64, 64, 64, 48));
+		g.fillRect(0, 0, (int) (dim.width * Data.tileSize * scale), (int) (dim.height * Data.tileSize * scale));
 		
 		g.setColor(new Color(64, 64, 64, 128));
-		
-		Vec2D<?> point;
-		for(int i = 0; i < points.size(); i++) {
-			point = points.get(i);
-			
-			x[i] = (int) (point.getX().getValuePixel() * scale);
-			y[i] = (int) (point.getY().getValuePixel() * scale);
-		}
-		
-		g.drawPolygon(x, y, points.size());
-		g.setColor(new Color(64, 64, 64, 48));
-		g.fillPolygon(x, y, points.size());
+		g.drawRect(0, 0, (int) (dim.width * Data.tileSize * scale), (int) (dim.height * Data.tileSize * scale));
 	}
 	
-	public String getType() {
+	public boolean getType() {
 		return type;
 	}
 	
-	public void setType(final String type) {
+	public void setType(final boolean type) {
 		this.type = type;
 		
-		if(isNull()) points.clear();
+		dim.setSize(0, 0);
 	}
 	
-	public ArrayList<Vec2D<?>> getPoints() {
-		return points;
+	public Dimension getDimension() {
+		return dim;
 	}
 	
 	public void setScale(final double scale) {
@@ -55,14 +47,44 @@ public class WorldCreatorHitbox {
 	public WorldCreatorHitbox copy() {
 		final WorldCreatorHitbox hitbox = new WorldCreatorHitbox(type);
 		
-		hitbox.points = new ArrayList<>(points);
+		hitbox.dim = new Dimension(dim);
 		
 		return hitbox;
 	}
 	
 	public boolean isNull() {
-		return type == null;
+		return type;
 	}
 	
-	public static final WorldCreatorHitbox nullBox = new WorldCreatorHitbox(null);
+	public static final WorldCreatorHitbox nullBox = new WorldCreatorHitbox(true);
+	
+	public class Dimension extends Dimension2D {
+		private double width, height;
+		
+		public Dimension() {
+			width = 0;
+			height = 0;
+		}
+		
+		public Dimension(final Dimension dim) {
+			width = dim.width;
+			height = dim.height;
+		}
+		
+		@Override
+		public double getWidth() {
+			return width;
+		}
+		
+		@Override
+		public double getHeight() {
+			return height;
+		}
+		
+		@Override
+		public void setSize(final double width, final double height) {
+			this.width = width;
+			this.height = height;
+		}
+	}
 }

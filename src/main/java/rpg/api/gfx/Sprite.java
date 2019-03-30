@@ -27,6 +27,18 @@ public class Sprite {
 	
 	private final double frameDelay;
 	
+	public Sprite(final String name) {
+		this(name, SpriteTheme.NONE);
+	}
+	
+	public Sprite(final String name, final double frameDelay) {
+		this(name, SpriteTheme.NONE, frameDelay);
+	}
+	
+	public Sprite(final String name, final SpriteTheme theme) {
+		this(name, theme, 1d);
+	}
+	
 	public Sprite(final String name, final SpriteTheme theme, final double frameDelay) {
 		this.name = name;
 		this.frameDelay = frameDelay;

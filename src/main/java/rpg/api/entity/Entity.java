@@ -21,13 +21,13 @@ import rpg.api.vector.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
 public abstract class Entity implements INameable, ISprite, ICollideable, EventTrigger {
-	protected ModifiableVec2D	location;
-	protected Sprite			sprite;
-	protected Direction			lookingDirection;
-	protected ModifiableVec2D	velocity	= ModifiableVec2D.ORIGIN.toModifiable();
-	protected String			displayName, imageName;
-	protected UUID				uuid;
-	protected Hitbox 			hb;
+	protected ModifiableVec2D location;
+	protected Sprite sprite;
+	protected Direction lookingDirection;
+	protected ModifiableVec2D velocity = ModifiableVec2D.ORIGIN.toModifiable();
+	protected String displayName, imageName;
+	protected UUID uuid;
+	protected Hitbox hitbox;
 	
 	/**
 	 * Constructs a new {@link Entity} with the display name 'name'.
@@ -195,9 +195,8 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		
 		sprite.update(deltaTime);
 		
-		
-		RPG.gameField.checkCollisionTiles(this).forEach(t-> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
-		RPG.gameField.checkCollisionEntities(this).forEach(e-> triggerEvent(EventType.COLLISION_EVENT, e, this));
+		RPG.gameField.checkCollisionTiles(this).forEach(t -> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
+		RPG.gameField.checkCollisionEntities(this).forEach(e -> triggerEvent(EventType.COLLISION_EVENT, e, this));
 	}
 	
 	/**

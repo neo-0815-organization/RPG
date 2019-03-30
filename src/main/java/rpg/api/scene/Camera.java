@@ -1,6 +1,5 @@
 package rpg.api.scene;
 
-<<<<<<< HEAD
 import rpg.Statics;
 import rpg.api.entity.Entity;
 import rpg.api.units.DistanceValue;

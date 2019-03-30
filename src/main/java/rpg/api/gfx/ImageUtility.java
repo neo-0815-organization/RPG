@@ -29,9 +29,12 @@ public class ImageUtility {
 	/**
 	 * Scales a {@link BufferedImage}.
 	 * 
-	 * @param image the {@link BufferedImage} to scale
-	 * @param newWidth the width to scale the {@link BufferedImage} to
-	 * @param newHeight the height to scale the {@link BufferedImage} to
+	 * @param image
+	 *            the {@link BufferedImage} to scale
+	 * @param newWidth
+	 *            the width to scale the {@link BufferedImage} to
+	 * @param newHeight
+	 *            the height to scale the {@link BufferedImage} to
 	 * 
 	 * @return the scaled {@link BufferedImage}
 	 * 
@@ -44,10 +47,14 @@ public class ImageUtility {
 	/**
 	 * Scales a {@link BufferedImage}.
 	 * 
-	 * @param image the {@link BufferedImage} to scale
-	 * @param newWidth the width to scale the {@link BufferedImage} to
-	 * @param newHeight the height to scale the {@link BufferedImage} to
-	 * @param valueInterpolation the {@link RenderingHints} to use
+	 * @param image
+	 *            the {@link BufferedImage} to scale
+	 * @param newWidth
+	 *            the width to scale the {@link BufferedImage} to
+	 * @param newHeight
+	 *            the height to scale the {@link BufferedImage} to
+	 * @param valueInterpolation
+	 *            the {@link RenderingHints} to use
 	 * 
 	 * @return the scaled {@link BufferedImage}
 	 */
@@ -61,7 +68,7 @@ public class ImageUtility {
 		final BufferedImage newImage = new BufferedImage(newWidth, newHeight, type);
 		final Graphics2D g = newImage.createGraphics();
 		
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, valueInterpolation);
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interpolation);
 		g.drawImage(image, 0, 0, newWidth, newHeight, 0, 0, image.getWidth(), image.getHeight(), null);
 		g.dispose();
 		
@@ -71,11 +78,14 @@ public class ImageUtility {
 	/**
 	 * Rotates a {@link BufferedImage}.
 	 * 
-	 * @param image the {@link BufferedImage} to rotate
-	 * @param angle the angle to rotate by (clockwise in degrees)
+	 * @param image
+	 *            the {@link BufferedImage} to rotate
+	 * @param angle
+	 *            the angle to rotate by (clockwise in degrees)
 	 * @return the rotated {@link BufferedImage}
 	 */
 	public static BufferedImage rotate(final BufferedImage image, final int angle) {
+		if(image == null) return null;
 		if(angle % 360 == 0) return image;
 		
 		final BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
@@ -96,9 +106,17 @@ public class ImageUtility {
 	
 	/**
 	 * Compares two {@link BufferedImage}s
-	 * @param imageOne one {@link BufferedImage}
-	 * @param imageTwo another {@link BufferedImage}
-	 * @return {@code true} <ul><li>if the contents of the two {@link BufferedImage}s are equal</li><li>if {@code (imageOne == imageTwo) == true}</li></ul>  
+	 * 
+	 * @param imageOne
+	 *            one {@link BufferedImage}
+	 * @param imageTwo
+	 *            another {@link BufferedImage}
+	 * @return {@code true}
+	 *         <ul>
+	 *         <li>if the contents of the two {@link BufferedImage}s are
+	 *         equal</li>
+	 *         <li>if {@code (imageOne == imageTwo) == true}</li>
+	 *         </ul>
 	 */
 	public static boolean compare(final BufferedImage imageOne, final BufferedImage imageTwo) {
 		if(imageOne == imageTwo) return true;
