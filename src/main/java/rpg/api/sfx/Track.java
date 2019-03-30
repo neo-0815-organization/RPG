@@ -10,7 +10,7 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineEvent.Type;
 import javax.sound.sampled.LineUnavailableException;
 
-import rpg.api.filereading.ResourceGetter;
+import rpg.api.filehandling.ResourceGetter;
 
 public class Track {
 	public static Clip clip;
