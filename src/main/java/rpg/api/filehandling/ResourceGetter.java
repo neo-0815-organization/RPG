@@ -1,5 +1,6 @@
 package rpg.api.filehandling;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +9,9 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import rpg.Statics;
 
@@ -22,9 +26,9 @@ public class ResourceGetter {
 	 * Returns the {@link InputStream} of the requested resource.
 	 * 
 	 * @param path
-	 *            the path to the resource
-	 * @return the {@link InputStream} of the requested resource; {@code null}
-	 *         if no resource is found at this path
+	 *                 the path to the resource
+	 * @return the {@link InputStream} of the requested resource, or<br>
+	 *         {@code null} if no resource is found at this path
 	 */
 	public static InputStream getResource(final String path) {
 		return ResourceGetter.class.getResourceAsStream(path);
@@ -34,8 +38,8 @@ public class ResourceGetter {
 	 * Returns the {@link InputStreamReader} of the requested resource.
 	 * 
 	 * @param path
-	 *            the path to the resource
-	 * @return the {@link InputStreamReader} of the requested resource;
+	 *                 the path to the resource
+	 * @return the {@link InputStreamReader} of the requested resource, or<br>
 	 *         {@code null} if no resource is found at this path
 	 * @see #getResource(String)
 	 */
@@ -47,8 +51,8 @@ public class ResourceGetter {
 	 * Returns the {@link BufferedReader} of the requested resource.
 	 * 
 	 * @param path
-	 *            the path to the resource
-	 * @return the {@link BufferedReader} of the requested resource;
+	 *                 the path to the resource
+	 * @return the {@link BufferedReader} of the requested resource, or<br>
 	 *         {@code null} if no resource is found at this path
 	 * @see #getInputStreamReader(String)
 	 */
@@ -108,4 +112,15 @@ public class ResourceGetter {
 		
 		return null;
 	}
+	
+	public static AudioInputStream getAudio(final String path) {
+		try {
+			return AudioSystem.getAudioInputStream(getResource(path));
+		} catch(UnsupportedAudioFileException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 }
