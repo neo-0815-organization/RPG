@@ -10,6 +10,7 @@ import rpg.api.entity.Entity;
 import rpg.api.entity.PlayerController;
 import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
+import rpg.api.eventhandling.events.CurrentMapEvent;
 import rpg.api.eventhandling.events.Event;
 import rpg.api.gfx.HUD;
 import rpg.api.listener.key.KeyboardListener;
@@ -123,7 +124,7 @@ public class GameField extends Scene {
 	}
 	
 	public void updateEvents() {
-		EventHandler.handle(new Event(EventType.CURRENT_MAP_EVENT, background.getName()));
+		EventHandler.handle(new CurrentMapEvent());
 		QuestHandler.update();
 	}
 	
@@ -149,15 +150,17 @@ public class GameField extends Scene {
 	public void removeEntity(String name) {
 		if(!name.contains(".name")) name += ".name";
 		
-		int i = 0;
-		for(final Entity e : entities) {
-			if(e.getUnlocalizedName().equalsIgnoreCase(name)) {
-				entities.remove(i);
+		synchronized (entities) {
+			int i = 0;
+			for(final Entity e : entities) {
+				if(e.getUnlocalizedName().equalsIgnoreCase(name)) {
+					entities.remove(i);
+					
+					return;
+				}
 				
-				return;
+				i++;
 			}
-			
-			i++;
 		}
 	}
 	

@@ -1,8 +1,6 @@
 package rpg;
 
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.prefs.Preferences;
 
 import rpg.api.gfx.GameFrame;
 import rpg.api.gfx.menus.StartMenu;

@@ -8,11 +8,9 @@ import rpg.api.eventhandling.EventType;
  * @author Tim Ludiwg
  */
 public class Event {
-	public Object[] eventData;
 	public EventType type;
 	
-	public Event(EventType type, Object... eventData) {
-		this.eventData = eventData;
+	public Event(EventType type) {
 		this.type = type;
 	}
 	

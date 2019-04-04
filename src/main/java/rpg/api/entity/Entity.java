@@ -196,7 +196,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		sprite.update(deltaTime);
 		
 		RPG.gameField.checkCollisionTiles(this).forEach(t -> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
-		RPG.gameField.checkCollisionEntities(this).forEach(e -> triggerEvent(EventType.COLLISION_EVENT, e, this));
+		RPG.gameField.checkCollisionEntities(this).forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
 	}
 	
 	/**
