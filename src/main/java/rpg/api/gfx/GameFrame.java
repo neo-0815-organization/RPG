@@ -19,14 +19,13 @@ import rpg.api.scene.Scene;
  * a Canvas for normal drawing, which is not visible, while menu are opend
  * 
  * @author Erik Diers, Neo Hornberger
- *
  */
 public class GameFrame extends JFrame {
-	private static final long serialVersionUID = 1861206115390613807L;
-	private static final boolean fullScreen = true;
+	private static final long		serialVersionUID	= 1861206115390613807L;
+	private static final boolean	fullScreen			= true;
 	
-	private final Canvas canvas;
-	private final BufferStrategy drawBuffStrat;
+	private final Canvas			canvas;
+	private final BufferStrategy	drawBuffStrat;
 	
 	public GameFrame() {
 		super("RPG");
@@ -72,11 +71,7 @@ public class GameFrame extends JFrame {
 	 * @return Graphics2D
 	 */
 	public Graphics2D getDrawingGraphics() {
-		final Graphics2D g2d = (Graphics2D) drawBuffStrat.getDrawGraphics();
-		
-		g2d.scale(Statics.scale, Statics.scale);
-		
-		return g2d;
+		return (Graphics2D) drawBuffStrat.getDrawGraphics();
 	}
 	
 	/**
@@ -107,6 +102,7 @@ public class GameFrame extends JFrame {
 		
 		g2d.clearRect(0, 0, getWidth(), getHeight());
 		
+		g2d.scale(Statics.scale, Statics.scale);
 		scene.draw(g2d);
 		
 		showGraphics();

@@ -1,6 +1,7 @@
 package rpg.api.entity;
 
 import rpg.api.collision.Hitbox;
+import rpg.api.entity.item.Inventory;
 import rpg.api.eventhandling.EventType;
 import rpg.api.units.DistanceValue;
 
@@ -10,22 +11,27 @@ import rpg.api.units.DistanceValue;
  * @author Neo Hornberger
  */
 public class Player extends LivingEntity {
-	private int xpLevel, mpLevel;
-	private float xp, mp;
+	private int				xpLevel, mpLevel;
+	private float			xp, mp;
+	private final Inventory	inv;
 	
 	/**
-	 * Constructs a player with the standard display name
-	 * ("entity.player.name").
+	 * Constructs a player with the standard display name ("entity.player.name").
 	 */
 	public Player() {
 		super("entity.player");
 		
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
+		inv = new Inventory();
 	}
 	
 	@Override
 	public Hitbox getHitbox() {
 		return hitbox;
+	}
+	
+	public Inventory getInventory() {
+		return inv;
 	}
 	
 	public float getXP() {

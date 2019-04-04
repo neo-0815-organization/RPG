@@ -12,13 +12,14 @@ import rpg.api.filehandling.ResourceGetter;
 
 public class HUD implements IDrawable {
 	// @formatter:off
-	private static final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png")),
-									   xp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp.png"), Statics.scale * 1.1),
-									   hp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp.png"), Statics.scale * 1.1),
-									   mp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"), Statics.scale * 1.1),
-									   xp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png")),
-									   hp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"), Statics.scale * 0.9),
-									   mp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png"));
+	private static final double scaleFactor = 1.8;
+	private static final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png"), Statics.scale * scaleFactor),
+									   xp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp.png"), Statics.scale * (scaleFactor + 0.1)),
+									   hp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp.png"), Statics.scale * (scaleFactor + 0.1)),
+									   mp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"), Statics.scale * (scaleFactor + 0.1)),
+									   xp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png"), Statics.scale * scaleFactor),
+									   hp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"), Statics.scale * (scaleFactor - 0.1)),
+									   mp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png"), Statics.scale * scaleFactor);
 	// @formatter:on
 	
 	@Override
@@ -27,23 +28,28 @@ public class HUD implements IDrawable {
 			final Player p = RPG.gameField.getPlayerController().getPlayer();
 			
 			drawImage(g2d, xp, p.getXP());
-			drawImage(g2d, hp, Statics.scale(36 - 4), p.getHP() / (float) p.getMaxHP());
-			drawImage(g2d, mp, Statics.scale(38 - 4), Statics.scale(36), p.getMP());
+			drawImage(g2d, hp, 36 - 4, p.getHP() / (float) p.getMaxHP());
+			drawImage(g2d, mp, 38 - 4, 36, p.getMP());
 			
-			//			g2d.drawImage(xp, 0, 0, xp.getWidth(), Math.round(p.getXP() * xp.getHeight()), null);
-			//			g2d.drawImage(hp, Statics.scale(36), 0, hp.getWidth(), Math.round(p.getHP() / p.getMaxHP() * (float) hp.getHeight()), null);
-			//			g2d.drawImage(mp, Statics.scale(38), Statics.scale(36), mp.getWidth(), Math.round(p.getMP() * mp.getHeight()), null);
+			// g2d.drawImage(xp, 0, 0, xp.getWidth(), Math.round(p.getXP() *
+			// xp.getHeight()), null);
+			// g2d.drawImage(hp, Statics.scale(36), 0, hp.getWidth(), Math.round(p.getHP() /
+			// p.getMaxHP() * (float) hp.getHeight()), null);
+			// g2d.drawImage(mp, Statics.scale(38), Statics.scale(36), mp.getWidth(),
+			// Math.round(p.getMP() * mp.getHeight()), null);
 			
 			g2d.drawImage(overlay, 0, 0, null);
 			
-			g2d.drawImage(xp_icon, Statics.scale(17 + 15 - 4), Statics.scale(73), null);
-			g2d.drawImage(hp_icon, Statics.scale(111 + 15 - 4), Statics.scale(16), null);
-			g2d.drawImage(mp_icon, Statics.scale(76 + 15 - 4), Statics.scale(64), null);
-			
+			g2d.drawImage(xp_icon, 17 + 15 - 4, 73, null);
+			g2d.drawImage(hp_icon, 111 + 15 - 4, 16, null);
+			g2d.drawImage(mp_icon, 76 + 15 - 4, 64, null);
+			// TODO: scale Images
 			g2d.setFont(Statics.defaultFont(27d));
 			drawCenteredString(g2d, "" + p.getXPLevel(), Statics.scale * 17, Statics.scale * 80, 30);
 			drawCenteredString(g2d, "" + p.getHP(), Statics.scale * 111, Statics.scale * 18, 30);
 			drawCenteredString(g2d, "" + p.getMPLevel(), Statics.scale * 76, Statics.scale * 74, 30);
+			
+			p.getInventory().draw(g2d);
 		}
 	}
 	
