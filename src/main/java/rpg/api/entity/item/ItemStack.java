@@ -8,9 +8,13 @@ import rpg.api.gfx.PathModifier;
 public class ItemStack extends Entity {
 	private static final int MAX_STACK_SIZE = 8;
 	
-	private ItemType		type;
-	private final boolean	questItem;
-	private int				stackSize;
+	private ItemType type;
+	private final boolean questItem;
+	private int stackSize;
+	
+	public ItemStack(final String name) {
+		this(name, false);
+	}
 	
 	public ItemStack(final String name, final boolean questItem) {
 		super("item." + name);

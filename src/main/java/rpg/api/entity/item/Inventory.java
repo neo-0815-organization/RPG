@@ -12,24 +12,30 @@ import rpg.api.gfx.IDrawable;
 import rpg.api.gfx.ImageUtility;
 
 public class Inventory implements IDrawable {
-	private static final int			MAX_INVENTORY_SIZE	= 16, HOTBAR_SLOTS = 4;
-	private static final BufferedImage	HOTBAR				= ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar.png"), Statics.scale * 1.7),
-			INVENTORY = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory.png"), Statics.scale * 1.7),
-			SLOT = HOTBAR.getSubimage(0, 0, HOTBAR.getWidth() / HOTBAR_SLOTS, HOTBAR.getWidth() / HOTBAR_SLOTS);
+	private static final int MAX_INVENTORY_SIZE = 16, HOTBAR_SLOTS = 4;
+	// @formatter:off
+	private static final BufferedImage HOTBAR = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar.png"), Statics.scale * 1.8),
+									   INVENTORY = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory.png"), Statics.scale * 1.8),
+									   SLOT = HOTBAR.getSubimage(0, 0, HOTBAR.getWidth() / HOTBAR_SLOTS, HOTBAR.getWidth() / HOTBAR_SLOTS);
 	
-	private static final int W_INV = HOTBAR.getWidth(), H_INV = INVENTORY.getHeight(), H_HOT = HOTBAR.getHeight(),
-			X_INV = frameSize.width - W_INV, Y_HOT = frameSize.height - H_HOT, Y_INV = frameSize.height - H_INV - H_HOT,
-			SLOT_SIZE = W_INV / HOTBAR_SLOTS;
+	private static final int W_INV = HOTBAR.getWidth(),
+							 H_INV = INVENTORY.getHeight(),
+							 H_HOT = HOTBAR.getHeight(),
+							 X_INV = frameSize.width - W_INV,
+							 Y_HOT = frameSize.height - H_HOT,
+							 Y_INV = frameSize.height - H_INV - H_HOT,
+							 SLOT_SIZE = W_INV / HOTBAR_SLOTS;
+	// @formatter:on
 	
-	public boolean						showFull	= false;
-	private final LinkedList<ItemStack>	questItems	= new LinkedList<>(), items = new LinkedList<>();
-	private ItemStack					armorSlot, weaponSlot;
+	public boolean showFull = false;
+	private final LinkedList<ItemStack> questItems = new LinkedList<>(), items = new LinkedList<>();
+	private ItemStack armorSlot, weaponSlot;
 	
 	/**
 	 * Adds an {@link ItemStack} to the inventory
 	 * 
 	 * @param stack
-	 *                  the {@link ItemStack} to add
+	 *            the {@link ItemStack} to add
 	 * @return {@code true}, if the {@link ItemStack} has been added to the
 	 *         inventory
 	 */
@@ -45,7 +51,7 @@ public class Inventory implements IDrawable {
 	 * Removes an {@link ItemStack} from the inventory
 	 * 
 	 * @param stack
-	 *                  the {@link ItemStack} to remove
+	 *            the {@link ItemStack} to remove
 	 */
 	public void removeItemStack(final ItemStack stack) {
 		if(stack.isQuestItem()) questItems.remove(stack);
