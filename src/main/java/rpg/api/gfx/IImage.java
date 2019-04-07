@@ -1,6 +1,5 @@
 package rpg.api.gfx;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import rpg.Statics;
@@ -37,12 +36,12 @@ public interface IImage extends IDrawable {
 	/**
 	 * Draws the {@link BufferedImage} corresponding to this {@link IImage}.
 	 *
-	 * @param g2d
+	 * @param g
 	 *            the {@link Graphics2D} object to draw on
 	 * @param location
 	 *            the location {@link Vec2D} to draw at
 	 */
-	default void draw(final Graphics2D g2d, final Vec2D<?> location) {
+	default void draw(final DrawingGraphics g, final Vec2D<?> location) {
 		//@formatter:off
 		final int   x = location.getX().getValuePixel(),
 				    y = location.getY().getValuePixel(),
@@ -54,6 +53,6 @@ public interface IImage extends IDrawable {
 				camYH = camY + Statics.frameSize.height;
 		//@formatter:on
 		
-		if((x < camX + w || x < camXW) && (y < camY + h || y < camYH)) g2d.drawImage(getImage(), x - Camera.location.getX().getValuePixel(), y - Camera.location.getY().getValuePixel(), null);
+		if((x < camX + w || x < camXW) && (y < camY + h || y < camYH)) g.drawImage(getImage(), x - Camera.location.getX().getValuePixel(), y - Camera.location.getY().getValuePixel(), null);
 	}
 }

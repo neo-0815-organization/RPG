@@ -43,30 +43,9 @@ public class Player extends LivingEntity {
 	}
 	
 	public void addXP(final float xp) {
-		this.xp += xp;
+		xpLevel += (int) xp;
 		
-		if(this.xp >= 1) for(int i = 0; i < (int) this.xp; i++) {
-			if(this.xp >= 1) {
-				this.xp--;
-				
-				i--;
-			}
-			
-			xpLevel++;
-		}
-		else if(this.xp < 0) {
-			for(int i = 0; i < this.xp * -1; i++) {
-				if(this.xp <= -1) {
-					this.xp++;
-					
-					i--;
-				}
-				
-				xpLevel--;
-			}
-			
-			this.xp = 1 + this.xp;
-		}
+		setXP(xp);
 	}
 	
 	public int getXPLevel() {
@@ -86,30 +65,9 @@ public class Player extends LivingEntity {
 	}
 	
 	public void addMP(final float mp) {
-		this.mp += mp;
+		mpLevel += (int) mp;
 		
-		if(this.mp >= 1) for(int i = 0; i < (int) this.mp; i++) {
-			if(this.mp >= 1) {
-				this.mp--;
-				
-				i--;
-			}
-			
-			mpLevel++;
-		}
-		else if(this.mp < 0) {
-			for(int i = 0; i < this.mp * -1; i++) {
-				if(this.mp <= -1) {
-					this.mp++;
-					
-					i--;
-				}
-				
-				mpLevel--;
-			}
-			
-			this.mp = 1 + this.mp;
-		}
+		setMP(mp);
 	}
 	
 	public int getMPLevel() {

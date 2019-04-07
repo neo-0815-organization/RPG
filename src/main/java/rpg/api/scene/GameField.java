@@ -1,6 +1,5 @@
 package rpg.api.scene;
 
-import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import rpg.api.entity.PlayerController;
 import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
 import rpg.api.eventhandling.events.Event;
+import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.HUD;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
@@ -46,20 +46,21 @@ public class GameField extends Scene {
 	}
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
-		background.draw(g2d);
+	public void draw(final DrawingGraphics g) {
+		background.draw(g);
 		
 		synchronized(entities) {
 			for(final Entity e : entities)
-				e.draw(g2d);
+				e.draw(g);
 		}
 		
 		for(final Tile t : tiles)
-			t.draw(g2d);
+			t.draw(g);
 		
-		g2d.scale(1 / Statics.scale, 1 / Statics.scale);
-		hud.draw(g2d);
-		g2d.scale(Statics.scale, Statics.scale);
+		g.push();
+		g.scale(1 / Statics.scale);
+		hud.draw(g);
+		g.pop();
 	}
 	
 	/**

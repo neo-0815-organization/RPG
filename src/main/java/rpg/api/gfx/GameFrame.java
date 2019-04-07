@@ -1,7 +1,6 @@
 package rpg.api.gfx;
 
 import java.awt.Canvas;
-import java.awt.Graphics2D;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
@@ -70,8 +69,8 @@ public class GameFrame extends JFrame {
 	 * 
 	 * @return Graphics2D
 	 */
-	public Graphics2D getDrawingGraphics() {
-		return (Graphics2D) drawBuffStrat.getDrawGraphics();
+	public DrawingGraphics getDrawingGraphics() {
+		return new DrawingGraphics(drawBuffStrat.getDrawGraphics());
 	}
 	
 	/**
@@ -98,14 +97,14 @@ public class GameFrame extends JFrame {
 	 * @param scene
 	 */
 	public void drawScene(final Scene scene) {
-		final Graphics2D g2d = getDrawingGraphics();
+		final DrawingGraphics g = getDrawingGraphics();
 		
-		g2d.clearRect(0, 0, getWidth(), getHeight());
+		g.clearRect(0, 0, getWidth(), getHeight());
 		
-		g2d.scale(Statics.scale, Statics.scale);
-		scene.draw(g2d);
+		g.scale(Statics.scale);
+		scene.draw(g);
 		
 		showGraphics();
-		g2d.dispose();
+		g.dispose();
 	}
 }

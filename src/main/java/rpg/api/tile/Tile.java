@@ -1,12 +1,12 @@
 package rpg.api.tile;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 
 import rpg.api.collision.Hitbox;
 import rpg.api.collision.ICollideable;
 import rpg.api.entity.Entity;
 import rpg.api.eventhandling.EventTrigger;
+import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 import rpg.api.vector.ModifiableVec2D;
@@ -41,10 +41,10 @@ public abstract class Tile implements ISprite, ICollideable, EventTrigger {
 	public void update(final double deltaTime) {}
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
-		draw(g2d, getLocation());
+	public void draw(final DrawingGraphics g) {
+		draw(g, getLocation());
 		
-		g2d.setColor(Color.BLACK);
+		g.setColor(Color.BLACK);
 	}
 	
 	@Override

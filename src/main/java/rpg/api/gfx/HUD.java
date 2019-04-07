@@ -32,26 +32,26 @@ public class HUD implements IDrawable {
 	// @formatter:on
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
+	public void draw(final DrawingGraphics g) {
 		if(RPG.gameField.getPlayerController() != null) {
 			final Player p = RPG.gameField.getPlayerController().getPlayer();
 			
-			drawImage(g2d, XP_FILL, p.getXP());
-			drawImage(g2d, HP_FILL, HP_FILL_X, p.getHP() / (float) p.getMaxHP());
-			drawImage(g2d, MP_FILL, MP_FILL_X, MP_FILL_Y, p.getMP());
+			drawImage(g, XP_FILL, p.getXP());
+			drawImage(g, HP_FILL, HP_FILL_X, p.getHP() / (float) p.getMaxHP());
+			drawImage(g, MP_FILL, MP_FILL_X, MP_FILL_Y, p.getMP());
 			
-			g2d.drawImage(OVERLAY, 0, 0, null);
+			g.drawImage(OVERLAY, 0, 0, null);
 			
-			g2d.drawImage(XP_ICON, XP_ICON_X, XP_ICON_Y, null);
-			g2d.drawImage(HP_ICON, HP_ICON_X, HP_ICON_Y, null);
-			g2d.drawImage(MP_ICON, MP_ICON_X, MP_ICON_Y, null);
+			g.drawImage(XP_ICON, XP_ICON_X, XP_ICON_Y, null);
+			g.drawImage(HP_ICON, HP_ICON_X, HP_ICON_Y, null);
+			g.drawImage(MP_ICON, MP_ICON_X, MP_ICON_Y, null);
 			// TODO: scale Images
-			g2d.setFont(Statics.defaultFont(27d * scaleFactor));
-			drawCenteredString(g2d, "" + p.getXPLevel(), 17 * scaleFactor2, 80 * scaleFactor2, 20 * scaleFactor2);
-			drawCenteredString(g2d, "" + p.getHP(), 111 * scaleFactor2, 17 * scaleFactor2, 20 * scaleFactor2);
-			drawCenteredString(g2d, "" + p.getMPLevel(), 76 * scaleFactor2, 74 * scaleFactor2, 20 * scaleFactor2);
+			g.setFont(Statics.defaultFont(27d * scaleFactor));
+			drawCenteredString(g, "" + p.getXPLevel(), 17 * scaleFactor2, 80 * scaleFactor2, 20 * scaleFactor2);
+			drawCenteredString(g, "" + p.getHP(), 111 * scaleFactor2, 17 * scaleFactor2, 20 * scaleFactor2);
+			drawCenteredString(g, "" + p.getMPLevel(), 76 * scaleFactor2, 74 * scaleFactor2, 20 * scaleFactor2);
 			
-			p.getInventory().draw(g2d);
+			p.getInventory().draw(g);
 		}
 	}
 	
