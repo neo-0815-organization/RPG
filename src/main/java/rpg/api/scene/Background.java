@@ -1,6 +1,5 @@
 package rpg.api.scene;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +14,7 @@ import javax.imageio.ImageIO;
 import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.filehandling.ResourceGetter;
+import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.IImage;
 import rpg.api.packethandler.ByteBuffer;
 import rpg.api.tile.Tile;
@@ -50,16 +50,16 @@ public class Background implements IImage {
 	}
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
+	public void draw(final DrawingGraphics g) {
 		if(name == null) return;
 		
 		for(final Tile t : fluids)
-			t.draw(g2d);
+			t.draw(g);
 		
-		draw(g2d, Vec2D.ORIGIN);
+		draw(g, Vec2D.ORIGIN);
 		
 		for(final Tile t : tiles)
-			t.draw(g2d);
+			t.draw(g);
 	}
 	
 	public void update(final double deltaTime) {

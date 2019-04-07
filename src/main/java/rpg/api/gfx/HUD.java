@@ -12,38 +12,46 @@ import rpg.api.filehandling.ResourceGetter;
 
 public class HUD implements IDrawable {
 	// @formatter:off
-	private static final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png")),
-									   xp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp.png"), Statics.scale * 1.1),
-									   hp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp.png"), Statics.scale * 1.1),
-									   mp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"), Statics.scale * 1.1),
-									   xp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png")),
-									   hp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"), Statics.scale * 0.9),
-									   mp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png"));
+	private static final double scaleFactor = 1.8, scaleFactor2 = Statics.scale * scaleFactor;
+	private static final BufferedImage OVERLAY = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png"), scaleFactor2),
+									   XP_FILL = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp.png"), Statics.scale * (scaleFactor + 0.2)),
+									   HP_FILL = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp.png"), Statics.scale * (scaleFactor + 0.1)),
+									   MP_FILL = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"), Statics.scale * (scaleFactor + 0.1)),
+									   XP_ICON = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png"), scaleFactor2),
+									   HP_ICON = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"), Statics.scale * (scaleFactor - 0.1)),
+									   MP_ICON = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png"), scaleFactor2);
+	private static final int HP_FILL_X = Statics.scale((36 - 2) * scaleFactor),
+							 MP_FILL_X = Statics.scale((38 - 2) * scaleFactor),
+							 MP_FILL_Y = Statics.scale(36 * scaleFactor),
+							 XP_ICON_X = Statics.scale((17 + 15 - 4) * scaleFactor),
+							 XP_ICON_Y = Statics.scale(73 * scaleFactor),
+							 HP_ICON_X = Statics.scale((111 + 15 - 4) * scaleFactor),
+							 HP_ICON_Y = Statics.scale(16 * scaleFactor),
+							 MP_ICON_X = Statics.scale((76 + 15 - 4) * scaleFactor),
+							 MP_ICON_Y = Statics.scale(65 * scaleFactor);
 	// @formatter:on
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
+	public void draw(final DrawingGraphics g) {
 		if(RPG.gameField.getPlayerController() != null) {
 			final Player p = RPG.gameField.getPlayerController().getPlayer();
 			
-			drawImage(g2d, xp, p.getXP());
-			drawImage(g2d, hp, Statics.scale(36 - 4), p.getHP() / (float) p.getMaxHP());
-			drawImage(g2d, mp, Statics.scale(38 - 4), Statics.scale(36), p.getMP());
+			drawImage(g, XP_FILL, p.getXP());
+			drawImage(g, HP_FILL, HP_FILL_X, p.getHP() / (float) p.getMaxHP());
+			drawImage(g, MP_FILL, MP_FILL_X, MP_FILL_Y, p.getMP());
 			
-			//			g2d.drawImage(xp, 0, 0, xp.getWidth(), Math.round(p.getXP() * xp.getHeight()), null);
-			//			g2d.drawImage(hp, Statics.scale(36), 0, hp.getWidth(), Math.round(p.getHP() / p.getMaxHP() * (float) hp.getHeight()), null);
-			//			g2d.drawImage(mp, Statics.scale(38), Statics.scale(36), mp.getWidth(), Math.round(p.getMP() * mp.getHeight()), null);
+			g.drawImage(OVERLAY, 0, 0, null);
 			
-			g2d.drawImage(overlay, 0, 0, null);
+			g.drawImage(XP_ICON, XP_ICON_X, XP_ICON_Y, null);
+			g.drawImage(HP_ICON, HP_ICON_X, HP_ICON_Y, null);
+			g.drawImage(MP_ICON, MP_ICON_X, MP_ICON_Y, null);
+			// TODO: scale Images
+			g.setFont(Statics.defaultFont(27d * scaleFactor));
+			drawCenteredString(g, "" + p.getXPLevel(), 17 * scaleFactor2, 80 * scaleFactor2, 20 * scaleFactor2);
+			drawCenteredString(g, "" + p.getHP(), 111 * scaleFactor2, 17 * scaleFactor2, 20 * scaleFactor2);
+			drawCenteredString(g, "" + p.getMPLevel(), 76 * scaleFactor2, 74 * scaleFactor2, 20 * scaleFactor2);
 			
-			g2d.drawImage(xp_icon, Statics.scale(17 + 15 - 4), Statics.scale(73), null);
-			g2d.drawImage(hp_icon, Statics.scale(111 + 15 - 4), Statics.scale(16), null);
-			g2d.drawImage(mp_icon, Statics.scale(76 + 15 - 4), Statics.scale(64), null);
-			
-			g2d.setFont(Statics.defaultFont(27d));
-			drawCenteredString(g2d, "" + p.getXPLevel(), Statics.scale * 17, Statics.scale * 80, 30);
-			drawCenteredString(g2d, "" + p.getHP(), Statics.scale * 111, Statics.scale * 18, 30);
-			drawCenteredString(g2d, "" + p.getMPLevel(), Statics.scale * 76, Statics.scale * 74, 30);
+			p.getInventory().draw(g);
 		}
 	}
 	

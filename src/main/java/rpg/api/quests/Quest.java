@@ -4,32 +4,33 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import rpg.RPG;
 import rpg.api.entity.CharacterType;
 import rpg.api.eventhandling.BundledListener;
-import rpg.api.eventhandling.EventTrigger;
 import rpg.api.filehandling.RPGFileReader;
 import rpg.api.localization.StringLocalizer;
 import rpg.api.scene.GameField;
 
 /**
  * The class Quest
+ * 
  * @author Tim Ludwig, Erik Diers, Jan Unterhuber, Alexander Schallenberg
  */
 public class Quest {
-	private int id;
-	private String title, questInfo, map;
-	private CharacterType type;
-	private boolean repeatable, isFinished = false, inProgress = false;
+	private final int			id;
+	private final String		title, questInfo, map;
+	private final CharacterType	type;
+	private final boolean		repeatable;
+	private boolean				isFinished	= false;
+	private boolean				inProgress	= false;
 	
-	private IReward[] rewards;
-	private BundledListener startListener, endListener;
-
-	public Quest(int id, String map, CharacterType type, boolean repeatable, BundledListener startListener, BundledListener endListener, IReward... rewards) {
+	private final IReward[]			rewards;
+	private final BundledListener	startListener, endListener;
+	
+	public Quest(final int id, final String map, final CharacterType type, final boolean repeatable, final BundledListener startListener, final BundledListener endListener, final IReward... rewards) {
 		this.id = id;
 		this.map = map;
-		this.title = StringLocalizer.localize("quest." + id + ".title");
-		this.questInfo = StringLocalizer.localize("quest." + id + ".text");
+		title = StringLocalizer.localize("quest." + id + ".title");
+		questInfo = StringLocalizer.localize("quest." + id + ".text");
 		this.type = type;
 		this.repeatable = repeatable;
 		
@@ -39,17 +40,18 @@ public class Quest {
 	}
 	
 	/**
-	 * Returns whether the Link{Quest} is avialable.
-	 * !Does not call canStart().
+	 * Returns whether the Link{Quest} is avialable. !Does not call canStart().
+	 * 
 	 * @return {@code true} if the Link{Quest} is available
 	 */
 	public boolean isAvailable() {
-		return (!isFinished || repeatable) && !inProgress && RPG.gameField.background.getName().equals(map);
+		return (!isFinished || repeatable) && !inProgress && GameField.background.getName().equals(map);
 	}
 	
 	/**
-	 * Returns whether the conditions for starting the Link{Quest} are met,
-	 * !Does not call startQuest().
+	 * Returns whether the conditions for starting the Link{Quest} are met, !Does
+	 * not call startQuest().
+	 * 
 	 * @return {@code true} if the Link{Quest} can start
 	 */
 	public boolean canStart() {
@@ -57,8 +59,9 @@ public class Quest {
 	}
 	
 	/**
-	 * Returns whether the conditions for finishing the Link{Quest} are met.
-	 * !Does not call endQuest().
+	 * Returns whether the conditions for finishing the Link{Quest} are met. !Does
+	 * not call endQuest().
+	 * 
 	 * @return {@code true} if the Link{Quest} can end
 	 */
 	public boolean canEnd() {
@@ -70,15 +73,16 @@ public class Quest {
 	 */
 	public void finishQuest() {
 		System.out.println("Quest has been finished");
-		for (IReward r:rewards) 
+		for(final IReward r : rewards)
 			r.rewardPlayer();
-
+		
 		inProgress = false;
 		isFinished = true;
 	}
 	
 	/**
 	 * Returns whether the Link{Quest} is inProgress.
+	 * 
 	 * @return {@code true} if the Link{Quest} is in progress
 	 */
 	public boolean isInProgress() {
@@ -103,6 +107,7 @@ public class Quest {
 	
 	/**
 	 * Returns whether the Link{Quest} was finished at leat once
+	 * 
 	 * @return {@code true} if the Link{Quest} was finished at least once
 	 */
 	public boolean isFinished() {
@@ -114,18 +119,17 @@ public class Quest {
 	}
 	
 	public static class Loader {
-		public static Quest loadQuest(String path, String[] strings) {
+		public static Quest loadQuest(final String path, final String[] strings) {
 			
 			return null;
 		}
 		
-		public static List<Quest> loadQuests(String path) {
-			Map<String, String[]> questLines = RPGFileReader.readLineMultiSplit(path, ":", 6);
-			List<Quest> quests = new LinkedList<>();
+		public static List<Quest> loadQuests(final String path) {
+			final Map<String, String[]> questLines = RPGFileReader.readLineMultiSplit(path, ":", 6);
+			final List<Quest> quests = new LinkedList<>();
 			
-			for(String questId : questLines.keySet()) {
+			for(final String questId : questLines.keySet())
 				quests.add(loadQuest(questId, questLines.get(questId)));
-			}
 			
 			return quests;
 		}

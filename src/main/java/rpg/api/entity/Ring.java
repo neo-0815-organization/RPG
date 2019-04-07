@@ -1,6 +1,7 @@
 package rpg.api.entity;
 
 import rpg.api.collision.Hitbox;
+import rpg.api.entity.item.ItemStack;
 import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
 import rpg.api.eventhandling.events.Event;
@@ -8,7 +9,7 @@ import rpg.api.gfx.Sprite;
 import rpg.api.gfx.SpriteTheme;
 import rpg.api.units.DistanceValue;
 
-public class Ring extends Entity {
+public class Ring extends ItemStack {
 	private static final Sprite sprite = new Sprite("tiles/ring", SpriteTheme.NONE);
 	
 	static {
@@ -17,7 +18,7 @@ public class Ring extends Entity {
 	}
 	
 	public Ring() {
-		super("tiles.ring");
+		super("ring", true);
 		
 		setSprite(sprite);
 		

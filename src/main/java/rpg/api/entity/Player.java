@@ -1,6 +1,7 @@
 package rpg.api.entity;
 
 import rpg.api.collision.Hitbox;
+import rpg.api.entity.item.Inventory;
 import rpg.api.eventhandling.EventType;
 import rpg.api.units.DistanceValue;
 
@@ -10,22 +11,27 @@ import rpg.api.units.DistanceValue;
  * @author Neo Hornberger
  */
 public class Player extends LivingEntity {
-	private int xpLevel, mpLevel;
-	private float xp, mp;
+	private int				xpLevel, mpLevel;
+	private float			xp, mp;
+	private final Inventory	inv;
 	
 	/**
-	 * Constructs a player with the standard display name
-	 * ("entity.player.name").
+	 * Constructs a player with the standard display name ("entity.player.name").
 	 */
 	public Player() {
 		super("entity.player");
 		
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
+		inv = new Inventory();
 	}
 	
 	@Override
 	public Hitbox getHitbox() {
 		return hitbox;
+	}
+	
+	public Inventory getInventory() {
+		return inv;
 	}
 	
 	public float getXP() {
@@ -37,30 +43,9 @@ public class Player extends LivingEntity {
 	}
 	
 	public void addXP(final float xp) {
-		this.xp += xp;
+		xpLevel += (int) xp;
 		
-		if(this.xp >= 1) for(int i = 0; i < (int) this.xp; i++) {
-			if(this.xp >= 1) {
-				this.xp--;
-				
-				i--;
-			}
-			
-			xpLevel++;
-		}
-		else if(this.xp < 0) {
-			for(int i = 0; i < this.xp * -1; i++) {
-				if(this.xp <= -1) {
-					this.xp++;
-					
-					i--;
-				}
-				
-				xpLevel--;
-			}
-			
-			this.xp = 1 + this.xp;
-		}
+		setXP(xp);
 	}
 	
 	public int getXPLevel() {
@@ -80,30 +65,9 @@ public class Player extends LivingEntity {
 	}
 	
 	public void addMP(final float mp) {
-		this.mp += mp;
+		mpLevel += (int) mp;
 		
-		if(this.mp >= 1) for(int i = 0; i < (int) this.mp; i++) {
-			if(this.mp >= 1) {
-				this.mp--;
-				
-				i--;
-			}
-			
-			mpLevel++;
-		}
-		else if(this.mp < 0) {
-			for(int i = 0; i < this.mp * -1; i++) {
-				if(this.mp <= -1) {
-					this.mp++;
-					
-					i--;
-				}
-				
-				mpLevel--;
-			}
-			
-			this.mp = 1 + this.mp;
-		}
+		setMP(mp);
 	}
 	
 	public int getMPLevel() {

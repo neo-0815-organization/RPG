@@ -1,6 +1,5 @@
 package rpg.api.entity;
 
-import java.awt.Graphics2D;
 import java.util.UUID;
 
 import rpg.RPG;
@@ -9,6 +8,7 @@ import rpg.api.collision.Hitbox;
 import rpg.api.collision.ICollideable;
 import rpg.api.eventhandling.EventTrigger;
 import rpg.api.eventhandling.EventType;
+import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 import rpg.api.localization.INameable;
@@ -21,19 +21,19 @@ import rpg.api.vector.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
 public abstract class Entity implements INameable, ISprite, ICollideable, EventTrigger {
-	protected ModifiableVec2D location;
-	protected Sprite sprite;
-	protected Direction lookingDirection;
-	protected ModifiableVec2D velocity = ModifiableVec2D.ORIGIN.toModifiable();
-	protected String displayName, imageName;
-	protected UUID uuid;
-	protected Hitbox hitbox;
+	protected ModifiableVec2D	location;
+	protected Sprite			sprite;
+	protected Direction			lookingDirection;
+	protected ModifiableVec2D	velocity	= ModifiableVec2D.ORIGIN.toModifiable();
+	protected String			displayName, imageName;
+	protected UUID				uuid;
+	protected Hitbox			hitbox;
 	
 	/**
 	 * Constructs a new {@link Entity} with the display name 'name'.
 	 * 
 	 * @param name
-	 *            the display name to set
+	 *                 the display name to set
 	 */
 	public Entity(final String name) {
 		setDisplayName(name);
@@ -43,9 +43,9 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *            the {@link Direction} to accelerate in
+	 *                      the {@link Direction} to accelerate in
 	 * @param force
-	 *            the amount of accelerating force
+	 *                      the amount of accelerating force
 	 * @see #accelerate(Vec2D)
 	 */
 	public void accelerate(final Direction direction, final double force) {
@@ -56,7 +56,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param acc
-	 *            the accelerating force {@link Vec2D}
+	 *                the accelerating force {@link Vec2D}
 	 */
 	public void accelerate(final Vec2D<?> acc) {
 		velocity.add(acc);
@@ -65,8 +65,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	/**
 	 * Gets the {@link Vec2D} representing the location of this {@link Entity}.
 	 *
-	 * @return the {@link Vec2D} representing the location of this
-	 *         {@link Entity}
+	 * @return the {@link Vec2D} representing the location of this {@link Entity}
 	 */
 	public ModifiableVec2D getLocation() {
 		return location.toModifiable();
@@ -76,7 +75,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Sets the {@link Vec2D} representing the location of this {@link Entity}.
 	 *
 	 * @param the
-	 *            {@link Vec2D} representing the location of this {@link Entity}
+	 *                {@link Vec2D} representing the location of this {@link Entity}
 	 */
 	public void setLocation(final Vec2D<?> location) {
 		this.location = location.toModifiable();
@@ -95,7 +94,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Sets the looking {@link Direction} of this {@link Entity}.
 	 *
 	 * @param the
-	 *            looking {@link Direction} of this {@link Entity}
+	 *                looking {@link Direction} of this {@link Entity}
 	 */
 	public void setLookingDirection(final Direction lookingDirection) {
 		this.lookingDirection = lookingDirection;
@@ -123,7 +122,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Sets the velocity {@link Vec2D} of this {@link Entity}.
 	 *
 	 * @param the
-	 *            velocity {@link Vec2D} of this {@link Entity}
+	 *                velocity {@link Vec2D} of this {@link Entity}
 	 */
 	public void setVelocity(final ModifiableVec2D velocity) {
 		this.velocity = velocity;
@@ -142,7 +141,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Sets the {@link UUID} of this {@link Entity}.
 	 *
 	 * @param the
-	 *            {@link UUID} of this {@link Entity}
+	 *                {@link UUID} of this {@link Entity}
 	 */
 	public void setUniqueId(final UUID uuid) {
 		this.uuid = uuid;
@@ -173,7 +172,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Sets the {@link String} of this {@link Entity}.
 	 *
 	 * @param the
-	 *            {@link String} of this {@link Entity}
+	 *                {@link String} of this {@link Entity}
 	 */
 	public void setImageName(final String imageName) {
 		this.imageName = imageName;
@@ -188,7 +187,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Updates this {@link Entity}.
 	 * 
 	 * @param deltaTime
-	 *            time since last frame in sec
+	 *                      time since last frame in sec
 	 */
 	public void update(final double deltaTime) {
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
@@ -203,22 +202,22 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Sets the {@link Sprite} of this {@link Entity}.
 	 *
 	 * @param the
-	 *            {@link Sprite} of this {@link Entity}
+	 *                {@link Sprite} of this {@link Entity}
 	 */
 	public void setSprite(final Sprite sprite) {
 		this.sprite = sprite;
 	}
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
-		draw(g2d, location);
+	public void draw(final DrawingGraphics g) {
+		draw(g, location);
 		
 		sprite.nextFrame();
 	}
 	
 	/**
-	 * Returns a human readable representation of this {@link Entity} looking
-	 * like Entity@hash[{@link UUID}, displayName].
+	 * Returns a human readable representation of this {@link Entity} looking like
+	 * Entity@hash[{@link UUID}, displayName].
 	 *
 	 * @return the textual representation of this {@link Entity}
 	 * @see Object#toString()

@@ -1,7 +1,6 @@
 package rpg.api.gfx;
 
 import java.awt.Canvas;
-import java.awt.Graphics2D;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
@@ -19,14 +18,13 @@ import rpg.api.scene.Scene;
  * a Canvas for normal drawing, which is not visible, while menu are opend
  * 
  * @author Erik Diers, Neo Hornberger
- *
  */
 public class GameFrame extends JFrame {
-	private static final long serialVersionUID = 1861206115390613807L;
-	private static final boolean fullScreen = true;
+	private static final long		serialVersionUID	= 1861206115390613807L;
+	private static final boolean	fullScreen			= true;
 	
-	private final Canvas canvas;
-	private final BufferStrategy drawBuffStrat;
+	private final Canvas			canvas;
+	private final BufferStrategy	drawBuffStrat;
 	
 	public GameFrame() {
 		super("RPG");
@@ -71,12 +69,8 @@ public class GameFrame extends JFrame {
 	 * 
 	 * @return Graphics2D
 	 */
-	public Graphics2D getDrawingGraphics() {
-		final Graphics2D g2d = (Graphics2D) drawBuffStrat.getDrawGraphics();
-		
-		g2d.scale(Statics.scale, Statics.scale);
-		
-		return g2d;
+	public DrawingGraphics getDrawingGraphics() {
+		return new DrawingGraphics(drawBuffStrat.getDrawGraphics());
 	}
 	
 	/**
@@ -103,13 +97,14 @@ public class GameFrame extends JFrame {
 	 * @param scene
 	 */
 	public void drawScene(final Scene scene) {
-		final Graphics2D g2d = getDrawingGraphics();
+		final DrawingGraphics g = getDrawingGraphics();
 		
-		g2d.clearRect(0, 0, getWidth(), getHeight());
+		g.clearRect(0, 0, getWidth(), getHeight());
 		
-		scene.draw(g2d);
+		g.scale(Statics.scale);
+		scene.draw(g);
 		
 		showGraphics();
-		g2d.dispose();
+		g.dispose();
 	}
 }
