@@ -6,18 +6,33 @@ import java.net.Socket;
 import java.util.HashMap;
 
 import rpg.api.packethandler.PacketRegistry;
+import rpg.api.packethandler.client.Client;
 import rpg.api.packethandler.packet.Packet;
-import rpg.api.packethandler.packet.PacketPing;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPing;
+import rpg.api.packethandler.packet.time.PacketPong;
 
+/**
+ * The abstract class Server represents a server on which {@link Client}s can
+ * connect to.
+ *
+ * @author Neo Hornberger
+ */
 public abstract class Server extends PacketRegistry {
-	private final ServerSocket socket;
-	private final Thread acceptingThread;
-	private final Server INSTANCE = this;
+	private final ServerSocket	socket;
+	private final Thread		acceptingThread;
+	private final Server		INSTANCE	= this;
 	
 	protected final HashMap<Socket, ClientConnection> clients = new HashMap<>();
 	
-	public Server(int port) throws IOException {
+	/**
+	 * Constructs a new {@link Server} and bind it to the port 'port'.
+	 *
+	 * @param port
+	 *     the port the {@link Server} will bound to
+	 * @throws IOException
+	 *     if an I/O error occures when opening the {@link ServerSocket}
+	 */
+	public Server(final int port) throws IOException {
 		socket = new ServerSocket(port);
 		
 		acceptingThread = new Thread("Accepting-Thread -- " + socket.getLocalPort()) {
@@ -27,16 +42,16 @@ public abstract class Server extends PacketRegistry {
 				while(!isInterrupted())
 					try {
 						final Socket client = socket.accept();
-						
-						clients.put(client, new ClientConnection(INSTANCE, client));
+						final ClientConnection clientCon = new ClientConnection(INSTANCE, client);
 						
 						for(final Packet packet : getAllPackets())
-							clients.get(client).registerPacket(packet);
+							clientCon.registerPacket(packet);
 						
-						clients.get(client).startListening();
+						clientCon.startListening();
+						clientCon.sendPacket(clientCon.getPacket(-1, 0)); // TODO change to enum usage '(-1, 0)'
 						
-						clients.get(client).sendPacket(clients.get(client).getPacket(0, 0));
-					}catch(final IOException e) {
+						clients.put(client, clientCon);
+					} catch(final IOException e) {
 						e.printStackTrace();
 					}
 			}
@@ -46,11 +61,23 @@ public abstract class Server extends PacketRegistry {
 		registerPacket(new PacketPong());
 	}
 	
-	public void start() {
+	/**
+	 * Starts the accepting thread of this {@link Server}.
+	 *
+	 * @see Thread#start()
+	 */
+	protected void start() {
 		acceptingThread.start();
 	}
 	
-	public void stop() {
+	/**
+	 * Interrupts the accepting thread of this {@link Server} and stops listening in
+	 * all {@link ClientConnection}s.
+	 *
+	 * @see Thread#interrupt()
+	 * @see ClientConnection#stopListening()
+	 */
+	protected void stop() {
 		acceptingThread.interrupt();
 		
 		for(final ClientConnection client : clients.values())
@@ -62,38 +89,47 @@ public abstract class Server extends PacketRegistry {
 	 * associated with the {@link Socket} 'client'.
 	 *
 	 * @param client
-	 *            - the {@link Socket}
+	 *     - the client
 	 * @param packet
-	 *            - the {@link Packet}
+	 *     - the {@link Packet} that will be sent
 	 * @throws IOException
-	 *             if an I/O error occures
+	 *     if an I/O error occures
 	 * @throws IllegalArgumentException
-	 *             if 'client' hasn't an associated {@link ClientConnection}
+	 *     if 'client' hasn't an associated {@link ClientConnection}
 	 */
-	public void sendPacket(Socket client, Packet packet) throws IOException, IllegalArgumentException {
+	protected void sendPacket(final Socket client, final Packet packet) throws IOException, IllegalArgumentException {
 		if(!clients.containsKey(client)) throw new IllegalArgumentException("This client is not connected to this server");
 		
 		clients.get(client).sendPacket(packet);
 	}
 	
 	/**
-	 * Sends the {@link Packet} 'packet' to all connected sockets.
+	 * Broadcasts the {@link Packet} 'packet' to all connected sockets.
 	 *
 	 * @param packet
-	 *            - the {@link Packet}
+	 *     - the {@link Packet} that will be broadcasted
 	 * @throws IOException
-	 *             if an I/O error occures
+	 *     if an I/O error occures
 	 * @see #sendPacket(Socket, Packet)
 	 */
-	public void broadcastPacket(Packet packet) throws IOException {
+	protected void broadcastPacket(final Packet packet) throws IOException {
 		for(final Socket client : clients.keySet())
 			sendPacket(client, packet);
 	}
 	
+	/**
+	 * Will be evaluated when the {@link Server} has received a {@link Packet} from
+	 * a client.
+	 *
+	 * @param client
+	 *     the client that has sent the {@link Packet} 'packet'
+	 * @param packet
+	 *     the {@link Packet} that was sent by the client
+	 */
 	protected abstract void onPacketReceived(Socket client, Packet packet);
 	
 	@Override
-	public void registerPacket(Packet packet) {
+	public void registerPacket(final Packet packet) {
 		super.registerPacket(packet);
 		
 		for(final Socket client : clients.keySet())

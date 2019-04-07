@@ -6,27 +6,51 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import rpg.api.packethandler.packet.Packet;
-import rpg.api.packethandler.packet.PacketPong;
+import rpg.api.packethandler.packet.time.PacketPong;
 
 /**
  * This thread is listening to an {@link InputStream}, reading the transfered
  * bytes,<br>
  * writing these bytes to a {@link ByteBuffer}, executing the matching
- * packet<br>
- * (and if possible sending the response packet via an {@link OutputStream}).
+ * {@link Packet}<br>
+ * (and if possible sending the response {@link Packet} via an
+ * {@link OutputStream}).
+ *
+ * @author Neo Hornberger
  */
 public abstract class ListeningThread extends Thread {
 	private final InputStream in;
 	private final OutputStream out;
 	
-	public ListeningThread(Socket socket) throws IOException {
+	/**
+	 * Constructs the {@link ListeningThread} with the {@link Socket} 'socket'.
+	 *
+	 * @param socket
+	 *            the {@link Socket}s {@link InputStream} and
+	 *            {@link OutputStream} will be used to construct this
+	 *            {@link ListeningThread}
+	 * @throws IOException
+	 *             if an I/O error occures
+	 */
+	public ListeningThread(final Socket socket) throws IOException {
 		super("Listening-Thread -- " + socket.getLocalAddress() + ":" + socket.getLocalPort());
 		
 		in = socket.getInputStream();
 		out = socket.getOutputStream();
 	}
 	
-	public ListeningThread(InputStream in, OutputStream out) {
+	/**
+	 * Constructs the {@link ListeningThread} with the {@link InputStream} 'in'
+	 * and the {@link OutputStream} 'out'.
+	 *
+	 * @param in
+	 *            the {@link InputStream} that will be used to construct this
+	 *            {@link ListeningThread}
+	 * @param out
+	 *            the {@link OutputStream} that will be used to construct this
+	 *            {@link ListeningThread}
+	 */
+	public ListeningThread(final InputStream in, final OutputStream out) {
 		super("Listening-Thread");
 		
 		this.in = in;
@@ -48,12 +72,15 @@ public abstract class ListeningThread extends Thread {
 					if(packet instanceof PacketPong) connection().onPong((PacketPong) packet);
 					connection().onPacketReceived(packet);
 					
-					if(packet.response() != null) connection().sendPacket(packet.response(), out);
+					if(packet.response() != null) connection().sendPacket(packet.response());
 				}
 			}catch(final IOException e) {
 				e.printStackTrace();
 			}
 	}
 	
+	/**
+	 * The {@link Connection} instance.
+	 */
 	protected abstract Connection connection();
 }

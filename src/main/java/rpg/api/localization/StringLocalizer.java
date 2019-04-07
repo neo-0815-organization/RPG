@@ -1,90 +1,118 @@
 package rpg.api.localization;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.IllegalFormatConversionException;
 import java.util.MissingFormatArgumentException;
 
+import rpg.api.filehandling.RPGFileReader;
+
+/**
+ * The class StringLocalizer used to localize {@link String}s.
+ *
+ * @author Neo Hornberger
+ */
 public class StringLocalizer {
-	private static final File langDir = getLangDir();
+	private static final String langDir = "/assets/lang/";
+	
+	private static LocalizationTable activeTable = new LocalizationTable();
 	private static Locale activeLocale = Locale.getDefault();
 	
-	public static String localize(String path) {
+	/**
+	 * Localizes the path 'path'.
+	 *
+	 * @param path
+	 *            the path which will be localized
+	 * @return the localized value of the path 'path'
+	 */
+	public static String localize(final String path) {
 		return format0(path, true);
 	}
 	
-	public static String format(String path, Object... objects) {
+	/**
+	 * Localizes the path 'path' and formats its value.
+	 *
+	 * @param path
+	 *            the path which will be localized and formated
+	 * @param objects
+	 *            the arguments referenced by the format specifiers in the
+	 *            format string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero. The behaviour on a
+	 *            {@code null} argument depends on the
+	 *            <a href="../util/Formatter.html#syntax">conversion</a>
+	 * @return the localized and formated value of the path 'path'
+	 */
+	public static String format(final String path, final Object... objects) {
 		return format0(path, false, objects);
 	}
 	
-	private static String format0(String path, boolean ignoreExceptions, Object... objects) {
-		final File[] files = langDir.listFiles(getLangFileFilter());
-		
-		for(final File file : files)
+	/**
+	 * <h4>Does the whole magic!!</h4> Localizes the path 'path' and formats its
+	 * value. This method is only for internal usage.
+	 *
+	 * @param path
+	 *            the path which will be localized and formated
+	 * @param ignoreExceptions
+	 *            if {@code true} the method won't throw any
+	 *            {@link LocalizationException}
+	 * @param objects
+	 *            the arguments referenced by the format specifiers in the
+	 *            format string. If there are more arguments than format
+	 *            specifiers, the extra arguments are ignored. The number of
+	 *            arguments is variable and may be zero. The behaviour on a
+	 *            {@code null} argument depends on the
+	 *            <a href="../util/Formatter.html#syntax">conversion</a>
+	 * @throws LocalizationException
+	 * @return the localized and formated value of the path 'path'
+	 */
+	private static String format0(final String path, final boolean ignoreExceptions, final Object... objects) {
+		if(activeTable.pathHasValue(path)) {
+			final String value = activeTable.getValue(path);
+			
 			try {
-				final BufferedReader reader = new BufferedReader(new FileReader(file));
-				
-				String line = null;
-				int lineNumber = 1;
-				while((line = reader.readLine()) != null) {
-					if(line.split("=")[0].equals(path)) try {
-						return String.format(line.split("=")[1], objects);
-					}catch(final MissingFormatArgumentException | IllegalFormatConversionException e) {
-						if(ignoreExceptions) return line.split("=")[1];
-						else if(e instanceof MissingFormatArgumentException) throw new LocalizationException(path, file.getName(), ((MissingFormatArgumentException) e).getFormatSpecifier(), lineNumber);
-						else if(e instanceof IllegalFormatConversionException) throw new LocalizationException(path, file.getName(), "%" + ((IllegalFormatConversionException) e).getConversion(), ((IllegalFormatConversionException) e).getArgumentClass(), lineNumber);
-					}catch(final ArrayIndexOutOfBoundsException e) {
-						return "";
-					}
-					
-					lineNumber++;
-				}
-				
-				reader.close();
-			}catch(final IOException e) {
-				e.printStackTrace();
+				return String.format(value, objects);
+			}catch(final MissingFormatArgumentException | IllegalFormatConversionException e) {
+				if(ignoreExceptions) return value;
+				else if(e instanceof MissingFormatArgumentException) throw new LocalizationException(path, activeLocale.getFilename(), ((MissingFormatArgumentException) e).getFormatSpecifier(), activeTable.getLineNumber(path));
+				else if(e instanceof IllegalFormatConversionException) throw new LocalizationException(path, activeLocale.getFilename(), "%" + ((IllegalFormatConversionException) e).getConversion(), ((IllegalFormatConversionException) e).getArgumentClass(), activeTable.getLineNumber(path));
+			}catch(final ArrayIndexOutOfBoundsException e) {
+				return "";
 			}
+		}
 		
 		return path;
 	}
 	
-	private static File getLangDir() {
-		final URL url = StringLocalizer.class.getClassLoader().getResource("lang");
-		
-		File file = null;
-		try {
-			file = new File(url.toURI());
-		}catch(final URISyntaxException e) {
-			file = new File(url.getPath());
-		}
-		
-		return file;
+	/**
+	 * Updates the {@link LocalizationTable}.
+	 */
+	public static void updateTable() {
+		RPGFileReader.readLineSplit(langDir + activeLocale.getFilename(), "=", activeTable::setValueAndLineNumber);
 	}
 	
-	private static FilenameFilter getLangFileFilter() {
-		return new FilenameFilter() {
-			
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(activeLocale.getFilename());
-			}
-		};
-	}
-	
+	/**
+	 * Gets the currently active {@link Locale}.
+	 *
+	 * @return the currently active {@link Locale}
+	 */
 	public static Locale getActiveLocale() {
 		return activeLocale;
 	}
 	
-	public static void setActiveLocale(Locale locale) {
+	/**
+	 * Sets the currently active {@link Locale}.
+	 */
+	public static void setActiveLocale(final Locale locale) {
 		activeLocale = locale;
+		
+		updateTable();
 	}
 	
+	/**
+	 * Resets the currently active {@link Locale} to the default {@link Locale}.
+	 *
+	 * @see Locale#getDefault()
+	 */
 	public static void resetActiveLocale() {
-		activeLocale = Locale.getDefault();
+		setActiveLocale(Locale.getDefault());
 	}
 }
