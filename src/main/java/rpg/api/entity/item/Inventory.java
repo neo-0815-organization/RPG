@@ -1,29 +1,27 @@
 package rpg.api.entity.item;
 
-import static rpg.Statics.frameSize;
+import static rpg.Statics.gameSize;
 
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import rpg.Statics;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.IDrawable;
-import rpg.api.gfx.ImageUtility;
 
 public class Inventory implements IDrawable {
 	private static final int MAX_INVENTORY_SIZE = 16, HOTBAR_SLOTS = 4;
 	// @formatter:off
-	private static final BufferedImage HOTBAR = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar.png"), Statics.scale * 1.8),
-									   INVENTORY = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory.png"), Statics.scale * 1.8),
-									   SLOT = HOTBAR.getSubimage(0, 0, HOTBAR.getWidth() / HOTBAR_SLOTS, HOTBAR.getWidth() / HOTBAR_SLOTS);
+	private static final BufferedImage HOTBAR = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar.png"),
+									   INVENTORY = ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory.png"),
+									   SLOT = HOTBAR.getSubimage(0, 0, HOTBAR.getWidth() / HOTBAR_SLOTS, HOTBAR.getHeight());
 	
 	private static final int W_INV = HOTBAR.getWidth(),
 							 H_INV = INVENTORY.getHeight(),
 							 H_HOT = HOTBAR.getHeight(),
-							 X_INV = frameSize.width - W_INV,
-							 Y_HOT = frameSize.height - H_HOT,
-							 Y_INV = frameSize.height - H_INV - H_HOT,
+							 X_INV = gameSize.width - W_INV,
+							 Y_HOT = gameSize.height - H_HOT,
+							 Y_INV = gameSize.height - H_INV - H_HOT,
 							 SLOT_SIZE = W_INV / HOTBAR_SLOTS;
 	// @formatter:on
 	
@@ -101,8 +99,8 @@ public class Inventory implements IDrawable {
 			final int x = i % (HOTBAR_SLOTS + 1);
 			final int y = (i - x) / HOTBAR_SLOTS;
 			
-			g.drawImage(SLOT, Statics.frameSize.width - SLOT_SIZE * x, SLOT_SIZE * y, null);
-			g.drawImage(image, Statics.frameSize.width - SLOT_SIZE * x, SLOT_SIZE * y, null);
+			g.drawImage(SLOT, gameSize.width - SLOT_SIZE * x, SLOT_SIZE * y, null);
+			g.drawImage(image, gameSize.width - SLOT_SIZE * x, SLOT_SIZE * y, null);
 		}
 	}
 }

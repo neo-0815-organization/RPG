@@ -28,10 +28,10 @@ import java.util.Map;
 import java.util.Stack;
 
 public class DrawingGraphics extends Graphics2D {
-	private final Stack<Graphics2D> stack = new Stack<>();
+	private final Stack<Graphics2D> gStack = new Stack<>();
 	
 	public DrawingGraphics(final Graphics2D context) {
-		stack.push(context);
+		gStack.push(context);
 	}
 	
 	public DrawingGraphics(final Graphics context) {
@@ -39,17 +39,17 @@ public class DrawingGraphics extends Graphics2D {
 	}
 	
 	private Graphics2D g() {
-		return stack.peek();
+		return gStack.peek();
 	}
 	
 	public void push() {
-		stack.push((Graphics2D) g().create());
+		gStack.push((Graphics2D) g().create());
 	}
 	
 	public void pop() {
-		if(stack.isEmpty()) return;
+		if(gStack.isEmpty()) return;
 		
-		stack.pop().dispose();
+		gStack.pop().dispose();
 	}
 	
 	@Override

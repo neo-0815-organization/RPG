@@ -10,8 +10,10 @@ import java.awt.image.BufferedImage;
 public class Statics {
 	public static final Dimension frameSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
-	private static final double scaleConst = 1.75d;
-	public static final double scale = frameSize.width / 1920d * scaleConst;
+	private static final double	scaleConst	= 1.75d;
+	public static final double	scale		= frameSize.width / 1920d * scaleConst;
+	
+	public static final Dimension gameSize = new Dimension((int) (frameSize.width / scale), (int) (frameSize.height / scale));
 	
 	public static int scale(final double value) {
 		return (int) Math.round(value * scale);

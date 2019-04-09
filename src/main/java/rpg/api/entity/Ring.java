@@ -18,7 +18,7 @@ public class Ring extends ItemStack {
 	}
 	
 	public Ring() {
-		super("ring", true);
+		super("ring", false);
 		
 		setSprite(sprite);
 		
