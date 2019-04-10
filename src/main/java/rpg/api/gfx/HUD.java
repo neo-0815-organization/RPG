@@ -34,9 +34,9 @@ public class HUD implements IDrawable {
 		if(RPG.gameField.getPlayerController() != null) {
 			final Player p = RPG.gameField.getPlayerController().getPlayer();
 			
-			drawImage(g, XP_FILL, p.getXP());
+			drawImage(g, XP_FILL, p.getXP() % 1);
 			drawImage(g, HP_FILL, HP_FILL_X, p.getHP() / (float) p.getMaxHP());
-			drawImage(g, MP_FILL, MP_FILL_X, MP_FILL_Y, p.getMP());
+			drawImage(g, MP_FILL, MP_FILL_X, MP_FILL_Y, p.getMP() % 1);
 			
 			g.drawImage(OVERLAY, 0, 0, null);
 			

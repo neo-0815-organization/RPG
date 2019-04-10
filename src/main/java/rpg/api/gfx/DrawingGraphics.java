@@ -30,20 +30,24 @@ import java.util.Stack;
 public class DrawingGraphics extends Graphics2D {
 	private final Stack<Graphics2D> gStack = new Stack<>();
 	
-	public DrawingGraphics(final Graphics2D context) {
-		gStack.push(context);
-	}
-	
 	public DrawingGraphics(final Graphics context) {
 		this((Graphics2D) context);
 	}
 	
-	private Graphics2D g() {
+	public DrawingGraphics(final Graphics2D context) {
+		g(context);
+	}
+	
+	protected Graphics2D g() {
 		return gStack.peek();
 	}
 	
+	private void g(final Graphics2D g2d) {
+		gStack.push(g2d);
+	}
+	
 	public void push() {
-		gStack.push((Graphics2D) g().create());
+		g((Graphics2D) g().create());
 	}
 	
 	public void pop() {
@@ -159,7 +163,7 @@ public class DrawingGraphics extends Graphics2D {
 	
 	@Override
 	public void fillOval(final int x, final int y, final int width, final int height) {
-		g().drawOval(x, y, width, height);
+		g().fillOval(x, y, width, height);
 	}
 	
 	@Override
@@ -197,7 +201,7 @@ public class DrawingGraphics extends Graphics2D {
 	public void drawCenteredString(final String str, final int x, final int y) {
 		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
 		
-		g().drawString(str, (int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight() / 2));
+		g().drawString(str, (int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()));
 	}
 	
 	@Override
@@ -276,7 +280,7 @@ public class DrawingGraphics extends Graphics2D {
 	public void drawCenteredString(final String str, final float x, final float y) {
 		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
 		
-		g().drawString(str, (float) (x - textSize.getWidth() / 2), (float) (y + textSize.getHeight() / 2));
+		g().drawString(str, (float) (x - textSize.getWidth() / 2), (float) (y + textSize.getHeight()));
 	}
 	
 	@Override
