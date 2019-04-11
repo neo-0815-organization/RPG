@@ -117,19 +117,5 @@ public class RPG {
 					break;
 			}
 		});
-		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
-			switch(state) {
-				case PRESSED:
-					break;
-				case PRESSING:
-					gameField.getPlayerController().getPlayer().getInventory().showFull = true;
-					break;
-				case RELEASED:
-					break;
-				case RELEASING:
-					gameField.getPlayerController().getPlayer().getInventory().showFull = false;
-					break;
-			}
-		});
 	}
 }

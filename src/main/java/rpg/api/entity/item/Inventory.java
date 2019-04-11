@@ -2,32 +2,60 @@ package rpg.api.entity.item;
 
 import static rpg.Statics.gameSize;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
+import rpg.RPG;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.IDrawable;
+import rpg.api.listener.key.KeyboardListener;
 
 public class Inventory implements IDrawable {
-	private static final int MAX_INVENTORY_SIZE = 16, HOTBAR_SLOTS = 4;
+	private static final int HOTBAR_SLOTS = 4, INVENTORY_ROWS = 4, MAX_INVENTORY_SIZE = HOTBAR_SLOTS * INVENTORY_ROWS;
 	// @formatter:off
-	private static final BufferedImage HOTBAR = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar.png"),
-									   INVENTORY = ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory.png"),
-									   SLOT = HOTBAR.getSubimage(0, 0, HOTBAR.getWidth() / HOTBAR_SLOTS, HOTBAR.getHeight());
+	private static final BufferedImage HOTBAR_SLOT = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar_slot.png"),
+									   HOTBAR_SELECTOR = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar_selector.png"),
+									   QUEST_SLOT = ResourceGetter.getImage("/assets/textures/overlay/inventory/quest_slot.png"),
+									   INVENTORY_SLOT = ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory_slot.png"),
+									   INVENTORY_SELECTOR = ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory_selector.png");
 	
-	private static final int W_INV = HOTBAR.getWidth(),
-							 H_INV = INVENTORY.getHeight(),
-							 H_HOT = HOTBAR.getHeight(),
+	private static final int W_INV = HOTBAR_SLOT.getWidth() * HOTBAR_SLOTS,
+							 H_INV = INVENTORY_SLOT.getHeight() * (MAX_INVENTORY_SIZE / HOTBAR_SLOTS - 1),
+							 SLOT_SIZE = HOTBAR_SLOT.getHeight(),
 							 X_INV = gameSize.width - W_INV,
-							 Y_HOT = gameSize.height - H_HOT,
-							 Y_INV = gameSize.height - H_INV - H_HOT,
-							 SLOT_SIZE = W_INV / HOTBAR_SLOTS;
+							 Y_HOT = gameSize.height - SLOT_SIZE,
+							 Y_INV = gameSize.height - H_INV - SLOT_SIZE;
 	// @formatter:on
 	
-	public boolean						showFull	= false;
+	public boolean						showInv		= false, showQuest = false;
 	private final LinkedList<ItemStack>	questItems	= new LinkedList<>(), items = new LinkedList<>();
-	private ItemStack					armorSlot, weaponSlot;
+	
+	static {
+		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
+			switch(state) {
+				case PRESSED:
+				case RELEASED:
+				case RELEASING:
+					return;
+				case PRESSING:
+					RPG.gameField.getPlayerController().getPlayer().getInventory().showInv = !RPG.gameField.getPlayerController().getPlayer().getInventory().showInv;
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_R, (state) -> {
+			switch(state) {
+				case PRESSED:
+				case RELEASED:
+				case RELEASING:
+					return;
+				case PRESSING:
+					RPG.gameField.getPlayerController().getPlayer().getInventory().showQuest = !RPG.gameField.getPlayerController().getPlayer().getInventory().showQuest;
+					break;
+			}
+		});
+	}
 	
 	/**
 	 * Adds an {@link ItemStack} to the inventory
@@ -58,49 +86,56 @@ public class Inventory implements IDrawable {
 	
 	@Override
 	public void draw(final DrawingGraphics g) {
-		drawAlwaysVisible(g);
+		drawHotbar(g);
 		
-		if(showFull) drawToggleVisible(g);
+		if(showInv) drawInventory(g);
+		if(showQuest) drawQuests(g);
 	}
 	
-	private void drawAlwaysVisible(final DrawingGraphics g) {
-		g.drawImage(HOTBAR, X_INV, Y_HOT, null);
-		
-		for(int i = 0; i < HOTBAR_SLOTS && i < items.size(); i++) {
-			if(items.get(i) == null) continue;
-			final BufferedImage image = items.get(i).getSprite().getCurrentAnimationFrame();
-			
-			g.drawImage(image, X_INV + W_INV * i / HOTBAR_SLOTS, Y_HOT, null);
-		}
-		
-		g.drawImage(SLOT, 0, Y_HOT, null);
-		if(armorSlot != null) g.drawImage(armorSlot.getSprite().getCurrentAnimationFrame(), 0, Y_HOT, null);
-		
-		g.drawImage(SLOT, SLOT_SIZE, Y_HOT, null);
-		if(weaponSlot != null) g.drawImage(weaponSlot.getSprite().getCurrentAnimationFrame(), 0, Y_HOT, null);
-	}
-	
-	private void drawToggleVisible(final DrawingGraphics g) {
-		g.drawImage(INVENTORY, X_INV, Y_INV, null);
-		
-		for(int i = HOTBAR_SLOTS; i < items.size(); i++) {
-			if(items.get(i) == null) continue;
-			final BufferedImage image = items.get(i).getSprite().getCurrentAnimationFrame();
-			final int x = i % HOTBAR_SLOTS;
-			final int y = (i - x) / HOTBAR_SLOTS;
-			
-			g.drawImage(image, X_INV + SLOT_SIZE * x, Y_HOT - SLOT_SIZE * y, null);
-		}
+	private void drawQuests(final DrawingGraphics g) {
+		int x, y;
+		BufferedImage image;
 		
 		for(int i = 0; i < questItems.size(); i++) {
+			x = i % HOTBAR_SLOTS;
+			y = (i - x) / HOTBAR_SLOTS;
+			
 			if(questItems.get(i) == null) continue;
 			
-			final BufferedImage image = questItems.get(i).getSprite().getCurrentAnimationFrame();
-			final int x = i % (HOTBAR_SLOTS + 1);
-			final int y = (i - x) / HOTBAR_SLOTS;
+			image = questItems.get(i).getSprite().getCurrentAnimationFrame();
 			
-			g.drawImage(SLOT, gameSize.width - SLOT_SIZE * x, SLOT_SIZE * y, null);
-			g.drawImage(image, gameSize.width - SLOT_SIZE * x, SLOT_SIZE * y, null);
+			g.drawImage(QUEST_SLOT, gameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
+			g.drawImage(image, gameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
+		}
+	}
+	
+	private void drawHotbar(final DrawingGraphics g) {
+		for(int i = 0; i < HOTBAR_SLOTS; i++) {
+			g.drawImage(HOTBAR_SLOT, X_INV + SLOT_SIZE * i, Y_HOT, null);
+			
+			if(i >= items.size() || items.get(i) == null) continue;
+			
+			final BufferedImage image = items.get(i).getSprite().getCurrentAnimationFrame();
+			
+			g.drawImage(image, X_INV + SLOT_SIZE * i, Y_HOT, null);
+		}
+	}
+	
+	private void drawInventory(final DrawingGraphics g) {
+		int x, y;
+		BufferedImage image;
+		
+		for(int i = HOTBAR_SLOTS; i < MAX_INVENTORY_SIZE; i++) {
+			x = i % HOTBAR_SLOTS;
+			y = (i - x) / HOTBAR_SLOTS;
+			
+			g.drawImage(INVENTORY_SLOT, X_INV + SLOT_SIZE * x, Y_HOT - SLOT_SIZE * y, null);
+			
+			if(i >= items.size() || items.get(i) == null) continue;
+			
+			image = items.get(i).getSprite().getCurrentAnimationFrame();
+			
+			g.drawImage(image, X_INV + SLOT_SIZE * x, Y_HOT - SLOT_SIZE * y, null);
 		}
 	}
 }

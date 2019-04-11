@@ -148,18 +148,14 @@ public class GameField extends Scene {
 		return entList;
 	}
 	
-	public void removeEntity(String name) {
-		if(!name.contains(".name")) name += ".name";
-		
-		int i = 0;
-		for(final Entity e : entities) {
-			if(e.getUnlocalizedName().equalsIgnoreCase(name)) {
-				entities.remove(i);
-				
-				return;
-			}
-			
-			i++;
+	public void removeEntity(final Entity entity) {
+		synchronized(entities) {
+			for(final Entity e : entities)
+				if(e.equals(entity)) {
+					entities.remove(e);
+					
+					return;
+				}
 		}
 	}
 	
