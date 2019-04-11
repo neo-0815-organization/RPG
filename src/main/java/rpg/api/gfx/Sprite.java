@@ -180,6 +180,10 @@ public class Sprite {
 		if(currentAnimation == null || currentAnimation.getName() != animationName) currentAnimation = animations.get(animationName);
 	}
 	
+	public Animation getAnimation(String anim) {
+		return animations.get(anim);
+	}
+	
 	/**
 	 * Gets the path corresponding to this {@link Sprite} and
 	 * {@link SpriteTheme}.

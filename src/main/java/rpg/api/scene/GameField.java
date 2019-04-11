@@ -13,6 +13,7 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.eventhandling.events.Event;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.HUD;
+import rpg.api.gfx.menus.CombatMenu;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
 import rpg.api.tile.Tile;
@@ -71,6 +72,17 @@ public class GameField extends Scene {
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
+				
+				//DELETE THIS LATER
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				new CombatMenu(playerController.getPlayer()).show();
+				
+				
 				while(inGame) {
 					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
 					lastFrame = System.currentTimeMillis();
