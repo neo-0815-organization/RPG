@@ -18,15 +18,15 @@ public class HUD implements IDrawable {
 									   XP_ICON = ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png"),
 									   HP_ICON = ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"),
 									   MP_ICON = ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png");
-	private static final int HP_FILL_X = 36,
-							 MP_FILL_X = 38,
-							 MP_FILL_Y = 36,
+	private static final int HP_FILL_X = 56,
+							 MP_FILL_X = 59,
+							 MP_FILL_Y = 56,
 							 XP_ICON_X = 17 + 15 - 4,
-							 XP_ICON_Y = 73 ,
+							 XP_ICON_Y = 73,
 							 HP_ICON_X = 111 + 15 - 4,
 							 HP_ICON_Y = 16,
 							 MP_ICON_X = 76 + 15 - 4,
-							 MP_ICON_Y = 65 ;
+							 MP_ICON_Y = 65;
 	// @formatter:on
 	
 	@Override
