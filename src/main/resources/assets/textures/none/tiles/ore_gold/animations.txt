@@ -1,0 +1,1 @@
+ore_gold:32:true
