@@ -1,8 +1,11 @@
 package rpg.api.gfx.menus;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -80,21 +83,44 @@ public class CombatMenu extends Menu{
 	private static class DrawPanel extends JPanel {
 		private static int PLAYERSCALE = 7;
 		private BufferedImage playerIMG, enemyIMG;
+		private LivingEntity enemy, player;
+		
 		
 		public DrawPanel(LivingEntity enemy) {
-			System.out.println(enemy);
+//			System.out.println(enemy);
+			this.enemy = enemy;
+			this.player = RPG.gameField.getPlayerController().getPlayer();
 			setSize(Statics.frameSize);
-			playerIMG = ImageUtility.scale(RPG.gameField.getPlayerController().getPlayer().getSprite().getAnimation("walking/left").currentFrame(), Statics.scale * PLAYERSCALE);
+			playerIMG = ImageUtility.scale(player.getSprite().getAnimation("walking/left").currentFrame(), Statics.scale * PLAYERSCALE);
 			enemyIMG =  ImageUtility.scale(enemy.getSprite().getAnimation("walking/right").currentFrame(), Statics.scale * PLAYERSCALE);
 		}
 	
 		@Override
 		protected void paintComponent(Graphics g) {
 			Dimension size = Statics.frameSize;
+			Point playerLoc = new Point(size.width - playerIMG.getWidth() - 20, (int)(size.height * 0.3)),
+				  enemyLoc = new Point((int)(size.width * 0.15), (int)(size.height * 0.15));
+			
 			Graphics2D g2d = (Graphics2D)g;
-			g2d.drawImage(playerIMG, size.width - playerIMG.getWidth() - 20, (int)(size.height * 0.3), null);
-			g2d.drawImage(enemyIMG, (int)(size.width * 0.15), (int)(size.height * 0.15), null);
-					
+			g2d.drawImage(playerIMG, playerLoc.x, playerLoc.y, null);
+			
+			player.setHP(5);
+			drawLiveBar(new Rectangle(playerLoc.x, playerLoc.y - 20,(int) (size.width * 0.2), (int) (size.height * 0.05)), player.getHP(), player.getMaxHP(), g2d);
+			
+			g2d.drawImage(enemyIMG, enemyLoc.x, enemyLoc.y, null);
+			drawLiveBar(new Rectangle(enemyLoc.x, enemyLoc.y - 20,(int) (size.width * 0.2), (int) (size.height * 0.05)), enemy.getHP(), enemy.getMaxHP(), g2d);
+
+		}
+		
+		public void drawLiveBar(Rectangle size, int hp, int maxHP, Graphics2D g2d) {
+			g2d.setColor(Color.RED);
+			g2d.fill(size);
+			g2d.setColor(Color.GREEN);
+			g2d.fillRect(size.x, size.y, (int) (size.width * (hp / (double) maxHP)), size.height);
+			g2d.setColor(Color.BLACK);
+			g2d.draw(size);
 		}
 	}
+	
+	
 }
