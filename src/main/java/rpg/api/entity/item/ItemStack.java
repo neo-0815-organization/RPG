@@ -8,9 +8,9 @@ import rpg.api.gfx.PathModifier;
 public class ItemStack extends Entity {
 	private static final int MAX_STACK_SIZE = 8;
 	
-	private ItemType type;
-	private final boolean questItem;
-	private int stackSize;
+	protected ItemType type;
+	protected final boolean questItem;
+	protected int stackSize;
 	
 	public ItemStack(final String name) {
 		this(name, false);
@@ -36,7 +36,7 @@ public class ItemStack extends Entity {
 		
 	}
 	
-	private enum ItemType implements PathModifier {
+	protected enum ItemType implements PathModifier {
 		NONE("none"),
 		WEAPON("weapon"),
 		ARMOR("armor");

@@ -13,7 +13,7 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.eventhandling.events.Event;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.HUD;
-import rpg.api.gfx.menus.CombatMenu;
+import rpg.api.gfx.menus.combatMenu.CombatMenu;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
 import rpg.api.tile.Tile;
