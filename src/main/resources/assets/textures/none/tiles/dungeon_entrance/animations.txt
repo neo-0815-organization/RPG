@@ -1,1 +1,1 @@
-dungeon_entrance:32:true
+dungeon_entrance:89:true

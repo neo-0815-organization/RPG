@@ -1,1 +1,1 @@
-mine_entrance:32:true
+mine_entrance:256:true

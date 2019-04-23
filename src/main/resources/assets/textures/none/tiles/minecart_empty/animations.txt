@@ -1,1 +1,1 @@
-minecart_empty:32:true
+minecart_empty:64:true

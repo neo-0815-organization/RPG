@@ -1,1 +1,1 @@
-door_tattice:32:true
+door_tattice:48:true
