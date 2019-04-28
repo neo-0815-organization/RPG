@@ -1,5 +1,6 @@
 package rpg.api.gfx.framework;
 
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.image.BufferedImage;
@@ -67,6 +68,26 @@ public class Menu extends Scene {
 	 * @param c
 	 */
 	public void addComponent(final JComponent c) {
+		menu.add(c);
+	}
+
+	/**
+	 * This menu adds a default Java component to the menu
+	 * 
+	 * @param c
+	 * @param position of the Component SEE JPanel::add
+	 */
+	public void addComponent(final JComponent c, int index) {
+		menu.add(c, index);
+	}
+	
+	/**
+	 * This menu adds a default Component to the menu
+	 * 
+	 * @param c
+	 */
+	
+	public void addComponent(final Component c) {
 		menu.add(c);
 	}
 	

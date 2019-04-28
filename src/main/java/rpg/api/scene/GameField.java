@@ -80,7 +80,7 @@ public class GameField extends Scene {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				new CombatMenu(playerController.getPlayer()).show();
+				new CombatMenu(playerController.getPlayer(), true).show();
 				
 				
 				while(inGame) {

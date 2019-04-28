@@ -2,7 +2,7 @@ package rpg.api.gfx.menus.combatMenu;
 
 import java.awt.Graphics2D;
 
-public final class CombatAnimation {
+public class CombatAnimation {
 	
 	private CombatAnimationSheet sheet;
 	private double delay;
@@ -21,9 +21,13 @@ public final class CombatAnimation {
 		offsetY = y;
 		
 		if (midHandle) {
-			offsetX += sheet.getFrame(0).getWidth() / 2;
-			offsetY += sheet.getFrame(0).getHeight() / 2;
+			offsetX -= sheet.getFrame(0).getWidth() / 2;
+			offsetY -= sheet.getFrame(0).getHeight() / 2;
 		}
+	}
+	
+	protected CombatAnimation() {
+		
 	}
 	
 	/**Updates the frame of the CombatAnimation.

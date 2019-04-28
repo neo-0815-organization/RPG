@@ -3,7 +3,7 @@ package rpg.api.entity.item;
 import rpg.api.gfx.menus.combatMenu.CombatAnimationSheet;
 
 public abstract class Weapon extends ItemStack{
-	public static final CombatAnimationSheet ATTACK_ANIMATION_SHEET = new CombatAnimationSheet("attack.png", 4, 0.25, 1);
+	public static final CombatAnimationSheet ATTACK_ANIMATION_SHEET = new CombatAnimationSheet("attack.png", 4, 0.75 / 4D, 4);
 	
 	public Weapon(final String name) {
 		this(name, false);
@@ -49,6 +49,12 @@ public abstract class Weapon extends ItemStack{
 		
 		public void setTo(int to) {
 			this.to = to;
+		}
+		
+		public int getRandom() {
+			int temp =  (int) (Math.random() * (to - from) + from);
+			System.out.println("[Weapon::IntRange] >> Damage:" + temp);
+			return temp;
 		}
 	}
 }
