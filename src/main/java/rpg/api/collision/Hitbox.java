@@ -19,7 +19,7 @@ public class Hitbox implements EventTrigger {
 	}
 	
 	public Hitbox(int tileWidth, int tileHeight) {
-		this(new DistanceValue(tileWidth), new DistanceValue(tileHeight));
+		this(new DistanceValue((double) tileWidth), new DistanceValue((double) tileHeight));
 	}
 	
 	public Hitbox(double tileWidth, double tileHeight) {

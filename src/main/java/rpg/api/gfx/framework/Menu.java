@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import rpg.RPG;
+import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ImageUtility;
 import rpg.api.scene.Scene;
 
@@ -46,7 +47,7 @@ public class Menu extends Scene {
 	 * Don't use the parameter! Use {@code graphics}!
 	 */
 	@Override
-	public void draw(final Graphics2D g2d) {
+	public void draw(final DrawingGraphics g) {
 		RPG.gameFrame.repaint();
 	}
 	

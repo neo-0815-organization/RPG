@@ -6,7 +6,7 @@ package rpg.api.gfx;
  *
  * @author Tim Ludwig, Neo Hornberger, Alexander Schallenberg
  */
-public enum SpriteTheme implements IPathModifier{
+public enum SpriteTheme implements PathModifier{
 	// Zwerge
 	DWARF_CITY("dwarfs/dwarf_city"),
 		CASTLE_MOERSBERG("dwarfs/castle_moersberg"),

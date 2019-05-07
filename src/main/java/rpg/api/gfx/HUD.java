@@ -2,7 +2,6 @@ package rpg.api.gfx;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import rpg.RPG;
@@ -12,38 +11,45 @@ import rpg.api.filehandling.ResourceGetter;
 
 public class HUD implements IDrawable {
 	// @formatter:off
-	private static final BufferedImage overlay = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png")),
-									   xp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp.png"), Statics.scale * 1.1),
-									   hp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp.png"), Statics.scale * 1.1),
-									   mp = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"), Statics.scale * 1.1),
-									   xp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png")),
-									   hp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"), Statics.scale * 0.9),
-									   mp_icon = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png"));
+	private static final BufferedImage OVERLAY = ResourceGetter.getImage("/assets/textures/overlay/hud/overlay.png"),
+									   XP_FILL = ImageUtility.scale(ResourceGetter.getImage("/assets/textures/overlay/hud/xp.png"), 1.1),
+									   HP_FILL = ResourceGetter.getImage("/assets/textures/overlay/hud/hp.png"),
+									   MP_FILL = ResourceGetter.getImage("/assets/textures/overlay/hud/mp.png"),
+									   XP_ICON = ResourceGetter.getImage("/assets/textures/overlay/hud/xp-icon.png"),
+									   HP_ICON = ResourceGetter.getImage("/assets/textures/overlay/hud/hp-icon.png"),
+									   MP_ICON = ResourceGetter.getImage("/assets/textures/overlay/hud/mp-icon.png");
+	private static final int HP_FILL_X = 56,
+							 MP_FILL_X = 59,
+							 MP_FILL_Y = 56,
+							 XP_ICON_X = 17 + 15 - 4,
+							 XP_ICON_Y = 73,
+							 HP_ICON_X = 111 + 15 - 4,
+							 HP_ICON_Y = 16,
+							 MP_ICON_X = 76 + 15 - 4,
+							 MP_ICON_Y = 65;
 	// @formatter:on
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
+	public void draw(final DrawingGraphics g) {
 		if(RPG.gameField.getPlayerController() != null) {
 			final Player p = RPG.gameField.getPlayerController().getPlayer();
 			
-			drawImage(g2d, xp, p.getXP());
-			drawImage(g2d, hp, Statics.scale(36 - 4), p.getHP() / (float) p.getMaxHP());
-			drawImage(g2d, mp, Statics.scale(38 - 4), Statics.scale(36), p.getMP());
+			drawImage(g, XP_FILL, p.getXP() % 1);
+			drawImage(g, HP_FILL, HP_FILL_X, p.getHP() / (float) p.getMaxHP());
+			drawImage(g, MP_FILL, MP_FILL_X, MP_FILL_Y, p.getMP() % 1);
 			
-			//			g2d.drawImage(xp, 0, 0, xp.getWidth(), Math.round(p.getXP() * xp.getHeight()), null);
-			//			g2d.drawImage(hp, Statics.scale(36), 0, hp.getWidth(), Math.round(p.getHP() / p.getMaxHP() * (float) hp.getHeight()), null);
-			//			g2d.drawImage(mp, Statics.scale(38), Statics.scale(36), mp.getWidth(), Math.round(p.getMP() * mp.getHeight()), null);
+			g.drawImage(OVERLAY, 0, 0, null);
 			
-			g2d.drawImage(overlay, 0, 0, null);
+			g.drawImage(XP_ICON, XP_ICON_X, XP_ICON_Y, null);
+			g.drawImage(HP_ICON, HP_ICON_X, HP_ICON_Y, null);
+			g.drawImage(MP_ICON, MP_ICON_X, MP_ICON_Y, null);
+			// TODO: scale Images
+			g.setFont(Statics.defaultFont(20d));
+			drawCenteredString(g, "" + p.getXPLevel(), 17, 78, 20);
+			drawCenteredString(g, "" + p.getHP(), 111, 17, 20);
+			drawCenteredString(g, "" + p.getMPLevel(), 76, 72, 20);
 			
-			g2d.drawImage(xp_icon, Statics.scale(17 + 15 - 4), Statics.scale(73), null);
-			g2d.drawImage(hp_icon, Statics.scale(111 + 15 - 4), Statics.scale(16), null);
-			g2d.drawImage(mp_icon, Statics.scale(76 + 15 - 4), Statics.scale(64), null);
-			
-			g2d.setFont(Statics.defaultFont(27d));
-			drawCenteredString(g2d, "" + p.getXPLevel(), Statics.scale * 17, Statics.scale * 80, 30);
-			drawCenteredString(g2d, "" + p.getHP(), Statics.scale * 111, Statics.scale * 18, 30);
-			drawCenteredString(g2d, "" + p.getMPLevel(), Statics.scale * 76, Statics.scale * 74, 30);
+			p.getInventory().draw(g);
 		}
 	}
 	
@@ -61,24 +67,17 @@ public class HUD implements IDrawable {
 		g2d.drawImage(img, x, calcY + y, x + img.getWidth(), y + img.getHeight(), 0, calcY, img.getWidth(), img.getHeight(), null);
 	}
 	
-	private void drawCenteredString(final Graphics2D g2d, final String text, final double x, final double y, final double width) {
-		final Font oldFont = g2d.getFont();
+	private void drawCenteredString(final DrawingGraphics g, final String text, final float x, final float y, final double width) {
+		final Font oldFont = g.getFont();
 		
-		if(g2d.getFontMetrics().getStringBounds(text, g2d).getWidth() > width) for(float i = 0; i < 50; i += 0.5) {
-			g2d.setFont(oldFont.deriveFont(oldFont.getSize() - i));
+		if(g.getFontMetrics().getStringBounds(text, g).getWidth() > width) for(float i = 0; i < 50; i += 0.5) {
+			g.setFont(oldFont.deriveFont(oldFont.getSize() - i));
 			
-			if(g2d.getFontMetrics().getStringBounds(text, g2d).getWidth() <= width) break;
+			if(g.getFontMetrics().getStringBounds(text, g).getWidth() <= width) break;
 		}
 		
-		drawCenteredString(g2d, text, x, y);
+		g.drawCenteredString(text, x, y);
 		
-		g2d.setFont(oldFont);
-	}
-	
-	private void drawCenteredString(final Graphics2D g2d, final String text, final double x, final double y) {
-		final Rectangle2D textSize = g2d.getFontMetrics().getStringBounds(text, g2d);
-		final float calcX = (float) (x - textSize.getWidth() / 2), calcY = (float) (y + textSize.getHeight() / 2);
-		
-		g2d.drawString(text, calcX, calcY);
+		g.setFont(oldFont);
 	}
 }

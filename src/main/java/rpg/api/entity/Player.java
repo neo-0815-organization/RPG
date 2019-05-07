@@ -2,6 +2,7 @@ package rpg.api.entity;
 
 import rpg.api.collision.Hitbox;
 import rpg.api.entity.Person.CharacterSheet;
+import rpg.api.entity.item.Inventory;
 import rpg.api.eventhandling.EventType;
 import rpg.api.units.DistanceValue;
 
@@ -11,8 +12,8 @@ import rpg.api.units.DistanceValue;
  * @author Neo Hornberger
  */
 public class Player extends LivingEntity {
-	private int xpLevel, mpLevel;
 	private float xp, mp;
+	private final Inventory inv;
 	
 	/**
 	 * Constructs a player with the standard display name
@@ -22,6 +23,8 @@ public class Player extends LivingEntity {
 		super("entity.player");
 		
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
+		inv = new Inventory();
+		
 		setSprite(CharacterSheet.PLAYER.getSprite());
 	}
 	
@@ -30,47 +33,28 @@ public class Player extends LivingEntity {
 		return hitbox;
 	}
 	
+	public Inventory getInventory() {
+		return inv;
+	}
+	
 	public float getXP() {
 		return xp;
 	}
 	
 	public void setXP(final float xp) {
-		this.xp = xp % 1;
+		this.xp = xp;
 	}
 	
 	public void addXP(final float xp) {
 		this.xp += xp;
-		
-		if(this.xp >= 1) for(int i = 0; i < (int) this.xp; i++) {
-			if(this.xp >= 1) {
-				this.xp--;
-				
-				i--;
-			}
-			
-			xpLevel++;
-		}
-		else if(this.xp < 0) {
-			for(int i = 0; i < this.xp * -1; i++) {
-				if(this.xp <= -1) {
-					this.xp++;
-					
-					i--;
-				}
-				
-				xpLevel--;
-			}
-			
-			this.xp = 1 + this.xp;
-		}
 	}
 	
 	public int getXPLevel() {
-		return xpLevel;
+		return (int) xp;
 	}
 	
-	public void setXPLevel(final int xpLevel) {
-		this.xpLevel = xpLevel;
+	public void setXPLevel(final int level) {
+		xp = level + xp % 1;
 	}
 	
 	public float getMP() {
@@ -78,42 +62,19 @@ public class Player extends LivingEntity {
 	}
 	
 	public void setMP(final float mp) {
-		this.mp = mp % 1;
+		this.mp = mp;
 	}
 	
 	public void addMP(final float mp) {
 		this.mp += mp;
-		
-		if(this.mp >= 1) for(int i = 0; i < (int) this.mp; i++) {
-			if(this.mp >= 1) {
-				this.mp--;
-				
-				i--;
-			}
-			
-			mpLevel++;
-		}
-		else if(this.mp < 0) {
-			for(int i = 0; i < this.mp * -1; i++) {
-				if(this.mp <= -1) {
-					this.mp++;
-					
-					i--;
-				}
-				
-				mpLevel--;
-			}
-			
-			this.mp = 1 + this.mp;
-		}
 	}
 	
 	public int getMPLevel() {
-		return mpLevel;
+		return (int) mp;
 	}
 	
-	public void setMPLevel(final int mpLevel) {
-		this.mpLevel = mpLevel;
+	public void setMPLevel(final int level) {
+		mp = level + mp % 1;
 	}
 	
 	@Override

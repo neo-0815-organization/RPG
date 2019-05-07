@@ -1,6 +1,5 @@
 package rpg.api.scene;
 
-import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
 import rpg.api.eventhandling.events.CurrentMapEvent;
 import rpg.api.eventhandling.events.Event;
+import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.HUD;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
@@ -23,42 +23,41 @@ import rpg.api.tile.Tile;
  * @author Erik Diers, Tim Ludwig, Neo Hornberger
  */
 public class GameField extends Scene {
-	public static boolean inGame = true;
-	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
-	public static Background background;
+	public static boolean		inGame			= true;
+	public static final double	MAX_DELTA_TIME	= 0.21, MIN_DELTA_TIME = 0.015;
+	public static Background	background;
 	
-	private double deltaTime;
-	private long lastFrame = System.currentTimeMillis();
+	private double	deltaTime;
+	private long	lastFrame	= System.currentTimeMillis();
 	
 	private Thread update, draw;
 	
-	private final LinkedList<Entity> entities = new LinkedList<>();
-	private final LinkedList<Tile> tiles = new LinkedList<>();
-	private final LinkedList<Controller> controller = new LinkedList<>();
-	private PlayerController playerController;
-	
-	private final HUD hud = new HUD();
+	private final LinkedList<Entity>		entities	= new LinkedList<>();
+	private final LinkedList<Tile>			tiles		= new LinkedList<>();
+	private final LinkedList<Controller>	controller	= new LinkedList<>();
+	private PlayerController				playerController;
+	private final HUD						hud			= new HUD();
 	
 	public GameField() {
 		background = new Background();
 		
 		startUpdating();
-		//		startDrawing();
+		// startDrawing();
 	}
 	
 	@Override
-	public void draw(final Graphics2D g2d) {
-		background.draw(g2d);
+	public void draw(final DrawingGraphics g) {
+		background.draw(g);
 		
 		synchronized(entities) {
 			for(final Entity e : entities)
-				e.draw(g2d);
+				e.draw(g);
 		}
 		
 		for(final Tile t : tiles)
-			t.draw(g2d);
+			t.draw(g);
 		
-		hud.draw(g2d);
+		hud.draw(g);
 	}
 	
 	/**
@@ -101,11 +100,11 @@ public class GameField extends Scene {
 					final long systemTime = System.currentTimeMillis();
 					
 					RPG.gameFrame.drawScene(me);
-					//	System.out.println(System.currentTimeMillis() - systemTime);
+					// System.out.println(System.currentTimeMillis() - systemTime);
 				}
 			}
 		};
-		//		draw.start();
+		// draw.start();
 	}
 	
 	/**
@@ -141,13 +140,16 @@ public class GameField extends Scene {
 	public List<Entity> checkCollisionEntities(final Entity e) {
 		final LinkedList<Entity> entList = new LinkedList<>();
 		
-		for(final Entity ent : entities)
-			if(ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) entList.add(ent);
+		synchronized(entities) {
+			for(final Entity ent : entities)
+				if(ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) entList.add(ent);
+			
+		}
 		
 		return entList;
 	}
 	
-	public void removeEntity(String name) {
+	public void removeEntitiesByName(String name) {
 		if(!name.contains(".name")) name += ".name";
 		
 		synchronized (entities) {
@@ -155,12 +157,21 @@ public class GameField extends Scene {
 			for(final Entity e : entities) {
 				if(e.getUnlocalizedName().equalsIgnoreCase(name)) {
 					entities.remove(i);
-					
-					return;
 				}
 				
 				i++;
 			}
+		}
+	}
+	
+	public void removeEntity(final Entity entity) {
+		synchronized(entities) {
+			for(final Entity e : entities)
+				if(e.equals(entity)) {
+					entities.remove(e);
+					
+					return;
+				}
 		}
 	}
 	
