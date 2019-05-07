@@ -1,26 +1,32 @@
 package rpg.api.gfx.menus.combatMenu;
 
-import java.awt.Graphics2D;
+import rpg.api.gfx.DrawingGraphics;
+import rpg.api.gfx.IDrawable;
 
-public class CombatAnimation {
+public class CombatAnimation implements IDrawable {
 	
 	private CombatAnimationSheet sheet;
 	private double delay;
 	private int frame, offsetX, offsetY;
 	
-	/**Creates a new CombatAnimation
+	/**
+	 * Creates a new CombatAnimation
 	 * 
-	 * @param sheet The Animation
-	 * @param x Draw-X of the Animation
-	 * @param y Draw-Y of the Animation
-	 * @param midHandle wether the origin of the animation should be in the center
+	 * @param sheet
+	 *            The Animation
+	 * @param x
+	 *            Draw-X of the Animation
+	 * @param y
+	 *            Draw-Y of the Animation
+	 * @param midHandle
+	 *            wether the origin of the animation should be in the center
 	 */
-	public CombatAnimation(CombatAnimationSheet sheet, int x, int y, boolean midHandle) {
+	public CombatAnimation(final CombatAnimationSheet sheet, final int x, final int y, final boolean midHandle) {
 		this.sheet = sheet;
 		offsetX = x;
 		offsetY = y;
 		
-		if (midHandle) {
+		if(midHandle) {
 			offsetX -= sheet.getFrame(0).getWidth() / 2;
 			offsetY -= sheet.getFrame(0).getHeight() / 2;
 		}
@@ -30,26 +36,32 @@ public class CombatAnimation {
 		
 	}
 	
-	/**Updates the frame of the CombatAnimation.
-	 * Returns True if the Animation has looped once.
+	/**
+	 * Updates the frame of the CombatAnimation. Returns True if the Animation
+	 * has looped once.
 	 * 
 	 * @param timeSinceLastFrame
 	 * @return
 	 */
-	public boolean update(double timeSinceLastFrame) {
+	public boolean update(final double timeSinceLastFrame) {
 		delay += timeSinceLastFrame;
-		if (delay >= sheet.getTimePerFrame()) {
+		
+		if(delay >= sheet.getTimePerFrame()) {
 			delay -= sheet.getTimePerFrame();
+			
 			return nextFrame();
 		}
+		
 		return false;
 	}
 	
 	public boolean nextFrame() {
-		if (++frame >= sheet.getFrameCount()) {
+		if(++frame >= sheet.getFrameCount()) {
 			frame = 0;
+			
 			return true;
 		}
+		
 		return false;
 	}
 	
@@ -60,9 +72,9 @@ public class CombatAnimation {
 		delay = 0;
 		frame = 0;
 	}
-
-	public void draw(Graphics2D g2d) {
-		g2d.drawImage(sheet.getFrame(frame), offsetX, offsetY, null);
-	}
 	
+	@Override
+	public void draw(final DrawingGraphics g) {
+		g.drawImage(sheet.getFrame(frame), offsetX, offsetY, null);
+	}
 }

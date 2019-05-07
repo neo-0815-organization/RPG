@@ -12,8 +12,8 @@ import rpg.api.eventhandling.events.Event;
  * @author Tim Ludwig
  */
 public class EventHandler {
-	private static HashMap<EventType, LinkedList<EventListener>>	listener			= new HashMap<>();
-	private static HashMap<EventType, Boolean>						eventTypeRegistered	= initEventTypeRegistered();
+	private static HashMap<EventType, LinkedList<EventListener>> listener = new HashMap<>();
+	private static HashMap<EventType, Boolean> eventTypeRegistered = initEventTypeRegistered();
 	
 	/**
 	 * Initiates the known {@link EventType}s as unregistered.
@@ -45,7 +45,8 @@ public class EventHandler {
 	 * Gets the {@link EventListener}s for the {@link EventType} 'eventType'.
 	 *
 	 * @param eventType
-	 *            the type of the {@link Event} to search for {@link EventListener}s
+	 *            the type of the {@link Event} to search for
+	 *            {@link EventListener}s
 	 * @return the {@link EventListener}s for the {@link EventType} 'eventType'
 	 */
 	private static LinkedList<EventListener> getListenersForEventType(final EventType eventType) {

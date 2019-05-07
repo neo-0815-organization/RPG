@@ -8,12 +8,9 @@ import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.PlayerController;
 import rpg.api.eventhandling.EventHandler;
-import rpg.api.eventhandling.EventType;
 import rpg.api.eventhandling.events.CurrentMapEvent;
-import rpg.api.eventhandling.events.Event;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.HUD;
-import rpg.api.gfx.menus.combatMenu.CombatMenu;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
 import rpg.api.tile.Tile;
@@ -24,20 +21,20 @@ import rpg.api.tile.Tile;
  * @author Erik Diers, Tim Ludwig, Neo Hornberger
  */
 public class GameField extends Scene {
-	public static boolean		inGame			= true;
-	public static final double	MAX_DELTA_TIME	= 0.21, MIN_DELTA_TIME = 0.015;
-	public static Background	background;
+	public static boolean inGame = true;
+	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
+	public static Background background;
 	
-	private double	deltaTime;
-	private long	lastFrame	= System.currentTimeMillis();
+	private double deltaTime;
+	private long lastFrame = System.currentTimeMillis();
 	
 	private Thread update, draw;
 	
-	private final LinkedList<Entity>		entities	= new LinkedList<>();
-	private final LinkedList<Tile>			tiles		= new LinkedList<>();
-	private final LinkedList<Controller>	controller	= new LinkedList<>();
-	private PlayerController				playerController;
-	private final HUD						hud			= new HUD();
+	private final LinkedList<Entity> entities = new LinkedList<>();
+	private final LinkedList<Tile> tiles = new LinkedList<>();
+	private final LinkedList<Controller> controller = new LinkedList<>();
+	private PlayerController playerController;
+	private final HUD hud = new HUD();
 	
 	public GameField() {
 		background = new Background();
@@ -69,17 +66,6 @@ public class GameField extends Scene {
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
-				
-				//DELETE THIS LATER
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				new CombatMenu(playerController.getPlayer(), true).show();
-				
-				
 				while(inGame) {
 					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
 					lastFrame = System.currentTimeMillis();
@@ -164,12 +150,10 @@ public class GameField extends Scene {
 	public void removeEntitiesByName(String name) {
 		if(!name.contains(".name")) name += ".name";
 		
-		synchronized (entities) {
+		synchronized(entities) {
 			int i = 0;
 			for(final Entity e : entities) {
-				if(e.getUnlocalizedName().equalsIgnoreCase(name)) {
-					entities.remove(i);
-				}
+				if(e.getUnlocalizedName().equalsIgnoreCase(name)) entities.remove(i);
 				
 				i++;
 			}
