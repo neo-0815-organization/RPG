@@ -1,5 +1,7 @@
 package rpg.api.entity;
 
+import rpg.api.entity.item.Weapon.IntRange;
+
 public abstract class LivingEntity extends Entity {
 	protected int hp, maxHP;
 	
@@ -12,6 +14,16 @@ public abstract class LivingEntity extends Entity {
 		
 		hp = maxHP;
 		this.maxHP = maxHP;
+	}
+	
+	/**
+	 * Reduces the HP of the Entity, return true, when hp are smaller or equal then zero after applying damage
+	 * @param damage
+	 * @return hp - damage <= 0
+	 */
+	public boolean reduceHP(final int damage) {
+		hp -= damage;
+		return hp <= 0;
 	}
 	
 	public int getHP() {
@@ -29,8 +41,13 @@ public abstract class LivingEntity extends Entity {
 	public int getMaxHP() {
 		return maxHP;
 	}
-	
+  
 	public void setMaxHP(int maxHP) {
 		this.maxHP = maxHP;
 	}
+	
+	/** The damageRange (Override this)*/
+	public IntRange getWeaponDamageRange() {
+		return new IntRange(1, 5);
+  }
 }
