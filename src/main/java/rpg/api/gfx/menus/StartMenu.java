@@ -25,7 +25,7 @@ public final class StartMenu extends Menu {
 	public StartMenu() {
 		final int rectWidth = Statics.scale(310), rectHeight = Statics.scale(80);
 		
-		final RPGButton singleplayer = new RPGButton("button.singleplayer");
+		final RPGButton singleplayer = new RPGButton("singleplayer");
 		singleplayer.setBounds(0, 0, rectWidth, rectHeight);
 		singleplayer.disableBorder();
 		singleplayer.addActionListener(new ActionListener() {
@@ -38,7 +38,7 @@ public final class StartMenu extends Menu {
 		singleplayer.setFocusImage(SP_FOCUS);
 		addComponent(singleplayer);
 		
-		final RPGButton multiplayer = new RPGButton("button.multiplayer");
+		final RPGButton multiplayer = new RPGButton("multiplayer");
 		multiplayer.setBounds(Statics.frameSize.width - rectWidth, 0, rectWidth, rectHeight);
 		multiplayer.disableBorder();
 		multiplayer.setFocusImage(MP_FOCUS);

@@ -80,71 +80,73 @@ public class CombatMenu extends Menu {
 			this.combatMenu = combatMenu;
 			this.isEscapeable = isEscapeable;
 			
+			final ActionListener actionListener = new ActionListener() {
+				
+				@Override
+				public void actionPerformed(final ActionEvent e) {
+					switch(e.getActionCommand()) {
+						case "attack":
+							enablePanel(false);
+							System.out.println("[CombatMenu] >> Player: Attack");
+							
+							ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(Weapon.ATTACK_ANIMATION_SHEET, drawPanel.enemyLoc.x, drawPanel.enemyLoc.y, false));
+							
+							final int damage = player.getWeaponDamageRange().getRandom();
+							drawPanel.playAnimation(new TextAnimation("" + damage, drawPanel.enemyLoc.x + 300, drawPanel.enemyLoc.y + 200, 0.3, MovingPattern.LIFTING, Color.RED, 50));
+							if(enemy.reduceHP(damage)) {
+								combatMenu.combatResult = CombatResult.PLAYER_WON;
+								combatMenu.close();
+								return;
+							}
+							
+							enemyTurn();
+							enablePanel(true);
+							
+							break;
+						case "run":
+							for(int i = 0; i < 10; i++)
+								drawPanel.playAnimation(new CombatAnimation(RUN_ANIM, Statics.frameSize.width / 2, Statics.frameSize.height / 2, true));
+							
+							if(new IntRange(0, 100).getRandom() > 50) {
+								drawPanel.playAnimation(new TextAnimation("SUCCSESS", Statics.frameSize.width / 2, Statics.frameSize.height / 2, 0.6, MovingPattern.LIFTING, Color.GREEN, 40));
+								combatMenu.combatResult = CombatResult.PLAYER_ESCAPED;
+								combatMenu.close();
+								return;
+								
+							}else {
+								drawPanel.playAnimation(new TextAnimation("MISS", Statics.frameSize.width / 2, Statics.frameSize.height / 2, 0.6, MovingPattern.LIFTING, Color.RED, 40));
+								enemyTurn();
+							}
+							break;
+					}
+				}
+			};
+			
 			for(int i = 0; i < ACTION_COUNT; i++) {
 				String buttonTitle;
 				
 				switch(i) {
 					case 0:
-						buttonTitle = "Attack";
+						buttonTitle = "attack";
 						break;
 					case 1:
-						buttonTitle = "Use Item";
+						buttonTitle = "item";
 						break;
 					case 2:
-						buttonTitle = "Run";
+						buttonTitle = "run";
 						break;
 					
 					default:
 						buttonTitle = "INVALID";
 				}
 				
-				final RPGButton newButt = new RPGButton(buttonTitle);
+				final RPGButton newButt = new RPGButton("combat." + buttonTitle);
 				newButt.setBounds(0, i * (BUTTON_HEIGHT + 5), BUTTON_WIDTH, BUTTON_HEIGHT);
-				if(buttonTitle == "Run" && !isEscapeable) newButt.setEnabled(false);
+				if(buttonTitle == "run" && !isEscapeable) newButt.setEnabled(false);
 				
 				newButt.setActionCommand(buttonTitle);
-				newButt.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(final ActionEvent e) {
-						switch(e.getActionCommand()) {
-							case "Attack":
-								enablePanel(false);
-								System.out.println("[CombatMenu] >> Player: Attack");
-								
-								ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(Weapon.ATTACK_ANIMATION_SHEET, drawPanel.enemyLoc.x, drawPanel.enemyLoc.y, false));
-								
-								final int damage = player.getWeaponDamageRange().getRandom();
-								drawPanel.playAnimation(new TextAnimation("" + damage, drawPanel.enemyLoc.x + 300, drawPanel.enemyLoc.y + 200, 0.3, MovingPattern.LIFTING, Color.RED, 50));
-								if(enemy.reduceHP(damage)) {
-									combatMenu.combatResult = CombatResult.PLAYER_WON;
-									combatMenu.close();
-									return;
-								}
-								
-								enemyTurn();
-								
-								enablePanel(true);
-								
-								break;
-							case "Run":
-								for(int i = 0; i < 10; i++)
-									drawPanel.playAnimation(new CombatAnimation(RUN_ANIM, Statics.frameSize.width / 2, Statics.frameSize.height / 2, true));
-								
-								if(new IntRange(0, 100).getRandom() > 50) {
-									drawPanel.playAnimation(new TextAnimation("SUCCSESS", Statics.frameSize.width / 2, Statics.frameSize.height / 2, 0.6, MovingPattern.LIFTING, Color.GREEN, 40));
-									combatMenu.combatResult = CombatResult.PLAYER_ESCAPED;
-									combatMenu.close();
-									return;
-									
-								}else {
-									drawPanel.playAnimation(new TextAnimation("MISS", Statics.frameSize.width / 2, Statics.frameSize.height / 2, 0.6, MovingPattern.LIFTING, Color.RED, 40));
-									enemyTurn();
-								}
-								
-						}
-					}
-				});
+				newButt.addActionListener(actionListener);
+				
 				actions[i] = newButt;
 				add(actions[i]);
 			}

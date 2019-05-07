@@ -64,7 +64,7 @@ public class RPGButton extends JButton {
 	 * @param image
 	 */
 	public RPGButton(final String title, final Font font, final BufferedImage image) {
-		super(title == null ? null : StringLocalizer.localize(title + ".name"));
+		super(title == null ? null : StringLocalizer.localize("button." + title + ".name"));
 		
 		this.image = image;
 		this.title = title;
