@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import rpg.RPG;
-import rpg.Statics;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.PlayerController;
@@ -57,10 +56,7 @@ public class GameField extends Scene {
 		for(final Tile t : tiles)
 			t.draw(g);
 		
-		g.push();
-		g.scale(1 / Statics.scale);
 		hud.draw(g);
-		g.pop();
 	}
 	
 	/**
@@ -143,24 +139,23 @@ public class GameField extends Scene {
 	public List<Entity> checkCollisionEntities(final Entity e) {
 		final LinkedList<Entity> entList = new LinkedList<>();
 		
-		for(final Entity ent : entities)
-			if(ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) entList.add(ent);
+		synchronized(entities) {
+			for(final Entity ent : entities)
+				if(ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) entList.add(ent);
+			
+		}
 		
 		return entList;
 	}
 	
-	public void removeEntity(String name) {
-		if(!name.contains(".name")) name += ".name";
-		
-		int i = 0;
-		for(final Entity e : entities) {
-			if(e.getUnlocalizedName().equalsIgnoreCase(name)) {
-				entities.remove(i);
-				
-				return;
-			}
-			
-			i++;
+	public void removeEntity(final Entity entity) {
+		synchronized(entities) {
+			for(final Entity e : entities)
+				if(e.equals(entity)) {
+					entities.remove(e);
+					
+					return;
+				}
 		}
 	}
 	

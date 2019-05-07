@@ -10,14 +10,14 @@ import rpg.api.vector.UnmodifiableVec2D;
  * @author Neo Hornberger
  */
 public class PlayerController extends LocalController {
-	private final double speed = 3D;
+	private final double speed = 2.5d;
 	
 	/**
 	 * Constructs a new {@link LocalController} which is controlling the
 	 * {@link Player} 'player'.
 	 * 
 	 * @param player
-	 *            the {@link Player} to control
+	 *                   the {@link Player} to control
 	 */
 	public PlayerController(final Player player) {
 		super(player);
@@ -28,7 +28,7 @@ public class PlayerController extends LocalController {
 	 * {@link PlayerController}.
 	 * 
 	 * @param keyCode
-	 *            the key code to handle
+	 *                    the key code to handle
 	 */
 	public void controlPlayerMovement(final int keyCode) {
 		switch(keyCode) {
