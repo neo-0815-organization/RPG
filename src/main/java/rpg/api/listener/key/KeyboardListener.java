@@ -3,15 +3,14 @@ package rpg.api.listener.key;
 import java.util.HashMap;
 
 /**
- * 
  * @author Neo Hornberger, Tim Ludwig
  */
 public class KeyboardListener {
-	private static HashMap<Integer, OnKey> keys = new HashMap<>();
-	private static HashMap<Integer, KeyState> states = new HashMap<>();
+	private static HashMap<Integer, OnKey>			keys	= new HashMap<>();
+	public static final HashMap<Integer, KeyState>	states	= new HashMap<>();
 	
 //	private static Thread thread = new Thread("KeyboardListenerThread") {
-//		
+//
 //		@Override
 //		public void run() {
 //			while(!interrupted())

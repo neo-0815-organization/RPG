@@ -19,9 +19,13 @@ public class Hitbox implements EventTrigger {
 	}
 	
 	public Hitbox(int tileWidth, int tileHeight) {
+		this(new DistanceValue((double) tileWidth), new DistanceValue((double) tileHeight));
+	}
+	
+	public Hitbox(double tileWidth, double tileHeight) {
 		this(new DistanceValue(tileWidth), new DistanceValue(tileHeight));
 	}
-
+	
 	public Hitbox(DistanceValue width, DistanceValue height) {
 		this.width = width;
 		this.height = height;
@@ -45,4 +49,5 @@ public class Hitbox implements EventTrigger {
 			     || y1 < y2 && y2 < y1 + h1);
 		 //@formatter:on
 	}
+	
 }
