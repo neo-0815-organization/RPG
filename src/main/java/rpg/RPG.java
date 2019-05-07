@@ -2,9 +2,12 @@ package rpg;
 
 import java.awt.event.KeyEvent;
 
+import rpg.api.entity.Person;
 import rpg.api.gfx.GameFrame;
 import rpg.api.gfx.menus.StartMenu;
 import rpg.api.listener.key.KeyboardListener;
+import rpg.api.localization.Locale;
+import rpg.api.localization.StringLocalizer;
 import rpg.api.scene.GameField;
 import rpg.api.vector.Vec2D;
 
@@ -17,6 +20,7 @@ public class RPG {
 //	public static Preferences prefs;
 	
 	public static void main(final String[] args) {
+		StringLocalizer.setActiveLocale(args != null && args[0].equals("de") ? Locale.GERMAN : Locale.AMERICAN_ENGLISH);
 		init();
 	}
 	
@@ -112,6 +116,22 @@ public class RPG {
 				case RELEASED:
 					break;
 				case RELEASING:
+					break;
+				default:
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
+			switch(state) {
+				case PRESSED:
+					break;
+				case PRESSING:
+					Person.E_PRESSED = true;
+					break;
+				case RELEASED:
+					break;
+				case RELEASING:
+					Person.E_PRESSED = false;
 					break;
 				default:
 					break;

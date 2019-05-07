@@ -1,6 +1,7 @@
 package rpg.api.entity;
 
 import rpg.api.collision.Hitbox;
+import rpg.api.entity.Person.CharacterSheet;
 import rpg.api.entity.item.Inventory;
 import rpg.api.eventhandling.EventType;
 import rpg.api.units.DistanceValue;
@@ -23,6 +24,8 @@ public class Player extends LivingEntity {
 		
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
 		inv = new Inventory();
+		
+		setSprite(CharacterSheet.PLAYER.getSprite());
 	}
 	
 	@Override

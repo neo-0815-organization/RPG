@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 
+import rpg.RPG;
 import rpg.Statics;
 import rpg.api.filehandling.RPGFileReader;
 import rpg.api.filehandling.RPGFileWriter;
@@ -123,7 +124,8 @@ public class PreferencesMenu extends Menu {
 	@Override
 	public void close() {
 		save();
-		
+		RPG.gameFrame.dispose();
+		RPG.main(new String[] {englishSelected ? "en" : "de"});
 		super.close();
 	}
 }

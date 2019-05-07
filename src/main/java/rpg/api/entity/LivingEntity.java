@@ -4,10 +4,7 @@ public abstract class LivingEntity extends Entity {
 	protected int hp, maxHP;
 	
 	public LivingEntity(final String name) {
-		super(name);
-		
-		hp = 10;
-		maxHP = 10;
+		this(name, 10);
 	}
 	
 	public LivingEntity(final String name, final int maxHP) {
@@ -25,7 +22,15 @@ public abstract class LivingEntity extends Entity {
 		this.hp = hp;
 	}
 	
+	public void addHP(final int hp) {
+		this.hp += hp;
+	}
+	
 	public int getMaxHP() {
 		return maxHP;
+	}
+	
+	public void setMaxHP(int maxHP) {
+		this.maxHP = maxHP;
 	}
 }
