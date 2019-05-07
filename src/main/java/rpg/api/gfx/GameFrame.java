@@ -20,11 +20,11 @@ import rpg.api.scene.Scene;
  * @author Erik Diers, Neo Hornberger
  */
 public class GameFrame extends JFrame {
-	private static final long		serialVersionUID	= 1861206115390613807L;
-	private static final boolean	fullScreen			= true;
+	private static final long serialVersionUID = 1861206115390613807L;
+	private static final boolean fullScreen = true;
 	
-	private final Canvas			canvas;
-	private final BufferStrategy	drawBuffStrat;
+	private final Canvas canvas;
+	private final BufferStrategy drawBuffStrat;
 	
 	public GameFrame() {
 		super("RPG");
@@ -70,7 +70,7 @@ public class GameFrame extends JFrame {
 	 * @return Graphics2D
 	 */
 	public DrawingGraphics getDrawingGraphics() {
-		return new DrawingGraphics(drawBuffStrat.getDrawGraphics());
+		return new AnchorableDrawingGraphics(drawBuffStrat.getDrawGraphics());
 	}
 	
 	/**

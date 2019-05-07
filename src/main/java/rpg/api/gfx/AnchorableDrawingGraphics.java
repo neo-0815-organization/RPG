@@ -360,7 +360,7 @@ public class AnchorableDrawingGraphics extends DrawingGraphics {
 		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
 		final Point p = p(x, (float) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
 		
-		super.drawString(str, p.x, p.y);
+		drawString0(str, p.x, p.y);
 	}
 	
 	@Override
@@ -368,7 +368,7 @@ public class AnchorableDrawingGraphics extends DrawingGraphics {
 		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
 		final Point p = p((float) (x - textSize.getWidth() / 2), (float) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
 		
-		super.drawString(str, p.x, p.y);
+		drawString0(str, p.x, p.y);
 	}
 	
 	@Override

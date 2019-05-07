@@ -191,6 +191,10 @@ public class DrawingGraphics extends Graphics2D {
 		g().fillPolygon(xPoints, yPoints, nPoints);
 	}
 	
+	protected void drawString0(final String str, final int x, final int y) {
+		g().drawString(str, x, y);
+	}
+	
 	@Override
 	public void drawString(final String str, final int x, final int y) {
 		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
@@ -268,6 +272,10 @@ public class DrawingGraphics extends Graphics2D {
 	@Override
 	public void drawRenderableImage(final RenderableImage img, final AffineTransform xform) {
 		g().drawRenderableImage(img, xform);
+	}
+	
+	protected void drawString0(final String str, final float x, final float y) {
+		g().drawString(str, x, y);
 	}
 	
 	@Override
