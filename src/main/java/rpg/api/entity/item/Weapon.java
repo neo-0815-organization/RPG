@@ -1,9 +1,6 @@
 package rpg.api.entity.item;
 
-import rpg.api.gfx.menus.combatMenu.CombatAnimationSheet;
-
-public abstract class Weapon extends ItemStack{
-	public static final CombatAnimationSheet ATTACK_ANIMATION_SHEET = new CombatAnimationSheet("attack.png", 4, 0.75 / 4D, 4);
+public abstract class Weapon extends ItemStack {
 	
 	public Weapon(final String name) {
 		this(name, false);
@@ -12,12 +9,11 @@ public abstract class Weapon extends ItemStack{
 	public Weapon(final String name, final boolean questItem) {
 		super(name, questItem);
 		
-		this.type = ItemType.WEAPON;
-		this.stackSize = 1;
+		type = ItemType.WEAPON;
+		stackSize = 1;
 	}
 	
 	public abstract IntRange getAttackPower();
-	
 	
 	public static class IntRange {
 		int from, to;
@@ -26,11 +22,11 @@ public abstract class Weapon extends ItemStack{
 			
 		}
 		
-		public IntRange(int to) {
+		public IntRange(final int to) {
 			this.to = to;
 		}
 		
-		public IntRange(int from, int to) {
+		public IntRange(final int from, final int to) {
 			this.from = from;
 			this.to = to;
 		}
@@ -43,16 +39,16 @@ public abstract class Weapon extends ItemStack{
 			return to;
 		}
 		
-		public void setFrom(int from) {
+		public void setFrom(final int from) {
 			this.from = from;
 		}
 		
-		public void setTo(int to) {
+		public void setTo(final int to) {
 			this.to = to;
 		}
 		
 		public int getRandom() {
-			int temp =  (int) (Math.random() * (to - from) + from);
+			final int temp = (int) (Math.random() * (to - from) + from);
 			System.out.println("[Weapon::IntRange] >> Damage:" + temp);
 			return temp;
 		}

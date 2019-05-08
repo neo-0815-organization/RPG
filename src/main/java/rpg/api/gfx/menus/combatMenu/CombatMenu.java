@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import rpg.RPG;
 import rpg.Statics;
 import rpg.api.entity.LivingEntity;
-import rpg.api.entity.item.Weapon;
 import rpg.api.entity.item.Weapon.IntRange;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ImageUtility;
@@ -24,7 +23,7 @@ import rpg.api.gfx.framework.RPGButton;
 import rpg.api.gfx.menus.combatMenu.TextAnimation.MovingPattern;
 
 public class CombatMenu extends Menu {
-	private static CombatAnimationSheet RUN_ANIM = new CombatAnimationSheet("run.png", 4, 0.1, 3);
+	private static CombatAnimationSheet RUN_ANIM = new CombatAnimationSheet("run.png", 4, 0.1, 3), ATTACK_ANIMATION_SHEET = new CombatAnimationSheet("attack.png", 4, 0.75 / 4d, 4);
 	
 	private final ActionControlPanel actionControlPanel;
 	private final DrawPanel drawPanel;
@@ -89,7 +88,7 @@ public class CombatMenu extends Menu {
 							enablePanel(false);
 							System.out.println("[CombatMenu] >> Player: Attack");
 							
-							ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(Weapon.ATTACK_ANIMATION_SHEET, drawPanel.enemyLoc.x, drawPanel.enemyLoc.y, false));
+							ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(ATTACK_ANIMATION_SHEET, drawPanel.enemyLoc.x, drawPanel.enemyLoc.y, false));
 							
 							final int damage = player.getWeaponDamageRange().getRandom();
 							drawPanel.playAnimation(new TextAnimation("" + damage, drawPanel.enemyLoc.x + 300, drawPanel.enemyLoc.y + 200, 0.3, MovingPattern.LIFTING, Color.RED, 50));
@@ -161,7 +160,7 @@ public class CombatMenu extends Menu {
 		}
 		
 		public void enemyTurn() {
-			ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(Weapon.ATTACK_ANIMATION_SHEET, drawPanel.playerLoc.x, drawPanel.playerLoc.y, false));
+			ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(ATTACK_ANIMATION_SHEET, drawPanel.playerLoc.x, drawPanel.playerLoc.y, false));
 			final int damage = enemy.getWeaponDamageRange().getRandom();
 			drawPanel.playAnimation(new TextAnimation("" + damage, drawPanel.playerLoc.x + 300, drawPanel.playerLoc.y + 200, 0.3, MovingPattern.LIFTING, Color.RED, 50));
 			
