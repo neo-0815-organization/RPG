@@ -1,0 +1,9 @@
+normal:256:true
+apple:256:true
+big_face:256:true
+apple2:256:true
+big:256:true
+dead:256:true
+fire_snow:256:true
+fire:256:true
+palm:256:true

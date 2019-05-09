@@ -1,1 +1,0 @@
-ore_crystal_blue:32:true
