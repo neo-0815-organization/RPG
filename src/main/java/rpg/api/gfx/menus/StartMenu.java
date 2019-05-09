@@ -83,4 +83,10 @@ public final class StartMenu extends Menu {
 			openPref = false;
 		}
 	}
+	
+	@Override
+	public void close() {
+		openSubMenu(new CharacterSelectMenu());
+		super.close();
+	}
 }

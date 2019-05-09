@@ -215,4 +215,16 @@ public class Sprite implements Cloneable{
 		}
 		
 	}
+	
+	public static class WalkableSprite extends Sprite{
+		public WalkableSprite(String path) {
+			super(path, SpriteTheme.NONE);
+			System.out.println("PATH: " + path);
+			addAnimation("walking/right");
+			addAnimation("walking/up");
+			addAnimation("walking/down");
+			addAnimation("walking/left");
+			setAnimation("walking/down");
+		}
+	}
 }

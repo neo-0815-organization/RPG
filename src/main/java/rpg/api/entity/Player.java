@@ -25,7 +25,7 @@ public class Player extends LivingEntity {
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
 		inv = new Inventory();
 		
-		setSprite(CharacterSheet.PLAYER.getSprite());
+		setSprite(CharacterSheet.PLAYER_FAIRY_MALE.getSprite());
 	}
 	
 	@Override
