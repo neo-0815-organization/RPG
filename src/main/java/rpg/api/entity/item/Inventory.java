@@ -1,6 +1,6 @@
 package rpg.api.entity.item;
 
-import static rpg.Statics.frameSize;
+import static rpg.Statics.gameSize;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -24,13 +24,14 @@ public class Inventory implements IDrawable {
 	private static final int W_INV = HOTBAR_SLOT.getWidth() * HOTBAR_SLOTS,
 							 H_INV = INVENTORY_SLOT.getHeight() * (MAX_INVENTORY_SIZE / HOTBAR_SLOTS - 1),
 							 SLOT_SIZE = HOTBAR_SLOT.getHeight(),
-							 X_INV = frameSize.width - W_INV,
-							 Y_HOT = frameSize.height - SLOT_SIZE,
-							 Y_INV = frameSize.height - H_INV - SLOT_SIZE;
+							 X_INV = gameSize.width - W_INV,
+							 Y_HOT = gameSize.height - SLOT_SIZE,
+							 Y_INV = gameSize.height - H_INV - SLOT_SIZE;
 	// @formatter:on
+	private final LinkedList<ItemStack> questItems = new LinkedList<>(), items = new LinkedList<>();
 	
-	public boolean						showInv		= false, showQuest = false;
-	private final LinkedList<ItemStack>	questItems	= new LinkedList<>(), items = new LinkedList<>();
+	public boolean	showInv			= false, showQuest = false;
+	public int		selectedSlot	= 0;
 	
 	static {
 		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
@@ -40,7 +41,8 @@ public class Inventory implements IDrawable {
 				case RELEASING:
 					return;
 				case PRESSING:
-					RPG.gameField.getPlayerController().getPlayer().getInventory().showInv = !RPG.gameField.getPlayerController().getPlayer().getInventory().showInv;
+					final Inventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+					inv.showInv = !inv.showInv;
 					break;
 			}
 		});
@@ -51,7 +53,67 @@ public class Inventory implements IDrawable {
 				case RELEASING:
 					return;
 				case PRESSING:
-					RPG.gameField.getPlayerController().getPlayer().getInventory().showQuest = !RPG.gameField.getPlayerController().getPlayer().getInventory().showQuest;
+					final Inventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+					inv.showQuest = !inv.showQuest;
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_LEFT, (state) -> {
+			switch(state) {
+				case RELEASED:
+				case RELEASING:
+				case PRESSED:
+					return;
+				case PRESSING:
+					final Inventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+					if(inv.selectedSlot >= 1) inv.selectedSlot--;
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_RIGHT, (state) -> {
+			switch(state) {
+				case RELEASED:
+				case RELEASING:
+				case PRESSED:
+					return;
+				case PRESSING:
+					final Inventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+					if(inv.selectedSlot < MAX_INVENTORY_SIZE - 1) inv.selectedSlot++;
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_UP, (state) -> {
+			switch(state) {
+				case RELEASED:
+				case RELEASING:
+				case PRESSED:
+					return;
+				case PRESSING:
+					final Inventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+					if(inv.selectedSlot < MAX_INVENTORY_SIZE - HOTBAR_SLOTS) inv.selectedSlot += HOTBAR_SLOTS;
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_DOWN, (state) -> {
+			switch(state) {
+				case RELEASED:
+				case RELEASING:
+				case PRESSED:
+					return;
+				case PRESSING:
+					final Inventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+					if(inv.selectedSlot >= HOTBAR_SLOTS) inv.selectedSlot -= HOTBAR_SLOTS;
+					break;
+			}
+		});
+		KeyboardListener.registerKey(KeyEvent.VK_Q, (state) -> {
+			switch(state) {
+				case RELEASED:
+				case RELEASING:
+				case PRESSED:
+					return;
+				case PRESSING:
+					RPG.gameField.getPlayerController().getPlayer().getInventory().throwCurrentItem();;
 					break;
 			}
 		});
@@ -73,6 +135,18 @@ public class Inventory implements IDrawable {
 		return true;
 	}
 	
+	private void throwItem(final int slot) {
+		if(slot >= items.size()) return;
+		
+		RPG.gameField.addEntity(items.get(slot));
+		items.get(slot).setLocation(RPG.gameField.getPlayerController().getPlayer().getLocation());
+		items.remove(slot);
+	}
+	
+	public void throwCurrentItem() {
+		throwItem(selectedSlot);
+	}
+	
 	/**
 	 * Removes an {@link ItemStack} from the inventory
 	 * 
@@ -87,7 +161,7 @@ public class Inventory implements IDrawable {
 	@Override
 	public void draw(final DrawingGraphics g) {
 		drawHotbar(g);
-		System.out.println("aaaaaaa");
+		
 		if(showInv) drawInventory(g);
 		if(showQuest) drawQuests(g);
 	}
@@ -104,18 +178,16 @@ public class Inventory implements IDrawable {
 			
 			image = questItems.get(i).getSprite().getCurrentAnimationFrame();
 			
-			g.drawImage(QUEST_SLOT, frameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
-			g.drawImage(image, frameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
+			g.drawImage(QUEST_SLOT, gameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
+			g.drawImage(image, gameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
 		}
 	}
 	
 	private void drawHotbar(final DrawingGraphics g) {
-		System.out.println("bbbbb");
-		
 		for(int i = 0; i < HOTBAR_SLOTS; i++) {
 			g.drawImage(HOTBAR_SLOT, X_INV + SLOT_SIZE * i, Y_HOT, null);
-			
-			if(i == 0) g.drawImage(HOTBAR_SELECTOR, X_INV + SLOT_SIZE * i, Y_HOT, null);
+			System.out.println(X_INV + SLOT_SIZE * i + ", " + Y_HOT);
+			if(i == selectedSlot) g.drawImage(HOTBAR_SELECTOR, X_INV + SLOT_SIZE * i, Y_HOT, null);
 			
 			if(i >= items.size() || items.get(i) == null) continue;
 			
@@ -135,7 +207,7 @@ public class Inventory implements IDrawable {
 			
 			g.drawImage(INVENTORY_SLOT, X_INV + SLOT_SIZE * x, Y_HOT - SLOT_SIZE * y, null);
 			
-			if(i == 0) g.drawImage(INVENTORY_SELECTOR, X_INV + SLOT_SIZE * i, Y_HOT - SLOT_SIZE * y, null);
+			if(i == selectedSlot) g.drawImage(INVENTORY_SELECTOR, X_INV + SLOT_SIZE * x, Y_HOT - SLOT_SIZE * y, null);
 			
 			if(i >= items.size() || items.get(i) == null) continue;
 			

@@ -21,20 +21,20 @@ import rpg.api.tile.Tile;
  * @author Erik Diers, Tim Ludwig, Neo Hornberger
  */
 public class GameField extends Scene {
-	public static boolean inGame = true;
-	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
-	public static Background background;
+	public static boolean		inGame			= true;
+	public static final double	MAX_DELTA_TIME	= 0.21, MIN_DELTA_TIME = 0.015;
+	public static Background	background;
 	
-	private double deltaTime;
-	private long lastFrame = System.currentTimeMillis();
+	private double	deltaTime;
+	private long	lastFrame	= System.currentTimeMillis();
 	
 	private Thread update, draw;
 	
-	private final LinkedList<Entity> entities = new LinkedList<>();
-	private final LinkedList<Tile> tiles = new LinkedList<>();
-	private final LinkedList<Controller> controller = new LinkedList<>();
-	private PlayerController playerController;
-	private final HUD hud = new HUD();
+	private final LinkedList<Entity>		entities	= new LinkedList<>();
+	private final LinkedList<Tile>			tiles		= new LinkedList<>();
+	private final LinkedList<Controller>	controller	= new LinkedList<>();
+	private PlayerController				playerController;
+	private final HUD						hud			= new HUD();
 	
 	public GameField() {
 		background = new Background();
@@ -182,6 +182,10 @@ public class GameField extends Scene {
 	public void addEntity(final Controller c) {
 		controller.add(c);
 		entities.add(c.getEntity());
+	}
+	
+	public void addEntity(final Entity e) {
+		entities.add(e);
 	}
 	
 	public void addTile(final Tile t) {

@@ -12,8 +12,8 @@ import rpg.api.eventhandling.events.Event;
  * @author Tim Ludwig
  */
 public class EventHandler {
-	private static HashMap<EventType, LinkedList<EventListener>> listener = new HashMap<>();
-	private static HashMap<EventType, Boolean> eventTypeRegistered = initEventTypeRegistered();
+	private static HashMap<EventType, LinkedList<EventListener>>	listener			= new HashMap<>();
+	private static HashMap<EventType, Boolean>						eventTypeRegistered	= initEventTypeRegistered();
 	
 	/**
 	 * Initiates the known {@link EventType}s as unregistered.
@@ -34,7 +34,7 @@ public class EventHandler {
 	 * Checks if the {@link EventType} 'eventType' is registered.
 	 *
 	 * @param eventType
-	 *            the {@link EventType} to check
+	 *                      the {@link EventType} to check
 	 * @return {@code true} if the {@link EventType} is registered.
 	 */
 	private static boolean isEventTypeRegistered(final EventType eventType) {
@@ -45,8 +45,8 @@ public class EventHandler {
 	 * Gets the {@link EventListener}s for the {@link EventType} 'eventType'.
 	 *
 	 * @param eventType
-	 *            the type of the {@link Event} to search for
-	 *            {@link EventListener}s
+	 *                      the type of the {@link Event} to search for
+	 *                      {@link EventListener}s
 	 * @return the {@link EventListener}s for the {@link EventType} 'eventType'
 	 */
 	private static LinkedList<EventListener> getListenersForEventType(final EventType eventType) {
@@ -57,24 +57,22 @@ public class EventHandler {
 	 * Handles the {@link Event} 'event'.
 	 *
 	 * @param event
-	 *            the {@link Event} to handle
+	 *                  the {@link Event} to handle
 	 */
 	public static void handle(final Event event) {
 		final EventType t = event.getEventType();
 		
 		if(!isEventTypeRegistered(t)) return;
 		
-		new Thread((Runnable) () -> {
-			for(final EventListener l : getListenersForEventType(t))
-				new Thread((Runnable) () -> l.onEvent(event), "Listener " + l + " handling " + t).start();
-		}, "Handling " + event).start();
+		for(final EventListener l : getListenersForEventType(t))
+			l.onEvent(event);
 	}
 	
 	/**
 	 * Registers the {@link EventListener} 'eventListener'.
 	 *
 	 * @param eventListener
-	 *            the {@link EventListener} to register
+	 *                          the {@link EventListener} to register
 	 */
 	public static void registerEventListener(final EventListener eventListener) {
 		final EventType eT = eventListener.getEventType();
