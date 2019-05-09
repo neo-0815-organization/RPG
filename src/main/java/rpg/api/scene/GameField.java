@@ -23,21 +23,20 @@ import rpg.api.tile.Tile;
 public class GameField extends Scene {
 	public static boolean inGame = true;
 	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
-	public static Background background;
 	
 	private double deltaTime;
 	private long lastFrame = System.currentTimeMillis();
 	
 	private Thread update, draw;
 	
-	private final LinkedList<Entity> entities = new LinkedList<>();
-	private final LinkedList<Tile> tiles = new LinkedList<>();
 	private final LinkedList<Controller> controller = new LinkedList<>();
 	private PlayerController playerController;
+	private Save save;
+	
 	private final HUD hud = new HUD();
 	
 	public GameField() {
-		background = new Background();
+		save.background = new Background();
 		
 		startUpdating();
 		// startDrawing();
@@ -45,14 +44,14 @@ public class GameField extends Scene {
 	
 	@Override
 	public void draw(final DrawingGraphics g) {
-		background.draw(g);
+		save.background.draw(g);
 		
-		synchronized(entities) {
-			for(final Entity e : entities)
+		synchronized(save.entities) {
+			for(final Entity e : save.entities)
 				e.draw(g);
 		}
 		
-		for(final Tile t : tiles)
+		for(final Tile t : save.tiles)
 			t.draw(g);
 		
 		hud.draw(g);
@@ -109,13 +108,13 @@ public class GameField extends Scene {
 	 * Updates all {@link Tile}s and {@link Entity}s.
 	 */
 	private void update(final double deltaTime) {
-		background.update(deltaTime);
+		save.background.update(deltaTime);
 		
-		for(int i = 0; i < entities.size(); i++)
-			entities.get(i).update(deltaTime);
+		for(int i = 0; i < save.entities.size(); i++)
+			save.entities.get(i).update(deltaTime);
 		
-		for(int i = 0; i < tiles.size(); i++)
-			tiles.get(i).update(deltaTime);
+		for(int i = 0; i < save.tiles.size(); i++)
+			save.tiles.get(i).update(deltaTime);
 		
 		updateEvents();
 	}
@@ -129,7 +128,7 @@ public class GameField extends Scene {
 	public List<Tile> checkCollisionTiles(final Entity e) {
 		final LinkedList<Tile> ts = new LinkedList<>();
 		
-		for(final Tile t : tiles)
+		for(final Tile t : save.tiles)
 			ts.add(t);
 		
 		return ts;
@@ -138,8 +137,8 @@ public class GameField extends Scene {
 	public List<Entity> checkCollisionEntities(final Entity e) {
 		final LinkedList<Entity> entList = new LinkedList<>();
 		
-		synchronized(entities) {
-			for(final Entity ent : entities)
+		synchronized(save.entities) {
+			for(final Entity ent : save.entities)
 				if(ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) entList.add(ent);
 			
 		}
@@ -150,10 +149,10 @@ public class GameField extends Scene {
 	public void removeEntitiesByName(String name) {
 		if(!name.contains(".name")) name += ".name";
 		
-		synchronized(entities) {
+		synchronized(save.entities) {
 			int i = 0;
-			for(final Entity e : entities) {
-				if(e.getUnlocalizedName().equalsIgnoreCase(name)) entities.remove(i);
+			for(final Entity e : save.entities) {
+				if(e.getUnlocalizedName().equalsIgnoreCase(name)) save.entities.remove(i);
 				
 				i++;
 			}
@@ -161,10 +160,10 @@ public class GameField extends Scene {
 	}
 	
 	public void removeEntity(final Entity entity) {
-		synchronized(entities) {
-			for(final Entity e : entities)
+		synchronized(save.entities) {
+			for(final Entity e : save.entities)
 				if(e.equals(entity)) {
-					entities.remove(e);
+					save.entities.remove(e);
 					
 					return;
 				}
@@ -181,11 +180,11 @@ public class GameField extends Scene {
 	
 	public void addEntity(final Controller c) {
 		controller.add(c);
-		entities.add(c.getEntity());
+		save.entities.add(c.getEntity());
 	}
 	
 	public void addTile(final Tile t) {
-		tiles.add(t);
+		save.tiles.add(t);
 	}
 	
 	public PlayerController getPlayerController() {
@@ -195,7 +194,11 @@ public class GameField extends Scene {
 	public void setPlayerController(final PlayerController playerController) {
 		this.playerController = playerController;
 		
-		entities.add(playerController.getEntity());
+		save.entities.add(playerController.getEntity());
 		Camera.setFocusEntity(playerController.getEntity());
+	}
+	
+	public Background getBackground() {
+		return save.background;
 	}
 }
