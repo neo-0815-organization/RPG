@@ -1,6 +1,6 @@
 package rpg.api.entity.item;
 
-import static rpg.Statics.gameSize;
+import static rpg.Statics.frameSize;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -24,9 +24,9 @@ public class Inventory implements IDrawable {
 	private static final int W_INV = HOTBAR_SLOT.getWidth() * HOTBAR_SLOTS,
 							 H_INV = INVENTORY_SLOT.getHeight() * (MAX_INVENTORY_SIZE / HOTBAR_SLOTS - 1),
 							 SLOT_SIZE = HOTBAR_SLOT.getHeight(),
-							 X_INV = gameSize.width - W_INV,
-							 Y_HOT = gameSize.height - SLOT_SIZE,
-							 Y_INV = gameSize.height - H_INV - SLOT_SIZE;
+							 X_INV = frameSize.width - W_INV,
+							 Y_HOT = frameSize.height - SLOT_SIZE,
+							 Y_INV = frameSize.height - H_INV - SLOT_SIZE;
 	// @formatter:on
 	
 	public boolean						showInv		= false, showQuest = false;
@@ -87,7 +87,7 @@ public class Inventory implements IDrawable {
 	@Override
 	public void draw(final DrawingGraphics g) {
 		drawHotbar(g);
-		
+		System.out.println("aaaaaaa");
 		if(showInv) drawInventory(g);
 		if(showQuest) drawQuests(g);
 	}
@@ -104,14 +104,18 @@ public class Inventory implements IDrawable {
 			
 			image = questItems.get(i).getSprite().getCurrentAnimationFrame();
 			
-			g.drawImage(QUEST_SLOT, gameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
-			g.drawImage(image, gameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
+			g.drawImage(QUEST_SLOT, frameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
+			g.drawImage(image, frameSize.width - SLOT_SIZE * (x + 1), SLOT_SIZE * y, null);
 		}
 	}
 	
 	private void drawHotbar(final DrawingGraphics g) {
+		System.out.println("bbbbb");
+		
 		for(int i = 0; i < HOTBAR_SLOTS; i++) {
 			g.drawImage(HOTBAR_SLOT, X_INV + SLOT_SIZE * i, Y_HOT, null);
+			
+			if(i == 0) g.drawImage(HOTBAR_SELECTOR, X_INV + SLOT_SIZE * i, Y_HOT, null);
 			
 			if(i >= items.size() || items.get(i) == null) continue;
 			
@@ -130,6 +134,8 @@ public class Inventory implements IDrawable {
 			y = (i - x) / HOTBAR_SLOTS;
 			
 			g.drawImage(INVENTORY_SLOT, X_INV + SLOT_SIZE * x, Y_HOT - SLOT_SIZE * y, null);
+			
+			if(i == 0) g.drawImage(INVENTORY_SELECTOR, X_INV + SLOT_SIZE * i, Y_HOT - SLOT_SIZE * y, null);
 			
 			if(i >= items.size() || items.get(i) == null) continue;
 			

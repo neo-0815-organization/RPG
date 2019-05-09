@@ -20,7 +20,7 @@ public class RPG {
 //	public static Preferences prefs;
 	
 	public static void main(final String[] args) {
-		StringLocalizer.setActiveLocale(args != null && args[0].equals("de") ? Locale.GERMAN : Locale.AMERICAN_ENGLISH);
+		StringLocalizer.setActiveLocale(args != null && args.length > 0 && args[0].equals("de") ? Locale.GERMAN : Locale.AMERICAN_ENGLISH);
 		init();
 	}
 	
@@ -121,17 +121,17 @@ public class RPG {
 					break;
 			}
 		});
-		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
+		KeyboardListener.registerKey(KeyEvent.VK_I, (state) -> {
 			switch(state) {
 				case PRESSED:
 					break;
 				case PRESSING:
-					Person.E_PRESSED = true;
+					Person.I_PRESSED = true;
 					break;
 				case RELEASED:
 					break;
 				case RELEASING:
-					Person.E_PRESSED = false;
+					Person.I_PRESSED = false;
 					break;
 				default:
 					break;
