@@ -15,6 +15,11 @@ public class EventHandler {
 	private static HashMap<EventType, LinkedList<EventListener>> listener = new HashMap<>();
 	private static HashMap<EventType, Boolean> eventTypeRegistered = initEventTypeRegistered();
 	
+	static {
+		listener.put(EventType.ALL_EVENTS, new LinkedList<>());
+		eventTypeRegistered.put(EventType.ALL_EVENTS, true);
+	}
+	
 	/**
 	 * Initiates the known {@link EventType}s as unregistered.
 	 *
@@ -38,7 +43,7 @@ public class EventHandler {
 	 * @return {@code true} if the {@link EventType} is registered.
 	 */
 	private static boolean isEventTypeRegistered(final EventType eventType) {
-		return eventTypeRegistered.get(eventType);
+		return eventTypeRegistered.get(eventType) || !eventTypeRegistered.isEmpty();
 	}
 	
 	/**
@@ -50,7 +55,11 @@ public class EventHandler {
 	 * @return the {@link EventListener}s for the {@link EventType} 'eventType'
 	 */
 	private static LinkedList<EventListener> getListenersForEventType(final EventType eventType) {
-		return listener.get(eventType);
+		final LinkedList<EventListener> l = new LinkedList<EventListener>(listener.get(EventType.ALL_EVENTS));
+		
+		if(listener.containsKey(eventType)) l.addAll(listener.get(eventType));
+		
+		return l;
 	}
 	
 	/**
@@ -64,10 +73,8 @@ public class EventHandler {
 		
 		if(!isEventTypeRegistered(t)) return;
 		
-		new Thread((Runnable) () -> {
-			for(final EventListener l : getListenersForEventType(t))
-				new Thread((Runnable) () -> l.onEvent(event), "Listener " + l + " handling " + t).start();
-		}, "Handling " + event).start();
+		for(final EventListener l : getListenersForEventType(t))
+			l.onEvent(event);
 	}
 	
 	/**
