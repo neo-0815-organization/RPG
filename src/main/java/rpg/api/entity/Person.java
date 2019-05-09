@@ -1,5 +1,7 @@
 package rpg.api.entity;
 
+import java.io.File;
+
 import rpg.api.collision.Hitbox;
 import rpg.api.dialog.Dialog;
 import rpg.api.eventhandling.EventType;
@@ -75,7 +77,7 @@ public class Person extends LivingEntity {
 
 			@Override
 			public Sprite getSprite() {
-				return new Sprite.WalkableSprite("player/thief/male");
+				return new Sprite.WalkableSprite("player/fairy/male");
 			}
 		},
 		PLAYER_FAIRY_FEMALE {
@@ -86,7 +88,7 @@ public class Person extends LivingEntity {
 
 			@Override
 			public Sprite getSprite() {
-				return new Sprite.WalkableSprite("player/thief/female");
+				return new Sprite.WalkableSprite("player/fairy/female");
 			}
 		},
 		PLAYER_MAGICAN_MALE {

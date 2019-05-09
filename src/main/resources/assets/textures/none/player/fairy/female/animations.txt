@@ -1,4 +1,4 @@
-down:34:true
-left:34:true
-right:34:true
-up:34:true
+walking/down:34:true
+walking/left:34:true
+walking/right:34:true
+walking/up:34:true
