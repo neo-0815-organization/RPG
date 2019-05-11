@@ -126,7 +126,7 @@ public class PreferencesMenu extends Menu {
 		save();
 		
 		RPG.gameFrame.dispose();
-		RPG.main(new String[] { englishSelected ? "en" : "de" });
+		RPG.main(new String[] { englishSelected ? "en_US" : "de_DE" });
 		
 		super.close0();
 	}
