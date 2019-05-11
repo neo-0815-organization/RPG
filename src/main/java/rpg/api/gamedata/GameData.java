@@ -60,7 +60,7 @@ public class GameData {
 			try {
 				file.createNewFile();
 				
-				save();
+				if(!data.isEmpty()) save();
 			}catch(final IOException e) {
 				e.printStackTrace();
 			}
