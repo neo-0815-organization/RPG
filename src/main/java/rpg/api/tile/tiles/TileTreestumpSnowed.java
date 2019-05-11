@@ -4,12 +4,12 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
 
-public class TileTent extends Tile {
+public class TileTreestumpSnowed extends Tile {
 
-	public TileTent() {
-		sprite = new Sprite("tiles/tent");
-		sprite.addAnimation("tent");
-		sprite.setAnimation("tent");
+	public TileTreestumpSnowed() {
+		sprite = new Sprite("tiles/treestump/snowed");
+		sprite.addAnimation("treestumpSnowed");
+		sprite.setAnimation("treestumpSnowed");
 	}
 
 	@Override
