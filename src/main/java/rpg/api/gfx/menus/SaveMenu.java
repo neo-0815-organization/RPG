@@ -19,6 +19,7 @@ import rpg.api.scene.Save;
 
 public class SaveMenu extends Menu {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory();
+	private static final File SAVES_DIR = new File(SaveMenu.class.getResource("/").getFile() + "/saves/");
 	
 	private boolean openGame = false;
 	
@@ -44,7 +45,9 @@ public class SaveMenu extends Menu {
 		};
 		final ActionListener saveButtonAction = e -> startSave.accept(e.getActionCommand());
 		
-		final File[] saves = new File(getClass().getResource("/").getFile() + "/saves/").listFiles(DIR_FILTER);
+		if(!SAVES_DIR.exists()) SAVES_DIR.mkdir();
+		
+		final File[] saves = SAVES_DIR.listFiles(DIR_FILTER);
 		for(int i = 0; i < saves.length; i++) {
 			final RPGButton saveButton = new RPGButton();
 			saveButton.setText(saves[i].getName());
