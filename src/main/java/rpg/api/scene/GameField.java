@@ -21,8 +21,10 @@ import rpg.api.tile.Tile;
  * @author Erik Diers, Tim Ludwig, Neo Hornberger
  */
 public class GameField extends Scene {
-	public static boolean inGame = true;
 	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
+	
+	public static boolean inGame = true;
+	public static Save save;
 	
 	private double deltaTime;
 	private long lastFrame = System.currentTimeMillis();
@@ -31,13 +33,10 @@ public class GameField extends Scene {
 	
 	private final LinkedList<Controller> controller = new LinkedList<>();
 	private PlayerController playerController;
-	private Save save;
 	
 	private final HUD hud = new HUD();
 	
 	public GameField() {
-		save.background = new Background();
-		
 		startUpdating();
 		// startDrawing();
 	}

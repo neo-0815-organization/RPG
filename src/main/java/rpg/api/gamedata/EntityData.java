@@ -3,6 +3,8 @@ package rpg.api.gamedata;
 import java.io.IOException;
 
 import rpg.api.entity.Entity;
+import rpg.api.entity.LivingEntity;
+import rpg.api.entity.Player;
 
 /**
  * A class representing the data of an {@link Entity}.
@@ -37,6 +39,21 @@ public class EntityData extends GameData {
 		set("display_name", e.getDisplayName());
 		set("image", e.getImageName());
 		set("uuid", e.getUniqueId());
+		set("hitbox", e.getHitbox());
+		
+		if(e instanceof LivingEntity) {
+			final LivingEntity l = (LivingEntity) e;
+			
+			set("hp", l.getHP());
+			set("max_hp", l.getMaxHP());
+		}
+		
+		if(e instanceof Player) {
+			final Player p = (Player) e;
+			
+			set("xp", p.getXP());
+			set("mp", p.getMP());
+		}
 		
 		super.save();
 	}
