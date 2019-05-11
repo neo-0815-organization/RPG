@@ -41,7 +41,7 @@ public class CombatMenu extends Menu {
 	}
 	
 	@Override
-	public void close() {
+	protected void close0() {
 		drawPanel.draw();
 		
 		try {
@@ -50,7 +50,7 @@ public class CombatMenu extends Menu {
 			e.printStackTrace();
 		}
 		
-		super.close();
+		super.close0();
 	}
 	
 	public CombatResult getCombatResult() {
@@ -94,7 +94,7 @@ public class CombatMenu extends Menu {
 							drawPanel.playAnimation(new TextAnimation("" + damage, drawPanel.enemyLoc.x + 300, drawPanel.enemyLoc.y + 200, 0.3, MovingPattern.LIFTING, Color.RED, 50));
 							if(enemy.reduceHP(damage)) {
 								combatMenu.combatResult = CombatResult.PLAYER_WON;
-								combatMenu.close();
+								combatMenu.setOpen(false);
 								return;
 							}
 							
@@ -109,7 +109,7 @@ public class CombatMenu extends Menu {
 							if(new IntRange(0, 100).getRandom() > 50) {
 								drawPanel.playAnimation(new TextAnimation("SUCCSESS", Statics.frameSize.width / 2, Statics.frameSize.height / 2, 0.6, MovingPattern.LIFTING, Color.GREEN, 40));
 								combatMenu.combatResult = CombatResult.PLAYER_ESCAPED;
-								combatMenu.close();
+								combatMenu.setOpen(false);
 								return;
 								
 							}else {
@@ -166,7 +166,7 @@ public class CombatMenu extends Menu {
 			
 			if(player.reduceHP(damage)) {
 				combatMenu.combatResult = CombatResult.ENEMY_WON;
-				combatMenu.close();
+				combatMenu.setOpen(false);
 				return;
 			}
 			drawPanel.draw();

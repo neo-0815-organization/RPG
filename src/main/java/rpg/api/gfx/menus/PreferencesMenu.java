@@ -122,10 +122,12 @@ public class PreferencesMenu extends Menu {
 	}
 	
 	@Override
-	public void close() {
+	protected void close0() {
 		save();
+		
 		RPG.gameFrame.dispose();
-		RPG.main(new String[] {englishSelected ? "en" : "de"});
-		super.close();
+		RPG.main(new String[] { englishSelected ? "en" : "de" });
+		
+		super.close0();
 	}
 }

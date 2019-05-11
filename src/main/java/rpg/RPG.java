@@ -15,9 +15,9 @@ import rpg.api.vector.Vec2D;
  * The main class of this project.
  */
 public class RPG {
-	public static GameFrame	gameFrame;
-	public static GameField	gameField;
-//	public static Preferences prefs;
+	public static GameFrame gameFrame;
+	public static GameField gameField;
+	//	public static Preferences prefs;
 	
 	public static void main(final String[] args) {
 		StringLocalizer.setActiveLocale(args != null && args[0].equals("de") ? Locale.GERMAN : Locale.AMERICAN_ENGLISH);
@@ -46,10 +46,6 @@ public class RPG {
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_W);
 					break;
-				case PRESSING:
-					break;
-				case RELEASED:
-					break;
 				case RELEASING:
 					// System.out.println("Released");
 					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
@@ -63,10 +59,6 @@ public class RPG {
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_A);
 					break;
-				case PRESSING:
-					break;
-				case RELEASED:
-					break;
 				case RELEASING:
 					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
 					break;
@@ -78,10 +70,6 @@ public class RPG {
 			switch(state) {
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_S);
-					break;
-				case PRESSING:
-					break;
-				case RELEASED:
 					break;
 				case RELEASING:
 					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
@@ -95,10 +83,6 @@ public class RPG {
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_D);
 					break;
-				case PRESSING:
-					break;
-				case RELEASED:
-					break;
 				case RELEASING:
 					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
 					break;
@@ -108,30 +92,21 @@ public class RPG {
 		});
 		KeyboardListener.registerKey(KeyEvent.VK_ESCAPE, (state) -> {
 			switch(state) {
-				case PRESSED:
-					break;
 				case PRESSING:
-					System.exit(0);
-					break;
-				case RELEASED:
-					break;
-				case RELEASING:
+					gameField.save.save();
+					showStartMenu();
 					break;
 				default:
 					break;
 			}
 		});
-		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
+		KeyboardListener.registerKey(KeyEvent.VK_I, (state) -> {
 			switch(state) {
-				case PRESSED:
-					break;
 				case PRESSING:
-					Person.E_PRESSED = true;
-					break;
-				case RELEASED:
+					Person.I_PRESSED = true;
 					break;
 				case RELEASING:
-					Person.E_PRESSED = false;
+					Person.I_PRESSED = false;
 					break;
 				default:
 					break;
