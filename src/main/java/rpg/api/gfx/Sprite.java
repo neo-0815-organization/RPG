@@ -15,7 +15,7 @@ import rpg.api.filehandling.ResourceGetter;
  *
  * @author Tim Ludwig -> Erik->update
  */
-public class Sprite implements Cloneable{
+public class Sprite implements Cloneable {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
 	
 	private final HashMap<String, Animation> animations = new HashMap<>();
