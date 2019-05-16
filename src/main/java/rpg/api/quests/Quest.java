@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import rpg.RPG;
 import rpg.api.entity.CharacterType;
 import rpg.api.eventhandling.BundledListener;
 import rpg.api.filehandling.RPGFileReader;
@@ -45,7 +46,7 @@ public class Quest {
 	 * @return {@code true} if the Link{Quest} is available
 	 */
 	public boolean isAvailable() {
-		return (!isFinished || repeatable) && !inProgress && GameField.background.getName().equals(map);
+		return (!isFinished || repeatable) && !inProgress && RPG.gameField.getBackground().getName().equals(map);
 	}
 	
 	/**

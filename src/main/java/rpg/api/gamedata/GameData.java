@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import rpg.api.Direction;
+import rpg.api.collision.Hitbox;
 import rpg.api.packethandler.ByteBuffer;
 import rpg.api.vector.Vec2D;
 
@@ -34,20 +35,36 @@ public class GameData {
 	 *            the path to the {@link File}
 	 */
 	public GameData(final String path) {
+		this(path, new HashMap<>());
+	}
+	
+	/**
+	 * Constructs a new representation of data with given defaults.
+	 * 
+	 * @param path
+	 *            the path to the {@link File}
+	 * @param data
+	 *            the default data {@link HashMap}
+	 * 
+	 * @see #save()
+	 */
+	public GameData(final String path, final HashMap<String, Object> data) {
 		file = new File(getClass().getResource("/").getFile() + "/" + path);
+		
+		this.data = data;
+		buffer = new ExtendedByteBuffer();
 		
 		if(!file.exists()) {
 			file.getParentFile().mkdirs();
 			
 			try {
 				file.createNewFile();
+				
+				if(!data.isEmpty()) save();
 			}catch(final IOException e) {
 				e.printStackTrace();
 			}
-		}
-		
-		buffer = new ExtendedByteBuffer();
-		data = new HashMap<>();
+		}else this.data.clear();
 	}
 	
 	/**
@@ -199,6 +216,10 @@ public class GameData {
 			buffer.write(UUID_IDENTIFIER);
 			
 			buffer.writeUUID((UUID) obj);
+		}else if(obj instanceof Hitbox) {
+			buffer.write(HITBOX_IDENTIFIER);
+			
+			buffer.writeHitbox((Hitbox) obj);
 		}
 	}
 	
@@ -249,6 +270,8 @@ public class GameData {
 				return buffer.readVec2D();
 			case UUID_IDENTIFIER:
 				return buffer.readUUID();
+			case HITBOX_IDENTIFIER:
+				return buffer.readHitbox();
 		}
 		
 		return null;
@@ -291,6 +314,7 @@ public class GameData {
 								LIST_IDENTIFIER = 10,
 								DIRECTION_IDENTIFIER = 11,
 								VEC2D_IDENTIFIER = 12,
-								UUID_IDENTIFIER = 13;
+								UUID_IDENTIFIER = 13,
+								HITBOX_IDENTIFIER = 14;
 	// @formatter:on
 }

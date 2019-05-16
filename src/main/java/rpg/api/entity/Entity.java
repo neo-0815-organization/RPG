@@ -37,6 +37,8 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 */
 	public Entity(final String name) {
 		setDisplayName(name);
+		
+		uuid = UUID.randomUUID();
 	}
 	
 	/**

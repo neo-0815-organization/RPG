@@ -3,6 +3,7 @@ package rpg.api.gamedata;
 import java.util.UUID;
 
 import rpg.api.Direction;
+import rpg.api.collision.Hitbox;
 import rpg.api.packethandler.ByteBuffer;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
@@ -50,6 +51,18 @@ public class ExtendedByteBuffer extends ByteBuffer {
 	}
 	
 	/**
+	 * Writes the {@link Hitbox} 'h' to the buffer.
+	 *
+	 * @param h
+	 *            the {@link Hitbox} to write
+	 * @see ByteBuffer#writeDouble(double)
+	 */
+	public void writeHitbox(final Hitbox h) {
+		writeDouble(h.getWidth().getValueTiles());
+		writeDouble(h.getHeight().getValueTiles());
+	}
+	
+	/**
 	 * Reads one byte from the buffer and interprets it as a {@link Direction}.
 	 * 
 	 * @return the {@link Direction} read
@@ -78,5 +91,16 @@ public class ExtendedByteBuffer extends ByteBuffer {
 	 */
 	public UUID readUUID() {
 		return UUID.fromString(readString(36));
+	}
+	
+	/**
+	 * Reads two doubles from the buffer and interprets them as a
+	 * {@link Hitbox}.
+	 * 
+	 * @return the {@link Hitbox} read
+	 * @see ByteBuffer#readDouble()
+	 */
+	public Hitbox readHitbox() {
+		return new Hitbox(readDouble(), readDouble());
 	}
 }
