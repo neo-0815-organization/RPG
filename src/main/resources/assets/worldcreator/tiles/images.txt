@@ -1,2 +1,5 @@
 barrel.png
-crystal.png
+oreBlue.png
+oreGreen.png
+oreRed.png
+oreSilver.png
