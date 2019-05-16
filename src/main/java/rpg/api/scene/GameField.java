@@ -6,6 +6,7 @@ import java.util.List;
 import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
+import rpg.api.entity.LocalController;
 import rpg.api.entity.PlayerController;
 import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.events.CurrentMapEvent;
@@ -174,6 +175,10 @@ public class GameField extends Scene {
 	public void shutdown() {
 		update.interrupt();
 		draw.interrupt();
+	}
+	
+	public void addEntity(final Entity e) {
+		addEntity(new LocalController(e));
 	}
 	
 	public void addEntity(final Controller c) {
