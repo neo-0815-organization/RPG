@@ -1,1 +1,2 @@
 barrel.png
+crystal.png
