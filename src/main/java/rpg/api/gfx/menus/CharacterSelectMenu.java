@@ -8,12 +8,13 @@ import java.awt.image.BufferedImage;
 import rpg.Statics;
 import rpg.api.entity.Person;
 import rpg.api.filehandling.ResourceGetter;
+import rpg.api.gfx.Sprite;
 import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 
 public class CharacterSelectMenu extends Menu {
 	private static BufferedImage maleIMG = ResourceGetter.getImage("/assets/textures/menu/button_male.png"), femaleIMG = maleIMG;
-	RPGButton male, female, thief, fairy, magican, startGame;
+	RPGButton male, female, thief, natureGuardian, magican, startGame;
 	
 	boolean maleSelected = true;
 	int currentSelected;
@@ -56,16 +57,16 @@ public class CharacterSelectMenu extends Menu {
 		});
 		addComponent(female);
 		
-		fairy = new RPGButton();
-		fairy.setBounds(size.width * 0.1, size.height * 0.1, size.width * 0.2, size.height * 0.5);
-		fairy.addActionListener(new ActionListener() {
+		natureGuardian = new RPGButton();
+		natureGuardian.setBounds(size.width * 0.1, size.height * 0.1, size.width * 0.2, size.height * 0.5);
+		natureGuardian.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				currentSelected = 0;
 			}
 		});
-		addComponent(fairy);
+		addComponent(natureGuardian);
 		
 		thief = new RPGButton();
 		thief.setBounds(size.width * 0.4, size.height * 0.1, size.width * 0.2, size.height * 0.5);
@@ -105,13 +106,36 @@ public class CharacterSelectMenu extends Menu {
 	
 	public void updateButtons() {
 		if (maleSelected) {
-			fairy.setBackgroundImage(Person.CharacterSheet.PLAYER_FAIRY_MALE.getSprite().getCurrentAnimationFrame());
+			natureGuardian.setBackgroundImage(Person.CharacterSheet.PLAYER_NATUREGUARDIAN_MALE.getSprite().getCurrentAnimationFrame());
 			thief.setBackgroundImage(Person.CharacterSheet.PLAYER_THIEF_MALE.getSprite().getCurrentAnimationFrame());
 			magican.setBackgroundImage(Person.CharacterSheet.PLAYER_MAGICAN_MALE.getSprite().getCurrentAnimationFrame());
 		} else {
-			fairy.setBackgroundImage(Person.CharacterSheet.PLAYER_FAIRY_FEMALE.getSprite().getCurrentAnimationFrame());
+			natureGuardian.setBackgroundImage(Person.CharacterSheet.PLAYER_NATUREGUARDIAN_FEMALE.getSprite().getCurrentAnimationFrame());
 			thief.setBackgroundImage(Person.CharacterSheet.PLAYER_THIEF_FEMALE.getSprite().getCurrentAnimationFrame());
 			magican.setBackgroundImage(Person.CharacterSheet.PLAYER_MAGICAN_FEMALE.getSprite().getCurrentAnimationFrame());
 		}
+	}
+
+	public Sprite getSelectedSprite() {
+		if (maleSelected) {
+			switch(currentSelected) {
+			case 0:
+				return Person.CharacterSheet.PLAYER_NATUREGUARDIAN_MALE.getSprite();
+			case 1:
+				return Person.CharacterSheet.PLAYER_THIEF_MALE.getSprite();
+			case 2:
+				return Person.CharacterSheet.PLAYER_MAGICAN_MALE.getSprite();
+			}
+		} else {
+			switch(currentSelected) {
+			case 0:
+				return Person.CharacterSheet.PLAYER_NATUREGUARDIAN_FEMALE.getSprite();
+			case 1:
+				return Person.CharacterSheet.PLAYER_THIEF_FEMALE.getSprite();
+			case 2:
+				return Person.CharacterSheet.PLAYER_MAGICAN_FEMALE.getSprite();
+			}
+		}
+		throw new IllegalArgumentException("Invalid selected");
 	}
 }

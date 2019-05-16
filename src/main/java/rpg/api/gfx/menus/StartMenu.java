@@ -4,10 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import rpg.RPG;
 import rpg.Statics;
+import rpg.api.entity.Player;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
+import rpg.api.scene.GameField;
+import rpg.api.vector.ModifiableVec2D;
 
 /**
  * This menu is showing up once the game is started.
@@ -86,7 +90,13 @@ public final class StartMenu extends Menu {
 	
 	@Override
 	public void close() {
-		openSubMenu(new CharacterSelectMenu());
+		CharacterSelectMenu charSelect = new CharacterSelectMenu();
+		openSubMenu(charSelect);
+		
+		Player p = new Player();
+		p.setSprite(charSelect.getSelectedSprite());
+		p.setLocation(ModifiableVec2D.createXY(0, 0));
+		RPG.gameField = new GameField(p);
 		super.close();
 	}
 }

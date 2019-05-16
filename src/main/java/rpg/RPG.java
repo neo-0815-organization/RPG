@@ -31,7 +31,6 @@ public class RPG {
 	private static void init() {
 		gameFrame = new GameFrame();
 		showStartMenu();
-		gameField = new GameField();
 		registerKeys();
 		// KeyboardListener.start();
 	}

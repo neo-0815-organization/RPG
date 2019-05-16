@@ -69,7 +69,29 @@ public class Person extends LivingEntity {
 				return new Sprite.WalkableSprite("player/thief/female");
 			}
 		},
-		PLAYER_FAIRY_MALE {
+		PLAYER_NATUREGUARDIAN_MALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/natureGuardian/male");
+			}
+		},
+		PLAYER_NATUREGUARDIAN_FEMALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/natureGuardian/female");
+			}
+		},
+		FAIRY_MALE {
 			@Override
 			public Hitbox getHitbox() {
 				return new Hitbox(1D, 1D);
@@ -80,7 +102,7 @@ public class Person extends LivingEntity {
 				return new Sprite.WalkableSprite("player/fairy/male");
 			}
 		},
-		PLAYER_FAIRY_FEMALE {
+		FAIRY_FEMALE {
 			@Override
 			public Hitbox getHitbox() {
 				return new Hitbox(1D, 1D);
