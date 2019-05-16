@@ -1,0 +1,3 @@
+log1:32:true
+log2:32:true
+log3:32:true
