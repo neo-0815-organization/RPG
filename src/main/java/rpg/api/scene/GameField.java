@@ -192,8 +192,10 @@ public class GameField extends Scene {
 	public void setPlayerController(final PlayerController playerController) {
 		this.playerController = playerController;
 		
-		save.entities.add(playerController.getEntity());
-		Camera.setFocusEntity(playerController.getEntity());
+		save.player = playerController.getPlayer();
+		
+		save.entities.add(save.player);
+		Camera.setFocusEntity(save.player);
 	}
 	
 	public Background getBackground() {
