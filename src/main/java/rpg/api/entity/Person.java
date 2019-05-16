@@ -34,7 +34,7 @@ public class Person extends LivingEntity {
 		}
 	}
 	
-	private static final Sprite PLAYERSPRITE = new Sprite("player/thief/male", SpriteTheme.NONE);
+	private static final Sprite PLAYERSPRITE = new Sprite("player/thief/male/normal", SpriteTheme.NONE);
 	static {
 		PLAYERSPRITE.addAnimation("walking/right");
 		PLAYERSPRITE.addAnimation("walking/up");

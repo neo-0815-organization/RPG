@@ -66,6 +66,7 @@ public class Sprite implements Cloneable {
 		loadedTheme = theme;
 		
 		final Set<String> animationNames = animations.keySet();
+		System.out.println(getPath());
 		final Map<String, String[]> frameCounts = RPGFileReader.readLineMultiSplit(getPath() + "/animations.txt", ":", 3);
 		
 		for(final String animName : animationNames)

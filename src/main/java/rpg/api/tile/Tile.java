@@ -32,6 +32,12 @@ public abstract class Tile implements ISprite, ICollideable, EventTrigger {
 		return location;
 	}
 	
+	public void setLocation(UnmodifiableVec2D location) {
+		this.location = location;
+	}
+	
+	
+	
 	/**
 	 * This update-method is used to update tiles, whenever it is needed.
 	 * 

@@ -9,9 +9,10 @@ public class TileOre extends Tile{
 	private OreType type;
 	
 	public TileOre(OreType t){
+		type =t;
 		sprite = new Sprite("tiles/ore", SpriteTheme.MOERSBERGWERKE);
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+		sprite.addAnimation(type.path);
+		sprite.setAnimation(type.path);
 	}
 
 	@Override
@@ -28,10 +29,10 @@ public class TileOre extends Tile{
 		RED("ore_red"),
 		SILVER("ore_silver");
 		
-		private String name;
+		private String path;
 		
-		private OreType(String name) {
-			this.name = name;
+		private OreType(String path) {
+			this.path = path;
 		}
 	}
 }
