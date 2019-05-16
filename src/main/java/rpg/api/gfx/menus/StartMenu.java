@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+import assets.textures.menu.Prolog;
 import rpg.RPG;
 import rpg.Statics;
 import rpg.api.entity.Player;
@@ -97,6 +98,8 @@ public final class StartMenu extends Menu {
 		p.setSprite(charSelect.getSelectedSprite());
 		p.setLocation(ModifiableVec2D.createXY(0, 0));
 		RPG.gameField = new GameField(p);
+		
+		openSubMenu(new Prolog(20));
 		super.close();
 	}
 }

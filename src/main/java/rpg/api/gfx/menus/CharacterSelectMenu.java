@@ -13,7 +13,7 @@ import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 
 public class CharacterSelectMenu extends Menu {
-	private static BufferedImage maleIMG = ResourceGetter.getImage("/assets/textures/menu/button_male.png"), femaleIMG = maleIMG;
+	private static BufferedImage maleIMG = ResourceGetter.getImage("/assets/textures/menu/button_male.png"), femaleIMG = ResourceGetter.getImage("/assets/textures/menu/button_female.png");
 	RPGButton male, female, thief, natureGuardian, magican, startGame;
 	
 	boolean maleSelected = true;
@@ -22,7 +22,7 @@ public class CharacterSelectMenu extends Menu {
 	public CharacterSelectMenu() {
 		Dimension size = Statics.frameSize;
 		male = new RPGButton(maleIMG);
-		male.setBounds((int)(size.width * 0.4), 800, 200, 200);
+		male.setBounds((int)(size.width * 0.35), 800, 200, 200);
 		male.addActionListener(new ActionListener() {
 			
 			@Override
@@ -34,7 +34,7 @@ public class CharacterSelectMenu extends Menu {
 		addComponent(male);
 		
 		female = new RPGButton(femaleIMG);
-		female.setBounds((int)(size.width * 0.4), 800, 200, 200);
+		female.setBounds((int)(size.width * 0.55), 800, 200, 200);
 		female.addActionListener(new ActionListener() {
 			
 			@Override
@@ -45,17 +45,17 @@ public class CharacterSelectMenu extends Menu {
 		});
 		addComponent(female);
 		
-		female = new RPGButton(maleIMG);
-		female.setBounds((int)(size.width * 0.7), 800, 200, 200);
-		female.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				maleSelected = false;
-				updateButtons();
-			}
-		});
-		addComponent(female);
+//		female = new RPGButton(maleIMG);
+//		female.setBounds((int)(size.width * 0.7), 800, 200, 200);
+//		female.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				maleSelected = false;
+//				updateButtons();
+//			}
+//		});
+//		addComponent(female);
 		
 		natureGuardian = new RPGButton();
 		natureGuardian.setBounds(size.width * 0.1, size.height * 0.1, size.width * 0.2, size.height * 0.5);
