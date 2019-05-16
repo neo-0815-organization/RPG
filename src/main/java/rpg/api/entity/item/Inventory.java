@@ -13,7 +13,9 @@ import rpg.api.gfx.IDrawable;
 import rpg.api.listener.key.KeyboardListener;
 
 public class Inventory implements IDrawable {
-	private static final int HOTBAR_SLOTS = 4, INVENTORY_ROWS = 4, MAX_INVENTORY_SIZE = HOTBAR_SLOTS * INVENTORY_ROWS;
+	private static final int	TEXT_SHOW_TIME	= 2 * 1000;
+	private static final int	HOTBAR_SLOTS	= 4, INVENTORY_ROWS = 4,
+			MAX_INVENTORY_SIZE = HOTBAR_SLOTS * INVENTORY_ROWS;
 	// @formatter:off
 	private static final BufferedImage HOTBAR_SLOT = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar_slot.png"),
 									   HOTBAR_SELECTOR = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar_selector.png"),
@@ -32,6 +34,9 @@ public class Inventory implements IDrawable {
 	
 	public boolean	showInv			= false, showQuest = false;
 	public int		selectedSlot	= 0;
+	
+	private String	text		= "";
+	private long	textTime	= 0;
 	
 	static {
 		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
@@ -158,12 +163,20 @@ public class Inventory implements IDrawable {
 		else items.remove(stack);
 	}
 	
+	public void setText(final String text) {
+		this.text = text;
+		
+		textTime = System.currentTimeMillis();
+	}
+	
 	@Override
 	public void draw(final DrawingGraphics g) {
 		drawHotbar(g);
 		
 		if(showInv) drawInventory(g);
 		if(showQuest) drawQuests(g);
+		
+		if(showInv || System.currentTimeMillis() - textTime < TEXT_SHOW_TIME) g.drawCenteredString(text, gameSize.width / 2, 0);
 	}
 	
 	private void drawQuests(final DrawingGraphics g) {
