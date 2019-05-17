@@ -11,11 +11,10 @@ public class TileOven extends Tile {
 		sprite.addAnimation("oven");
 		sprite.setAnimation("oven");
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+		
 	}
-
+	
 }

@@ -12,10 +12,9 @@ public class TileBarrel extends Tile {
 		sprite.setAnimation("barrel");
 		
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
+	public void triggerEvent(final EventType eventType, final Object... objects) {
 		
 	}
 	
