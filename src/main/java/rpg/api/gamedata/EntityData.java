@@ -18,7 +18,7 @@ import rpg.api.vector.Vec2D;
  */
 public class EntityData extends GameData {
 	private Entity e;
-	private UUID uuid;
+	private final UUID uuid;
 	
 	/**
 	 * Constructs a new data representation of an {@link Entity}.
@@ -89,7 +89,7 @@ public class EntityData extends GameData {
 		set("direction", e.getLookingDirection());
 		set("velocity", e.getVelocity());
 		set("display_name", e.getDisplayName());
-		set("image", e.getImageName());
+		set("sprite", e.getSprite().getName());
 		set("uuid", e.getUniqueId());
 		set("hitbox", e.getHitbox());
 		

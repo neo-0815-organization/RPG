@@ -38,7 +38,7 @@ public class SaveMenu extends Menu {
 		addComponent(scroll);
 		
 		final Consumer<String> startSave = name -> {
-			RPG.gameField.save = new Save(name);
+			(RPG.gameField.save = new Save(name)).load();
 			
 			openGame = true;
 			setOpen(false);

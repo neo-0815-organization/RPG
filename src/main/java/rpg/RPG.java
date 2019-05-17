@@ -14,9 +14,9 @@ import rpg.api.vector.Vec2D;
  * The main class of this project.
  */
 public class RPG {
-	public static GameFrame	gameFrame;
-	public static GameField	gameField;
-//	public static Preferences prefs;
+	public static GameFrame gameFrame;
+	public static GameField gameField;
+	//	public static Preferences prefs;
 	
 	public static void main(final String[] args) {
 		StringLocalizer.setActiveLocale(args != null && args.length != 0 ? args[0] : "");
@@ -29,8 +29,12 @@ public class RPG {
 	 */
 	private static void init() {
 		gameFrame = new GameFrame();
-		showStartMenu();
 		gameField = new GameField();
+		
+		showStartMenu();
+		
+		gameField.startUpdating();
+		
 		registerKeys();
 		// KeyboardListener.start();
 	}

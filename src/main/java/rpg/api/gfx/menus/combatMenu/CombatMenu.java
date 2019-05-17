@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.Statics;
 import rpg.api.entity.LivingEntity;
@@ -86,7 +87,7 @@ public class CombatMenu extends Menu {
 					switch(e.getActionCommand()) {
 						case "attack":
 							enablePanel(false);
-							System.out.println("[CombatMenu] >> Player: Attack");
+							Logger.debug("[CombatMenu] >> Player: Attack");
 							
 							ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(ATTACK_ANIMATION_SHEET, drawPanel.enemyLoc.x, drawPanel.enemyLoc.y, false));
 							
@@ -192,7 +193,7 @@ public class CombatMenu extends Menu {
 			createBufferStrategy(2);
 			strat = getBufferStrategy();
 			
-			//			System.out.println(enemy);
+			//			Logger.debug(enemy);
 			this.enemy = enemy;
 			player = RPG.gameField.getPlayerController().getPlayer();
 			setSize(Statics.frameSize);
@@ -216,14 +217,14 @@ public class CombatMenu extends Menu {
 				timeSinceLastFrame = (System.currentTimeMillis() - timeLastFrameBegun) / 1000D;
 				timeLastFrameBegun = System.currentTimeMillis();
 				draw();
-				//				System.out.println("[CombatMenu] >> tslf:" + timeSinceLastFrame);
+				//				Logger.debug("[CombatMenu] >> tslf:" + timeSinceLastFrame);
 			}
 			currentAnimation = null;
 			draw();
 		}
 		
 		protected void draw() {
-			//			System.out.println("[ComponentMenu >> DrawPanel] >> Repaint.");
+			//			Logger.debug("[ComponentMenu >> DrawPanel] >> Repaint.");
 			
 			final Dimension size = Statics.frameSize;
 			

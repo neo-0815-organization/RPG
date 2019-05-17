@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.DrawingGraphics;
@@ -13,9 +14,8 @@ import rpg.api.gfx.IDrawable;
 import rpg.api.listener.key.KeyboardListener;
 
 public class Inventory implements IDrawable {
-	private static final int	TEXT_SHOW_TIME	= 2 * 1000;
-	private static final int	HOTBAR_SLOTS	= 4, INVENTORY_ROWS = 4,
-			MAX_INVENTORY_SIZE = HOTBAR_SLOTS * INVENTORY_ROWS;
+	private static final int TEXT_SHOW_TIME = 2 * 1000;
+	private static final int HOTBAR_SLOTS = 4, INVENTORY_ROWS = 4, MAX_INVENTORY_SIZE = HOTBAR_SLOTS * INVENTORY_ROWS;
 	// @formatter:off
 	private static final BufferedImage HOTBAR_SLOT = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar_slot.png"),
 									   HOTBAR_SELECTOR = ResourceGetter.getImage("/assets/textures/overlay/inventory/hotbar_selector.png"),
@@ -32,11 +32,11 @@ public class Inventory implements IDrawable {
 	// @formatter:on
 	private final LinkedList<ItemStack> questItems = new LinkedList<>(), items = new LinkedList<>();
 	
-	public boolean	showInv			= false, showQuest = false;
-	public int		selectedSlot	= 0;
+	public boolean showInv = false, showQuest = false;
+	public int selectedSlot = 0;
 	
-	private String	text		= "";
-	private long	textTime	= 0;
+	private String text = "";
+	private long textTime = 0;
 	
 	static {
 		KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
@@ -128,7 +128,7 @@ public class Inventory implements IDrawable {
 	 * Adds an {@link ItemStack} to the inventory
 	 * 
 	 * @param stack
-	 *                  the {@link ItemStack} to add
+	 *            the {@link ItemStack} to add
 	 * @return {@code true}, if the {@link ItemStack} has been added to the
 	 *         inventory
 	 */
@@ -156,7 +156,7 @@ public class Inventory implements IDrawable {
 	 * Removes an {@link ItemStack} from the inventory
 	 * 
 	 * @param stack
-	 *                  the {@link ItemStack} to remove
+	 *            the {@link ItemStack} to remove
 	 */
 	public void removeItemStack(final ItemStack stack) {
 		if(stack.isQuestItem()) questItems.remove(stack);
@@ -199,7 +199,10 @@ public class Inventory implements IDrawable {
 	private void drawHotbar(final DrawingGraphics g) {
 		for(int i = 0; i < HOTBAR_SLOTS; i++) {
 			g.drawImage(HOTBAR_SLOT, X_INV + SLOT_SIZE * i, Y_HOT, null);
-			System.out.println(X_INV + SLOT_SIZE * i + ", " + Y_HOT);
+			
+			// TODO remove debug message
+			Logger.debug(X_INV + SLOT_SIZE * i + ", " + Y_HOT);
+			
 			if(i == selectedSlot) g.drawImage(HOTBAR_SELECTOR, X_INV + SLOT_SIZE * i, Y_HOT, null);
 			
 			if(i >= items.size() || items.get(i) == null) continue;

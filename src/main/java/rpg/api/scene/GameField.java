@@ -24,22 +24,17 @@ import rpg.api.tile.Tile;
 public class GameField extends Scene {
 	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
 	
-	public static boolean		inGame			= true;
-	public static Save save;
+	public static boolean inGame = true;
+	public Save save;
 	
-	private double	deltaTime;
-	private long	lastFrame	= System.currentTimeMillis();
+	private double deltaTime;
+	private long lastFrame = System.currentTimeMillis();
 	
 	private Thread update, draw;
 	
-	private final LinkedList<Controller>	controller	= new LinkedList<>();
-	private PlayerController				playerController;
-	private final HUD						hud			= new HUD();
-	
-	public GameField() {
-		startUpdating();
-		// startDrawing();
-	}
+	private final LinkedList<Controller> controller = new LinkedList<>();
+	private PlayerController playerController;
+	private final HUD hud = new HUD();
 	
 	@Override
 	public void draw(final DrawingGraphics g) {
@@ -59,7 +54,7 @@ public class GameField extends Scene {
 	/**
 	 * Starts a new Thread, which updates the Gamefield
 	 */
-	private void startUpdating() {
+	public void startUpdating() {
 		final GameField me = this;
 		update = new Thread("GameLoop") {
 			@Override
@@ -96,7 +91,7 @@ public class GameField extends Scene {
 					final long systemTime = System.currentTimeMillis();
 					
 					RPG.gameFrame.drawScene(me);
-					// System.out.println(System.currentTimeMillis() - systemTime);
+					// Logger.debug(System.currentTimeMillis() - systemTime);
 				}
 			}
 		};

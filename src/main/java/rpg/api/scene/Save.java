@@ -11,8 +11,10 @@ import java.util.LinkedList;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import rpg.RPG;
 import rpg.api.entity.Entity;
 import rpg.api.entity.Player;
+import rpg.api.entity.PlayerController;
 import rpg.api.gamedata.EntityData;
 import rpg.api.gamedata.GameData;
 import rpg.api.tile.Tile;
@@ -48,8 +50,6 @@ public class Save {
 		entityDir = filePath + "entities/";
 		
 		data = new GameData("saves/" + name + "/level.save", DEFAULT_SETTINGS);
-		
-		load();
 	}
 	
 	public void load() {
@@ -66,10 +66,9 @@ public class Save {
 					
 					ed.load();
 					
-					if(ed.getEntity().getUniqueId().equals(playerUUID)) player = (Player) ed.getEntity();
-					
-					entities.add(ed.getEntity());
-				} catch (IOException e) {
+					if(ed.getEntity().getUniqueId().equals(playerUUID)) RPG.gameField.setPlayerController(new PlayerController((Player) ed.getEntity()));
+					else entities.add(ed.getEntity());
+				}catch(final IOException e) {
 					e.printStackTrace();
 				}
 			});

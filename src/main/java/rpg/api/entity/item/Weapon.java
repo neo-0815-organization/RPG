@@ -1,5 +1,7 @@
 package rpg.api.entity.item;
 
+import rpg.Logger;
+
 public abstract class Weapon extends ItemStack {
 	
 	public Weapon(final String name) {
@@ -49,7 +51,7 @@ public abstract class Weapon extends ItemStack {
 		
 		public int getRandom() {
 			final int temp = (int) (Math.random() * (to - from) + from);
-			System.out.println("[Weapon::IntRange] >> Damage:" + temp);
+			Logger.debug("[Weapon::IntRange] >> Damage:" + temp);
 			return temp;
 		}
 	}
