@@ -49,7 +49,7 @@ public class Save {
 		filePath = "saves/" + name + "/";
 		entityDir = filePath + "entities/";
 		
-		data = new GameData("saves/" + name + "/level.save", DEFAULT_SETTINGS);
+		data = new GameData(filePath + "level.save", DEFAULT_SETTINGS);
 	}
 	
 	public void load() {
