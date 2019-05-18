@@ -25,7 +25,7 @@ public class Sprite implements Cloneable{
 	
 	private double currentFrameDelay;
 	
-	private final double frameDelay;
+	private double frameDelay = 0.2;
 	
 	public Sprite(final String name) {
 		this(name, SpriteTheme.NONE);
@@ -51,7 +51,7 @@ public class Sprite implements Cloneable{
 	public void update(final double deltaTime) {
 		currentFrameDelay += deltaTime;
 		if(currentFrameDelay > frameDelay) {
-			currentFrameDelay -= frameDelay;
+			currentFrameDelay = 0;
 			nextFrame();
 		}
 	}
@@ -184,6 +184,10 @@ public class Sprite implements Cloneable{
 		return animations.get(anim);
 	}
 	
+	public void setFrameDelay(double fDelay) {
+		this.frameDelay = fDelay;
+	}
+	
 	/**
 	 * Gets the path corresponding to this {@link Sprite} and
 	 * {@link SpriteTheme}.
@@ -214,5 +218,19 @@ public class Sprite implements Cloneable{
 			return null;
 		}
 		
+	}
+	
+	public static class WalkableSprite extends Sprite{
+		public WalkableSprite(String path) {
+			super(path, SpriteTheme.NONE);
+
+			setFrameDelay(0.2);
+//			System.out.println("PATH: " + path);
+			addAnimation("walking/right");
+			addAnimation("walking/up");
+			addAnimation("walking/down");
+			addAnimation("walking/left");
+			setAnimation("walking/down");
+		}
 	}
 }

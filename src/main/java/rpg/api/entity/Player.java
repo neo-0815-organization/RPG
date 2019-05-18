@@ -27,7 +27,7 @@ public class Player extends LivingEntity implements InventoryHolder {
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
 		inv = new InventoryPlayer();
 		
-		setSprite(CharacterSheet.PLAYER.getSprite());
+		setSprite(CharacterSheet.PLAYER_NATUREGUARDIAN_MALE.getSprite());
 	}
 	
 	@Override

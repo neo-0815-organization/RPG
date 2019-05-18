@@ -1,5 +1,7 @@
 package rpg.api.entity;
 
+import java.io.File;
+
 import rpg.api.collision.Hitbox;
 import rpg.api.dialog.Dialog;
 import rpg.api.eventhandling.EventType;
@@ -45,7 +47,7 @@ public class Person extends LivingEntity {
 	}
 	
 	public static enum CharacterSheet {
-		PLAYER {
+		PLAYER_THIEF_MALE {
 			@Override
 			public Hitbox getHitbox() {
 				return new Hitbox(1D, 1D);
@@ -54,6 +56,83 @@ public class Person extends LivingEntity {
 			@Override
 			public Sprite getSprite() {
 				return PLAYERSPRITE.clone();
+			}
+		},
+		PLAYER_THIEF_FEMALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/thief/female");
+			}
+		},
+		PLAYER_NATUREGUARDIAN_MALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/natureGuardian/male");
+			}
+		},
+		PLAYER_NATUREGUARDIAN_FEMALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/natureGuardian/female");
+			}
+		},
+		FAIRY_MALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/fairy/male");
+			}
+		},
+		FAIRY_FEMALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/fairy/female");
+			}
+		},
+		PLAYER_MAGICAN_MALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/magican/male");
+			}
+		},
+		PLAYER_MAGICAN_FEMALE {
+			@Override
+			public Hitbox getHitbox() {
+				return new Hitbox(1D, 1D);
+			}
+
+			@Override
+			public Sprite getSprite() {
+				return new Sprite.WalkableSprite("player/magican/female");
 			}
 		};
 		

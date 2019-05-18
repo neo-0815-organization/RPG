@@ -6,6 +6,7 @@ import java.util.List;
 import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
+import rpg.api.entity.Player;
 import rpg.api.entity.LocalController;
 import rpg.api.entity.PlayerController;
 import rpg.api.eventhandling.EventHandler;
@@ -36,6 +37,10 @@ public class GameField extends Scene {
 	private PlayerController playerController;
 	private final HUD hud = new HUD();
 	
+	public GameField(Player player) {
+		setPlayerController(new PlayerController(player));
+	}
+  
 	@Override
 	public void draw(final DrawingGraphics g) {
 		save.background.draw(g);
