@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import rpg.Logger;
 import rpg.RPG;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.DrawingGraphics;
@@ -213,9 +212,6 @@ public class InventoryPlayer extends Inventory {
 		private void drawHotbar(final DrawingGraphics g) {
 			for(int i = 0; i < HOTBAR_SLOTS; i++) {
 				g.drawImage(HOTBAR_SLOT, X_INV + SLOT_SIZE * i, Y_HOT, null);
-				
-				// TODO remove debug message
-				Logger.debug(X_INV + SLOT_SIZE * i + ", " + Y_HOT);
 				
 				if(i == playerInv.selectedSlot) g.drawImage(HOTBAR_SELECTOR, X_INV + SLOT_SIZE * i, Y_HOT, null);
 				

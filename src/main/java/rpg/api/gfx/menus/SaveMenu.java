@@ -13,15 +13,18 @@ import javax.swing.JScrollPane;
 
 import rpg.RPG;
 import rpg.Statics;
+import rpg.api.entity.Player;
+import rpg.api.entity.PlayerController;
 import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 import rpg.api.scene.Save;
+import rpg.api.vector.ModifiableVec2D;
 
 public class SaveMenu extends Menu {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory();
 	private static final File SAVES_DIR = new File(SaveMenu.class.getResource("/").getFile() + "/saves/");
 	
-	private boolean openGame = false;
+	private boolean openGame = false, openCharacterSelection;
 	
 	public SaveMenu() {
 		final int finalRadius = Statics.scale(85);
@@ -38,10 +41,13 @@ public class SaveMenu extends Menu {
 		addComponent(scroll);
 		
 		final Consumer<String> startSave = name -> {
-			(RPG.gameField.save = new Save(name)).load();
-			
-			openGame = true;
-			setOpen(false);
+			if(name == null) openCharacterSelection = true;
+			else {
+				(RPG.gameField.save = new Save(name)).load();
+				
+				openGame = true;
+				setOpen(false);
+			}
 		};
 		final ActionListener saveButtonAction = e -> startSave.accept(e.getActionCommand());
 		
@@ -73,6 +79,27 @@ public class SaveMenu extends Menu {
 		addComponent(exit);
 		
 		setBackground(RPGButton.BUTTON_TEMPLATE);
+	}
+	
+	@Override
+	protected void updateMenu() {
+		if(openCharacterSelection) {
+			final CharacterSelectMenu charSelect = new CharacterSelectMenu();
+			openSubMenu(charSelect);
+			
+			(RPG.gameField.save = new Save()).load();
+			
+			final Player p = new Player();
+			p.setLocation(ModifiableVec2D.createXY(0, 0));
+			p.setSprite(charSelect.getSelectedSheet().getSprite());
+			
+			RPG.gameField.setPlayerController(new PlayerController(p));
+			
+			openGame = true;
+			openCharacterSelection = false;
+			
+			setOpen(false);
+		}
 	}
 	
 	public boolean shouldOpenGame() {

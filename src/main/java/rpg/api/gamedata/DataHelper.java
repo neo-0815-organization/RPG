@@ -9,11 +9,18 @@ import java.util.stream.Collectors;
 
 import rpg.api.entity.item.Inventory;
 import rpg.api.entity.item.ItemStack;
+import rpg.api.gfx.Sprite;
+import rpg.api.gfx.Sprite.WalkableSprite;
+import rpg.api.gfx.SpriteTheme;
 
 public class DataHelper {
 	
+	private static Map<String, Object> map() {
+		return new HashMap<>();
+	}
+	
 	public static Map<String, Object> inventoryToMap(final Inventory inv, final String path) {
-		final HashMap<String, Object> data = new HashMap<>();
+		final Map<String, Object> data = map();
 		
 		data.put("max_size", inv.getMaxSize());
 		data.put("items", inv.getItems().parallelStream().map(item -> item.getUniqueId()).collect(Collectors.toList()));
@@ -45,5 +52,30 @@ public class DataHelper {
 		});
 		
 		return inv;
+	}
+	
+	public static Map<String, Object> spriteToMap(final Sprite sprite) {
+		final Map<String, Object> data = map();
+		final boolean walkable = sprite instanceof WalkableSprite;
+		
+		data.put("name", sprite.getName());
+		data.put("walkable", walkable);
+		
+		if(!walkable) {
+			data.put("theme", sprite.getLoadedTheme().getPathModifier());
+			data.put("delay", sprite.getFrameDelay());
+		}
+		
+		return data;
+	}
+	
+	public static Sprite mapToSprite(final Map<String, Object> data) {
+		Sprite sprite;
+		final String name = (String) data.get("name");
+		
+		if((boolean) data.get("walkable")) sprite = new WalkableSprite(name);
+		else sprite = new Sprite(name, SpriteTheme.getByModifier((String) data.get("theme")), (double) data.get("delay"));
+		
+		return sprite;
 	}
 }

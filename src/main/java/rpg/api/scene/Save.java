@@ -36,16 +36,20 @@ public class Save {
 	private final String name, filePath, entityDir;
 	private final GameData data;
 	
-	public Save(String name) {
-		if(name == null) {
-			final int num = Arrays.stream(new File(getClass().getResource("/").getFile() + "/saves/").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
-				return Math.max(number, Integer.valueOf(file.getName().replace("new_save_", "")));
-			}, (a, b) -> a);
-			
-			name = "new_save_" + (num + 1);
-		};
-		
+	public Save(final String name) {
 		this.name = name;
+		filePath = "saves/" + name + "/";
+		entityDir = filePath + "entities/";
+		
+		data = new GameData(filePath, "level.save", DEFAULT_SETTINGS);
+	}
+	
+	public Save() {
+		final int num = Arrays.stream(new File(getClass().getResource("/").getFile() + "/saves/").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
+			return Math.max(number, Integer.valueOf(file.getName().replace("new_save_", "")));
+		}, (a, b) -> a);
+		
+		name = "new_save_" + (num + 1);
 		filePath = "saves/" + name + "/";
 		entityDir = filePath + "entities/";
 		

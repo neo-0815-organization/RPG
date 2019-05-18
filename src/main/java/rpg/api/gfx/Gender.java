@@ -5,7 +5,7 @@ package rpg.api.gfx;
  * 
  * @author Neo Hornberger, Tim Ludwig
  */
-public enum Gender implements PathModifier{
+public enum Gender implements PathModifier {
 	FEMALE("female"),
 	MALE("male"),
 	
@@ -20,5 +20,12 @@ public enum Gender implements PathModifier{
 	@Override
 	public String getPathModifier() {
 		return pathModifier;
+	}
+	
+	public Gender getByModifier(final String modifier) {
+		for(final Gender gender : values())
+			if(gender.pathModifier.equals(modifier)) return gender;
+		
+		return OTHER;
 	}
 }

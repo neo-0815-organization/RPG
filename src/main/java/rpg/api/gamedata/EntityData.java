@@ -65,6 +65,7 @@ public class EntityData extends GameData {
 			e.setLocation((Vec2D<?>) get("location"));
 			e.setLookingDirection((Direction) get("direction"));
 			e.setVelocity((ModifiableVec2D) get("velocity"));
+			e.setSprite(DataHelper.mapToSprite((Map<String, Object>) get("sprite")));
 			e.setUniqueId((UUID) get("uuid"));
 			
 			if(e instanceof LivingEntity) {
@@ -93,7 +94,7 @@ public class EntityData extends GameData {
 		set("direction", e.getLookingDirection());
 		set("velocity", e.getVelocity());
 		set("display_name", e.getDisplayName());
-		set("sprite", e.getSprite().getName());
+		set("sprite", DataHelper.spriteToMap(e.getSprite()));
 		set("uuid", e.getUniqueId());
 		set("hitbox", e.getHitbox());
 		

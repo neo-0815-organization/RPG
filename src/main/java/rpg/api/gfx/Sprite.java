@@ -15,7 +15,7 @@ import rpg.api.filehandling.ResourceGetter;
  *
  * @author Tim Ludwig -> Erik->update
  */
-public class Sprite implements Cloneable{
+public class Sprite implements Cloneable {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
 	
 	private final HashMap<String, Animation> animations = new HashMap<>();
@@ -180,12 +180,16 @@ public class Sprite implements Cloneable{
 		if(currentAnimation == null || currentAnimation.getName() != animationName) currentAnimation = animations.get(animationName);
 	}
 	
-	public Animation getAnimation(String anim) {
+	public Animation getAnimation(final String anim) {
 		return animations.get(anim);
 	}
 	
-	public void setFrameDelay(double fDelay) {
-		this.frameDelay = fDelay;
+	public double getFrameDelay() {
+		return frameDelay;
+	}
+	
+	public void setFrameDelay(final double frameDelay) {
+		this.frameDelay = frameDelay;
 	}
 	
 	/**
@@ -208,28 +212,34 @@ public class Sprite implements Cloneable{
 		return name;
 	}
 	
-
+	public SpriteTheme getLoadedTheme() {
+		return loadedTheme;
+	}
+	
+	@Override
 	public Sprite clone() {
 		try {
-			Sprite temp = (Sprite) super.clone();
+			final Sprite temp = (Sprite) super.clone();
 			return temp;
-		} catch (CloneNotSupportedException e) {
+		}catch(final CloneNotSupportedException e) {
 			e.printStackTrace();
 			return null;
 		}
 		
 	}
 	
-	public static class WalkableSprite extends Sprite{
-		public WalkableSprite(String path) {
+	public static class WalkableSprite extends Sprite {
+		
+		public WalkableSprite(final String path) {
 			super(path, SpriteTheme.NONE);
-
+			
 			setFrameDelay(0.2);
-//			System.out.println("PATH: " + path);
+			
 			addAnimation("walking/right");
 			addAnimation("walking/up");
 			addAnimation("walking/down");
 			addAnimation("walking/left");
+			
 			setAnimation("walking/down");
 		}
 	}

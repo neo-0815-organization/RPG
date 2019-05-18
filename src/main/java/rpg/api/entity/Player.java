@@ -1,7 +1,6 @@
 package rpg.api.entity;
 
 import rpg.api.collision.Hitbox;
-import rpg.api.entity.Person.CharacterSheet;
 import rpg.api.entity.item.Inventory;
 import rpg.api.entity.item.InventoryHolder;
 import rpg.api.entity.item.InventoryPlayer;
@@ -27,7 +26,7 @@ public class Player extends LivingEntity implements InventoryHolder {
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
 		inv = new InventoryPlayer();
 		
-		setSprite(CharacterSheet.PLAYER_NATUREGUARDIAN_MALE.getSprite());
+		setSprite(CharacterSheet.PLAYER_MAGICAN_MALE.getSprite());
 	}
 	
 	@Override
