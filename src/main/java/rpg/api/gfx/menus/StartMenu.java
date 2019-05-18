@@ -1,7 +1,5 @@
 package rpg.api.gfx.menus;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import assets.textures.menu.Prolog;
@@ -25,7 +23,7 @@ public final class StartMenu extends Menu {
 	private static final BufferedImage SP_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (cyan).png"), MP_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (orange).png");
 	static final BufferedImage EXIT_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_exit.png"), EXIT_IMAGE_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_exit_activated.png");
 	
-	private boolean openPref;
+	private boolean openPref, openSave;
 	
 	public StartMenu() {
 		final int rectWidth = Statics.scale(310), rectHeight = Statics.scale(80);
@@ -33,13 +31,7 @@ public final class StartMenu extends Menu {
 		final RPGButton singleplayer = new RPGButton("singleplayer");
 		singleplayer.setBounds(0, 0, rectWidth, rectHeight);
 		singleplayer.disableBorder();
-		singleplayer.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				setOpen(false);
-			}
-		});
+		singleplayer.addActionListener(e -> openSave = true);
 		singleplayer.setFocusImage(SP_FOCUS);
 		addComponent(singleplayer);
 		
@@ -54,26 +46,14 @@ public final class StartMenu extends Menu {
 		final RPGButton exit = new RPGButton(EXIT_IMAGE);
 		exit.setBounds(Statics.frameSize.width - finalRadius, Statics.frameSize.height - finalRadius, finalRadius, finalRadius);
 		exit.disableBorder();
-		exit.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				System.exit(0);
-			}
-		});
+		exit.addActionListener(e -> System.exit(0));
 		exit.setFocusImage(EXIT_IMAGE_FOCUS);
 		addComponent(exit);
 		
 		final RPGButton options = new RPGButton(SETTINGS_IMAGE);
 		options.setBounds(0, Statics.frameSize.height - finalRadius, finalRadius, finalRadius);
 		options.disableBorder();
-		options.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				openPref = true;
-			}
-		});
+		options.addActionListener(e -> openPref = true);
 		options.setFocusImage(SETTINGS_IMAGE_FOCUS);
 		addComponent(options);
 		
@@ -86,6 +66,15 @@ public final class StartMenu extends Menu {
 			openSubMenu(new PreferencesMenu());
 			
 			openPref = false;
+		}
+		
+		if(openSave) {
+			final SaveMenu menu = new SaveMenu();
+			openSubMenu(menu);
+			
+			if(menu.shouldOpenGame()) setOpen(false);
+			
+			openSave = false;
 		}
 	}
 	

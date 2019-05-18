@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
+import rpg.api.gfx.ImageUtility;
+
 public class RPGWorldCreator {
 	private static final HashMap<String, BufferedImage> images = new HashMap<>();
 	private static final TwoValueMap<String, Integer, BufferedImage> fluids = new TwoValueMap<>(), textures = new TwoValueMap<>(), tiles = new TwoValueMap<>();
@@ -33,11 +35,18 @@ public class RPGWorldCreator {
 	protected static void loadPictures(final String dir, final TwoValueMap<String, Integer, BufferedImage> map, final HashMap<String, Integer> ids) {
 		final Consumer<String> consumer = new Consumer<String>() {
 			private BufferedImage image = null;
-			private int count = 0;
+			private int count = 0, size = 0;
 			
 			@Override
 			public void accept(String name) {
 				image = getImage(assetsFolder, dir + "/" + name);
+				
+				if(dir.equals("tiles")) {
+					size = Math.max(image.getWidth(), image.getHeight());
+					
+					if(size > Data.tileSize) image = ImageUtility.scale(image, Data.tileSize / (double) size);
+				}else if(dir.equals("fluids")) image = image.getSubimage(0, 0, Data.tileSize, Data.tileSize);
+				
 				name = name.replace(".png", "");
 				
 				if(ids.containsKey(name)) map.put(name, ids.get(name), image);

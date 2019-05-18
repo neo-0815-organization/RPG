@@ -4,11 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import rpg.Logger;
+import rpg.RPG;
 import rpg.api.entity.CharacterType;
 import rpg.api.eventhandling.BundledListener;
 import rpg.api.filehandling.RPGFileReader;
 import rpg.api.localization.StringLocalizer;
-import rpg.api.scene.GameField;
 
 /**
  * The class Quest
@@ -16,15 +17,15 @@ import rpg.api.scene.GameField;
  * @author Tim Ludwig, Erik Diers, Jan Unterhuber, Alexander Schallenberg
  */
 public class Quest {
-	private final int			id;
-	private final String		title, questInfo, map;
-	private final CharacterType	type;
-	private final boolean		repeatable;
-	private boolean				isFinished	= false;
-	private boolean				inProgress	= false;
+	private final int id;
+	private final String title, questInfo, map;
+	private final CharacterType type;
+	private final boolean repeatable;
+	private boolean isFinished = false;
+	private boolean inProgress = false;
 	
-	private final IReward[]			rewards;
-	private final BundledListener	startListener, endListener;
+	private final IReward[] rewards;
+	private final BundledListener startListener, endListener;
 	
 	public Quest(final int id, final String map, final CharacterType type, final boolean repeatable, final BundledListener startListener, final BundledListener endListener, final IReward... rewards) {
 		this.id = id;
@@ -45,12 +46,12 @@ public class Quest {
 	 * @return {@code true} if the Link{Quest} is available
 	 */
 	public boolean isAvailable() {
-		return (!isFinished || repeatable) && !inProgress && GameField.background.getName().equals(map);
+		return (!isFinished || repeatable) && !inProgress && RPG.gameField.getBackground().getName().equals(map);
 	}
 	
 	/**
-	 * Returns whether the conditions for starting the Link{Quest} are met, !Does
-	 * not call startQuest().
+	 * Returns whether the conditions for starting the Link{Quest} are met,
+	 * !Does not call startQuest().
 	 * 
 	 * @return {@code true} if the Link{Quest} can start
 	 */
@@ -59,8 +60,8 @@ public class Quest {
 	}
 	
 	/**
-	 * Returns whether the conditions for finishing the Link{Quest} are met. !Does
-	 * not call endQuest().
+	 * Returns whether the conditions for finishing the Link{Quest} are met.
+	 * !Does not call endQuest().
 	 * 
 	 * @return {@code true} if the Link{Quest} can end
 	 */
@@ -72,7 +73,7 @@ public class Quest {
 	 * Finishes the Link{Quest} off and rewards the player.
 	 */
 	public void finishQuest() {
-		System.out.println("Quest has been finished");
+		Logger.debug("Quest has been finished");
 		for(final IReward r : rewards)
 			r.rewardPlayer();
 		
@@ -94,7 +95,7 @@ public class Quest {
 	 */
 	public void startQuest() {
 		inProgress = true;
-		System.out.println("Quest has been started");
+		Logger.debug("Quest has been started");
 	}
 	
 	/**

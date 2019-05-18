@@ -19,4 +19,9 @@ public class EventAdapter implements EventListener {
 	public void onEvent(final Event event) {
 		if(event instanceof CollisionEvent) onCollision((CollisionEvent) event);
 	}
+	
+	@Override
+	public EventType getEventType() {
+		return EventType.ALL_EVENTS;
+	}
 }

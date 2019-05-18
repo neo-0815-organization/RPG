@@ -1,2 +1,24 @@
 button.singleplayer.name=Einzelspieler
 button.multiplayer.name=Mehrspieler
+
+dialog.ffl.lines=2
+dialog.ffl.0=Du: "Hallo?"
+dialog.ffl.1=Du: "Do you speak german?"
+
+dialog.twc.lines=16
+dialog.twc.0=???: "Das hätte auch anders ausgehen können."
+dialog.twc.1=???: "Danke, dass du mich geschützt hast."
+dialog.twc.2=Happy: "Ich bin Happy."
+dialog.twc.3=Du: "Hallo ich bin der Spieler."
+dialog.twc.4=Du: "Bist du ein Zwerg?"
+dialog.twc.5=Happy: "Ja, was denn sonst??"
+dialog.twc.6=Du: "Wie kannn es sein, dass ich auf einmal so stark bin?"
+dialog.twc.7=Happy: "Was bist du denn?"
+dialog.twc.8=Du: "..."
+dialog.twc.9=Du: "Wie 'was'?"
+dialog.twc.10=Happy: "Wo kommst du her?"
+dialog.twc.11=Du: "Aus Deutschland."
+dialog.twc.12=Happy: "Ist das im Osten?"
+dialog.twc.13=Happy: "Eigentlich kenne ich mich hier gut aus, aber das hab ich noch nie gehört."
+dialog.twc.14=Du: "Ich bin nicht von hier, ich bin hier gestrandet."
+dialog.twc.15=Happy *ängstlich*: "Was meinst du?!"

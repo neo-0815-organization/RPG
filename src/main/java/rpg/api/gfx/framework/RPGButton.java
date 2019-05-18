@@ -125,12 +125,8 @@ public class RPGButton extends JButton {
 	@Override
 	public void setBounds(final int x, final int y, final int width, final int height) {
 		super.setBounds(x, y, width, height);
-		
-		if (image != null)setIcon(new ImageIcon(ImageUtility.scale(image, width, height)));
-	}
-	
-	public void setBounds(final double x, final double y, final double width, final double height) {
-		setBounds((int)x, (int)y, (int)width, (int)height);
+    
+		if(image != null) setIcon(new ImageIcon(ImageUtility.scale(image, width, height)));
 	}
 	
 	public void updateTitle() {

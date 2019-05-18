@@ -11,11 +11,10 @@ public class TileAnvil extends Tile {
 		sprite.addAnimation("anvil");
 		sprite.setAnimation("anvil");
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+		
 	}
-
+	
 }

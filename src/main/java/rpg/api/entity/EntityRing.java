@@ -18,7 +18,7 @@ public class EntityRing extends ItemStack {
 	}
 	
 	public EntityRing() {
-		super("ring", true);
+		super("ring", false);
 		
 		setSprite(sprite);
 		
@@ -32,6 +32,6 @@ public class EntityRing extends ItemStack {
 	
 	@Override
 	public void triggerEvent(final EventType eventType, final Object... objects) {
-		EventHandler.handle(new CollisionEvent((Entity)objects[0], (Entity)objects[1]));
+		EventHandler.handle(new CollisionEvent((Entity) objects[0], (Entity) objects[1]));
 	}
 }

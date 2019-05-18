@@ -5,17 +5,16 @@ import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
 
 public class TileChairRight extends Tile {
-
+	
 	public TileChairRight() {
 		sprite = new Sprite("tiles/chair");
 		sprite.addAnimation("right");
 		sprite.setAnimation("right");
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+		
 	}
-
+	
 }

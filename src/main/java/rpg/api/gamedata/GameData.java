@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import rpg.api.Direction;
+import rpg.api.collision.Hitbox;
 import rpg.api.packethandler.ByteBuffer;
 import rpg.api.vector.Vec2D;
 
@@ -23,31 +24,55 @@ import rpg.api.vector.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer
  */
 public class GameData {
-	private final File file;
 	private final ExtendedByteBuffer buffer;
 	private HashMap<String, Object> data;
+	
+	protected final String dir, filename;
+	protected final File file;
 	
 	/**
 	 * Constructs a new representation of data.
 	 * 
-	 * @param path
-	 *            the path to the {@link File}
+	 * @param dir
+	 *            the path to the directory of the {@link File}
+	 * @param file
+	 *            the filename
 	 */
-	public GameData(final String path) {
-		file = new File(getClass().getResource("/").getFile() + "/" + path);
+	public GameData(final String dir, final String file) {
+		this(dir, file, new HashMap<>());
+	}
+	
+	/**
+	 * Constructs a new representation of data with given defaults.
+	 * 
+	 * @param dir
+	 *            the path tothe directory of the {@link File}
+	 * @param file
+	 *            the filename
+	 * @param data
+	 *            the default data {@link HashMap}
+	 * 
+	 * @see #save()
+	 */
+	public GameData(final String dir, final String file, final HashMap<String, Object> data) {
+		this.dir = dir;
+		filename = file;
+		this.file = new File(getClass().getResource("/").getFile() + "/" + dir + "/" + file);
 		
-		if(!file.exists()) {
-			file.getParentFile().mkdirs();
+		this.data = data;
+		buffer = new ExtendedByteBuffer();
+		
+		if(!this.file.exists()) {
+			this.file.getParentFile().mkdirs();
 			
 			try {
-				file.createNewFile();
+				this.file.createNewFile();
+				
+				if(!data.isEmpty()) save();
 			}catch(final IOException e) {
 				e.printStackTrace();
 			}
-		}
-		
-		buffer = new ExtendedByteBuffer();
-		data = new HashMap<>();
+		}else this.data.clear();
 	}
 	
 	/**
@@ -199,6 +224,10 @@ public class GameData {
 			buffer.write(UUID_IDENTIFIER);
 			
 			buffer.writeUUID((UUID) obj);
+		}else if(obj instanceof Hitbox) {
+			buffer.write(HITBOX_IDENTIFIER);
+			
+			buffer.writeHitbox((Hitbox) obj);
 		}
 	}
 	
@@ -249,6 +278,8 @@ public class GameData {
 				return buffer.readVec2D();
 			case UUID_IDENTIFIER:
 				return buffer.readUUID();
+			case HITBOX_IDENTIFIER:
+				return buffer.readHitbox();
 		}
 		
 		return null;
@@ -291,6 +322,7 @@ public class GameData {
 								LIST_IDENTIFIER = 10,
 								DIRECTION_IDENTIFIER = 11,
 								VEC2D_IDENTIFIER = 12,
-								UUID_IDENTIFIER = 13;
+								UUID_IDENTIFIER = 13,
+								HITBOX_IDENTIFIER = 14;
 	// @formatter:on
 }

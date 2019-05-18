@@ -23,7 +23,7 @@ import rpg.api.vector.Vec2D;
 public abstract class Entity implements INameable, ISprite, ICollideable, EventTrigger {
 	protected ModifiableVec2D location;
 	protected Sprite sprite;
-	protected Direction lookingDirection;
+	protected Direction lookingDirection = Direction.SOUTH;
 	protected ModifiableVec2D velocity = ModifiableVec2D.ORIGIN.toModifiable();
 	protected String displayName, imageName;
 	protected UUID uuid;
@@ -37,6 +37,8 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 */
 	public Entity(final String name) {
 		setDisplayName(name);
+		
+		uuid = UUID.randomUUID();
 	}
 	
 	/**

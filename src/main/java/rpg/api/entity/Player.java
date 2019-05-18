@@ -3,6 +3,8 @@ package rpg.api.entity;
 import rpg.api.collision.Hitbox;
 import rpg.api.entity.Person.CharacterSheet;
 import rpg.api.entity.item.Inventory;
+import rpg.api.entity.item.InventoryHolder;
+import rpg.api.entity.item.InventoryPlayer;
 import rpg.api.eventhandling.EventType;
 import rpg.api.units.DistanceValue;
 
@@ -11,9 +13,9 @@ import rpg.api.units.DistanceValue;
  * 
  * @author Neo Hornberger
  */
-public class Player extends LivingEntity {
+public class Player extends LivingEntity implements InventoryHolder {
 	private float xp, mp;
-	private final Inventory inv;
+	private InventoryPlayer inv;
 	
 	/**
 	 * Constructs a player with the standard display name
@@ -23,7 +25,7 @@ public class Player extends LivingEntity {
 		super("entity.player");
 		
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
-		inv = new Inventory();
+		inv = new InventoryPlayer();
 		
 		setSprite(CharacterSheet.PLAYER_NATUREGUARDIAN_MALE.getSprite());
 	}
@@ -33,8 +35,14 @@ public class Player extends LivingEntity {
 		return hitbox;
 	}
 	
-	public Inventory getInventory() {
+	@Override
+	public InventoryPlayer getInventory() {
 		return inv;
+	}
+	
+	@Override
+	public void setInventory(final Inventory inv) {
+		this.inv = new InventoryPlayer(inv);
 	}
 	
 	public float getXP() {

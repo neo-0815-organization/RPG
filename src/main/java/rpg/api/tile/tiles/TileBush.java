@@ -11,11 +11,10 @@ public class TileBush extends Tile {
 		sprite.addAnimation("bush");
 		sprite.setAnimation("bush");
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+		
 	}
-
+	
 }

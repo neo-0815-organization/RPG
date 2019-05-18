@@ -12,7 +12,7 @@ import rpg.api.vector.ModifiableVec2D;
 
 public class Person extends LivingEntity {
 	private String dialogName;
-	public static boolean E_PRESSED;
+	public static boolean I_PRESSED;
 
 	public Person(String name, CharacterSheet character, int maxHP, String dialogName, ModifiableVec2D pos) {
 		super(name, maxHP);
@@ -30,9 +30,9 @@ public class Person extends LivingEntity {
 
 	@Override
 	public void triggerEvent(EventType eventType, Object... objects) {
-		if (E_PRESSED) {
+		if (I_PRESSED) {
 			new DialogMenu(new Dialog(dialogName), this).show();
-			E_PRESSED = false;
+			I_PRESSED = false;
 		}
 	}
 	
