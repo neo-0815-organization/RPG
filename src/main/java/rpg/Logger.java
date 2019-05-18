@@ -12,21 +12,17 @@ public class Logger {
 	private static void log(final PrintStream out, final String prefix, final String msg) {
 		if(isActive) new SecurityManager() {
 			{
-				out.println("[" + OffsetDateTime.now().format(FORMATTER) + "] [" + getClassContext()[4].getCanonicalName() + "/" + prefix + "]: " + msg);
+				out.println("[" + OffsetDateTime.now().format(FORMATTER) + "] [" + getClassContext()[3].getCanonicalName() + "/" + prefix + "]: " + msg);
 			}
 		};
 	}
 	
-	private static void log(final String prefix, final String msg) {
-		log(System.out, prefix, msg);
-	}
-	
 	public static void info(final String msg) {
-		log("INFO", msg);
+		log(System.out, "INFO", msg);
 	}
 	
 	public static void debug(final String msg) {
-		log("DEBUG", msg);
+		log(System.out, "DEBUG", msg);
 	}
 	
 	public static void error(final String msg) {

@@ -24,41 +24,49 @@ import rpg.api.vector.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer
  */
 public class GameData {
-	private final File file;
 	private final ExtendedByteBuffer buffer;
 	private HashMap<String, Object> data;
+	
+	protected final String dir, filename;
+	protected final File file;
 	
 	/**
 	 * Constructs a new representation of data.
 	 * 
-	 * @param path
-	 *            the path to the {@link File}
+	 * @param dir
+	 *            the path to the directory of the {@link File}
+	 * @param file
+	 *            the filename
 	 */
-	public GameData(final String path) {
-		this(path, new HashMap<>());
+	public GameData(final String dir, final String file) {
+		this(dir, file, new HashMap<>());
 	}
 	
 	/**
 	 * Constructs a new representation of data with given defaults.
 	 * 
-	 * @param path
-	 *            the path to the {@link File}
+	 * @param dir
+	 *            the path tothe directory of the {@link File}
+	 * @param file
+	 *            the filename
 	 * @param data
 	 *            the default data {@link HashMap}
 	 * 
 	 * @see #save()
 	 */
-	public GameData(final String path, final HashMap<String, Object> data) {
-		file = new File(getClass().getResource("/").getFile() + "/" + path);
+	public GameData(final String dir, final String file, final HashMap<String, Object> data) {
+		this.dir = dir;
+		filename = file;
+		this.file = new File(getClass().getResource("/").getFile() + "/" + dir + "/" + file);
 		
 		this.data = data;
 		buffer = new ExtendedByteBuffer();
 		
-		if(!file.exists()) {
-			file.getParentFile().mkdirs();
+		if(!this.file.exists()) {
+			this.file.getParentFile().mkdirs();
 			
 			try {
-				file.createNewFile();
+				this.file.createNewFile();
 				
 				if(!data.isEmpty()) save();
 			}catch(final IOException e) {

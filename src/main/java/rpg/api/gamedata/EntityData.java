@@ -1,6 +1,7 @@
 package rpg.api.gamedata;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 import rpg.api.Direction;
@@ -8,6 +9,7 @@ import rpg.api.entity.Entity;
 import rpg.api.entity.EntityRing;
 import rpg.api.entity.LivingEntity;
 import rpg.api.entity.Player;
+import rpg.api.entity.item.InventoryHolder;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 
@@ -32,14 +34,14 @@ public class EntityData extends GameData {
 	 *            is stored
 	 */
 	public EntityData(final Entity entity, final String path) {
-		super(path + "/" + entity.getUniqueId().toString() + ".data");
+		super(path, entity.getUniqueId().toString() + ".data");
 		
 		e = entity;
 		uuid = entity.getUniqueId();
 	}
 	
 	public EntityData(final UUID uuid, final String path) {
-		super(path + "/" + uuid.toString() + ".data");
+		super(path, uuid.toString() + ".data");
 		
 		this.uuid = uuid;
 	}
@@ -78,6 +80,8 @@ public class EntityData extends GameData {
 				p.setXP((float) get("xp"));
 				p.setMP((float) get("mp"));
 			}
+			
+			if(e instanceof InventoryHolder) ((InventoryHolder) e).setInventory(DataHelper.mapToInventory((Map<String, Object>) get("inventory"), dir + "items/"));
 		}
 	}
 	
@@ -106,6 +110,8 @@ public class EntityData extends GameData {
 			set("xp", p.getXP());
 			set("mp", p.getMP());
 		}
+		
+		if(e instanceof InventoryHolder) set("inventory", DataHelper.inventoryToMap(((InventoryHolder) e).getInventory(), dir + "items/"));
 		
 		super.save();
 	}
