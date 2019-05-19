@@ -4,6 +4,7 @@ tree_big_face:256:true
 tree_apple2:256:true
 tree_big:256:true
 tree_dead:256:true
+tree_dead:256:true
 tree_fire_snow:256:true
 tree_fire:256:true
 tree_palm:256:true

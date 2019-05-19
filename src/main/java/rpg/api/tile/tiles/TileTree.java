@@ -14,6 +14,7 @@ public class TileTree extends Tile {
 		BIG_FACE("tree_big_face"),
 		BIG("tree_big"),
 		DEAD("tree_dead"),
+		DEAD_2("tree_dead_2"),
 		FIRE_SNOW("tree_fire_snow"),
 		FIRE("tree_fire"),
 		PALM("tree_palm");
