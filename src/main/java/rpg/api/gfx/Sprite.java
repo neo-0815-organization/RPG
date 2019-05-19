@@ -7,13 +7,14 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import rpg.Logger;
 import rpg.api.filehandling.RPGFileReader;
 import rpg.api.filehandling.ResourceGetter;
 
 /**
  * Encapsulates multiple {@link Animation}s in one {@link Sprite}.
  *
- * @author Tim Ludwig -> Erik->update
+ * @author Tim Ludwig, Erik Diers
  */
 public class Sprite implements Cloneable {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
@@ -222,7 +223,7 @@ public class Sprite implements Cloneable {
 			final Sprite temp = (Sprite) super.clone();
 			return temp;
 		}catch(final CloneNotSupportedException e) {
-			e.printStackTrace();
+			Logger.error(e);
 			return null;
 		}
 		

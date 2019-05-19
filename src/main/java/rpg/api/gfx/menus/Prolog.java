@@ -52,7 +52,7 @@ public class Prolog extends Menu {
 		try {
 			Thread.sleep(10);
 		}catch(final InterruptedException e) {
-			;
+			Logger.error(e.getMessage());
 		}
 		
 		timeSinceLastFrame = (System.currentTimeMillis() - timeLastFrameBegun) / 1000D;
@@ -64,6 +64,7 @@ public class Prolog extends Menu {
 		
 		allOverTime += timeSinceLastFrame;
 		menu.repaint();
+		
 		if(allOverTime > allOverTimeToReach) setOpen(false);
 	}
 }

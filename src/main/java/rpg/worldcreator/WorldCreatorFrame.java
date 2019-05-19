@@ -55,6 +55,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import rpg.Logger;
 import rpg.api.gfx.ImageUtility;
 import rpg.api.packethandler.ByteBuffer;
 import rpg.worldcreator.dialogs.EditHitboxDialog;
@@ -241,7 +242,7 @@ public class WorldCreatorFrame extends JFrame {
 			
 			workingArea.setCursor(cursors.get("pencil"));
 		}catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException | HeadlessException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		setSize(800, 600);
@@ -527,7 +528,7 @@ public class WorldCreatorFrame extends JFrame {
 		if(file == null || !file.exists()) try {
 			file.createNewFile();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		try {

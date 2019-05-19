@@ -13,6 +13,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import rpg.Logger;
 import rpg.Statics;
 
 /**
@@ -26,7 +27,7 @@ public class ResourceGetter {
 	 * Returns the {@link InputStream} of the requested resource.
 	 * 
 	 * @param path
-	 *                 the path to the resource
+	 *            the path to the resource
 	 * @return the {@link InputStream} of the requested resource, or<br>
 	 *         {@code null} if no resource is found at this path
 	 */
@@ -38,7 +39,7 @@ public class ResourceGetter {
 	 * Returns the {@link InputStreamReader} of the requested resource.
 	 * 
 	 * @param path
-	 *                 the path to the resource
+	 *            the path to the resource
 	 * @return the {@link InputStreamReader} of the requested resource, or<br>
 	 *         {@code null} if no resource is found at this path
 	 * @see #getResource(String)
@@ -51,7 +52,7 @@ public class ResourceGetter {
 	 * Returns the {@link BufferedReader} of the requested resource.
 	 * 
 	 * @param path
-	 *                 the path to the resource
+	 *            the path to the resource
 	 * @return the {@link BufferedReader} of the requested resource, or<br>
 	 *         {@code null} if no resource is found at this path
 	 * @see #getInputStreamReader(String)
@@ -79,7 +80,7 @@ public class ResourceGetter {
 		try {
 			return ImageIO.read(is);
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return null;
@@ -107,7 +108,7 @@ public class ResourceGetter {
 		try {
 			return ImageIO.read(is);
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return null;
@@ -116,8 +117,8 @@ public class ResourceGetter {
 	public static AudioInputStream getAudio(final String path) {
 		try {
 			return AudioSystem.getAudioInputStream(getResource(path));
-		} catch(UnsupportedAudioFileException | IOException e) {
-			e.printStackTrace();
+		}catch(UnsupportedAudioFileException | IOException e) {
+			Logger.error(e);
 		}
 		
 		return null;

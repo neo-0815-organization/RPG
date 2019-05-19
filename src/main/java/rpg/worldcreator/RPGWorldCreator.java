@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
+import rpg.Logger;
 import rpg.api.gfx.ImageUtility;
 
 public class RPGWorldCreator {
@@ -78,7 +79,7 @@ public class RPGWorldCreator {
 			
 			return image;
 		}catch(final Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return null;

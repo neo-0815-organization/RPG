@@ -28,4 +28,14 @@ public class Logger {
 	public static void error(final String msg) {
 		log(System.err, "ERROR", msg);
 	}
+	
+	public static void error(final Exception e) {
+		final String eMsg = e.getMessage();
+		String msg = e.getClass().getCanonicalName() + (eMsg != null ? ": " + eMsg : "");
+		
+		for(final StackTraceElement st : e.getStackTrace())
+			msg += "\n\t\tat " + st;
+		
+		log(System.err, "ERROR", msg);
+	}
 }

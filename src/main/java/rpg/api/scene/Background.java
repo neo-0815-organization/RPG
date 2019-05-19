@@ -11,6 +11,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
 
+import rpg.Logger;
 import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.filehandling.ResourceGetter;
@@ -45,7 +46,7 @@ public class Background implements IImage {
 		if(name != null) try {
 			loadFromFile();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 	
@@ -172,7 +173,7 @@ public class Background implements IImage {
 			try {
 				bais.close();
 			}catch(final IOException e) {
-				e.printStackTrace();
+				Logger.error(e);
 			}
 		});
 	}

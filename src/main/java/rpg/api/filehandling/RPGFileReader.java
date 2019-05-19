@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import rpg.Logger;
+
 /**
  * A text file reading utility.
  * 
@@ -87,7 +89,7 @@ public class RPGFileReader {
 			
 			reader.close();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return result;
@@ -122,7 +124,7 @@ public class RPGFileReader {
 			
 			reader.close();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return result;
@@ -166,7 +168,7 @@ public class RPGFileReader {
 			
 			reader.close();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return result;
@@ -202,7 +204,7 @@ public class RPGFileReader {
 			
 			reader.close();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return result;
@@ -243,7 +245,7 @@ public class RPGFileReader {
 			
 			reader.close();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		return result;

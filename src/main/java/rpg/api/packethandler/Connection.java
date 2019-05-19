@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import rpg.Logger;
 import rpg.api.packethandler.packet.Packet;
 import rpg.api.packethandler.packet.time.PacketPong;
 
@@ -87,7 +88,7 @@ public abstract class Connection extends PacketRegistry {
 		try {
 			sendPacket(getPacket(-1, 0), millis);
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 	

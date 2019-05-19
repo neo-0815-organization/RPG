@@ -48,7 +48,7 @@ public class CombatMenu extends Menu {
 		try {
 			Thread.sleep(3000);
 		}catch(final InterruptedException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		super.close0();

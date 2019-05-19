@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
+import rpg.Logger;
+
 /**
  * A text file writing utility.
  * 
@@ -20,13 +22,13 @@ public class RPGFileWriter {
 				try {
 					writer.write(key + separator + value + "\n");
 				}catch(final IOException e) {
-					e.printStackTrace();
+					Logger.error(e);
 				}
 			});
 			
 			writer.close();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 }

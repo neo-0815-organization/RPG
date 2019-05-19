@@ -1,5 +1,6 @@
 package rpg.api.vector;
 
+import rpg.Logger;
 import rpg.api.units.DistanceValue;
 
 public abstract class Vec2D<T extends Vec2D<?>> implements Cloneable {
@@ -138,8 +139,8 @@ public abstract class Vec2D<T extends Vec2D<?>> implements Cloneable {
 	public T clone() {
 		try {
 			return (T) super.clone();
-		} catch(final CloneNotSupportedException e) {
-			e.printStackTrace();
+		}catch(final CloneNotSupportedException e) {
+			Logger.error(e);
 		}
 		
 		return (T) ORIGIN;

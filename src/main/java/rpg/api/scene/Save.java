@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.api.entity.Entity;
 import rpg.api.entity.Player;
@@ -73,11 +74,11 @@ public class Save {
 					if(ed.getEntity().getUniqueId().equals(playerUUID)) RPG.gameField.setPlayerController(new PlayerController((Player) ed.getEntity()));
 					else entities.add(ed.getEntity());
 				}catch(final IOException e) {
-					e.printStackTrace();
+					Logger.error(e);
 				}
 			});
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 	
@@ -97,7 +98,7 @@ public class Save {
 		try {
 			data.save();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 }

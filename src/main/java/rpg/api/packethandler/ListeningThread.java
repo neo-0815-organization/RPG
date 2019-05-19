@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import rpg.Logger;
 import rpg.api.packethandler.packet.Packet;
 import rpg.api.packethandler.packet.time.PacketPong;
 
@@ -75,7 +76,7 @@ public abstract class ListeningThread extends Thread {
 					if(packet.response() != null) connection().sendPacket(packet.response());
 				}
 			}catch(final IOException e) {
-				e.printStackTrace();
+				Logger.error(e);
 			}
 	}
 	

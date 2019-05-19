@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import rpg.Logger;
 import rpg.api.Direction;
 import rpg.api.collision.Hitbox;
 import rpg.api.packethandler.ByteBuffer;
@@ -70,7 +71,7 @@ public class GameData {
 				
 				if(!data.isEmpty()) save();
 			}catch(final IOException e) {
-				e.printStackTrace();
+				Logger.error(e);
 			}
 		}else this.data.clear();
 	}

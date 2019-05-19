@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import rpg.Logger;
 import rpg.api.entity.item.Inventory;
 import rpg.api.entity.item.ItemStack;
 import rpg.api.gfx.Sprite;
@@ -29,7 +30,7 @@ public class DataHelper {
 			try {
 				new EntityData(item, path).save();
 			}catch(final IOException e) {
-				e.printStackTrace();
+				Logger.error(e);
 			}
 		});
 		
@@ -47,7 +48,7 @@ public class DataHelper {
 				
 				inv.addItemStack((ItemStack) ed.getEntity());
 			}catch(final IOException e) {
-				e.printStackTrace();
+				Logger.error(e);
 			}
 		});
 		
