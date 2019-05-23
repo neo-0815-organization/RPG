@@ -1,6 +1,13 @@
 package rpg.api.gfx.menus;
 
 import java.awt.Color;
+import java.awt.MouseInfo;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JTextArea;
 
@@ -32,7 +39,6 @@ public class Prolog extends Menu {
 		label.setBounds((Statics.frameSize.width - labelWIDTH) / 2 + 200, Statics.frameSize.height, labelWIDTH, 0);
 		y = label.getY();
 		
-		addComponent(label);
 		
 		
 		txt = Statics.formatToWidth(txt, label.getWidth(), label.getFont());
@@ -49,10 +55,34 @@ public class Prolog extends Menu {
 		final int height = (int) (lines + Statics.frameSize.height * 1.5);
 		speed = (int) (height / scrollTime);
 		label.setSize(labelWIDTH, lines * label.getFont().getSize() * 2 + 1);
-		label.setBackground(new Color(255, 255, 255, 0));;
-		setBackground(RPGButton.BUTTON_TEMPLATE);
+		label.setBackground(new Color(255, 255, 255, 0));
 		
 		label.setText(txt);
+		
+		RPGButton skip = new RPGButton("skip");
+		skip.setBounds(200, 400, 100, 100);
+		skip.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setOpen(false);
+			}
+		});
+		
+		skip.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				while (skip.getBounds().contains(MouseInfo.getPointerInfo().getLocation())) {
+					skip.setLocation(skip.getX() +(int) ( 2 * (e.getX() > skip.getWidth() / 2 ? -(skip.getHeight() - e.getX()) : e.getX()) ), skip.getY() + (int) ( 2 * (e.getY() > skip.getHeight() / 2 ? -(skip.getHeight() - e.getY()) : e.getY()) ) );
+				}
+				skip.repaint();
+			}
+		});
+		addComponent(skip);
+		
+		addComponent(label);
+		
+		setBackground(RPGButton.BUTTON_TEMPLATE);
 		timeLastFrameBegun = System.currentTimeMillis();
 		
 	}
@@ -69,7 +99,6 @@ public class Prolog extends Menu {
 		timeLastFrameBegun = System.currentTimeMillis();
 		
 		y -= speed * timeSinceLastFrame;
-		Logger.debug(String.valueOf(y));
 		label.setLocation(label.getX(), (int) y);
 		
 		allOverTime += timeSinceLastFrame;
