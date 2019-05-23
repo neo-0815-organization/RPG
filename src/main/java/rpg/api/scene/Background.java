@@ -54,21 +54,7 @@ public class Background implements IImage {
 	public void draw(final DrawingGraphics g) {
 		if(name == null) return;
 		
-		for(final Tile t : fluids)
-			t.draw(g);
-		
 		draw(g, Vec2D.ORIGIN);
-		
-		for(final Tile t : tiles)
-			t.draw(g);
-	}
-	
-	public void update(final double deltaTime) {
-		for(final Tile t : fluids)
-			t.update(deltaTime);
-		
-		for(final Tile t : tiles)
-			t.update(deltaTime);
 	}
 	
 	private void loadFromFile() throws IOException {

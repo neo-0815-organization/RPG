@@ -45,6 +45,11 @@ public class GameField extends Scene {
 	
 	@Override
 	public void draw(final DrawingGraphics g) {
+		synchronized(save.fluids) {
+			for(final Tile f : save.fluids)
+				f.draw(g);
+		}
+		
 		save.background.draw(g);
 		
 		synchronized(save.entities) {
@@ -52,8 +57,10 @@ public class GameField extends Scene {
 				e.draw(g);
 		}
 		
-		for(final Tile t : save.tiles)
-			t.draw(g);
+		synchronized(save.tiles) {
+			for(final Tile t : save.tiles)
+				t.draw(g);
+		}
 		
 		hud.draw(g);
 	}
@@ -109,7 +116,8 @@ public class GameField extends Scene {
 	 * Updates all {@link Tile}s and {@link Entity}s.
 	 */
 	private void update(final double deltaTime) {
-		save.background.update(deltaTime);
+		for(int i = 0; i < save.fluids.size(); i++)
+			save.fluids.get(i).update(deltaTime);
 		
 		for(int i = 0; i < save.entities.size(); i++)
 			save.entities.get(i).update(deltaTime);
@@ -125,12 +133,14 @@ public class GameField extends Scene {
 		QuestHandler.update();
 	}
 	
-	@Deprecated
 	public List<Tile> checkCollisionTiles(final Entity e) {
 		final LinkedList<Tile> ts = new LinkedList<>();
 		
-		for(final Tile t : save.tiles)
-			ts.add(t);
+		synchronized(save.tiles) {
+			for(final Tile tl : save.tiles)
+				if(tl.getHitbox().checkCollision(tl.getLocation(), e.getHitbox(), e.getLocation())) ts.add(tl);
+			
+		}
 		
 		return ts;
 	}

@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
+import rpg.Logger;
 import rpg.api.gfx.ImageUtility;
 
 public class LayerPanel extends JPanel {

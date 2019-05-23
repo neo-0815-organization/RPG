@@ -31,7 +31,7 @@ public class Save {
 	
 	public Background background;
 	public LinkedList<Entity> entities = new LinkedList<>();
-	public LinkedList<Tile> tiles = new LinkedList<>();
+	public LinkedList<Tile> fluids = new LinkedList<>(), tiles = new LinkedList<>();
 	public Player player;
 	
 	private final String name, filePath, entityDir;
