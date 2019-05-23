@@ -4,13 +4,13 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
 
-public class TileTent extends Tile {
+public class TileBottle extends Tile {
+
+	private BottleType type;
 	
-	public TentType type;
-	
-	public TileTent(TentType t) {
+	public TileBottle(BottleType t) {
 		type = t;
-		sprite = new Sprite("tiles/tent");
+		sprite = new Sprite("tiles/bottle");
 		sprite.addAnimation(type.name);
 		sprite.setAnimation(type.name);
 	}
@@ -20,16 +20,17 @@ public class TileTent extends Tile {
 		// TODO Auto-generated method stub
 
 	}
-	
-	
-	public enum TentType{
-		NORMAL("tent"),
-		RED("tent_red"),
-		YELLOW("tent_blue");
+
+	public enum BottleType{
+		BEACH("beach/bottle_beach"),
+		BEACH2("beach2/beach2"),
+		HOLY_WATER("holyWater/bottle_water_holy"),
+		MESSAGE("message/bottlemessage"),
+		RIVER("river/bottle_river");
 		
 		public String name;
 		
-		private TentType(String pName) {
+		private BottleType(String pName) {
 			name = pName;
 		}
 	}

@@ -1,1 +1,3 @@
 tent:43:false
+tent_red:43:false
+tent_yellow:43:false

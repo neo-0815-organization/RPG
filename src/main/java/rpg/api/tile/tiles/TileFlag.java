@@ -4,13 +4,13 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
 
-public class TileTent extends Tile {
+public class TileFlag extends Tile {
 	
-	public TentType type;
-	
-	public TileTent(TentType t) {
+	public FlagType type;
+
+	public TileFlag(FlagType t) {
 		type = t;
-		sprite = new Sprite("tiles/tent");
+		sprite = new Sprite("tiles/flag");
 		sprite.addAnimation(type.name);
 		sprite.setAnimation(type.name);
 	}
@@ -20,16 +20,15 @@ public class TileTent extends Tile {
 		// TODO Auto-generated method stub
 
 	}
-	
-	
-	public enum TentType{
-		NORMAL("tent"),
-		RED("tent_red"),
-		YELLOW("tent_blue");
+
+	public enum FlagType{
+		RED("red/flag_red"),
+		BLUE("blue/flag_blue"),
+		YELLOW("yellow/flag_yellow");
 		
-		public String name;
+		private String name;
 		
-		private TentType(String pName) {
+		private FlagType(String pName) {
 			name = pName;
 		}
 	}
