@@ -872,6 +872,7 @@ public class WorldCreatorFrame extends JFrame {
 			final JScrollPane pane = new JScrollPane(new LayerPanel(pictures, layer, INSTANCE));
 			pane.setPreferredSize(new Dimension(150, 0));
 			pane.setBorder(new LineBorder(Color.DARK_GRAY));
+			pane.getVerticalScrollBar().setUnitIncrement(32);
 			
 			add(tabName, pane);
 		}

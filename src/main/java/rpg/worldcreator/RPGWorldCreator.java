@@ -45,7 +45,7 @@ public class RPGWorldCreator {
 				if(dir.equals("tiles")) {
 					size = Math.max(image.getWidth(), image.getHeight());
 					
-					if(size > Data.tileSize) image = ImageUtility.scale(image, Data.tileSize / (double) size);
+					if(size > Data.tileSize) image = ImageUtility.scale(image, 32, 32);
 				}else if(dir.equals("fluids")) image = image.getSubimage(0, 0, Data.tileSize, Data.tileSize);
 				
 				name = name.replace(".png", "");
@@ -79,6 +79,7 @@ public class RPGWorldCreator {
 			
 			return image;
 		}catch(final Exception e) {
+			Logger.error("Cannot read image '" + dir + "/" + file + "'");
 			Logger.error(e);
 		}
 		
