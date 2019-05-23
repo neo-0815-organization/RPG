@@ -4,9 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import rpg.RPG;
+import rpg.api.entity.CharacterSheet;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.LocalController;
+import rpg.api.entity.Person;
 import rpg.api.entity.Player;
 import rpg.api.entity.PlayerController;
 import rpg.api.eventhandling.EventHandler;
@@ -16,6 +18,7 @@ import rpg.api.gfx.HUD;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
 import rpg.api.tile.Tile;
+import rpg.api.vector.Vec2D;
 
 /**
  * The class GameField represents the game world.
@@ -66,6 +69,7 @@ public class GameField extends Scene {
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
+//				addEntity(new Person("Heinz", CharacterSheet.PLAYER_THIEF_FEMALE, 100, "twc", Vec2D.ORIGIN.toModifiable()));
 				while(inGame) {
 					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
 					lastFrame = System.currentTimeMillis();

@@ -19,7 +19,7 @@ public class RPG {
 	//	public static Preferences prefs;
 	
 	public static void main(final String[] args) {
-		StringLocalizer.setActiveLocale(args != null && args.length != 0 ? args[0] : "");
+		StringLocalizer.setActiveLocale(args != null && args.length != 0 ? args[0] : "de_DE");
 		init();
 	}
 	
