@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -13,13 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
-import rpg.Logger;
 import rpg.api.gfx.ImageUtility;
 
 public class LayerPanel extends JPanel {
 	private static final long serialVersionUID = -2665204565190419104L;
 	
 	private final TwoValueMap<String, Integer, BufferedImage> pictures;
+	public final HashMap<String, Boolean> showedWarning = new HashMap<>();
 	private final int layer;
 	
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -43,6 +44,8 @@ public class LayerPanel extends JPanel {
 			final double scaledSize = (134 - padding * 2) / xNumber;
 			final JPanel panel = new JPanel();
 			
+			showedWarning.put(name, layer == 2);
+			
 			panel.setBounds(padding, (int) (id * yNumber * scaledSize + padding * (id + 1)), (int) (xNumber * scaledSize), (int) (yNumber * scaledSize));
 			panel.setLayout(new GridLayout(yNumber, xNumber));
 			
@@ -54,6 +57,9 @@ public class LayerPanel extends JPanel {
 					final JToggleButton button = new JToggleButton(new ImageIcon(ImageUtility.scale(image.getSubimage(x * tileSize, y * tileSize, tileSize, tileSize), (int) scaledSize, (int) scaledSize)));
 					button.addActionListener(frameInstance.prefixActionListener);
 					button.setActionCommand("texture:" + name + ":" + x + "|" + y + "|" + layer);
+					
+					if(layer == 2) button.setToolTipText(RPGWorldCreator.getTexts().get(name));
+					
 					button.setFocusPainted(true);
 					
 					buttonGroup.add(button);

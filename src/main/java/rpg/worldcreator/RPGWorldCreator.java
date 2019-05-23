@@ -14,6 +14,7 @@ import rpg.api.gfx.ImageUtility;
 public class RPGWorldCreator {
 	private static final HashMap<String, BufferedImage> images = new HashMap<>();
 	private static final TwoValueMap<String, Integer, BufferedImage> fluids = new TwoValueMap<>(), textures = new TwoValueMap<>(), tiles = new TwoValueMap<>();
+	private static final HashMap<String, String> texts = new HashMap<>();
 	private static final boolean darkMode = false;
 	
 	public static final String assetsFolder = "/assets/worldcreator/";
@@ -45,7 +46,11 @@ public class RPGWorldCreator {
 				if(dir.equals("tiles")) {
 					size = Math.max(image.getWidth(), image.getHeight());
 					
-					if(size > Data.tileSize) image = ImageUtility.scale(image, 32, 32);
+					if(size > Data.tileSize) {
+						image = ImageUtility.scale(image, Data.tileSize, Data.tileSize);
+						
+						texts.put(name, Math.ceil(image.getWidth() / Data.tileSize) + "tiles x " + Math.ceil(image.getHeight() / Data.tileSize) + "tiles");
+					}
 				}else if(dir.equals("fluids")) image = image.getSubimage(0, 0, Data.tileSize, Data.tileSize);
 				
 				name = name.replace(".png", "");
@@ -132,6 +137,10 @@ public class RPGWorldCreator {
 	
 	public static TwoValueMap<String, Integer, BufferedImage> getTiles() {
 		return tiles;
+	}
+	
+	public static HashMap<String, String> getTexts() {
+		return texts;
 	}
 	
 	public static boolean isDarkmode() {

@@ -203,8 +203,15 @@ public class WorldCreatorFrame extends JFrame {
 				case "texture":
 					currentLayer = Integer.valueOf(args[2]);
 					
-					if(RPGWorldCreator.getImageMap(currentLayer).containsKey(command)) currentTexture = new Image(RPGWorldCreator.getImageMap(currentLayer).getSecond(command), RPGWorldCreator.getImageMap(currentLayer).getFirst(command), Integer.valueOf(args[0]) * tileSize, Integer.valueOf(args[1]) * tileSize, Rotation.NONE, factor);
-					else currentTexture = Image.nullImage;
+					if(RPGWorldCreator.getImageMap(currentLayer).containsKey(command)) {
+						currentTexture = new Image(RPGWorldCreator.getImageMap(currentLayer).getSecond(command), RPGWorldCreator.getImageMap(currentLayer).getFirst(command), Integer.valueOf(args[0]) * tileSize, Integer.valueOf(args[1]) * tileSize, Rotation.NONE, factor);
+						
+						if(!layersPane.getLayer(currentLayer).showedWarning.get(command)) {
+							JOptionPane.showMessageDialog(INSTANCE, RPGWorldCreator.getTexts().get(command), "WARNING", JOptionPane.WARNING_MESSAGE);
+							
+							layersPane.getLayer(currentLayer).showedWarning.put(command, true);
+						}
+					}else currentTexture = Image.nullImage;
 					
 					currentTextureShowPanel.repaint();
 					break;
@@ -213,6 +220,7 @@ public class WorldCreatorFrame extends JFrame {
 	};
 	
 	private SpritePane[][] spritePanes;
+	private LayersPane layersPane;
 	private double factor = 1d;
 	private Image currentTexture = Image.nullImage;
 	private int currentLayer = 1;
@@ -283,7 +291,8 @@ public class WorldCreatorFrame extends JFrame {
 		scrollWorkingArea.getHorizontalScrollBar().setUnitIncrement(32);
 		add(scrollWorkingArea, BorderLayout.CENTER);
 		
-		add(new LayersPane(), BorderLayout.EAST);
+		layersPane = new LayersPane();
+		add(layersPane, BorderLayout.EAST);
 		
 		progressBar.setForeground(Color.GREEN);
 		add(progressBar, BorderLayout.SOUTH);
@@ -858,6 +867,8 @@ public class WorldCreatorFrame extends JFrame {
 	private class LayersPane extends JTabbedPane {
 		private static final long serialVersionUID = 6575636653675456721L;
 		
+		private HashMap<Integer, LayerPanel> layerPanels = new HashMap<>();
+		
 		public LayersPane() {
 			initComponents();
 		}
@@ -875,6 +886,11 @@ public class WorldCreatorFrame extends JFrame {
 			pane.getVerticalScrollBar().setUnitIncrement(32);
 			
 			add(tabName, pane);
+			layerPanels.put(layer, (LayerPanel) pane.getViewport().getView());
+		}
+		
+		public LayerPanel getLayer(int layer) {
+			return layerPanels.get(layer);
 		}
 	}
 	

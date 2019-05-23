@@ -59,7 +59,6 @@ public class Prolog extends Menu {
 		timeLastFrameBegun = System.currentTimeMillis();
 		
 		y -= speed * timeSinceLastFrame;
-		Logger.debug(String.valueOf(y));
 		label.setLocation(label.getX(), (int) y);
 		
 		allOverTime += timeSinceLastFrame;
