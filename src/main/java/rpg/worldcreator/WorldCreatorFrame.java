@@ -351,7 +351,7 @@ public class WorldCreatorFrame extends JFrame {
 			numberTiles = 0;
 			time = System.currentTimeMillis();
 			
-			final int size = (int) (tileSize * factor), widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
+			final int widthTiles = spritePanes.length, heightTiles = spritePanes[0].length;
 			
 			progressBar.setMaximum(widthTiles * heightTiles);
 			updateProgressBar(0);

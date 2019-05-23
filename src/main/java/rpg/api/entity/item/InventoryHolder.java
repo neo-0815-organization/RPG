@@ -1,8 +1,7 @@
 package rpg.api.entity.item;
 
 public interface InventoryHolder {
+	Inventory getInventory();
 	
-	public Inventory getInventory();
-	
-	public void setInventory(final Inventory inv);
+	void setInventory(final Inventory inv);
 }
