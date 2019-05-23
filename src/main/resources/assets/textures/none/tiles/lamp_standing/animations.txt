@@ -1,1 +1,1 @@
-lamp_standing:32:true
+lamp_standing:32:false

@@ -1,1 +1,1 @@
-tent_yellow:64:true
+tent_yellow:64:false

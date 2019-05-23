@@ -1,0 +1,12 @@
+cyan/flower_cyan:15:false
+pink/flower_pink:15:false
+purple/right/flower_purple1:16:false
+purple/left/flower_purple2:16:false
+red/left/flower_red2:16:false
+red/multiple/flowers_red:40:false
+red/right/flower_red1:16:false
+yellow/left/flower_yellow3:16:false
+yellow/leftLow/flower_yellow2:16:false
+yellow/multiple/flowers_yellow:40:false
+yellow/right/flowers_yellow4:16:false
+yellow/rightLow/flower_yellow1:16:false

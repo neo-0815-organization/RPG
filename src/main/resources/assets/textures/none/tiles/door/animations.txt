@@ -1,1 +1,1 @@
-door:48:true
+door:48:false

@@ -1,3 +1,3 @@
-log1:32:true
-log2:32:true
-log3:32:true
+log1:32:false
+log2:32:false
+log3:32:false

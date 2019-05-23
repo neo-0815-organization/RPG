@@ -1,1 +1,1 @@
-portal_to_seyhan:59:true
+portal_to_seyhan:59:false

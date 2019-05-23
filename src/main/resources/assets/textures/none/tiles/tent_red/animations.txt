@@ -1,1 +1,1 @@
-tent_red:64:true
+tent_red:64:false
