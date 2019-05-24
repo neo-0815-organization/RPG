@@ -98,7 +98,7 @@ public class SaveMenu extends Menu {
 			openGame = true;
 			openCharacterSelection = false;
 			
-			openSubMenu(new Prolog(20));
+			openSubMenu(new Prolog(0));
 			
 			setOpen(false);
 		}

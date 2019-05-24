@@ -52,7 +52,7 @@ public class Sprite implements Cloneable {
 	public void update(final double deltaTime) {
 		currentFrameDelay += deltaTime;
 		if(currentFrameDelay > frameDelay) {
-			currentFrameDelay = 0;
+			currentFrameDelay -= frameDelay;
 			nextFrame();
 		}
 	}

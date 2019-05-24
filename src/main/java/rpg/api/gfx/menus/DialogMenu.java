@@ -48,6 +48,10 @@ public class DialogMenu extends Menu {
 				switch(e.getKeyCode()) {
 					case KeyEvent.VK_ENTER:
 						actualLineNumber++;
+						dialogGraphics.clearRect(0, 0, width, height);
+						dialogGraphics.setColor(Color.GREEN);
+						dialogGraphics.fillRect(0, 0, width, height);
+						dialogGraphics.setColor(Color.BLACK);
 						break;
 					case KeyEvent.VK_SPACE:
 						setOpen(false);
@@ -71,7 +75,10 @@ public class DialogMenu extends Menu {
 		
 		dialogGraphics.setFont(Statics.defaultFont);
 		
-		for(int i = 0; i <= actualLineNumber; i++)
-			dialogGraphics.drawString(dialog.getLine(i), 20, i * 25 + 30);
+		
+		for(int line = (actualLineNumber > 13) ? actualLineNumber - 13 : 0, offset = 0; line <= actualLineNumber; line++, offset++) {
+			
+			dialogGraphics.drawString(dialog.getLine(line), 20, offset * 25 + 30);
+		}
 	}
 }

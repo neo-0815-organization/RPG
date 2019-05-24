@@ -147,7 +147,7 @@ public class Menu extends Scene {
 		
 		isOpen = false;
 		RPG.gameFrame.remove(menu);
-		
+		RPG.gameFrame.removeKeyListener(this.keyListener);
 		if(menuCount == 0) RPG.gameFrame.setCanvasVisibility(true);
 	}
 	

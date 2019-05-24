@@ -2,6 +2,7 @@ package rpg.api.dialog;
 
 import java.util.ArrayList;
 
+import rpg.Logger;
 import rpg.api.localization.StringLocalizer;
 
 public class Dialog {
@@ -14,11 +15,14 @@ public class Dialog {
 		try {
 			lineCount = Integer.parseInt(StringLocalizer.localize(locString + "lines"));
 		}catch(final NumberFormatException e) {
+			Logger.error(e);
+			
 			lineCount = 0;
 		}
 		
-		for(int i = 0; i < lineCount; i++)
+		for(int i = 0; i < lineCount; i++) {
 			lines.add(StringLocalizer.localize(locString + i));
+		}
 	}
 	
 	public String getLine(final int lineNumber) {
