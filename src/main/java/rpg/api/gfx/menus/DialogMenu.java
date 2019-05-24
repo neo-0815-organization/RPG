@@ -18,6 +18,8 @@ import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 
 public class DialogMenu extends Menu {
+
+	private static final int MAX_LINE_NUMBER = 13;
 	private final Dialog dialog;
 	private final Entity entity;
 	private final BufferedImage entityImage, playerImage;
@@ -78,8 +80,7 @@ public class DialogMenu extends Menu {
 		dialogGraphics.setFont(Statics.defaultFont);
 		
 		
-		for(int line = (actualLineNumber > 13) ? actualLineNumber - 13 : 0, offset = 0; line <= actualLineNumber; line++, offset++) {
-			
+		for(int line = (actualLineNumber > MAX_LINE_NUMBER) ? actualLineNumber - MAX_LINE_NUMBER : 0, offset = 0; line <= actualLineNumber; line++, offset++) {
 			dialogGraphics.drawString(dialog.getLine(line), 20, offset * 25 + 30);
 		}
 	}
