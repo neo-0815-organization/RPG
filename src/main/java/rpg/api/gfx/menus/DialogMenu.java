@@ -47,7 +47,9 @@ public class DialogMenu extends Menu {
 			public void keyPressed(final KeyEvent e) {
 				switch(e.getKeyCode()) {
 					case KeyEvent.VK_ENTER:
-						actualLineNumber++;
+						if(actualLineNumber < dialog.getLineCount())
+							actualLineNumber++;
+						
 						dialogGraphics.clearRect(0, 0, width, height);
 						dialogGraphics.setColor(Color.GREEN);
 						dialogGraphics.fillRect(0, 0, width, height);
