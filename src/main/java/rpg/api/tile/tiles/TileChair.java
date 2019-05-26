@@ -1,5 +1,6 @@
 package rpg.api.tile.tiles;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
@@ -10,6 +11,7 @@ public class TileChair extends Tile {
 
 	public TileChair(ChairType c) {
 		type = c;
+		hitbox = new Hitbox(4,4);
 		sprite = new Sprite("tiles/chair");
 		sprite.addAnimation(type.type);
 		sprite.setAnimation(type.type);
@@ -27,7 +29,7 @@ public class TileChair extends Tile {
 		RIGHT("right"),
 		BACK("normal");
 		
-		public String type;
+		private String type;
 		
 		private ChairType(String type) {
 			this.type = type;

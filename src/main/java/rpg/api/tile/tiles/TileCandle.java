@@ -1,5 +1,6 @@
 package rpg.api.tile.tiles;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
@@ -10,6 +11,7 @@ public class TileCandle extends Tile {
 	
 	public TileCandle(CandleType t) {
 		 type  =  t;
+		 hitbox = new Hitbox(0.5,1);
 		 sprite = new Sprite("tiles/candle");
 		 sprite.addAnimation(type.name);
 		 sprite.setAnimation(type.name);
@@ -26,7 +28,7 @@ public class TileCandle extends Tile {
 		GOLD("gold/candle_gold"),
 		SILVER("silver/candle_silver");
 		
-		public String name;
+		private String name;
 		
 		private CandleType(String pName) {
 			name = pName;

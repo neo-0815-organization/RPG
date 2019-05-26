@@ -1,5 +1,6 @@
 package rpg.api.tile.tiles;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.gfx.SpriteTheme;
@@ -11,6 +12,7 @@ public class TileBuilding extends Tile {
 
 	public TileBuilding(BuildingType t) {
 		type = t;
+		hitbox = new Hitbox(type.length,type.height);
 		sprite = new Sprite("tiles",type.theme);
 		sprite.addAnimation(type.name);
 		sprite.setAnimation(type.name);
@@ -23,18 +25,22 @@ public class TileBuilding extends Tile {
 	}
 
 	public enum BuildingType{
-		NORMAL_HOUSE("house/house",SpriteTheme.NONE),
-		FAIRY_HOUSE("house/house_fee",SpriteTheme.SCHALLENBERGE),
-		DWARF_BARRACKS("barracks/barracks_dwarf",SpriteTheme.DWARF_CITY),
-		DWARF_HOUSE("house/house_dwarf",SpriteTheme.DWARF_CITY),
-		DWARF_HOUSE_2("house(house_dwarf_2",SpriteTheme.DWARF_CITY);
+		NORMAL_HOUSE("house/house",SpriteTheme.NONE,8,4),
+		FAIRY_HOUSE("house/house_fee",SpriteTheme.SCHALLENBERGE,3,3),
+		DWARF_BARRACKS("barracks/barracks_dwarf",SpriteTheme.DWARF_CITY,9,5),
+		DWARF_HOUSE("house/house_dwarf",SpriteTheme.DWARF_CITY,8,5),
+		DWARF_HOUSE_2("house(house_dwarf_2",SpriteTheme.DWARF_CITY,7,8);
 		
 		private String name;
 		private SpriteTheme theme;
+		private double length;
+		private double height;
 		
-		private BuildingType(String pName, SpriteTheme pTheme) {
+		private BuildingType(String pName, SpriteTheme pTheme,double l, double w) {
 			name = pName;
 			theme = pTheme;
+			length = l;
+			height = w;
 		}
 		
 	}

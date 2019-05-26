@@ -1,5 +1,6 @@
 package rpg.api.tile.tiles;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
@@ -10,6 +11,7 @@ public class TileMushroom extends Tile {
 
 	public TileMushroom(MushroomType t) {
 		type = t;
+		hitbox = new Hitbox(1,1);
 		sprite = new Sprite("tiles/mushroom");
 		sprite.addAnimation(type.name);
 		sprite.setAnimation(type.name);

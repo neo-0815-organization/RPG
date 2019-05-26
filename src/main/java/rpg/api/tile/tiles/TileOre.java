@@ -1,5 +1,6 @@
 package rpg.api.tile.tiles;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.gfx.SpriteTheme;
@@ -10,6 +11,7 @@ public class TileOre extends Tile{
 	
 	public TileOre(OreType t){
 		type =t;
+		hitbox = new Hitbox(1,1);
 		sprite = new Sprite("tiles/ore", SpriteTheme.MOERSBERGWERKE);
 		sprite.addAnimation(type.path);
 		sprite.setAnimation(type.path);

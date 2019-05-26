@@ -1,5 +1,6 @@
 package rpg.api.tile.tiles;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
@@ -10,6 +11,7 @@ public class TileFlag extends Tile {
 
 	public TileFlag(FlagType t) {
 		type = t;
+		hitbox = new Hitbox(1.5,1.5);
 		sprite = new Sprite("tiles/flag");
 		sprite.addAnimation(type.name);
 		sprite.setAnimation(type.name);

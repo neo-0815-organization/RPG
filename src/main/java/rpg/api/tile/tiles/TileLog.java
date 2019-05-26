@@ -1,17 +1,20 @@
 package rpg.api.tile.tiles;
 
+import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.Sprite;
 import rpg.api.tile.Tile;
 
 public class TileLog extends Tile {
+	
+	private LogType type;
 
-	public TileLog() {
+	public TileLog(LogType t) {
+		type = t;
+		hitbox = new Hitbox(2,1);
 		sprite = new Sprite("tiles/log");
-		sprite.addAnimation("log1");
-		sprite.addAnimation("log2");
-		sprite.addAnimation("log3");
-		sprite.setAnimation("log1");
+		sprite.addAnimation(type.name);
+		sprite.setAnimation(type.name);
 	}
 
 	@Override
@@ -19,5 +22,17 @@ public class TileLog extends Tile {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	public enum LogType{
+		LEFT_SIDE("log1"),
+		NORMAL("log2"),
+		NORMAL_2("log3");
+		
+		private String name;
+		
+		private LogType(String pName) {
+			name = pName;
+		}
+	}
+	
 }
