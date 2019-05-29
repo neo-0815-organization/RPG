@@ -3,9 +3,9 @@ package rpg.api.entity;
 public enum CharacterType {
 	NONE(null),
 	
-	MAGE("magican"),
+	MAGE("illusionist"),
 	THIEF("thief"),
-	NATURE("nature_guardian");
+	NATURE("natures_guardian");
 	
 	private final String name;
 	

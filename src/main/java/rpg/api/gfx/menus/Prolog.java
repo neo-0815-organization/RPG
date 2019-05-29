@@ -2,10 +2,6 @@ package rpg.api.gfx.menus;
 
 import java.awt.Color;
 import java.awt.MouseInfo;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -39,8 +35,6 @@ public class Prolog extends Menu {
 		label.setBounds((Statics.frameSize.width - labelWIDTH) / 2 + 200, Statics.frameSize.height, labelWIDTH, 0);
 		y = label.getY();
 		
-		
-		
 		txt = Statics.formatToWidth(txt, label.getWidth(), label.getFont());
 		
 		int lines = 0;//(int) (txt.length() / (label.getWidth() / (double) charWidth)) + 1;
@@ -59,22 +53,15 @@ public class Prolog extends Menu {
 		
 		label.setText(txt);
 		
-		RPGButton skip = new RPGButton("skip");
+		final RPGButton skip = new RPGButton("skip");
 		skip.setBounds(200, 400, 100, 100);
-		skip.addActionListener(new ActionListener() {
+		skip.addActionListener(e -> setOpen(false));
+		skip.addMouseListener(new MouseAdapter() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				setOpen(false);
-			}
-		});
-		
-		skip.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				while (skip.getBounds().contains(MouseInfo.getPointerInfo().getLocation())) {
-					skip.setLocation(skip.getX() +(int) ( 2 * (e.getX() > skip.getWidth() / 2 ? -(skip.getHeight() - e.getX()) : e.getX()) ), skip.getY() + (int) ( 2 * (e.getY() > skip.getHeight() / 2 ? -(skip.getHeight() - e.getY()) : e.getY()) ) );
-				}
+			public void mouseEntered(final MouseEvent e) {
+				while(skip.getBounds().contains(MouseInfo.getPointerInfo().getLocation()))
+					skip.setLocation(skip.getX() + 2 * (e.getX() > skip.getWidth() / 2 ? -(skip.getHeight() - e.getX()) : e.getX()), skip.getY() + 2 * (e.getY() > skip.getHeight() / 2 ? -(skip.getHeight() - e.getY()) : e.getY()));
 				skip.repaint();
 			}
 		});
@@ -84,7 +71,6 @@ public class Prolog extends Menu {
 		
 		setBackground(RPGButton.BUTTON_TEMPLATE);
 		timeLastFrameBegun = System.currentTimeMillis();
-		
 	}
 	
 	@Override

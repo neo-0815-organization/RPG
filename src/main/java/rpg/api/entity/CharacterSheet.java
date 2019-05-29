@@ -34,7 +34,7 @@ public enum CharacterSheet implements PathModifier {
 	
 	@Override
 	public String getPostPath() {
-		return gender.getPath();
+		return gender.getPath() + "/normal";
 	}
 	
 	public Hitbox getHitbox() {

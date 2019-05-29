@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 
 import rpg.Logger;
 import rpg.api.collision.Hitbox;
-import rpg.api.eventhandling.EventType;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.IImage;
@@ -21,6 +20,13 @@ import rpg.api.packethandler.ByteBuffer;
 import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
 import rpg.api.tile.fluids.FluidWater;
+import rpg.api.tile.tiles.TileBarrel;
+import rpg.api.tile.tiles.TileLampStanding;
+import rpg.api.tile.tiles.TileLog;
+import rpg.api.tile.tiles.TileLog.LogType;
+import rpg.api.tile.tiles.TileTent;
+import rpg.api.tile.tiles.TileTent.TentType;
+import rpg.api.tile.tiles.TileWorkbench;
 import rpg.api.units.DistanceValue;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.UnmodifiableVec2D;
@@ -128,16 +134,13 @@ public class Background implements IImage {
 		final int tileCount = buf.readInt();
 		Tile tile;
 		for(int i = 0; i < tileCount; i++) {
-			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
+			final UnmodifiableVec2D location = UnmodifiableVec2D.createXY(buf.readInt(), buf.readInt());
 			final int id = buf.readInt();
 			
-			tile = new Tile() {
-				
-				@Override
-				public void triggerEvent(final EventType eventType, final Object... objects) {}
-			};
+			tile = TileBuilder.getTile(neededTiles.get(2).get(id));
+			tile.setLocation(location);
 			
-			//tiles.add(tile);
+			tiles.add(tile);
 		}
 		
 		// read & create hitboxes
@@ -191,14 +194,28 @@ public class Background implements IImage {
 					return new FluidWater();
 			}
 			
-			return null;
+			throw new IllegalArgumentException("Fluid with name '" + name + "' isn't integrated yet.");
 		}
 		
 		public static Tile getTile(final String name) {
 			switch(name) {
+				case "barrel":
+					return new TileBarrel();
+				case "lamp_standing":
+					return new TileLampStanding();
+				case "log1":
+					return new TileLog(LogType.LEFT_SIDE);
+				case "log2":
+					return new TileLog(LogType.NORMAL);
+				case "log3":
+					return new TileLog(LogType.NORMAL_2);
+				case "tent_yellow":
+					return new TileTent(TentType.YELLOW);
+				case "workbench":
+					return new TileWorkbench();
 			}
 			
-			return null;
+			throw new IllegalArgumentException("Tile with name '" + name + "' isn't integrated yet.");
 		}
 	}
 }

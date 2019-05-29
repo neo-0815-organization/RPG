@@ -102,6 +102,8 @@ public class CharacterSelectMenu extends Menu {
 		addComponent(startGame);
 		
 		updateButtons();
+		
+		setBackground(RPGButton.BUTTON_TEMPLATE);
 	}
 	
 	public void updateButtons() {
@@ -142,10 +144,5 @@ public class CharacterSelectMenu extends Menu {
 		throw new IllegalArgumentException("Invalid selected");
 	}
 	
-	private static final String CHAR_INFO_THIEF_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.thief.male"), 500, Statics.defaultFont(10))
-							, CHAR_INFO_THIEF_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.thief.female"), 500, Statics.defaultFont(10))
-							, CHAR_INFO_NATURE_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.nature.male"), 500, Statics.defaultFont(10))
-							, CHAR_INFO_NATURE_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.nature.female"), 500, Statics.defaultFont(10))
-							, CHAR_INFO_WIZZARD_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.wizzard.male"), 500, Statics.defaultFont(10))
-							, CHAR_INFO_WIZZARD_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.wizzard.female"), 500, Statics.defaultFont(10));
+	private static final String CHAR_INFO_THIEF_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.thief.male"), 500, Statics.defaultFont(10)), CHAR_INFO_THIEF_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.thief.female"), 500, Statics.defaultFont(10)), CHAR_INFO_NATURE_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.nature.male"), 500, Statics.defaultFont(10)), CHAR_INFO_NATURE_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.nature.female"), 500, Statics.defaultFont(10)), CHAR_INFO_WIZZARD_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.wizzard.male"), 500, Statics.defaultFont(10)), CHAR_INFO_WIZZARD_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.wizzard.female"), 500, Statics.defaultFont(10));
 }

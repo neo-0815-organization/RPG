@@ -17,14 +17,14 @@ public class TileTent extends Tile {
 		sprite.addAnimation(type.name);
 		sprite.setAnimation(type.name);
 	}
-
-	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {}
 	
-	public enum TentType{
+	@Override
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum TentType {
 		NORMAL("tent", 3, 2),
 		RED("tent_red", 2, 2),
-		YELLOW("tent_blue", 2, 2);
+		YELLOW("tent_yellow", 2, 2);
 		
 		private final String name;
 		private final double width;
