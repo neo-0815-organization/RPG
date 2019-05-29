@@ -1,1 +1,1 @@
-sofa:48:true
+sofa:48:false

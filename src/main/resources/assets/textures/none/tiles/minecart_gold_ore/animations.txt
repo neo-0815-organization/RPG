@@ -1,1 +1,0 @@
-minecart_gold_ore:64:true

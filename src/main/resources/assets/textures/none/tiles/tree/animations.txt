@@ -1,0 +1,10 @@
+tree:256:false
+tree_apple:256:false
+tree_big_face:256:false
+tree_apple2:256:false
+tree_big:256:false
+tree_dead:256:false
+tree_dead_2:256:false
+tree_fire_snow:256:false
+tree_fire:256:false
+tree_palm:256:false

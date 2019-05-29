@@ -1,1 +1,0 @@
-ore_crystal_red:32:true

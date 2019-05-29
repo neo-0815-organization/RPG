@@ -1,0 +1,3 @@
+sword:64:false
+markus_rapier:32:false
+markus_sword:32:false

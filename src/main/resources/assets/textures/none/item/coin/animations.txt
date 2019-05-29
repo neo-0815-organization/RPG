@@ -1,0 +1,4 @@
+silver/coin_silver:32:false
+icon/silver/coin_icon_silver:12:false
+icon/gold/coin_icon_gold:12:false
+gold/coin_golden:32:false
