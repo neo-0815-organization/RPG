@@ -1,16 +1,27 @@
 package rpg.api.gfx.menus;
 
+import java.awt.Color;
+import java.awt.MouseInfo;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JTextArea;
 
 import rpg.Logger;
 import rpg.Statics;
 import rpg.api.gfx.framework.Menu;
+import rpg.api.gfx.framework.RPGButton;
+import rpg.api.localization.StringLocalizer;
 
 public class Prolog extends Menu {
 	private static final long serialVersionUID = -3906467387005786401L;
 	
 	int speed;
-	String txt = "Prolog:\r\n" + "Flug Nr. 204, Richtung Bahamas, 17:00 Uhr. Eine Durchsage ert�nt durch \n die Lautsprecher des Airbus A380: �Sehr geehrte Passagiere, hier spricht Ihr Pilot, \n wir sind gerade �ber dem Bermudadreieck und es gibt einige Turbulenzen. \nWir bitten Sie daher sich zu Ihrem Sitzplatz zu begeben, \ndiesen in Ausgangsposition zu bringen und Ihren Sicherheitsgurt zu \nschlie�en. Es besteht kein Grund zur Panik, bitte bewahren Sie Ruhe. Ihr Kapit�n Lou van da Louft.� \n Die Passagiere laufen zu ihren Pl�tzen und schnallen sich an. Einer von ihnen bist DU! \nKurze Zeit sp�ter fangen die erwarteten Turbulenzen an.  Du merkst, wie das Flugzeug anf�ngt zu beben und mit ihm rappelst\n du in deinem Sitz herum. Dir wird klar, dass dies st�rker als gew�hnlich ist. Als pl�tzlich \ndie Sauerstoffmasken aus der Decke runter kommen, bricht die Absolut totale Panik aus. Der\n Flugbegleiterin Sandra Saft fliegt der Kognak den sie dir gerade servieren wollte\n vom Tablett und spritzt durch die ganze Kabine. Und Buff (optional auch Peng, Knall,\n Bumms oder Rumms). Du siehst ein grelles Licht und alle Lichter gehen aus. \r\n" + "";
+	private String txt = StringLocalizer.localize("prolog.text");
 	public JTextArea label;
 	private double timeSinceLastFrame, allOverTime;
 	
@@ -21,16 +32,18 @@ public class Prolog extends Menu {
 	
 	public Prolog(final double scrollTime) {
 		allOverTimeToReach = scrollTime;
-		
+		final int labelWIDTH = 1000;
 		label = new JTextArea(txt);
-		label.setBounds(600, Statics.frameSize.height, 500, 0);
+		label.setFont(Statics.defaultFont(80));
+		label.setForeground(new Color(200, 200, 203));
+		label.setBounds((Statics.frameSize.width - labelWIDTH) / 2 + 200, Statics.frameSize.height, labelWIDTH, 0);
 		y = label.getY();
 		
-		addComponent(label);
 		
-		final char widestChar = 'W';
-		final int charWidth = menu.getFontMetrics(label.getFont()).stringWidth(widestChar + "");
-		int lines = (int) (txt.length() / (label.getWidth() / (double) charWidth)) + 1;
+		
+		txt = Statics.formatToWidth(txt, label.getWidth(), label.getFont());
+		
+		int lines = 0;//(int) (txt.length() / (label.getWidth() / (double) charWidth)) + 1;
 		
 		{
 			int openIndex = 0;
@@ -41,8 +54,35 @@ public class Prolog extends Menu {
 		}
 		final int height = (int) (lines + Statics.frameSize.height * 1.5);
 		speed = (int) (height / scrollTime);
-		label.setSize(500, lines * label.getFont().getSize());
-		//		setBackground(RPGButton.BUTTON_TEMPLATE);
+		label.setSize(labelWIDTH, lines * label.getFont().getSize() * 2 + 1);
+		label.setBackground(new Color(255, 255, 255, 0));
+		
+		label.setText(txt);
+		
+		RPGButton skip = new RPGButton("skip");
+		skip.setBounds(200, 400, 100, 100);
+		skip.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setOpen(false);
+			}
+		});
+		
+		skip.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				while (skip.getBounds().contains(MouseInfo.getPointerInfo().getLocation())) {
+					skip.setLocation(skip.getX() +(int) ( 2 * (e.getX() > skip.getWidth() / 2 ? -(skip.getHeight() - e.getX()) : e.getX()) ), skip.getY() + (int) ( 2 * (e.getY() > skip.getHeight() / 2 ? -(skip.getHeight() - e.getY()) : e.getY()) ) );
+				}
+				skip.repaint();
+			}
+		});
+		addComponent(skip);
+		
+		addComponent(label);
+		
+		setBackground(RPGButton.BUTTON_TEMPLATE);
 		timeLastFrameBegun = System.currentTimeMillis();
 		
 	}

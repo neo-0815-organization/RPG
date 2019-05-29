@@ -10,6 +10,7 @@ import rpg.api.entity.CharacterSheet;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
+import rpg.api.localization.StringLocalizer;
 
 public class CharacterSelectMenu extends Menu {
 	private static BufferedImage maleIMG = ResourceGetter.getImage("/assets/textures/menu/button_male.png"), femaleIMG = ResourceGetter.getImage("/assets/textures/menu/button_female.png");
@@ -106,12 +107,18 @@ public class CharacterSelectMenu extends Menu {
 	public void updateButtons() {
 		if(maleSelected) {
 			natureGuardian.setBackgroundImage(CharacterSheet.PLAYER_NATUREGUARDIAN_MALE.getSprite().getCurrentAnimationFrame());
+			natureGuardian.setToolTipText(CHAR_INFO_NATURE_MALE);
 			thief.setBackgroundImage(CharacterSheet.PLAYER_THIEF_MALE.getSprite().getCurrentAnimationFrame());
+			thief.setToolTipText(CHAR_INFO_THIEF_MALE);
 			magican.setBackgroundImage(CharacterSheet.PLAYER_MAGICAN_MALE.getSprite().getCurrentAnimationFrame());
+			magican.setToolTipText(CHAR_INFO_WIZZARD_MALE);
 		}else {
 			natureGuardian.setBackgroundImage(CharacterSheet.PLAYER_NATUREGUARDIAN_FEMALE.getSprite().getCurrentAnimationFrame());
+			natureGuardian.setToolTipText(CHAR_INFO_NATURE_FEMALE);
 			thief.setBackgroundImage(CharacterSheet.PLAYER_THIEF_FEMALE.getSprite().getCurrentAnimationFrame());
+			thief.setToolTipText(CHAR_INFO_THIEF_FEMALE);
 			magican.setBackgroundImage(CharacterSheet.PLAYER_MAGICAN_FEMALE.getSprite().getCurrentAnimationFrame());
+			magican.setToolTipText(CHAR_INFO_WIZZARD_FEMALE);
 		}
 	}
 	
@@ -134,4 +141,11 @@ public class CharacterSelectMenu extends Menu {
 		}
 		throw new IllegalArgumentException("Invalid selected");
 	}
+	
+	private static final String CHAR_INFO_THIEF_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.thief.male"), 500, Statics.defaultFont(10))
+							, CHAR_INFO_THIEF_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.thief.female"), 500, Statics.defaultFont(10))
+							, CHAR_INFO_NATURE_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.nature.male"), 500, Statics.defaultFont(10))
+							, CHAR_INFO_NATURE_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.nature.female"), 500, Statics.defaultFont(10))
+							, CHAR_INFO_WIZZARD_MALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.wizzard.male"), 500, Statics.defaultFont(10))
+							, CHAR_INFO_WIZZARD_FEMALE = Statics.formatToWidthAsHTML(StringLocalizer.localize("char.info.wizzard.female"), 500, Statics.defaultFont(10));
 }

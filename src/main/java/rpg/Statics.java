@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JLabel;
+
 public class Statics {
 	public static final Dimension frameSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -51,5 +53,41 @@ public class Statics {
 		
 		g2d.dispose();
 		return img;
+	}
+	
+	public static String formatToWidth(String txt, int width, Font font) {
+		final char widestChar = 'W';
+		final int charWidth = new JLabel().getFontMetrics(font).stringWidth(widestChar + "");
+		int charsPerRow = (int) ((int) (width / (double)charWidth) * 1.25);
+		
+		for (int currentPos = charsPerRow; currentPos < txt.length(); currentPos += charsPerRow) {
+			int spacePos = 0, lastSpacePos = 0;
+			while((spacePos = txt.indexOf(' ', spacePos)) != -1 && spacePos < currentPos) {
+				lastSpacePos = spacePos;
+				spacePos++;
+			}
+			txt = txt.substring(0, lastSpacePos) + "\n" + txt.substring(lastSpacePos);
+			currentPos += 2;
+		}
+		
+		return txt;
+	}
+	
+	public static String formatToWidthAsHTML(String txt, int width, Font font) {
+		final char widestChar = 'W';
+		final int charWidth = new JLabel().getFontMetrics(font).stringWidth(widestChar + "");
+		int charsPerRow = (int) ((int) (width / (double)charWidth) * 1.25);
+		
+		for (int currentPos = charsPerRow; currentPos < txt.length(); currentPos += charsPerRow) {
+			int spacePos = 0, lastSpacePos = 0;
+			while((spacePos = txt.indexOf(' ', spacePos)) != -1 && spacePos < currentPos) {
+				lastSpacePos = spacePos;
+				spacePos++;
+			}
+			txt = txt.substring(0, lastSpacePos) + "<br>" + txt.substring(lastSpacePos);
+			currentPos += 2;
+		}
+		
+		return "<html>" + txt + "</html>";
 	}
 }
