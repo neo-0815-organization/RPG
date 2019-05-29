@@ -461,7 +461,8 @@ public class WorldCreatorFrame extends JFrame {
 					final int id = buf.readInt();
 					final String name = buf.readString();
 					
-					RPGWorldCreator.getImageMap(i).put(name, id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(i) + "/" + name + ".png"));
+					final String picFile = RPGWorldCreator.getMapDir(i) + "/" + name + ".png";
+					RPGWorldCreator.getImageMap(i).put(name, id, i == 1 ? RPGWorldCreator.getScaledImage(picFile) : RPGWorldCreator.getImage(picFile));
 				}
 			}
 			
@@ -471,7 +472,7 @@ public class WorldCreatorFrame extends JFrame {
 				final int id = buf.readInt();
 				final String name = buf.readString();
 				
-				RPGWorldCreator.getImageMap(0).put(name, id, RPGWorldCreator.getImage(RPGWorldCreator.assetsFolder, RPGWorldCreator.getMapDir(0) + "/" + name + ".png"));
+				RPGWorldCreator.getImageMap(0).put(name, id, RPGWorldCreator.getImage(RPGWorldCreator.getMapDir(0) + "/" + name + ".png"));
 			}
 			
 			// read every panel from file
@@ -852,7 +853,7 @@ public class WorldCreatorFrame extends JFrame {
 			while(buttons.hasMoreElements()) {
 				button = buttons.nextElement();
 				
-				button.setIcon(new ImageIcon(RPGWorldCreator.getImage("assets/worldcreator/cursors/" + button.getText().toLowerCase() + ".png")));
+				button.setIcon(new ImageIcon(RPGWorldCreator.getImage("cursors/" + button.getText().toLowerCase() + ".png")));
 				button.addActionListener(prefixActionListener);
 				button.setActionCommand("cursor:" + button.getText().toLowerCase());
 				button.setFocusPainted(false);
@@ -867,7 +868,7 @@ public class WorldCreatorFrame extends JFrame {
 	private class LayersPane extends JTabbedPane {
 		private static final long serialVersionUID = 6575636653675456721L;
 		
-		private HashMap<Integer, LayerPanel> layerPanels = new HashMap<>();
+		private final HashMap<Integer, LayerPanel> layerPanels = new HashMap<>();
 		
 		public LayersPane() {
 			initComponents();
@@ -889,7 +890,7 @@ public class WorldCreatorFrame extends JFrame {
 			layerPanels.put(layer, (LayerPanel) pane.getViewport().getView());
 		}
 		
-		public LayerPanel getLayer(int layer) {
+		public LayerPanel getLayer(final int layer) {
 			return layerPanels.get(layer);
 		}
 	}
@@ -1095,7 +1096,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private void registerCursor(final String name, final Point hotSpot, final Toolkit toolkit) {
-		cursors.put(name, toolkit.createCustomCursor(RPGWorldCreator.getImage("assets/worldcreator/cursors/" + name + ".png"), hotSpot, name));
+		cursors.put(name, toolkit.createCustomCursor(RPGWorldCreator.getImage("cursors/" + name + ".png"), hotSpot, name));
 	}
 	
 	private void showError(final Exception e) {

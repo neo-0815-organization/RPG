@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Logger {
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("kk:mm:ss");
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 	
 	public static boolean isActive = true;
 	
@@ -18,7 +18,7 @@ public class Logger {
 	}
 	
 	public static void info(final String msg) {
-		log(System.out, "INFO", msg); 
+		log(System.out, "INFO", msg);
 	}
 	
 	public static void debug(final String msg) {

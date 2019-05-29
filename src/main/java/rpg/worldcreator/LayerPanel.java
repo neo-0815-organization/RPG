@@ -44,7 +44,7 @@ public class LayerPanel extends JPanel {
 			final double scaledSize = (134 - padding * 2) / xNumber;
 			final JPanel panel = new JPanel();
 			
-			showedWarning.put(name, layer == 2);
+			showedWarning.put(name, layer != 2);
 			
 			panel.setBounds(padding, (int) (id * yNumber * scaledSize + padding * (id + 1)), (int) (xNumber * scaledSize), (int) (yNumber * scaledSize));
 			panel.setLayout(new GridLayout(yNumber, xNumber));
