@@ -1,5 +1,6 @@
 package rpg.api.gfx;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import rpg.Statics;
@@ -13,10 +14,12 @@ import rpg.api.vector.Vec2D;
  * @author Tim Ludwig
  */
 public interface IImage extends IDrawable {
+	
 	BufferedImage getImage();
 	
 	/**
-	 * Gets the width of the {@link BufferedImage} corresponding to this {@link IImage}. 
+	 * Gets the width of the {@link BufferedImage} corresponding to this
+	 * {@link IImage}.
 	 *
 	 * @return the width of the {@link BufferedImage}
 	 */
@@ -25,7 +28,8 @@ public interface IImage extends IDrawable {
 	}
 	
 	/**
-	 * Gets the height of the {@link BufferedImage} corresponding to this {@link IImage}.
+	 * Gets the height of the {@link BufferedImage} corresponding to this
+	 * {@link IImage}.
 	 *
 	 * @return the height of the {@link BufferedImage}
 	 */
