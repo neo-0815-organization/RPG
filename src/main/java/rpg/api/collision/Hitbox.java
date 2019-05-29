@@ -11,26 +11,26 @@ import rpg.api.vector.Vec2D;
  * @author Tim Ludwig
  */
 public class Hitbox implements EventTrigger {
-	private DistanceValue width, height;
+	private final DistanceValue width, height;
 	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
+	public void triggerEvent(final EventType eventType, final Object... objects) {
 		
 	}
 	
-	public Hitbox(int tileWidth, int tileHeight) {
+	public Hitbox(final int tileWidth, final int tileHeight) {
 		this(new DistanceValue((double) tileWidth), new DistanceValue((double) tileHeight));
 	}
 	
-	public Hitbox(double tileWidth, double tileHeight) {
+	public Hitbox(final double tileWidth, final double tileHeight) {
 		this(new DistanceValue(tileWidth), new DistanceValue(tileHeight));
 	}
 	
-	public Hitbox(DistanceValue width, DistanceValue height) {
+	public Hitbox(final DistanceValue width, final DistanceValue height) {
 		this.width = width;
 		this.height = height;
 	}
-
+	
 	public boolean checkCollision(final Vec2D<?> pos, final Hitbox collBox, final Vec2D<?> collPos) {
 		//@formatter:off
 		 final double
@@ -50,4 +50,11 @@ public class Hitbox implements EventTrigger {
 		 //@formatter:on
 	}
 	
+	public DistanceValue getWidth() {
+		return width;
+	}
+	
+	public DistanceValue getHeight() {
+		return height;
+	}
 }

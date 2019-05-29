@@ -7,35 +7,32 @@ import rpg.api.tile.Tile;
 
 public class TileTable extends Tile {
 	
-	private TableType type;
+	private final TableType type;
 
-	public TileTable(TableType t) {
-		type = t;
-		hitbox = new Hitbox(type.width,type.height);
+	public TileTable(final TableType type) {
+		this.type = type;
+		
+		hitbox = new Hitbox(type.width, type.height);
 		sprite = new Sprite("tiles/" + type.name);
 		sprite.addAnimation(type.name);
 		sprite.setAnimation(type.name);
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
+	public void triggerEvent(EventType eventType, Object... objects) {}
 
 	public enum TableType{
-		NORMAL("table",4,2),
-		LIGHT("table_light",2,1);
+		NORMAL("table", 4, 2),
+		LIGHT("table_light", 2, 1);
 		
-		private String name;
-		private double width;
-		private double height;
+		private final String name;
+		private final double width;
+		private final double height;
 		
-		private TableType(String pName, double w, double h) {
-			name = pName;
-			width = w;
-			height = h;
+		private TableType(final String name, final double width, final double height) {
+			this.name = name;
+			this.width = width;
+			this.height = height;
 		}
 	}
-	
 }

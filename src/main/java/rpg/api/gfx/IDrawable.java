@@ -11,7 +11,15 @@ public interface IDrawable {
 	 * Method to draw any thing that can be drawn.
 	 *
 	 * @param g
-	 *     the {@link Graphics2D} object to draw on
+	 *            the {@link DrawingGraphics} object to draw on
 	 */
-	void draw(DrawingGraphics g);
+	void draw(final DrawingGraphics g);
+	
+	default void drawStack(final DrawingGraphics g) {
+		g.push();
+		
+		draw(g);
+		
+		g.pop();
+	}
 }

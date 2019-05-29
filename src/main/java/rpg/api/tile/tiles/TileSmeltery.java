@@ -9,16 +9,12 @@ import rpg.api.tile.Tile;
 public class TileSmeltery extends Tile {
 
 	public TileSmeltery() {
-		hitbox = new Hitbox(2,2);
-		sprite = new Sprite("tiles/smeltery",SpriteTheme.SMELTERY);
+		hitbox = new Hitbox(2, 2);
+		sprite = new Sprite("tiles/smeltery", SpriteTheme.SMELTERY);
 		sprite.addAnimation("smeltery");
 		sprite.setAnimation("smeltery");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

@@ -70,14 +70,15 @@ public class Menu extends Scene {
 	public void addComponent(final JComponent c) {
 		menu.add(c);
 	}
-
+	
 	/**
 	 * This menu adds a default Java component to the menu
 	 * 
 	 * @param c
-	 * @param position of the Component SEE JPanel::add
+	 * @param position
+	 *            of the Component SEE JPanel::add
 	 */
-	public void addComponent(final JComponent c, int index) {
+	public void addComponent(final JComponent c, final int index) {
 		menu.add(c, index);
 	}
 	
@@ -131,7 +132,7 @@ public class Menu extends Scene {
 			RPG.gameFrame.drawScene(this);
 		}
 		
-		close();
+		close0();
 	}
 	
 	protected void updateMenu() {
@@ -141,11 +142,12 @@ public class Menu extends Scene {
 	/**
 	 * Closes the menu. When the last menu is closed, the canvas became visible
 	 */
-	public void close() {
+	protected void close0() {
 		menuCount--;
 		
+		isOpen = false;
 		RPG.gameFrame.remove(menu);
-		
+		RPG.gameFrame.removeKeyListener(this.keyListener);
 		if(menuCount == 0) RPG.gameFrame.setCanvasVisibility(true);
 	}
 	

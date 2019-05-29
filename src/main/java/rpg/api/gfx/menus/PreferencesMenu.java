@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.JLabel;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.Statics;
 import rpg.api.filehandling.RPGFileReader;
@@ -87,7 +88,7 @@ public class PreferencesMenu extends Menu {
 		if(!pref.exists()) try {
 			pref.createNewFile();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		final HashMap<String, Object> data = new HashMap<>();
@@ -103,7 +104,7 @@ public class PreferencesMenu extends Menu {
 		if(!pref.exists()) try {
 			pref.createNewFile();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
 		final Map<String, String> data = RPGFileReader.readLineSplit(pref, "=");
@@ -122,10 +123,12 @@ public class PreferencesMenu extends Menu {
 	}
 	
 	@Override
-	public void close() {
+	protected void close0() {
 		save();
+		
 		RPG.gameFrame.dispose();
-		RPG.main(new String[] {englishSelected ? "en" : "de"});
-		super.close();
+		RPG.main(new String[] { englishSelected ? "en_US" : "de_DE" });
+		
+		super.close0();
 	}
 }

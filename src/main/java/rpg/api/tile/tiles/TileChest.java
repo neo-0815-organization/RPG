@@ -8,16 +8,12 @@ import rpg.api.tile.Tile;
 public class TileChest extends Tile {
 
 	public TileChest() {
-		hitbox = new Hitbox(2,2);
+		hitbox = new Hitbox(2, 2);
 		sprite = new Sprite("tiles/chest");
 		sprite.addAnimation("chest");
 		sprite.setAnimation("chest");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

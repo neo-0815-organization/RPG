@@ -8,16 +8,12 @@ import rpg.api.tile.Tile;
 public class TileWorkbench extends Tile {
 
 	public TileWorkbench() {
-		hitbox = new Hitbox(1,1);
+		hitbox = new Hitbox(1, 1);
 		sprite = new Sprite("tiles/workbench");
 		sprite.addAnimation("workbench");
 		sprite.setAnimation("workbench");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

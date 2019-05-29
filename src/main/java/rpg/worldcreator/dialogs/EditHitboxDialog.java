@@ -56,6 +56,8 @@ public class EditHitboxDialog extends JDialog {
 		tilesPanel = new LayerPanel(tileBox);
 		layerPanels.addTab("Tile", tilesPanel);
 		
+		layerPanels.setSelectedIndex(1);
+		
 		add(layerPanels, BorderLayout.CENTER);
 	}
 	

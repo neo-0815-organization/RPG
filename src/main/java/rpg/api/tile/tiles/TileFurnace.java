@@ -8,16 +8,12 @@ import rpg.api.tile.Tile;
 public class TileFurnace extends Tile {
 
 	public TileFurnace() {
-		hitbox = new Hitbox(2,2);
+		hitbox = new Hitbox(2, 2);
 		sprite = new Sprite("tiles/furnace");
 		sprite.addAnimation("furnace");
 		sprite.setAnimation("furnace");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

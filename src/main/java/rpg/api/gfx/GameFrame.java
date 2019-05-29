@@ -102,7 +102,7 @@ public class GameFrame extends JFrame {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		
 		g.scale(Statics.scale);
-		scene.draw(g);
+		scene.drawStack(g);
 		
 		showGraphics();
 		g.dispose();

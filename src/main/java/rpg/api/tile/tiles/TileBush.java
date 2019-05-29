@@ -8,16 +8,13 @@ import rpg.api.tile.Tile;
 public class TileBush extends Tile {
 	
 	public TileBush() {
-		hitbox = new Hitbox(4,2);
+		hitbox = new Hitbox(4, 2);
+		
 		sprite = new Sprite("tiles/bush");
 		sprite.addAnimation("bush");
 		sprite.setAnimation("bush");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

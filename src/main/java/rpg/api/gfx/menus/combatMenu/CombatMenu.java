@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.Statics;
 import rpg.api.entity.LivingEntity;
@@ -41,16 +42,16 @@ public class CombatMenu extends Menu {
 	}
 	
 	@Override
-	public void close() {
+	protected void close0() {
 		drawPanel.draw();
 		
 		try {
 			Thread.sleep(3000);
 		}catch(final InterruptedException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		
-		super.close();
+		super.close0();
 	}
 	
 	public CombatResult getCombatResult() {
@@ -86,7 +87,7 @@ public class CombatMenu extends Menu {
 					switch(e.getActionCommand()) {
 						case "attack":
 							enablePanel(false);
-							System.out.println("[CombatMenu] >> Player: Attack");
+							Logger.debug("[CombatMenu] >> Player: Attack");
 							
 							ActionControlPanel.this.drawPanel.playAnimation(new CombatAnimation(ATTACK_ANIMATION_SHEET, drawPanel.enemyLoc.x, drawPanel.enemyLoc.y, false));
 							
@@ -94,7 +95,7 @@ public class CombatMenu extends Menu {
 							drawPanel.playAnimation(new TextAnimation("" + damage, drawPanel.enemyLoc.x + 300, drawPanel.enemyLoc.y + 200, 0.3, MovingPattern.LIFTING, Color.RED, 50));
 							if(enemy.reduceHP(damage)) {
 								combatMenu.combatResult = CombatResult.PLAYER_WON;
-								combatMenu.close();
+								combatMenu.setOpen(false);
 								return;
 							}
 							
@@ -109,7 +110,7 @@ public class CombatMenu extends Menu {
 							if(new IntRange(0, 100).getRandom() > 50) {
 								drawPanel.playAnimation(new TextAnimation("SUCCSESS", Statics.frameSize.width / 2, Statics.frameSize.height / 2, 0.6, MovingPattern.LIFTING, Color.GREEN, 40));
 								combatMenu.combatResult = CombatResult.PLAYER_ESCAPED;
-								combatMenu.close();
+								combatMenu.setOpen(false);
 								return;
 								
 							}else {
@@ -166,7 +167,7 @@ public class CombatMenu extends Menu {
 			
 			if(player.reduceHP(damage)) {
 				combatMenu.combatResult = CombatResult.ENEMY_WON;
-				combatMenu.close();
+				combatMenu.setOpen(false);
 				return;
 			}
 			drawPanel.draw();
@@ -192,7 +193,7 @@ public class CombatMenu extends Menu {
 			createBufferStrategy(2);
 			strat = getBufferStrategy();
 			
-			//			System.out.println(enemy);
+			//			Logger.debug(enemy);
 			this.enemy = enemy;
 			player = RPG.gameField.getPlayerController().getPlayer();
 			setSize(Statics.frameSize);
@@ -216,14 +217,14 @@ public class CombatMenu extends Menu {
 				timeSinceLastFrame = (System.currentTimeMillis() - timeLastFrameBegun) / 1000D;
 				timeLastFrameBegun = System.currentTimeMillis();
 				draw();
-				//				System.out.println("[CombatMenu] >> tslf:" + timeSinceLastFrame);
+				//				Logger.debug("[CombatMenu] >> tslf:" + timeSinceLastFrame);
 			}
 			currentAnimation = null;
 			draw();
 		}
 		
 		protected void draw() {
-			//			System.out.println("[ComponentMenu >> DrawPanel] >> Repaint.");
+			//			Logger.debug("[ComponentMenu >> DrawPanel] >> Repaint.");
 			
 			final Dimension size = Statics.frameSize;
 			

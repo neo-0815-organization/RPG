@@ -19,10 +19,10 @@ public class WorldCreatorHitbox {
 	}
 	
 	public void draw(final Graphics g) {
-		g.setColor(new Color(64, 64, 64, 48));
+		g.setColor(new Color(64, 64, 128, 48));
 		g.fillRect(0, 0, (int) (dim.width * Data.tileSize * scale), (int) (dim.height * Data.tileSize * scale));
 		
-		g.setColor(new Color(64, 64, 64, 128));
+		g.setColor(new Color(64, 64, 128, 128));
 		g.drawRect(0, 0, (int) (dim.width * Data.tileSize * scale), (int) (dim.height * Data.tileSize * scale));
 	}
 	

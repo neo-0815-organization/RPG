@@ -9,16 +9,12 @@ import rpg.api.tile.Tile;
 public class TileAnvil extends Tile {
 	
 	public TileAnvil() {
-		hitbox = new Hitbox(1,1);
-		sprite = new Sprite("tiles/anvil",SpriteTheme.SMITHERY);
+		hitbox = new Hitbox(1, 1);
+		sprite = new Sprite("tiles/anvil", SpriteTheme.SMITHERY);
 		sprite.addAnimation("anvil");
 		sprite.setAnimation("anvil");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

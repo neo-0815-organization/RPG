@@ -11,15 +11,19 @@ import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
 
+import rpg.Logger;
 import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
 import rpg.api.filehandling.ResourceGetter;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.IImage;
 import rpg.api.packethandler.ByteBuffer;
+import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
+import rpg.api.tile.fluids.FluidWater;
 import rpg.api.units.DistanceValue;
 import rpg.api.vector.ModifiableVec2D;
+import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 
 /**
@@ -29,7 +33,9 @@ import rpg.api.vector.Vec2D;
  */
 public class Background implements IImage {
 	private BufferedImage background;
-	private final ArrayList<Tile> fluids, tiles;
+	
+	private final ArrayList<Fluid> fluids;
+	private final ArrayList<Tile> tiles;
 	private final String name;
 	
 	public Background() {
@@ -45,7 +51,7 @@ public class Background implements IImage {
 		if(name != null) try {
 			loadFromFile();
 		}catch(final IOException e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 	}
 	
@@ -53,21 +59,7 @@ public class Background implements IImage {
 	public void draw(final DrawingGraphics g) {
 		if(name == null) return;
 		
-		for(final Tile t : fluids)
-			t.draw(g);
-		
 		draw(g, Vec2D.ORIGIN);
-		
-		for(final Tile t : tiles)
-			t.draw(g);
-	}
-	
-	public void update(final double deltaTime) {
-		for(final Tile t : fluids)
-			t.update(deltaTime);
-		
-		for(final Tile t : tiles)
-			t.update(deltaTime);
 	}
 	
 	private void loadFromFile() throws IOException {
@@ -118,16 +110,13 @@ public class Background implements IImage {
 		buf.readFromInputStream(streams.get("fluids"));
 		
 		final int fluidCount = buf.readInt();
-		Tile fluid;
+		Fluid fluid;
 		for(int i = 0; i < fluidCount; i++) {
-			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
+			final UnmodifiableVec2D location = UnmodifiableVec2D.createXY(buf.readInt(), buf.readInt());
 			final int id = buf.readInt();
 			
-			fluid = new Tile() {
-				
-				@Override
-				public void triggerEvent(final EventType eventType, final Object... objects) {}
-			};
+			fluid = TileBuilder.getFluid(neededTiles.get(0).get(id));
+			fluid.setLocation(location);
 			
 			fluids.add(fluid);
 		}
@@ -148,7 +137,7 @@ public class Background implements IImage {
 				public void triggerEvent(final EventType eventType, final Object... objects) {}
 			};
 			
-			tiles.add(tile);
+			//tiles.add(tile);
 		}
 		
 		// read & create hitboxes
@@ -172,7 +161,7 @@ public class Background implements IImage {
 			try {
 				bais.close();
 			}catch(final IOException e) {
-				e.printStackTrace();
+				Logger.error(e);
 			}
 		});
 	}
@@ -182,7 +171,34 @@ public class Background implements IImage {
 		return background;
 	}
 	
+	public ArrayList<Fluid> getFluids() {
+		return fluids;
+	}
+	
+	public ArrayList<Tile> getTiles() {
+		return tiles;
+	}
+	
 	public String getName() {
 		return name;
+	}
+	
+	private static class TileBuilder {
+		
+		public static Fluid getFluid(final String name) {
+			switch(name) {
+				case "water_right":
+					return new FluidWater();
+			}
+			
+			return null;
+		}
+		
+		public static Tile getTile(final String name) {
+			switch(name) {
+			}
+			
+			return null;
+		}
 	}
 }

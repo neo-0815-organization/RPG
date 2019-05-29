@@ -135,13 +135,13 @@ public class ByteBuffer {
 	 *            whether the length of the {@link String} 's' should be written
 	 *            in front of it
 	 * @see #writeInt(int)
-	 * @see #writeChar(char)
+	 * @see #write(byte)
 	 */
 	public void writeString(final String s, final boolean writeLength) {
 		if(writeLength) writeInt(s.length());
 		
-		for(final char c : s.toCharArray())
-			writeChar(c);
+		for(final byte b : s.getBytes())
+			write(b);
 	}
 	
 	/**
@@ -247,15 +247,15 @@ public class ByteBuffer {
 	 * Reads 'length' chars from the buffer and interprets them as a String.
 	 *
 	 * @return the {@link String} read
-	 * @see #readChar()
+	 * @see #read()
 	 */
 	public String readString(final int length) {
-		String s = "";
+		byte[] bytes = new byte[length];
 		
 		for(int i = 0; i < length; i++)
-			s += readChar();
+			bytes[i] = read();
 		
-		return s;
+		return new String(bytes);
 	}
 	
 	/**

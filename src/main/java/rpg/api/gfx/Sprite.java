@@ -7,13 +7,14 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import rpg.Logger;
 import rpg.api.filehandling.RPGFileReader;
 import rpg.api.filehandling.ResourceGetter;
 
 /**
  * Encapsulates multiple {@link Animation}s in one {@link Sprite}.
  *
- * @author Tim Ludwig -> Erik->update
+ * @author Tim Ludwig, Erik Diers
  */
 public class Sprite implements Cloneable {
 	private static final HashMap<String, Sprite> loadedSprites = new HashMap<>();
@@ -25,7 +26,7 @@ public class Sprite implements Cloneable {
 	
 	private double currentFrameDelay;
 	
-	private final double frameDelay;
+	private double frameDelay = 0.2;
 	
 	public Sprite(final String name) {
 		this(name, SpriteTheme.NONE);
@@ -66,7 +67,6 @@ public class Sprite implements Cloneable {
 		loadedTheme = theme;
 		
 		final Set<String> animationNames = animations.keySet();
-		System.out.println(getPath());
 		final Map<String, String[]> frameCounts = RPGFileReader.readLineMultiSplit(getPath() + "/animations.txt", ":", 3);
 		
 		for(final String animName : animationNames)
@@ -181,8 +181,16 @@ public class Sprite implements Cloneable {
 		if(currentAnimation == null || currentAnimation.getName() != animationName) currentAnimation = animations.get(animationName);
 	}
 	
-	public Animation getAnimation(String anim) {
+	public Animation getAnimation(final String anim) {
 		return animations.get(anim);
+	}
+	
+	public double getFrameDelay() {
+		return frameDelay;
+	}
+	
+	public void setFrameDelay(final double frameDelay) {
+		this.frameDelay = frameDelay;
 	}
 	
 	/**
@@ -205,15 +213,35 @@ public class Sprite implements Cloneable {
 		return name;
 	}
 	
-
+	public SpriteTheme getLoadedTheme() {
+		return loadedTheme;
+	}
+	
+	@Override
 	public Sprite clone() {
 		try {
-			Sprite temp = (Sprite) super.clone();
+			final Sprite temp = (Sprite) super.clone();
 			return temp;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
+		}catch(final CloneNotSupportedException e) {
+			Logger.error(e);
 			return null;
 		}
 		
+	}
+	
+	public static class WalkableSprite extends Sprite {
+		
+		public WalkableSprite(final String path) {
+			super(path, SpriteTheme.NONE);
+			
+			setFrameDelay(0.2);
+			
+			addAnimation("walking/right");
+			addAnimation("walking/up");
+			addAnimation("walking/down");
+			addAnimation("walking/left");
+			
+			setAnimation("walking/down");
+		}
 	}
 }

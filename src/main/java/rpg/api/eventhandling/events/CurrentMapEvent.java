@@ -7,7 +7,7 @@ public class CurrentMapEvent extends Event{
 	private String worldname;
 	
 	public CurrentMapEvent() {
-		this(RPG.gameField.background.getName());
+		this(RPG.gameField.getBackground().getName());
 	}
 	
 	public CurrentMapEvent(String worldname) {

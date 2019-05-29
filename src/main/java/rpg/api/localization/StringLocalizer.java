@@ -107,6 +107,21 @@ public class StringLocalizer {
 		updateTable();
 	}
 	
+	public static void setActiveLocale(final String locale) {
+		Locale l = Locale.getDefault();
+		
+		switch(locale.toLowerCase()) {
+			case "en_us":
+				l = Locale.AMERICAN_ENGLISH;
+				break;
+			case "de_de":
+				l = Locale.GERMAN;
+				break;
+		}
+		
+		setActiveLocale(l);
+	}
+	
 	/**
 	 * Resets the currently active {@link Locale} to the default {@link Locale}.
 	 *

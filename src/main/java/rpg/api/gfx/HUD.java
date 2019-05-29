@@ -55,7 +55,7 @@ public class HUD implements IDrawable {
 			drawCenteredString(g, "" + p.getHP(), 170, 16, 35);
 			drawCenteredString(g, "" + p.getMPLevel(), 118, 103, 35);
 			
-			p.getInventory().draw(g);
+			p.getInventory().getRenderer().draw(g);
 		}
 	}
 	

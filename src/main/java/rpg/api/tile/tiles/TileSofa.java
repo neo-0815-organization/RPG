@@ -8,16 +8,12 @@ import rpg.api.tile.Tile;
 public class TileSofa extends Tile {
 
 	public TileSofa() {
-		hitbox = new Hitbox(3,1.5);
+		hitbox = new Hitbox(3, 1.5);
 		sprite = new Sprite("tiles/sofa");
 		sprite.addAnimation("sofa");
 		sprite.setAnimation("sofa");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

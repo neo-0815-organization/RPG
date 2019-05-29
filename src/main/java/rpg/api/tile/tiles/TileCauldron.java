@@ -8,16 +8,12 @@ import rpg.api.tile.Tile;
 public class TileCauldron extends Tile {
 
 	public TileCauldron() {
-		hitbox = new Hitbox(1,1);
+		hitbox = new Hitbox(1, 1);
 		sprite = new Sprite("tiles/cauldron");
 		sprite.addAnimation("cauldron");
 		sprite.setAnimation("cauldron");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }

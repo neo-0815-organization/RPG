@@ -8,16 +8,12 @@ import rpg.api.tile.Tile;
 public class TileHeartCrystal extends Tile {
 
 	public TileHeartCrystal() {
-		hitbox = new Hitbox(6,8);
+		hitbox = new Hitbox(6, 8);
 		sprite = new Sprite("tiles/heart_crystal");
 		sprite.addAnimation("heart_crystal");
 		sprite.setAnimation("heart_crystal");
 	}
 
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(EventType eventType, Object... objects) {}
 }
