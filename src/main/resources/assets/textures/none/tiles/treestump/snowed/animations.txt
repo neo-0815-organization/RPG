@@ -1,0 +1,1 @@
+treestumpSnowed:92:false

@@ -18,6 +18,7 @@ import rpg.api.entity.Player;
 import rpg.api.entity.PlayerController;
 import rpg.api.gamedata.EntityData;
 import rpg.api.gamedata.GameData;
+import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
 
 public class Save {
@@ -25,12 +26,14 @@ public class Save {
 	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>();
 	
 	static {
-		DEFAULT_SETTINGS.put("background", "testWorld");
+		//		DEFAULT_SETTINGS.put("background", "testWorld");
+		DEFAULT_SETTINGS.put("background", "beautifulWorld");
 		DEFAULT_SETTINGS.put("entities", Collections.EMPTY_LIST);
 	}
 	
 	public Background background;
 	public LinkedList<Entity> entities = new LinkedList<>();
+	public LinkedList<Fluid> fluids = new LinkedList<>();
 	public LinkedList<Tile> tiles = new LinkedList<>();
 	public Player player;
 	
@@ -77,6 +80,9 @@ public class Save {
 					Logger.error(e);
 				}
 			});
+			
+			fluids = new LinkedList<>(background.getFluids());
+			tiles = new LinkedList<>(background.getTiles());
 		}catch(final IOException e) {
 			Logger.error(e);
 		}

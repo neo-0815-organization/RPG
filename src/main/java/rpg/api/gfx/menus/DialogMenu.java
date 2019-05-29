@@ -18,6 +18,8 @@ import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 
 public class DialogMenu extends Menu {
+
+	private static final int MAX_LINE_NUMBER = 13;
 	private final Dialog dialog;
 	private final Entity entity;
 	private final BufferedImage entityImage, playerImage;
@@ -47,7 +49,13 @@ public class DialogMenu extends Menu {
 			public void keyPressed(final KeyEvent e) {
 				switch(e.getKeyCode()) {
 					case KeyEvent.VK_ENTER:
-						actualLineNumber++;
+						if(actualLineNumber < dialog.getLineCount())
+							actualLineNumber++;
+						
+						dialogGraphics.clearRect(0, 0, width, height);
+						dialogGraphics.setColor(Color.GREEN);
+						dialogGraphics.fillRect(0, 0, width, height);
+						dialogGraphics.setColor(Color.BLACK);
 						break;
 					case KeyEvent.VK_SPACE:
 						setOpen(false);
@@ -71,7 +79,9 @@ public class DialogMenu extends Menu {
 		
 		dialogGraphics.setFont(Statics.defaultFont);
 		
-		for(int i = 0; i <= actualLineNumber; i++)
-			dialogGraphics.drawString(dialog.getLine(i), 20, i * 25 + 30);
+		
+		for(int line = (actualLineNumber > MAX_LINE_NUMBER) ? actualLineNumber - MAX_LINE_NUMBER : 0, offset = 0; line <= actualLineNumber; line++, offset++) {
+			dialogGraphics.drawString(dialog.getLine(line), 20, offset * 25 + 30);
+		}
 	}
 }

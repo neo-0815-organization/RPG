@@ -14,6 +14,7 @@ import rpg.api.gfx.ImageUtility;
 public class RPGWorldCreator {
 	private static final HashMap<String, BufferedImage> images = new HashMap<>();
 	private static final TwoValueMap<String, Integer, BufferedImage> fluids = new TwoValueMap<>(), textures = new TwoValueMap<>(), tiles = new TwoValueMap<>();
+	private static final HashMap<String, String> texts = new HashMap<>();
 	private static final boolean darkMode = false;
 	
 	public static final String assetsFolder = "/assets/worldcreator/";
@@ -40,15 +41,17 @@ public class RPGWorldCreator {
 			
 			@Override
 			public void accept(String name) {
-				image = getImage(assetsFolder, dir + "/" + name);
+				image = getImage(dir + "/" + name);
+				
+				name = name.replace(".png", "");
 				
 				if(dir.equals("tiles")) {
 					size = Math.max(image.getWidth(), image.getHeight());
 					
-					if(size > Data.tileSize) image = ImageUtility.scale(image, Data.tileSize / (double) size);
+					texts.put(name, image.getWidth() / (double) Data.tileSize + "tiles x " + image.getHeight() / (double) Data.tileSize + "tiles");
+					
+					if(size > Data.tileSize) image = ImageUtility.scale(image, Data.tileSize, Data.tileSize);
 				}else if(dir.equals("fluids")) image = image.getSubimage(0, 0, Data.tileSize, Data.tileSize);
-				
-				name = name.replace(".png", "");
 				
 				if(ids.containsKey(name)) map.put(name, ids.get(name), image);
 				else {
@@ -66,7 +69,7 @@ public class RPGWorldCreator {
 	}
 	
 	public static BufferedImage getImage(final String file) {
-		return getImage("/", file);
+		return getImage("/assets/worldcreator/", file);
 	}
 	
 	public static BufferedImage getImage(final String dir, final String file) {
@@ -79,10 +82,19 @@ public class RPGWorldCreator {
 			
 			return image;
 		}catch(final Exception e) {
+			Logger.error("Cannot read image '" + dir + "/" + file + "'");
 			Logger.error(e);
 		}
 		
 		return null;
+	}
+	
+	public static BufferedImage getScaledImage(final String file) {
+		return ImageUtility.scale(getImage(file), Data.tileSize, Data.tileSize);
+	}
+	
+	public static BufferedImage getScaledImage(final String file, final int width, final int height) {
+		return ImageUtility.scale(getImage(file), width, height);
 	}
 	
 	public static int getLayerCount() {
@@ -131,6 +143,10 @@ public class RPGWorldCreator {
 	
 	public static TwoValueMap<String, Integer, BufferedImage> getTiles() {
 		return tiles;
+	}
+	
+	public static HashMap<String, String> getTexts() {
+		return texts;
 	}
 	
 	public static boolean isDarkmode() {

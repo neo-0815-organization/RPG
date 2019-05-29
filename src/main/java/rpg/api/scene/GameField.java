@@ -17,6 +17,7 @@ import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.HUD;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
+import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
 import rpg.api.vector.Vec2D;
 
@@ -48,17 +49,24 @@ public class GameField extends Scene {
 	
 	@Override
 	public void draw(final DrawingGraphics g) {
-		save.background.draw(g);
+		synchronized(save.fluids) {
+			for(final Fluid f : save.fluids)
+				f.drawStack(g);
+		}
+		
+		save.background.drawStack(g);
 		
 		synchronized(save.entities) {
 			for(final Entity e : save.entities)
-				e.draw(g);
+				e.drawStack(g);
 		}
 		
-		for(final Tile t : save.tiles)
-			t.draw(g);
+		synchronized(save.tiles) {
+			for(final Tile t : save.tiles)
+				t.drawStack(g);
+		}
 		
-		hud.draw(g);
+		hud.drawStack(g);
 	}
 	
 	/**
@@ -113,13 +121,20 @@ public class GameField extends Scene {
 	 * Updates all {@link Tile}s and {@link Entity}s.
 	 */
 	private void update(final double deltaTime) {
-		save.background.update(deltaTime);
+		synchronized(save.fluids) {
+			for(final Fluid f : save.fluids)
+				f.update(deltaTime);
+		}
 		
-		for(int i = 0; i < save.entities.size(); i++)
-			save.entities.get(i).update(deltaTime);
+		synchronized(save.entities) {
+			for(final Entity e : save.entities)
+				e.update(deltaTime);
+		}
 		
-		for(int i = 0; i < save.tiles.size(); i++)
-			save.tiles.get(i).update(deltaTime);
+		synchronized(save.tiles) {
+			for(final Tile t : save.tiles)
+				t.update(deltaTime);
+		}
 		
 		updateEvents();
 	}
@@ -129,12 +144,18 @@ public class GameField extends Scene {
 		QuestHandler.update();
 	}
 	
-	@Deprecated
 	public List<Tile> checkCollisionTiles(final Entity e) {
 		final LinkedList<Tile> ts = new LinkedList<>();
 		
-		for(final Tile t : save.tiles)
-			ts.add(t);
+		synchronized(save.fluids) {
+			for(final Fluid f : save.fluids)
+				if(f.getHitbox().checkCollision(f.getLocation(), e.getHitbox(), e.getLocation())) ts.add(f);
+		}
+		
+		synchronized(save.tiles) {
+			for(final Tile t : save.tiles)
+				if(t.getHitbox().checkCollision(t.getLocation(), e.getHitbox(), e.getLocation())) ts.add(t);
+		}
 		
 		return ts;
 	}
@@ -145,7 +166,6 @@ public class GameField extends Scene {
 		synchronized(save.entities) {
 			for(final Entity ent : save.entities)
 				if(ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) entList.add(ent);
-			
 		}
 		
 		return entList;

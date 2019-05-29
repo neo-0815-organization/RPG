@@ -14,4 +14,12 @@ public interface IDrawable {
 	 *            the {@link DrawingGraphics} object to draw on
 	 */
 	void draw(final DrawingGraphics g);
+	
+	default void drawStack(final DrawingGraphics g) {
+		g.push();
+		
+		draw(g);
+		
+		g.pop();
+	}
 }

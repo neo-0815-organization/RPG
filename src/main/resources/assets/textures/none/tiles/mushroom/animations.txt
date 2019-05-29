@@ -1,0 +1,5 @@
+red/mushroom_red:18:false
+red/detail/mushroom_red_detailed:23:false
+green/mushroom_green:18:false
+brown/mushroom_brown:18:false
+blue/mushroom_blue:18:false

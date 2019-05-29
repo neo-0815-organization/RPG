@@ -28,6 +28,7 @@ public class Person extends LivingEntity {
 	public void triggerEvent(final EventType eventType, final Object... objects) {
 		if(I_PRESSED) {
 			new DialogMenu(new Dialog(dialogName), this).show();
+			
 			I_PRESSED = false;
 		}
 	}

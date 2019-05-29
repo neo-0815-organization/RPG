@@ -1,0 +1,5 @@
+contract:32:false
+grumpy/contract_grumpy:32:false
+peace/contract_peace:32:false
+signature/once/contract_signatured_once:32:false
+signatur/twice/contract_signatured_twice:32:false

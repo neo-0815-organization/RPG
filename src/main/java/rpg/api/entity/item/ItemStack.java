@@ -6,11 +6,9 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.PathModifier;
 
 public class ItemStack extends Entity {
-	private static final int MAX_STACK_SIZE = 8;
-	
-	protected ItemType type;
-	protected final boolean questItem;
-	protected int stackSize;
+	protected ItemType		type;
+	protected final boolean	questItem;
+	protected int			stackSize;
 	
 	public ItemStack(final String name) {
 		this(name, false);

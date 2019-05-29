@@ -1,0 +1,4 @@
+down:54:true
+left:55:true
+right:55:true
+up:54:true
