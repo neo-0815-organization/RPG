@@ -1,5 +1,5 @@
 river/bottle_river:16:false
-message/bottlemessage:16:false
-holyWater/bottle_water_holy:32:false
+message/bottle_message:16:false
+holy_water/bottle_water_holy:32:false
 beach2/bottle_beach2:16:false
 beach/bottle_beach:16:false

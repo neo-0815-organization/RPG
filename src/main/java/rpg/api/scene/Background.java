@@ -21,6 +21,9 @@ import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
 import rpg.api.tile.fluids.FluidWater;
 import rpg.api.tile.tiles.TileBarrel;
+import rpg.api.tile.tiles.TileBottle;
+import rpg.api.tile.tiles.TileBottle.BottleType;
+import rpg.api.tile.tiles.TileBush;
 import rpg.api.tile.tiles.TileLampStanding;
 import rpg.api.tile.tiles.TileLog;
 import rpg.api.tile.tiles.TileLog.LogType;
@@ -201,18 +204,41 @@ public class Background implements IImage {
 			switch(name) {
 				case "barrel":
 					return new TileBarrel();
+				case "bush":
+					return new TileBush();
 				case "lamp_standing":
 					return new TileLampStanding();
-				case "log1":
-					return new TileLog(LogType.LEFT_SIDE);
-				case "log2":
-					return new TileLog(LogType.NORMAL);
-				case "log3":
-					return new TileLog(LogType.NORMAL_2);
-				case "tent_yellow":
-					return new TileTent(TentType.YELLOW);
 				case "workbench":
 					return new TileWorkbench();
+			}
+			
+			if(name.startsWith("bottle_")) switch(name.substring(7)) {
+				case "beach":
+					return new TileBottle(BottleType.BEACH);
+				case "beach2":
+					return new TileBottle(BottleType.BEACH2);
+				case "water_holy":
+					return new TileBottle(BottleType.HOLY_WATER);
+				case "message":
+					return new TileBottle(BottleType.MESSAGE);
+				case "river":
+					return new TileBottle(BottleType.RIVER);
+			}
+			else if(name.startsWith("log")) switch(name.substring(3)) {
+				case "1":
+					return new TileLog(LogType.LEFT_SIDE);
+				case "2":
+					return new TileLog(LogType.NORMAL);
+				case "3":
+					return new TileLog(LogType.NORMAL_2);
+			}
+			else if(name.startsWith("tent_")) switch(name.substring(5)) {
+				case "normal":
+					return new TileTent(TentType.NORMAL);
+				case "red":
+					return new TileTent(TentType.RED);
+				case "yellow":
+					return new TileTent(TentType.YELLOW);
 			}
 			
 			throw new IllegalArgumentException("Tile with name '" + name + "' isn't integrated yet.");

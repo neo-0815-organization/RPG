@@ -22,7 +22,7 @@ public class TileTent extends Tile {
 	public void triggerEvent(final EventType eventType, final Object... objects) {}
 	
 	public enum TentType {
-		NORMAL("tent", 3, 2),
+		NORMAL("tent_normal", 3, 2),
 		RED("tent_red", 2, 2),
 		YELLOW("tent_yellow", 2, 2);
 		
