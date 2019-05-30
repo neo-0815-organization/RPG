@@ -78,7 +78,7 @@ public class Prolog extends Menu {
 		try {
 			Thread.sleep(10);
 		}catch(final InterruptedException e) {
-			Logger.error(e.getMessage());
+			Logger.error(e);
 		}
 		
 		timeSinceLastFrame = (System.currentTimeMillis() - timeLastFrameBegun) / 1000D;

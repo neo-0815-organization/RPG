@@ -21,12 +21,24 @@ public class Logger {
 		log(System.out, "INFO", msg);
 	}
 	
+	public static void info(final Object obj) {
+		log(System.out, "INFO", obj.toString());
+	}
+	
 	public static void debug(final String msg) {
 		log(System.out, "DEBUG", msg);
 	}
 	
+	public static void debug(final Object obj) {
+		log(System.out, "DEBUG", obj.toString());
+	}
+	
 	public static void error(final String msg) {
 		log(System.err, "ERROR", msg);
+	}
+	
+	public static void error(final Object obj) {
+		log(System.err, "ERROR", obj.toString());
 	}
 	
 	public static void error(final Exception e) {
