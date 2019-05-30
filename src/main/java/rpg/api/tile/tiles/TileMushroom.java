@@ -1,40 +1,38 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileMushroom.MushroomType;
 
-public class TileMushroom extends Tile {
+public class TileMushroom extends TypedTile<MushroomType> {
 	
-	private MushroomType type;
-
-	public TileMushroom(MushroomType t) {
-		type = t;
-		hitbox = new Hitbox(1,1);
-		sprite = new Sprite("tiles/mushroom");
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TileMushroom(final MushroomType type) {
+		super(type);
+		
+		setHitbox(1);
+		setSprite("mushroom", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum MushroomType{
-		BLUE("blue/mushroom_blue"),
-		BROWN("brown/mushroom_brown"),
-		GREEN("green/mushroom_green"),
-		RED("red/mushroom_red"),
-		RED_DETAIL("red/mushroom_red_detailed");
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum MushroomType implements TileType {
+		BLUE("mushroom_blue"),
+		BROWN("mushroom_brown"),
+		GREEN("mushroom_green"),
+		RED("mushroom_red"),
+		RED_DETAIL("mushroom_red_detailed");
 		
-		private String name;
+		private final String name;
 		
-		private MushroomType(String pName) {
-			name = pName;
+		private MushroomType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
-	
 }

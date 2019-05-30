@@ -1,1 +1,2 @@
+minecart_empty:64:false
 minecart_gold_ore:64:false

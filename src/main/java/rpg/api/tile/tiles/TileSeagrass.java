@@ -1,36 +1,35 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileSeagrass.SeagrassType;
 
-public class TileSeagrass extends Tile {
+public class TileSeagrass extends TypedTile<SeagrassType> {
 	
-	public SeagrassType type;
-
-	public TileSeagrass(SeagrassType t) {
-		type = t;
-		hitbox = new Hitbox(0.5,0.5);
-		sprite = new Sprite("tiles/seagrass");
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TileSeagrass(final SeagrassType type) {
+		super(type);
+		
+		setHitbox(0.5);
+		setSprite("seagrass", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum SeagrassType{
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum SeagrassType implements TileType {
 		NORMAL("seagrass"),
 		TYPE_2("seagrass2");
 		
-		private String name;
+		private final String name;
 		
-		private SeagrassType(String pName) {
-			name = pName;
+		private SeagrassType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
 }

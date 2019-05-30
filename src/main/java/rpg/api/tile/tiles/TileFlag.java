@@ -1,37 +1,36 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileFlag.FlagType;
 
-public class TileFlag extends Tile {
+public class TileFlag extends TypedTile<FlagType> {
 	
-	public FlagType type;
-
-	public TileFlag(FlagType t) {
-		type = t;
-		hitbox = new Hitbox(1.5,1.5);
-		sprite = new Sprite("tiles/flag");
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TileFlag(final FlagType type) {
+		super(type);
+		
+		setHitbox(1.5);
+		setSprite("flag", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum FlagType{
-		RED("red/flag_red"),
-		BLUE("blue/flag_blue"),
-		YELLOW("yellow/flag_yellow");
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum FlagType implements TileType {
+		RED("flag_red"),
+		BLUE("flag_blue"),
+		YELLOW("flag_yellow");
 		
-		private String name;
+		private final String name;
 		
-		private FlagType(String pName) {
-			name = pName;
+		private FlagType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
 }

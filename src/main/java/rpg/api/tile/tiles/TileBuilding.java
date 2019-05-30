@@ -1,48 +1,54 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
 import rpg.api.gfx.SpriteTheme;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileTypeSized;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileBuilding.BuildingType;
 
-public class TileBuilding extends Tile {
+public class TileBuilding extends TypedTile<BuildingType> {
 	
-	private BuildingType type;
-
-	public TileBuilding(BuildingType t) {
-		type = t;
-		hitbox = new Hitbox(type.length,type.height);
-		sprite = new Sprite("tiles",type.theme);
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TileBuilding(final BuildingType type) {
+		super(type);
+		
+		setHitbox(type.width, type.height);
+		setSprite("", type.theme, type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum BuildingType{
-		NORMAL_HOUSE("house/house",SpriteTheme.NONE,8,4),
-		FAIRY_HOUSE("house/house_fee",SpriteTheme.SCHALLENBERGE,3,3),
-		DWARF_BARRACKS("barracks/barracks_dwarf",SpriteTheme.DWARF_CITY,9,5),
-		DWARF_HOUSE("house/house_dwarf",SpriteTheme.DWARF_CITY,8,5),
-		DWARF_HOUSE_2("house(house_dwarf_2",SpriteTheme.DWARF_CITY,7,8);
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum BuildingType implements TileTypeSized {
+		NORMAL_HOUSE("house/house", SpriteTheme.NONE, 8, 4),
+		FAIRY_HOUSE("house/house_fee", SpriteTheme.SCHALLENBERGE, 3, 3),
+		DWARF_BARRACKS("barracks/barracks_dwarf", SpriteTheme.DWARF_CITY, 9, 5),
+		DWARF_HOUSE("house/house_dwarf", SpriteTheme.DWARF_CITY, 8, 5),
+		DWARF_HOUSE_2("house/house_dwarf_2", SpriteTheme.DWARF_CITY, 7, 8);
 		
-		private String name;
-		private SpriteTheme theme;
-		private double length;
-		private double height;
+		private final String name;
+		private final SpriteTheme theme;
+		private final double width, height;
 		
-		private BuildingType(String pName, SpriteTheme pTheme,double l, double w) {
-			name = pName;
-			theme = pTheme;
-			length = l;
-			height = w;
+		private BuildingType(final String name, final SpriteTheme theme, final double width, final double height) {
+			this.name = name;
+			this.theme = theme;
+			this.width = width;
+			this.height = height;
 		}
 		
+		@Override
+		public String getName() {
+			return name;
+		}
+		
+		@Override
+		public double getWidth() {
+			return width;
+		}
+		
+		@Override
+		public double getHeight() {
+			return height;
+		}
 	}
-	
 }

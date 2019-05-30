@@ -1,37 +1,48 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileTypeSized;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileDoor.DoorType;
 
-public class TileDoor extends Tile {
-	private DoorType type;
-
-	public TileDoor(DoorType t) {
-		type = t;
+public class TileDoor extends TypedTile<DoorType> {
+	
+	public TileDoor(final DoorType type) {
+		super(type);
 		
-		hitbox = new Hitbox(type.witdh, type.height);
-		sprite = new Sprite("tiles/" + type.name);
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+		setHitbox(type.width, type.height);
+		setSprite("door", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {}
-
-	public enum DoorType{
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum DoorType implements TileTypeSized {
 		NORMAL("door", 2, 1.5),
 		TATTICE("door_tattice", 1, 1.5);
 		
-		private String name;
-		private double witdh;
-		private double height;
+		private final String name;
+		private final double width, height;
 		
-		private DoorType(String pName, double w, double h) {
-			name = pName;
-			witdh = w;
-			height = h;
+		private DoorType(final String name, final double width, final double height) {
+			this.name = name;
+			this.width = width;
+			this.height = height;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
+		}
+		
+		@Override
+		public double getWidth() {
+			return width;
+		}
+		
+		@Override
+		public double getHeight() {
+			return height;
 		}
 	}
 }

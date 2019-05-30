@@ -1,37 +1,35 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileLeaf.LeafType;
 
-public class TileLeaf extends Tile {
+public class TileLeaf extends TypedTile<LeafType> {
 	
-	public LeafType type;
-
-	public TileLeaf(LeafType pType) {
-		type = pType;
-		hitbox = new Hitbox(1,1);
-		sprite = new Sprite("tiles/leaf");
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TileLeaf(final LeafType type) {
+		super(type);
+		
+		setHitbox(1);
+		setSprite("leaf", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
 	
-	public enum LeafType{
-		GREEN("green/leaf_green"),
-		ORANGE("orange/leaf_orange");
+	public enum LeafType implements TileType {
+		GREEN("leaf_green"),
+		ORANGE("leaf_orange");
 		
-		private String name;
+		private final String name;
 		
-		private LeafType(String pName) {
-			name = pName;
+		private LeafType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
 }

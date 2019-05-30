@@ -1,1 +1,2 @@
 treestump:92:false
+treestump_snowed:92:false

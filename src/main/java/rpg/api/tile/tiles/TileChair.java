@@ -1,38 +1,37 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileChair.ChairType;
 
-public class TileChair extends Tile {
+public class TileChair extends TypedTile<ChairType> {
 	
-	private ChairType type;
-
-	public TileChair(ChairType c) {
-		type = c;
-		hitbox = new Hitbox(4,4);
-		sprite = new Sprite("tiles/chair");
-		sprite.addAnimation(type.type);
-		sprite.setAnimation(type.type);
+	public TileChair(final ChairType type) {
+		super(type);
+		
+		setHitbox(4);
+		setSprite("chair", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum ChairType{
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum ChairType implements TileType {
 		FRONT("front"),
 		LEFT("left"),
 		RIGHT("right"),
 		BACK("normal");
 		
-		private String type;
+		private final String name;
 		
-		private ChairType(String type) {
-			this.type = type;
+		private ChairType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
 }

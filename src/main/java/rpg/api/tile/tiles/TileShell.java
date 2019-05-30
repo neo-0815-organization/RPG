@@ -1,42 +1,48 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileTypeSized;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileShell.ShellType;
 
-public class TileShell extends Tile {
+public class TileShell extends TypedTile<ShellType> {
 	
-	private ShellType type;
-
-	public TileShell(ShellType t) {
-		type = t;
-		hitbox = new Hitbox(type.width,type.height);
-		sprite = new Sprite("tiles/shell");
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TileShell(final ShellType type) {
+		super(type);
+		
+		setHitbox(type.size);
+		setSprite("shell", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum ShellType{
-		SPIKE("spike/shell_spike",0.5,0.5),
-		TYPE_1("normal/shell",1,1),
-		TYPE_2("normal/shell2",0.5,0.5);
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum ShellType implements TileTypeSized {
+		SPIKE("shell_spike", 0.5),
+		TYPE_1("shell", 1),
+		TYPE_2("shell2", 0.5);
 		
-		private String name;
-		private double width;
-		private double height;
+		private final String name;
+		private final double size;
 		
-		private ShellType(String pName,double w,double h) {
-			name = pName;
-			width = w;
-			height = h;
+		private ShellType(final String name, final double size) {
+			this.name = name;
+			this.size = size;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
+		}
+		
+		@Override
+		public double getWidth() {
+			return size;
+		}
+		
+		@Override
+		public double getHeight() {
+			return size;
 		}
 	}
-	
 }

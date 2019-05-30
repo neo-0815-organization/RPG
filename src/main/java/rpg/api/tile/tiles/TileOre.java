@@ -1,40 +1,43 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
 import rpg.api.gfx.SpriteTheme;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileOre.OreType;
 
-public class TileOre extends Tile{
-	private OreType type;
+public class TileOre extends TypedTile<OreType> {
 	
-	public TileOre(OreType t){
-		type =t;
-		hitbox = new Hitbox(1,1);
-		sprite = new Sprite("tiles/ore", SpriteTheme.MOERSBERGWERKE);
-		sprite.addAnimation(type.path);
-		sprite.setAnimation(type.path);
+	public TileOre(final OreType type) {
+		super(type);
+		
+		setHitbox(1);
+		setSprite("ore", SpriteTheme.MOERSBERGWERKE, type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {}
-
-	public enum OreType{
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum OreType implements TileType {
 		BLUE("ore_blue"),
 		CRYSTAL_BLUE("ore_crystal_blue"),
 		CRYSTAL_RED("ore_crystal_red"),
 		EMPTY("ore_empty"),
-		GOLD("ore_gold"), 
+		GOLD("ore_gold"),
 		GREEN("ore_green"),
 		GREY("ore_grey"),
 		RED("ore_red"),
 		SILVER("ore_silver");
 		
-		private String path;
+		private final String name;
 		
-		private OreType(String path) {
-			this.path = path;
+		private OreType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
 }

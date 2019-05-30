@@ -1,38 +1,36 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileCandle.CandleType;
 
-public class TileCandle extends Tile {
-
-	public CandleType type;
+public class TileCandle extends TypedTile<CandleType> {
 	
-	public TileCandle(CandleType t) {
-		 type  =  t;
-		 hitbox = new Hitbox(0.5,1);
-		 sprite = new Sprite("tiles/candle");
-		 sprite.addAnimation(type.name);
-		 sprite.setAnimation(type.name);
+	public TileCandle(final CandleType type) {
+		super(type);
+		
+		setHitbox(0.5, 1);
+		setSprite("candle", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum CandleType{
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum CandleType implements TileType {
 		BRONZE("bronze/candle_bronze"),
 		GOLD("gold/candle_gold"),
 		SILVER("silver/candle_silver");
 		
-		private String name;
+		private final String name;
 		
-		private CandleType(String pName) {
-			name = pName;
+		private CandleType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
-	
 }

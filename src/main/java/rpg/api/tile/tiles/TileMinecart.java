@@ -1,38 +1,36 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
 import rpg.api.gfx.SpriteTheme;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TileMinecart.MinecartType;
 
-public class TileMinecart extends Tile {
+public class TileMinecart extends TypedTile<MinecartType> {
 	
-	public MinecartType type;
-
-	public TileMinecart(MinecartType t) {
-		type = t;
-		hitbox = new Hitbox(4,2);
-		sprite = new Sprite("tiles/" + type.name, SpriteTheme.MOERSBERGWERKE);
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TileMinecart(final MinecartType type) {
+		super(type);
+		
+		setHitbox(4, 2);
+		setSprite("minecart", SpriteTheme.MOERSBERGWERKE, type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum MinecartType{
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum MinecartType implements TileType {
 		EMPTY("minecart_empty"),
 		GOLD_ORE("minecart_gold_ore");
 		
-		private String name;
+		private final String name;
 		
-		private MinecartType(String pName) {
-			name = pName;
+		private MinecartType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
-	
 }

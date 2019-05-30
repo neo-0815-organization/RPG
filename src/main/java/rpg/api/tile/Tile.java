@@ -7,6 +7,7 @@ import rpg.api.eventhandling.EventTrigger;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
+import rpg.api.gfx.SpriteTheme;
 import rpg.api.vector.UnmodifiableVec2D;
 
 /**
@@ -67,5 +68,41 @@ public abstract class Tile implements ISprite, ICollideable, EventTrigger {
 	@Override
 	public Hitbox getHitbox() {
 		return hitbox;
+	}
+	
+	protected void setHitbox(final double size) {
+		setHitbox(size, size);
+	}
+	
+	protected void setHitbox(final double width, final double height) {
+		hitbox = new Hitbox(width, height);
+	}
+	
+	/*
+	 * First of {@code animations} will be the default animation
+	 */
+	protected void setSprite(final String sprite, final String... animations) {
+		this.sprite = new Sprite("tiles/" + sprite);
+		
+		addAnims0(animations);
+	}
+	
+	/*
+	 * First of {@code animations} will be the default animation
+	 */
+	protected void setSprite(final String sprite, final SpriteTheme theme, final String... animations) {
+		this.sprite = new Sprite("tiles/" + sprite, theme);
+		
+		addAnims0(animations);
+	}
+	
+	/*
+	 * First of {@code animations} will be the default animation
+	 */
+	private void addAnims0(final String... anims) {
+		for(final String anim : anims)
+			sprite.addAnimation(anim);
+		
+		sprite.setAnimation(anims[0]);
 	}
 }

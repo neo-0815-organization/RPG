@@ -1,1 +1,0 @@
-table_light:32:false

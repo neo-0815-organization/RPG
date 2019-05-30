@@ -1,37 +1,35 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.collision.Hitbox;
 import rpg.api.eventhandling.EventType;
-import rpg.api.gfx.Sprite;
-import rpg.api.tile.Tile;
+import rpg.api.tile.TileType;
+import rpg.api.tile.TypedTile;
+import rpg.api.tile.tiles.TilePlant.PlantType;
 
-public class TilePlant extends Tile {
+public class TilePlant extends TypedTile<PlantType> {
 	
-	private PlantType type;
-
-	public TilePlant(PlantType t) {
-		type = t;
-		hitbox = new Hitbox(1,1);
-		sprite = new Sprite("tiles/plant");
-		sprite.addAnimation(type.name);
-		sprite.setAnimation(type.name);
+	public TilePlant(final PlantType type) {
+		super(type);
+		
+		setHitbox(1);
+		setSprite("plant", type.name);
 	}
-
+	
 	@Override
-	public void triggerEvent(EventType eventType, Object... objects) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public enum PlantType{
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	
+	public enum PlantType implements TileType {
 		NORMAL("plant"),
-		SOYBEAN("soybean/plant_soybeans");
+		SOYBEAN("plant_soybeans");
 		
-		private String name;
+		private final String name;
 		
-		private PlantType(String pName) {
-			name = pName;
+		private PlantType(final String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
-	
 }
