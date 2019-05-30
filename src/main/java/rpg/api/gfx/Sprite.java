@@ -120,7 +120,11 @@ public class Sprite implements Cloneable {
 		
 		final int animWidth = animation.getWidth(), animHeight = animation.getHeight();
 		
-		if(animHeight % frameHeight != 0) throw new IllegalArgumentException("Frame height " + frameHeight + "px doesn't match animation height " + animHeight + "px.");
+		if(animHeight % frameHeight != 0) {
+			Logger.error("Error while parsing file '" + animationName + ".png'");
+			
+			throw new IllegalArgumentException("Frame height " + frameHeight + "px doesn't match animation height " + animHeight + "px.");
+		}
 		
 		final int frameCount = animHeight / frameHeight;
 		

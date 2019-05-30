@@ -5,6 +5,6 @@ tree_apple2:256:false
 tree_big:256:false
 tree_dead:256:false
 tree_dead_2:256:false
-tree_fire_snow:256:false
-tree_fire:256:false
-tree_palm:256:false
+tree_fire_snow:64:false
+tree_fire:45:false
+tree_palm:90:false

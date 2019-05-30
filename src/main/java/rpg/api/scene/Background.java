@@ -24,11 +24,17 @@ import rpg.api.tile.tiles.TileBarrel;
 import rpg.api.tile.tiles.TileBottle;
 import rpg.api.tile.tiles.TileBottle.BottleType;
 import rpg.api.tile.tiles.TileBush;
+import rpg.api.tile.tiles.TileCauldron;
+import rpg.api.tile.tiles.TileChair;
+import rpg.api.tile.tiles.TileChair.ChairType;
+import rpg.api.tile.tiles.TileChest;
 import rpg.api.tile.tiles.TileLampStanding;
 import rpg.api.tile.tiles.TileLog;
 import rpg.api.tile.tiles.TileLog.LogType;
 import rpg.api.tile.tiles.TileTent;
 import rpg.api.tile.tiles.TileTent.TentType;
+import rpg.api.tile.tiles.TileTree;
+import rpg.api.tile.tiles.TileTree.TreeType;
 import rpg.api.tile.tiles.TileWorkbench;
 import rpg.api.units.DistanceValue;
 import rpg.api.vector.ModifiableVec2D;
@@ -206,8 +212,16 @@ public class Background implements IImage {
 					return new TileBarrel();
 				case "bush":
 					return new TileBush();
+				case "cauldron":
+					return new TileCauldron();
+				case "chest":
+					return new TileChest();
 				case "lamp_standing":
 					return new TileLampStanding();
+				case "tent":
+					return new TileTent(TentType.NORMAL);
+				case "tree":
+					return new TileTree(TreeType.NORMAL);
 				case "workbench":
 					return new TileWorkbench();
 			}
@@ -224,6 +238,16 @@ public class Background implements IImage {
 				case "river":
 					return new TileBottle(BottleType.RIVER);
 			}
+			else if(name.startsWith("chair/")) switch(name.substring(6)) {
+				case "front":
+					return new TileChair(ChairType.FRONT);
+				case "back":
+					return new TileChair(ChairType.BACK);
+				case "left":
+					return new TileChair(ChairType.LEFT);
+				case "right":
+					return new TileChair(ChairType.RIGHT);
+			}
 			else if(name.startsWith("log")) switch(name.substring(3)) {
 				case "1":
 					return new TileLog(LogType.LEFT_SIDE);
@@ -233,12 +257,14 @@ public class Background implements IImage {
 					return new TileLog(LogType.NORMAL_2);
 			}
 			else if(name.startsWith("tent_")) switch(name.substring(5)) {
-				case "normal":
-					return new TileTent(TentType.NORMAL);
 				case "red":
 					return new TileTent(TentType.RED);
 				case "yellow":
 					return new TileTent(TentType.YELLOW);
+			}
+			else if(name.startsWith("tree_")) switch(name.substring(5)) {
+				case "fire":
+					return new TileTree(TreeType.FIRE);
 			}
 			
 			throw new IllegalArgumentException("Tile with name '" + name + "' isn't integrated yet.");

@@ -99,7 +99,7 @@ public abstract class Tile implements ISprite, ICollideable, EventTrigger {
 	/*
 	 * First of {@code animations} will be the default animation
 	 */
-	private void addAnims0(final String... anims) {
+	protected void addAnims0(final String... anims) {
 		for(final String anim : anims)
 			sprite.addAnimation(anim);
 		
