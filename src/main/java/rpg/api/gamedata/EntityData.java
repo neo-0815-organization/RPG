@@ -65,6 +65,7 @@ public class EntityData extends GameData {
 			e.setLocation((Vec2D<?>) get("location"));
 			e.setLookingDirection((Direction) get("direction"));
 			e.setVelocity((ModifiableVec2D) get("velocity"));
+			// TODO display_name
 			e.setSprite(DataHelper.mapToSprite((Map<String, Object>) get("sprite")));
 			e.setUniqueId((UUID) get("uuid"));
 			

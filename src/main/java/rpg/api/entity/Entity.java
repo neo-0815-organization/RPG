@@ -214,7 +214,6 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	@Override
 	public void draw(final DrawingGraphics g) {
 		draw(g, location);
-		
 	}
 	
 	/**
