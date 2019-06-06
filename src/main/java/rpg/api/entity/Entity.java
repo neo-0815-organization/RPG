@@ -12,6 +12,7 @@ import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 import rpg.api.localization.INameable;
+import rpg.api.tile.tiles.TileTent;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 
@@ -197,7 +198,11 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		
 		sprite.update(deltaTime);
 		
-		RPG.gameField.checkCollisionTiles(this).forEach(t -> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
+		//TODO reset
+		RPG.gameField.checkCollisionTiles(this).forEach(t -> {
+			if(t instanceof TileTent) t.triggerEvent(EventType.COLLISION_EVENT,t ,this); 
+			else getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t);
+		});
 		RPG.gameField.checkCollisionEntities(this).forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
 	}
 	

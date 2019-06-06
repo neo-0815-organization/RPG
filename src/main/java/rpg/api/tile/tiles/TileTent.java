@@ -1,6 +1,10 @@
 package rpg.api.tile.tiles;
 
+import java.util.LinkedList;
+
+import rpg.RPG;
 import rpg.api.eventhandling.EventType;
+import rpg.api.scene.Background;
 import rpg.api.tile.TileTypeSized;
 import rpg.api.tile.TypedTile;
 import rpg.api.tile.tiles.TileTent.TentType;
@@ -15,7 +19,18 @@ public class TileTent extends TypedTile<TentType> {
 	}
 	
 	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+		//TODO remove
+		if(type == TentType.YELLOW) {
+			RPG.gameField.save.background = new Background("beautifulWorld2");
+			RPG.gameField.save.fluids = new LinkedList<>(RPG.gameField.save.background.getFluids());
+			RPG.gameField.save.tiles = new LinkedList<>(RPG.gameField.save.background.getTiles());
+		} else {
+			RPG.gameField.save.background = new Background("beautifulWorld");
+			RPG.gameField.save.fluids = new LinkedList<>(RPG.gameField.save.background.getFluids());
+			RPG.gameField.save.tiles = new LinkedList<>(RPG.gameField.save.background.getTiles());
+		}
+	}
 	
 	public enum TentType implements TileTypeSized {
 		NORMAL("tent_normal", 3, 2),
