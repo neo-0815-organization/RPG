@@ -143,6 +143,7 @@ public class BundledListener {
 		public EventType getEventType() {
 			return EventType.CURRENT_MAP_EVENT;
 			
+			
 		}
 	}
 	
