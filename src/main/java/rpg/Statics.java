@@ -67,7 +67,6 @@ public class Statics {
 				spacePos++;
 			}
 			txt = txt.substring(0, lastSpacePos) + "\n" + txt.substring(lastSpacePos);
-			System.out.println("back N");
 			currentPos += 2;
 		}
 		

@@ -46,7 +46,7 @@ public class Quest {
 	}
 	
 	public Quest setStartText(String unlocName) {
-		this.questInfo = Statics.formatToWidth(StringLocalizer.localize(unlocName), 600, new Font("Arial", 0, 400));
+		HERE PROBthis.questInfo = Statics.formatToWidthAsHTML(StringLocalizer.localize(unlocName), 600, new Font("Arial", 0, 400));
 		return this;
 	}
 	
