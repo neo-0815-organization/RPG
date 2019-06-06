@@ -8,6 +8,7 @@ import rpg.api.entity.CharacterSheet;
 import rpg.api.entity.Player;
 import rpg.api.eventhandling.events.CurrentMapEvent;
 import rpg.api.eventhandling.events.Event;
+import rpg.api.eventhandling.events.MoveEvent;
 import rpg.api.eventhandling.events.SpeakEvent;
 /**
  * A BundledListener is a bundle of listeners.
@@ -146,19 +147,33 @@ public class BundledListener {
 		}
 	}
 	
-	public static final class pressWASD implements EventCondition {
-		private long timeWhenFirstInput = -1;
+	public static final class PressWASD implements EventCondition {
+		private boolean S_PRESSED, W_PRESSED, A_PRESSED, D_PRESSED;
 		
 		@Override
 		public boolean eventTriggered(Event e) {
-			return 
+			char pressed = ((MoveEvent)e).getDirectionKey();
+			switch (pressed) {
+			case 'W':
+				W_PRESSED = true;
+				break;
+			case 'A':
+				A_PRESSED = true;
+				break;
+			case 'S':
+				S_PRESSED = true;
+				break;
+			case 'D':
+				D_PRESSED = true;
+				break;
+			}
+			return S_PRESSED && W_PRESSED && A_PRESSED && D_PRESSED;
 		}
 
 		@Override
 		public EventType getEventType() {
-			return EventType.CURRENT_MAP_EVENT;
+			return EventType.MOVE_EVENT;
 		}
-		
 	}
 	
 }
