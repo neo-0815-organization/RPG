@@ -3,6 +3,7 @@ chair/front.png
 chair/left.png
 chair/right.png
 anvil.png
+barrack_dwarf.png
 barrel.png
 bush.png
 candle_bronze.png
@@ -35,6 +36,9 @@ flower_yellow_right.png
 flower_yellow_right_low.png
 furnace.png
 heart_crystal.png
+house.png
+house_dwarf.png
+house_dwarf2.png
 house_fairy.png
 lamp_standing.png
 leaf_green.png
