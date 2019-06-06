@@ -34,7 +34,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	protected UUID				uuid;
 	protected Hitbox			hitbox;
 	protected final boolean		solid;
-
+	
 	/**
 	 * Constructs a new {@link Entity} with the display name 'name'.
 	 *
@@ -46,7 +46,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		this.solid = solid;
 		uuid = UUID.randomUUID();
 	}
-
+	
 	/**
 	 * Accelerates this {@link Entity}.
 	 *
@@ -59,7 +59,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void accelerate(final Direction direction, final double force) {
 		accelerate(direction.getVector().scale(force));
 	}
-
+	
 	/**
 	 * Accelerates this {@link Entity}.
 	 *
@@ -69,7 +69,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void accelerate(final Vec2D<?> acc) {
 		velocity.add(acc);
 	}
-
+	
 	/**
 	 * Gets the {@link Vec2D} representing the location of this {@link Entity}.
 	 *
@@ -79,7 +79,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public ModifiableVec2D getLocation() {
 		return location.toModifiable();
 	}
-
+	
 	/**
 	 * Sets the {@link Vec2D} representing the location of this {@link Entity}.
 	 *
@@ -89,7 +89,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void setLocation(final Vec2D<?> location) {
 		this.location = location.toModifiable();
 	}
-
+	
 	/**
 	 * Gets the looking {@link Direction} of this {@link Entity}.
 	 *
@@ -98,7 +98,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public Direction getLookingDirection() {
 		return lookingDirection;
 	}
-
+	
 	/**
 	 * Sets the looking {@link Direction} of this {@link Entity}.
 	 *
@@ -108,7 +108,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void setLookingDirection(final Direction lookingDirection) {
 		this.lookingDirection = lookingDirection;
 	}
-
+	
 	/**
 	 * Gets the looking {@link Vec2D} of this {@link Entity}.
 	 *
@@ -117,7 +117,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public ModifiableVec2D getLookingVector() {
 		return lookingDirection.getVector();
 	}
-
+	
 	/**
 	 * Gets the velocity {@link Vec2D} of this {@link Entity}.
 	 *
@@ -126,7 +126,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public ModifiableVec2D getVelocity() {
 		return velocity;
 	}
-
+	
 	/**
 	 * Sets the velocity {@link Vec2D} of this {@link Entity}.
 	 *
@@ -136,7 +136,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void setVelocity(final ModifiableVec2D velocity) {
 		this.velocity = velocity;
 	}
-
+	
 	/**
 	 * Gets the {@link UUID} of this {@link Entity}.
 	 *
@@ -145,7 +145,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public UUID getUniqueId() {
 		return uuid;
 	}
-
+	
 	/**
 	 * Sets the {@link UUID} of this {@link Entity}.
 	 *
@@ -155,19 +155,19 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void setUniqueId(final UUID uuid) {
 		this.uuid = uuid;
 	}
-
+	
 	@Override
 	public String getUnlocalizedName() {
 		return displayName;
 	}
-
+	
 	@Override
 	public void setDisplayName(String displayName) {
 		if(!displayName.endsWith(".name")) displayName += ".name";
-
+		
 		this.displayName = displayName;
 	}
-
+	
 	/**
 	 * Gets the {@link String} of this {@link Entity}.
 	 *
@@ -176,7 +176,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public String getImageName() {
 		return imageName;
 	}
-
+	
 	/**
 	 * Sets the {@link String} of this {@link Entity}.
 	 *
@@ -186,12 +186,12 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void setImageName(final String imageName) {
 		this.imageName = imageName;
 	}
-
+	
 	@Override
 	public Sprite getSprite() {
 		return sprite;
 	}
-
+	
 	/**
 	 * Updates this {@link Entity}.
 	 *
@@ -200,21 +200,26 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 */
 	public void update(final double deltaTime) {
 		final ModifiableVec2D loc = location.clone();
-
+		List<Tile> tiles = RPG.gameField.checkCollisionTiles(this);
+		
+		if(tiles.stream().anyMatch(t -> t instanceof Fluid)) velocity.add(Fluid.acceleration);
+		
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
-
+		
 		sprite.update(deltaTime);
-
-		final List<Tile> tiles = RPG.gameField.checkCollisionTiles(this);
+		
+		tiles = RPG.gameField.checkCollisionTiles(this);
 		final List<Entity> entities = RPG.gameField.checkCollisionEntities(this);
-
+		
 		tiles.forEach(t -> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
 		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
-
+		
 		if(entities.stream().anyMatch(e -> e.solid)
 				|| tiles.stream().anyMatch(t -> !(t instanceof Fluid))) location = loc;
+		
+		velocity.scale(0);
 	}
-
+	
 	/**
 	 * Sets the {@link Sprite} of this {@link Entity}.
 	 *
@@ -223,23 +228,23 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 */
 	public void setSprite(final Sprite sprite) {
 		this.sprite = sprite;
-		
+
 		hitbox = new Hitbox(new DistanceValue(this.sprite.getWidth()), new DistanceValue(this.sprite.getHeight()));
 	}
-
+	
 	protected void setHitbox(final double width, final double height) {
 		hitbox = new Hitbox(width, height);
 	}
-
+	
 	@Override
 	public void draw(final DrawingGraphics g) {
 		draw(g, location);
-
-		g.drawRect(location.getX().getValuePixel()
+		
+		if(RPG.showHitbox) g.drawRect(location.getX().getValuePixel()
 				- Camera.location.getX().getValuePixel(), location.getY().getValuePixel()
 						- Camera.location.getY().getValuePixel(), hitbox.getWidth().getValuePixel(), hitbox.getHeight().getValuePixel());
 	}
-
+	
 	/**
 	 * Returns a human readable representation of this {@link Entity} looking
 	 * like Entity@hash[{@link UUID}, displayName].

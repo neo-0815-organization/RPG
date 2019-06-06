@@ -1,5 +1,6 @@
 package rpg.api.tile;
 
+import rpg.RPG;
 import rpg.api.collision.Hitbox;
 import rpg.api.collision.ICollideable;
 import rpg.api.entity.Entity;
@@ -56,7 +57,7 @@ public abstract class Tile implements ISprite, ICollideable, EventTrigger {
 	public void draw(final DrawingGraphics g) {
 		draw(g, getLocation());
 
-		g.drawRect(location.getX().getValuePixel()
+		if(RPG.showHitbox) g.drawRect(location.getX().getValuePixel()
 				- Camera.location.getX().getValuePixel(), location.getY().getValuePixel()
 						- Camera.location.getY().getValuePixel(), hitbox.getWidth().getValuePixel(), hitbox.getHeight().getValuePixel());
 	}
