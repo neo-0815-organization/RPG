@@ -13,42 +13,42 @@ public enum CharacterSheet implements PathModifier {
 	PLAYER_NATUREGUARDIAN_FEMALE(CharacterType.NATURE, Gender.FEMALE),
 	PLAYER_MAGICAN_MALE(CharacterType.MAGE, Gender.MALE),
 	PLAYER_MAGICAN_FEMALE(CharacterType.MAGE, Gender.FEMALE);
-	
-	protected CharacterType type;
-	protected Gender gender;
-	
+
+	protected CharacterType	type;
+	protected Gender		gender;
+
 	private CharacterSheet(final CharacterType type, final Gender gender) {
 		this.type = type;
 		this.gender = gender;
 	}
-	
+
 	@Override
 	public String getPrePath() {
 		return "player/";
 	}
-	
+
 	@Override
 	public String getPathModifier() {
 		return type.getName();
 	}
-	
+
 	@Override
 	public String getPostPath() {
 		return gender.getPath() + "/normal";
 	}
-	
+
 	public Hitbox getHitbox() {
-		return new Hitbox(1d, 1d);
+		return new Hitbox(1d, 1.5);
 	}
-	
+
 	public Sprite getSprite() {
 		return new WalkableSprite(getPath());
 	}
-	
+
 	public static CharacterSheet getCharacterSheet(final CharacterType type, final Gender gender) {
 		for(final CharacterSheet sheet : values())
 			if(sheet.type == type && sheet.gender == gender) return sheet;
-		
+
 		return null;
 	}
 }

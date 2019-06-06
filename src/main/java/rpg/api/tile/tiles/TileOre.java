@@ -7,17 +7,17 @@ import rpg.api.tile.TypedTile;
 import rpg.api.tile.tiles.TileOre.OreType;
 
 public class TileOre extends TypedTile<OreType> {
-	
+
 	public TileOre(final OreType type) {
 		super(type);
-		
-		setHitbox(1);
+
 		setSprite("ore", SpriteTheme.MOERSBERGWERKE, type.name);
 	}
-	
+
 	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
-	
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+	}
+
 	public enum OreType implements TileType {
 		BLUE("ore_blue"),
 		CRYSTAL_BLUE("ore_crystal_blue"),
@@ -28,13 +28,13 @@ public class TileOre extends TypedTile<OreType> {
 		GREY("ore_grey"),
 		RED("ore_red"),
 		SILVER("ore_silver");
-		
+
 		private final String name;
-		
+
 		private OreType(final String name) {
 			this.name = name;
 		}
-		
+
 		@Override
 		public String getName() {
 			return name;

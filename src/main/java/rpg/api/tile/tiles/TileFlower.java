@@ -6,17 +6,17 @@ import rpg.api.tile.TypedTile;
 import rpg.api.tile.tiles.TileFlower.FlowerType;
 
 public class TileFlower extends TypedTile<FlowerType> {
-	
+
 	public TileFlower(final FlowerType type) {
 		super(type);
-		
-		setHitbox(type.size);
+
 		setSprite("flower", type.name);
 	}
-	
+
 	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
-	
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+	}
+
 	public enum FlowerType implements TileTypeSized {
 		CYAN("flower_cyan", 0.5),
 		PINK("flower_pink", 0.5),
@@ -30,25 +30,25 @@ public class TileFlower extends TypedTile<FlowerType> {
 		YELLOW_LEFT("flower_yellow_left", 0.5),
 		YELLOW_LEFT_LOW("flower_yellow_left_low", 0.5),
 		YELLOW_MULTIPLE("flower_yellow_multiple", 2);
-		
-		private final String name;
-		private final double size;
-		
+
+		private final String	name;
+		private final double	size;
+
 		private FlowerType(final String name, final double size) {
 			this.name = name;
 			this.size = size;
 		}
-		
+
 		@Override
 		public String getName() {
 			return name;
 		}
-		
+
 		@Override
 		public double getWidth() {
 			return size;
 		}
-		
+
 		@Override
 		public double getHeight() {
 			return size;
