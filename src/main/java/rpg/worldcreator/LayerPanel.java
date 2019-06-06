@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
+import rpg.Logger;
 import rpg.api.gfx.ImageUtility;
 
 public class LayerPanel extends JPanel {
@@ -40,7 +41,7 @@ public class LayerPanel extends JPanel {
 	
 	private void initComponents(final WorldCreatorFrame frameInstance) {
 		pictures.forEach((name, id, image) -> {
-			final int xNumber = image.getWidth() / tileSize, yNumber = image.getHeight() / tileSize, padding = 3;
+			final int xNumber = (int) Math.ceil(image.getWidth() / (double) tileSize), yNumber = (int) Math.ceil(image.getHeight() / (double) tileSize), padding = 3;
 			final double scaledSize = (134 - padding * 2) / xNumber;
 			final JPanel panel = new JPanel();
 			

@@ -20,7 +20,7 @@ public class TileBuilding extends TypedTile<BuildingType> {
 	
 	public enum BuildingType implements TileTypeSized {
 		NORMAL_HOUSE("house/house", SpriteTheme.NONE, 8, 4),
-		FAIRY_HOUSE("house/house_fee", SpriteTheme.SCHALLENBERGE, 3, 3),
+		FAIRY_HOUSE("house/house_fairy", SpriteTheme.SCHALLENBERGE, 3, 3),
 		DWARF_BARRACKS("barracks/barracks_dwarf", SpriteTheme.DWARF_CITY, 9, 5),
 		DWARF_HOUSE("house/house_dwarf", SpriteTheme.DWARF_CITY, 8, 5),
 		DWARF_HOUSE_2("house/house_dwarf_2", SpriteTheme.DWARF_CITY, 7, 8);
