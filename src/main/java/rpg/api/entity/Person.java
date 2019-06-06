@@ -2,7 +2,10 @@ package rpg.api.entity;
 
 import rpg.api.collision.Hitbox;
 import rpg.api.dialog.Dialog;
+import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
+import rpg.api.eventhandling.events.Event;
+import rpg.api.eventhandling.events.SpeakEvent;
 import rpg.api.gfx.menus.DialogMenu;
 import rpg.api.vector.ModifiableVec2D;
 
@@ -28,6 +31,8 @@ public class Person extends LivingEntity {
 	public void triggerEvent(final EventType eventType, final Object... objects) {
 		if(I_PRESSED) {
 			new DialogMenu(new Dialog(dialogName), this).show();
+			
+			EventHandler.handle(new SpeakEvent(this));
 			
 			I_PRESSED = false;
 		}
