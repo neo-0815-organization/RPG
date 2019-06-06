@@ -107,6 +107,7 @@ public class BundledListener {
 	public static final class CurrentMapCondition implements EventCondition {
 		public String mapName;
 		
+		
 		public CurrentMapCondition(String mapName) {
 			this.mapName = mapName;
 		}
@@ -142,8 +143,6 @@ public class BundledListener {
 		@Override
 		public EventType getEventType() {
 			return EventType.CURRENT_MAP_EVENT;
-			
-			
 		}
 	}
 	
