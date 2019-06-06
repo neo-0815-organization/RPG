@@ -7,7 +7,6 @@ import rpg.api.tile.Tile;
 public class TileAnvil extends Tile {
 	
 	public TileAnvil() {
-		setHitbox(1);
 		setSprite("anvil", SpriteTheme.SMITHERY, "anvil");
 	}
 	
