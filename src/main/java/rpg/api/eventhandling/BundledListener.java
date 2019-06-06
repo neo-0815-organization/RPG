@@ -142,6 +142,7 @@ public class BundledListener {
 		@Override
 		public EventType getEventType() {
 			return EventType.CURRENT_MAP_EVENT;
+			
 		}
 	}
 	
