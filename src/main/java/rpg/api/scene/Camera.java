@@ -20,24 +20,13 @@ public class Camera {
 	
 	public static void update() {
 		if(entityToFollow != null) {
-			if(entityToFollow.getLocation().getX().getValuePixel() <= Statics.frameSize.width / SCALED_2) {
-				location.setX(new DistanceValue(0));
+			location.setX(new DistanceValue(entityToFollow.getLocation().getX().getValuePixel() + (entityToFollow.getWidth() - Statics.frameSize.width) / SCALED_2));
+			location.setY(new DistanceValue(entityToFollow.getLocation().getY().getValuePixel() + (entityToFollow.getHeight() - Statics.frameSize.height) / SCALED_2));
 			
-			} else if(entityToFollow.getLocation().getX().getValuePixel() > RPG.gameField.save.background.getWidth() - Statics.frameSize.width / SCALED_2) {
-				location.setX(new DistanceValue(Statics.scale(RPG.gameField.save.background.getWidth()) - Statics.frameSize.width));
-				
-			} else {
-				location.setX(new DistanceValue(entityToFollow.getLocation().getX().getValuePixel() + (entityToFollow.getWidth() - Statics.frameSize.width) / SCALED_2));
-			}
-			if(entityToFollow.getLocation().getY().getValuePixel() <= Statics.frameSize.height / SCALED_2) {
-				location.setY(new DistanceValue(0));
-				
-			} else if(entityToFollow.getLocation().getY().getValuePixel() > RPG.gameField.save.background.getHeight() - Statics.frameSize.height / SCALED_2) {
-				location.setY(new DistanceValue(RPG.gameField.save.background.getHeight() - Statics.frameSize.height));
-				
-			} else {
-				location.setY(new DistanceValue(entityToFollow.getLocation().getY().getValuePixel() + (entityToFollow.getHeight() - Statics.frameSize.height) / SCALED_2));
-			}
+			if(location.getValueX() < 0) location.setValueX(0);
+			else if(location.getX().getValuePixel() > RPG.gameField.save.background.getWidth() - Statics.gameSize.width) location.setX(new DistanceValue(RPG.gameField.save.background.getWidth() - Statics.gameSize.width));
+			if(location.getValueY() < 0) location.setValueY(0);
+			else if(location.getY().getValuePixel() > RPG.gameField.save.background.getHeight() - Statics.gameSize.height) location.setY(new DistanceValue(RPG.gameField.save.background.getHeight() - Statics.gameSize.height));
 		}
 	}
 	
