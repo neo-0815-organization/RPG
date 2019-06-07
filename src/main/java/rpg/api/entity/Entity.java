@@ -26,24 +26,38 @@ import rpg.api.vector.Vec2D;
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer, Tim Ludwig
  */
 public abstract class Entity implements INameable, ISprite, ICollideable, EventTrigger {
-	protected ModifiableVec2D	location;
-	protected Sprite			sprite;
-	protected Direction			lookingDirection	= Direction.SOUTH;
-	protected ModifiableVec2D	velocity			= ModifiableVec2D.ORIGIN.toModifiable();
-	protected String			displayName, imageName;
-	protected UUID				uuid;
-	protected Hitbox			hitbox;
-	protected final boolean		solid;
+	protected ModifiableVec2D location;
+	protected Sprite sprite;
+	protected Direction lookingDirection = Direction.SOUTH;
+	protected ModifiableVec2D velocity = ModifiableVec2D.ORIGIN.toModifiable();
+	protected String displayName, imageName;
+	protected UUID uuid;
+	protected Hitbox hitbox;
+	protected boolean solid;
 	
 	/**
 	 * Constructs a new {@link Entity} with the display name 'name'.
 	 *
 	 * @param name
-	 *             the display name to set
+	 *            the display name to set
+	 */
+	public Entity(final String name) {
+		this(name, false);
+	}
+	
+	/**
+	 * Constructs a new {@link Entity} with the display name 'name' and the
+	 * solid state 'solid'.
+	 *
+	 * @param name
+	 *            the display name to set
+	 * @param solid
+	 *            the solid state
 	 */
 	public Entity(final String name, final boolean solid) {
 		setDisplayName(name);
 		this.solid = solid;
+		
 		uuid = UUID.randomUUID();
 	}
 	
@@ -51,10 +65,10 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *                  the {@link Direction} to accelerate in
+	 *            the {@link Direction} to accelerate in
 	 * @param force
-	 *                  the amount of accelerating force
-	 * @see             #accelerate(Vec2D)
+	 *            the amount of accelerating force
+	 * @see #accelerate(Vec2D)
 	 */
 	public void accelerate(final Direction direction, final double force) {
 		accelerate(direction.getVector().scale(force));
@@ -196,7 +210,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Updates this {@link Entity}.
 	 *
 	 * @param deltaTime
-	 *                  time since last frame in sec
+	 *            time since last frame in sec
 	 */
 	public void update(final double deltaTime) {
 		final ModifiableVec2D loc = location.clone();
@@ -214,8 +228,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		tiles.forEach(t -> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
 		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
 		
-		if(entities.stream().anyMatch(e -> e.solid)
-				|| tiles.stream().anyMatch(t -> !(t instanceof Fluid))) location = loc;
+		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid))) location = loc;
 		
 		velocity.scale(0);
 	}
@@ -228,7 +241,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 */
 	public void setSprite(final Sprite sprite) {
 		this.sprite = sprite;
-
+		
 		hitbox = new Hitbox(new DistanceValue(this.sprite.getWidth()), new DistanceValue(this.sprite.getHeight()));
 	}
 	
@@ -240,9 +253,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void draw(final DrawingGraphics g) {
 		draw(g, location);
 		
-		if(RPG.showHitbox) g.drawRect(location.getX().getValuePixel()
-				- Camera.location.getX().getValuePixel(), location.getY().getValuePixel()
-						- Camera.location.getY().getValuePixel(), hitbox.getWidth().getValuePixel(), hitbox.getHeight().getValuePixel());
+		if(RPG.showHitbox) g.drawRect(location.getX().getValuePixel() - Camera.location.getX().getValuePixel(), location.getY().getValuePixel() - Camera.location.getY().getValuePixel(), hitbox.getWidth().getValuePixel(), hitbox.getHeight().getValuePixel());
 	}
 	
 	/**
@@ -250,7 +261,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * like Entity@hash[{@link UUID}, displayName].
 	 *
 	 * @return the textual representation of this {@link Entity}
-	 * @see    Object#toString()
+	 * @see Object#toString()
 	 */
 	@Override
 	public String toString() {
