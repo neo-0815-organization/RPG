@@ -38,7 +38,7 @@ furnace.png
 heart_crystal.png
 house.png
 house_dwarf.png
-house_dwarf2.png
+house_dwarf_2.png
 house_fairy.png
 lamp_standing.png
 leaf_green.png
