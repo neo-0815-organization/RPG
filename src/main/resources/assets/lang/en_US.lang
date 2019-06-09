@@ -1,4 +1,4 @@
 button.singleplayer.name=Singleplayer
 button.multiplayer.name=Multiplayer
-button.skip=->
-button.save.creat=New
+button.skip.name=->
+button.save.create.name=New

@@ -1,8 +1,8 @@
 ore_blue:32:false
-ore_crystal_blue:32:false
+ore_crystal_blue:30:false
 ore_crystal_red:32:false
 ore_empty:32:false
-ore_gold:32:false
+ore_gold:31:false
 ore_green:32:false
 ore_grey:32:false
 ore_red:32:false

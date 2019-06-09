@@ -4,6 +4,8 @@ import static rpg.api.gfx.menus.StartMenu.EXIT_IMAGE;
 import static rpg.api.gfx.menus.StartMenu.EXIT_IMAGE_FOCUS;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.function.Consumer;
@@ -17,6 +19,7 @@ import rpg.api.entity.Player;
 import rpg.api.entity.PlayerController;
 import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
+import rpg.api.scene.DevSave;
 import rpg.api.scene.Save;
 import rpg.api.vector.ModifiableVec2D;
 
@@ -24,7 +27,7 @@ public class SaveMenu extends Menu {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory();
 	private static final File SAVES_DIR = new File(SaveMenu.class.getResource("/").getFile() + "/saves/");
 	
-	private boolean openGame = false, openCharacterSelection;
+	private boolean openGame = false, openCharacterSelection, openDevWorld;
 	
 	public SaveMenu() {
 		final int finalRadius = Statics.scale(85);
@@ -41,8 +44,11 @@ public class SaveMenu extends Menu {
 		addComponent(scroll);
 		
 		final Consumer<String> startSave = name -> {
-			if(name == null) openCharacterSelection = true;
-			else {
+			if(name == null || name == "/dev/") {
+				openCharacterSelection = true;
+				
+				if(name == "/dev/") openDevWorld = true;
+			}else {
 				(RPG.gameField.save = new Save(name)).load();
 				
 				openGame = true;
@@ -78,6 +84,18 @@ public class SaveMenu extends Menu {
 		exit.setFocusImage(EXIT_IMAGE_FOCUS);
 		addComponent(exit);
 		
+		setKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyPressed(final KeyEvent e) {
+				switch(e.getKeyCode()) {
+					case KeyEvent.VK_F6:
+						startSave.accept("/dev/");
+						break;
+				}
+			};
+		});
+		
 		setBackground(RPGButton.BUTTON_TEMPLATE);
 	}
 	
@@ -87,7 +105,8 @@ public class SaveMenu extends Menu {
 			final CharacterSelectMenu charSelect = new CharacterSelectMenu();
 			openSubMenu(charSelect);
 			
-			(RPG.gameField.save = new Save()).load();
+			if(openDevWorld) (RPG.gameField.save = new DevSave()).load();
+			else(RPG.gameField.save = new Save()).load();
 			
 			final Player p = new Player();
 			p.setLocation(ModifiableVec2D.createXY(0, 0));
@@ -97,6 +116,7 @@ public class SaveMenu extends Menu {
 			
 			openGame = true;
 			openCharacterSelection = false;
+			openDevWorld = false;
 			
 			openSubMenu(new Prolog(20));
 			
