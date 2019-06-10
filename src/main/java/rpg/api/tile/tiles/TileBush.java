@@ -4,12 +4,12 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.tile.Tile;
 
 public class TileBush extends Tile {
-	
+
 	public TileBush() {
-		setHitbox(4, 2);
 		setSprite("bush", "bush");
 	}
-	
+
 	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+	}
 }

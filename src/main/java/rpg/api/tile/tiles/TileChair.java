@@ -10,7 +10,6 @@ public class TileChair extends TypedTile<ChairType> {
 	public TileChair(final ChairType type) {
 		super(type);
 		
-		setHitbox(4);
 		setSprite("chair", type.name);
 	}
 	
@@ -21,7 +20,7 @@ public class TileChair extends TypedTile<ChairType> {
 		FRONT("front"),
 		LEFT("left"),
 		RIGHT("right"),
-		BACK("normal");
+		BACK("back");
 		
 		private final String name;
 		

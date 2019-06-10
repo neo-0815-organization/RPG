@@ -1,9 +1,6 @@
 package rpg.api.gfx.menus;
 
 import java.awt.Color;
-import java.awt.MouseInfo;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JTextArea;
 
@@ -56,15 +53,6 @@ public class Prolog extends Menu {
 		final RPGButton skip = new RPGButton("skip");
 		skip.setBounds(200, 400, 100, 100);
 		skip.addActionListener(e -> setOpen(false));
-		skip.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(final MouseEvent e) {
-				while(skip.getBounds().contains(MouseInfo.getPointerInfo().getLocation()))
-					skip.setLocation(skip.getX() + 2 * (e.getX() > skip.getWidth() / 2 ? -(skip.getHeight() - e.getX()) : e.getX()), skip.getY() + 2 * (e.getY() > skip.getHeight() / 2 ? -(skip.getHeight() - e.getY()) : e.getY()));
-				skip.repaint();
-			}
-		});
 		addComponent(skip);
 		
 		addComponent(label);

@@ -10,7 +10,6 @@ import rpg.api.tile.Tile;
 public class TileBarrel extends Tile {
 	
 	public TileBarrel() {
-		setHitbox(2);
 		setSprite("barrel", "barrel");
 	}
 	

@@ -5,18 +5,19 @@ import java.awt.event.KeyEvent;
 import rpg.api.entity.Person;
 import rpg.api.gfx.GameFrame;
 import rpg.api.gfx.menus.StartMenu;
+import rpg.api.listener.key.KeyState;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.localization.StringLocalizer;
 import rpg.api.scene.GameField;
-import rpg.api.vector.Vec2D;
 
 /**
  * The main class of this project.
  */
 public class RPG {
-	public static GameFrame gameFrame;
-	public static GameField gameField;
-	//	public static Preferences prefs;
+	public static boolean	showHitbox	= false;
+	public static GameFrame	gameFrame;
+	public static GameField	gameField;
+	// public static Preferences prefs;
 	
 	public static void main(final String[] args) {
 		StringLocalizer.setActiveLocale(args != null && args.length != 0 ? args[0] : "de_DE");
@@ -44,14 +45,15 @@ public class RPG {
 	}
 	
 	private static void registerKeys() {
+		KeyboardListener.registerKey(KeyEvent.VK_F1, (state) -> {
+			if(state == KeyState.PRESSING) showHitbox = !showHitbox;
+		});
 		KeyboardListener.registerKey(KeyEvent.VK_W, (state) -> {
 			switch(state) {
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_W);
 					break;
 				case RELEASING:
-					// System.out.println("Released");
-					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
 					break;
 				default:
 					break;
@@ -63,7 +65,6 @@ public class RPG {
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_A);
 					break;
 				case RELEASING:
-					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
 					break;
 				default:
 					break;
@@ -75,7 +76,6 @@ public class RPG {
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_S);
 					break;
 				case RELEASING:
-					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
 					break;
 				default:
 					break;
@@ -87,7 +87,6 @@ public class RPG {
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_D);
 					break;
 				case RELEASING:
-					gameField.getPlayerController().getPlayer().setVelocity(Vec2D.ORIGIN.toModifiable());
 					break;
 				default:
 					break;

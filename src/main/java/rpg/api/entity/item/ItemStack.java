@@ -9,47 +9,47 @@ public class ItemStack extends Entity {
 	protected ItemType		type;
 	protected final boolean	questItem;
 	protected int			stackSize;
-	
+
 	public ItemStack(final String name) {
 		this(name, false);
 	}
-	
+
 	public ItemStack(final String name, final boolean questItem) {
-		super("item." + name);
-		
+		super("item." + name, false);
+
 		this.questItem = questItem;
 	}
-	
+
 	public boolean isQuestItem() {
 		return questItem;
 	}
-	
+
 	@Override
 	public Hitbox getHitbox() {
 		return null;
 	}
-	
+
 	@Override
 	public void triggerEvent(final EventType eventType, final Object... objects) {
-		
+
 	}
-	
+
 	protected enum ItemType implements PathModifier {
 		NONE("none"),
 		WEAPON("weapon"),
 		ARMOR("armor");
-		
+
 		private String pathMod;
-		
+
 		private ItemType(final String pathMod) {
 			this.pathMod = pathMod;
 		}
-		
+
 		@Override
 		public String getPathModifier() {
 			return pathMod;
 		}
-		
+
 		@Override
 		public String getPrePath() {
 			return "item.";

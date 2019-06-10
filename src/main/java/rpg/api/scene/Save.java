@@ -23,16 +23,13 @@ import rpg.api.tile.Tile;
 
 public class Save {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory() && file.getName().startsWith("new_save_");
-	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>(), DEFAULT_DEV_SETTINGS = new HashMap<>();
+	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>();
 	
 	static {
 		//		DEFAULT_SETTINGS.put("background", "testWorld");
 		//		DEFAULT_SETTINGS.put("background", "beautifulWorld");
 		DEFAULT_SETTINGS.put("background", "beautifulWorld2");
 		DEFAULT_SETTINGS.put("entities", Collections.EMPTY_LIST);
-		
-		DEFAULT_DEV_SETTINGS.put("background", "dev/world");
-		DEFAULT_DEV_SETTINGS.put("entities", Collections.EMPTY_LIST);
 	}
 	
 	public Background background;
@@ -41,15 +38,19 @@ public class Save {
 	public LinkedList<Tile> tiles = new LinkedList<>();
 	public Player player;
 	
-	private final String name, filePath, entityDir;
-	private final GameData data;
+	protected final String name, filePath, entityDir;
+	protected final GameData data;
 	
-	public Save(final String name) {
+	protected Save(final String name, final HashMap<String, Object> data) {
 		this.name = name;
 		filePath = "saves/" + name + "/";
 		entityDir = filePath + "entities/";
 		
-		data = new GameData(filePath, "level.save", DEFAULT_SETTINGS);
+		this.data = new GameData(filePath, "level.save", data);
+	}
+	
+	public Save(final String name) {
+		this(name, DEFAULT_SETTINGS);
 	}
 	
 	public Save() {

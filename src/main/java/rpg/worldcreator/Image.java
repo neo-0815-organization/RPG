@@ -3,7 +3,9 @@ package rpg.worldcreator;
 import static rpg.worldcreator.Data.tileSize;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 
+import rpg.Logger;
 import rpg.api.gfx.ImageUtility;
 
 public class Image {

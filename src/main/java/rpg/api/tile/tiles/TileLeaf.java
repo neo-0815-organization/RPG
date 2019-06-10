@@ -6,27 +6,27 @@ import rpg.api.tile.TypedTile;
 import rpg.api.tile.tiles.TileLeaf.LeafType;
 
 public class TileLeaf extends TypedTile<LeafType> {
-	
+
 	public TileLeaf(final LeafType type) {
 		super(type);
-		
-		setHitbox(1);
+
 		setSprite("leaf", type.name);
 	}
-	
+
 	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
-	
+	public void triggerEvent(final EventType eventType, final Object... objects) {
+	}
+
 	public enum LeafType implements TileType {
 		GREEN("leaf_green"),
 		ORANGE("leaf_orange");
-		
+
 		private final String name;
-		
+
 		private LeafType(final String name) {
 			this.name = name;
 		}
-		
+
 		@Override
 		public String getName() {
 			return name;

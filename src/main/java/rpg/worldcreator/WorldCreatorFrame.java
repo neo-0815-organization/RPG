@@ -462,7 +462,7 @@ public class WorldCreatorFrame extends JFrame {
 					final String name = buf.readString();
 					
 					final String picFile = RPGWorldCreator.getMapDir(i) + "/" + name + ".png";
-					RPGWorldCreator.getImageMap(i).put(name, id, i == 1 ? RPGWorldCreator.getScaledImage(picFile) : RPGWorldCreator.getImage(picFile));
+					RPGWorldCreator.getImageMap(i).put(name, id, i == 2 ? RPGWorldCreator.getScaledImage(picFile) : RPGWorldCreator.getImage(picFile));
 				}
 			}
 			

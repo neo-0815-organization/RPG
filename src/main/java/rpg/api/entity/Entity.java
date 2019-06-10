@@ -1,5 +1,6 @@
 package rpg.api.entity;
 
+import java.util.List;
 import java.util.UUID;
 
 import rpg.RPG;
@@ -12,7 +13,10 @@ import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
 import rpg.api.localization.INameable;
-import rpg.api.tile.tiles.TileTent;
+import rpg.api.scene.Camera;
+import rpg.api.tile.Fluid;
+import rpg.api.tile.Tile;
+import rpg.api.units.DistanceValue;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
 
@@ -29,15 +33,30 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	protected String displayName, imageName;
 	protected UUID uuid;
 	protected Hitbox hitbox;
+	protected boolean solid;
 	
 	/**
 	 * Constructs a new {@link Entity} with the display name 'name'.
-	 * 
+	 *
 	 * @param name
 	 *            the display name to set
 	 */
 	public Entity(final String name) {
+		this(name, false);
+	}
+	
+	/**
+	 * Constructs a new {@link Entity} with the display name 'name' and the
+	 * solid state 'solid'.
+	 *
+	 * @param name
+	 *            the display name to set
+	 * @param solid
+	 *            the solid state
+	 */
+	public Entity(final String name, final boolean solid) {
 		setDisplayName(name);
+		this.solid = solid;
 		
 		uuid = UUID.randomUUID();
 	}
@@ -189,21 +208,29 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	
 	/**
 	 * Updates this {@link Entity}.
-	 * 
+	 *
 	 * @param deltaTime
 	 *            time since last frame in sec
 	 */
 	public void update(final double deltaTime) {
+		final ModifiableVec2D loc = location.clone();
+		List<Tile> tiles = RPG.gameField.checkCollisionTiles(this);
+		
+		if(tiles.stream().anyMatch(t -> t instanceof Fluid)) velocity.add(Fluid.acceleration);
+		
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
 		
 		sprite.update(deltaTime);
 		
-		//TODO reset
-		RPG.gameField.checkCollisionTiles(this).forEach(t -> {
-			if(t instanceof TileTent) t.triggerEvent(EventType.COLLISION_EVENT,t ,this); 
-			else getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t);
-		});
-		RPG.gameField.checkCollisionEntities(this).forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
+		tiles = RPG.gameField.checkCollisionTiles(this);
+		final List<Entity> entities = RPG.gameField.checkCollisionEntities(this);
+		
+		tiles.forEach(t -> t.triggerEvent(EventType.COLLISION_EVENT, t, this));
+		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
+		
+		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid))) location = loc;
+		
+		velocity.scale(0);
 	}
 	
 	/**
@@ -214,11 +241,19 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 */
 	public void setSprite(final Sprite sprite) {
 		this.sprite = sprite;
+		
+		hitbox = new Hitbox(new DistanceValue(this.sprite.getWidth()), new DistanceValue(this.sprite.getHeight()));
+	}
+	
+	protected void setHitbox(final double width, final double height) {
+		hitbox = new Hitbox(width, height);
 	}
 	
 	@Override
 	public void draw(final DrawingGraphics g) {
 		draw(g, location);
+		
+		if(RPG.showHitbox) g.drawRect(location.getX().getValuePixel() - Camera.location.getX().getValuePixel(), location.getY().getValuePixel() - Camera.location.getY().getValuePixel(), hitbox.getWidth().getValuePixel(), hitbox.getHeight().getValuePixel());
 	}
 	
 	/**
