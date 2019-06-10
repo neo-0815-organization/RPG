@@ -225,7 +225,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		tiles = RPG.gameField.checkCollisionTiles(this);
 		final List<Entity> entities = RPG.gameField.checkCollisionEntities(this);
 		
-		tiles.forEach(t -> getHitbox().triggerEvent(EventType.COLLISION_EVENT, this, t));
+		tiles.forEach(t -> t.triggerEvent(EventType.COLLISION_EVENT, t, this));
 		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
 		
 		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid))) location = loc;

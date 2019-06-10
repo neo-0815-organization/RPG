@@ -1,6 +1,10 @@
 package rpg.api.tile.tiles;
 
+import java.util.LinkedList;
+
+import rpg.RPG;
 import rpg.api.eventhandling.EventType;
+import rpg.api.scene.Background;
 import rpg.api.tile.TileTypeSized;
 import rpg.api.tile.TypedTile;
 import rpg.api.tile.tiles.TileTent.TentType;
@@ -14,9 +18,8 @@ public class TileTent extends TypedTile<TentType> {
 	}
 
 	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-	}
-
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
+  
 	public enum TentType implements TileTypeSized {
 		NORMAL("tent_normal", 3, 2),
 		RED("tent_red", 2, 2),
