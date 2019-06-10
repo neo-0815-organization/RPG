@@ -69,7 +69,7 @@ public class Save {
 		try {
 			data.load();
 			
-			background = new Background((String) data.get("background"));
+			changeBackground((String) data.get("background"));
 			
 			final UUID playerUUID = (UUID) data.get("player");
 			final ArrayList<UUID> uuids = (ArrayList<UUID>) data.get("entities");
@@ -85,9 +85,6 @@ public class Save {
 					Logger.error(e);
 				}
 			});
-			
-			fluids = new LinkedList<>(background.getFluids());
-			tiles = new LinkedList<>(background.getTiles());
 		}catch(final IOException e) {
 			Logger.error(e);
 		}
@@ -111,5 +108,17 @@ public class Save {
 		}catch(final IOException e) {
 			Logger.error(e);
 		}
+	}
+	
+	public void changeBackground(final String name) {
+		if(background.getName().equals(name)) Logger.info("Reloading current background '" + name + "'...");
+		
+		background = new Background(name);
+		
+		fluids = new LinkedList<>(background.getFluids());
+		tiles = new LinkedList<>(background.getTiles());
+		
+		background.getFluids().clear();
+		background.getTiles().clear();
 	}
 }

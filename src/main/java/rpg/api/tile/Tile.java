@@ -5,6 +5,7 @@ import rpg.api.collision.Hitbox;
 import rpg.api.collision.ICollideable;
 import rpg.api.entity.Entity;
 import rpg.api.eventhandling.EventTrigger;
+import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.ISprite;
 import rpg.api.gfx.Sprite;
@@ -112,4 +113,7 @@ public abstract class Tile implements ISprite, ICollideable, EventTrigger {
 		
 		sprite.setAnimation(anims[0]);
 	}
+	
+	@Override
+	public void triggerEvent(final EventType eventType, final Object... objects) {}
 }

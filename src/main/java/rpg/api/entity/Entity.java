@@ -214,21 +214,19 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 */
 	public void update(final double deltaTime) {
 		final ModifiableVec2D loc = location.clone();
+		
 		List<Tile> tiles = RPG.gameField.checkCollisionTiles(this);
-		
-		if(tiles.stream().anyMatch(t -> t instanceof Fluid)) velocity.add(Fluid.acceleration);
-		
-		location.add(velocity.toUnmodifiable().scale(deltaTime));
-		
-		sprite.update(deltaTime);
-		
-		tiles = RPG.gameField.checkCollisionTiles(this);
 		final List<Entity> entities = RPG.gameField.checkCollisionEntities(this);
 		
 		tiles.forEach(t -> t.triggerEvent(EventType.COLLISION_EVENT, t, this));
 		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
 		
+		location.add(velocity.toUnmodifiable().scale(deltaTime));
+		
+		tiles = RPG.gameField.checkCollisionTiles(this);
 		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid))) location = loc;
+		
+		sprite.update(deltaTime);
 		
 		velocity.scale(0);
 	}

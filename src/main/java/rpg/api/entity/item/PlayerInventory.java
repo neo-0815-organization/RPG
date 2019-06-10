@@ -12,7 +12,7 @@ import rpg.api.gfx.DrawingGraphics;
 import rpg.api.gfx.IDrawable;
 import rpg.api.listener.key.KeyboardListener;
 
-public class InventoryPlayer extends Inventory {
+public class PlayerInventory extends Inventory {
 	private static final int HOTBAR_SLOTS = 4, INVENTORY_ROWS = 4, MAX_INVENTORY_SIZE = HOTBAR_SLOTS * INVENTORY_ROWS;
 	
 	private final LinkedList<ItemStack> questItems = new LinkedList<>();
@@ -20,11 +20,11 @@ public class InventoryPlayer extends Inventory {
 	
 	public int selectedSlot = 0;
 	
-	public InventoryPlayer() {
+	public PlayerInventory() {
 		super(MAX_INVENTORY_SIZE);
 	}
 	
-	public InventoryPlayer(final Inventory inv) {
+	public PlayerInventory(final Inventory inv) {
 		super(inv.getMaxSize());
 		
 		inv.items.forEach(items::add);
@@ -84,7 +84,7 @@ public class InventoryPlayer extends Inventory {
 		
 		private String text = "";
 		private long textTime = 0;
-		private final InventoryPlayer playerInv;
+		private final PlayerInventory playerInv;
 		
 		static {
 			KeyboardListener.registerKey(KeyEvent.VK_E, (state) -> {
@@ -94,7 +94,7 @@ public class InventoryPlayer extends Inventory {
 					case RELEASING:
 						return;
 					case PRESSING:
-						final InventoryPlayer inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+						final PlayerInventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
 						inv.renderer.showInv = !inv.renderer.showInv;
 						break;
 				}
@@ -106,7 +106,7 @@ public class InventoryPlayer extends Inventory {
 					case RELEASING:
 						return;
 					case PRESSING:
-						final InventoryPlayer inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+						final PlayerInventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
 						inv.renderer.showQuest = !inv.renderer.showQuest;
 						break;
 				}
@@ -118,7 +118,7 @@ public class InventoryPlayer extends Inventory {
 					case PRESSED:
 						return;
 					case PRESSING:
-						final InventoryPlayer inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+						final PlayerInventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
 						if(inv.selectedSlot >= 1) inv.selectedSlot--;
 						break;
 				}
@@ -130,7 +130,7 @@ public class InventoryPlayer extends Inventory {
 					case PRESSED:
 						return;
 					case PRESSING:
-						final InventoryPlayer inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+						final PlayerInventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
 						if(inv.selectedSlot < MAX_INVENTORY_SIZE - 1) inv.selectedSlot++;
 						break;
 				}
@@ -142,7 +142,7 @@ public class InventoryPlayer extends Inventory {
 					case PRESSED:
 						return;
 					case PRESSING:
-						final InventoryPlayer inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+						final PlayerInventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
 						if(inv.selectedSlot < MAX_INVENTORY_SIZE - HOTBAR_SLOTS) inv.selectedSlot += HOTBAR_SLOTS;
 						break;
 				}
@@ -154,7 +154,7 @@ public class InventoryPlayer extends Inventory {
 					case PRESSED:
 						return;
 					case PRESSING:
-						final InventoryPlayer inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
+						final PlayerInventory inv = RPG.gameField.getPlayerController().getPlayer().getInventory();
 						if(inv.selectedSlot >= HOTBAR_SLOTS) inv.selectedSlot -= HOTBAR_SLOTS;
 						break;
 				}
@@ -172,7 +172,7 @@ public class InventoryPlayer extends Inventory {
 			});
 		}
 		
-		public InventoryRenderer(final InventoryPlayer playerInv) {
+		public InventoryRenderer(final PlayerInventory playerInv) {
 			this.playerInv = playerInv;
 		}
 		
