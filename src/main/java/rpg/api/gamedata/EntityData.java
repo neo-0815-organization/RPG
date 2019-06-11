@@ -15,37 +15,34 @@ import rpg.api.vector.Vec2D;
 
 /**
  * A class representing the data of an {@link Entity}.
- * 
+ *
  * @author Neo Hornberger, Alexander Schallenberg, Vincent Grewer
  */
 public class EntityData extends GameData {
 	private Entity e;
-	private final UUID uuid;
 	
 	/**
 	 * Constructs a new data representation of an {@link Entity}.
-	 * 
+	 *
 	 * @param entity
-	 *            the {@link Entity} which data should be representated by this
-	 *            {@link EntityData}
+	 *               the {@link Entity} which data should be representated by this
+	 *               {@link EntityData}
 	 * @param path
-	 *            the directory where the {@link EntityData} file
-	 *            ("{@code path}/{@code entity.getUniqueId().toString()}.data")
-	 *            is stored
+	 *               the directory where the {@link EntityData} file
+	 *               ("{@code path}/{@code entity.getUniqueId().toString()}.data")
+	 *               is stored
 	 */
 	public EntityData(final Entity entity, final String path) {
 		super(path, entity.getUniqueId().toString() + ".data");
 		
 		e = entity;
-		uuid = entity.getUniqueId();
 	}
 	
 	public EntityData(final UUID uuid, final String path) {
 		super(path, uuid.toString() + ".data");
-		
-		this.uuid = uuid;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void load() throws IOException {
 		super.load();

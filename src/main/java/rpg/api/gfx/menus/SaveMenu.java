@@ -25,7 +25,7 @@ import rpg.api.vector.ModifiableVec2D;
 
 public class SaveMenu extends Menu {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory();
-	private static final File SAVES_DIR = new File(SaveMenu.class.getResource("/").getFile() + "/saves/");
+	private static final File       SAVES_DIR  = new File("/saves/");
 	
 	private boolean openGame = false, openCharacterSelection, openDevWorld;
 	
@@ -48,7 +48,7 @@ public class SaveMenu extends Menu {
 				openCharacterSelection = true;
 				
 				if(name == "/dev/") openDevWorld = true;
-			}else {
+			} else {
 				(RPG.gameField.save = new Save(name)).load();
 				
 				openGame = true;

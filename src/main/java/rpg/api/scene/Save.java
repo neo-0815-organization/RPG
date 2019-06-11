@@ -22,23 +22,23 @@ import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
 
 public class Save {
-	private static final FileFilter DIR_FILTER = file -> file.isDirectory() && file.getName().startsWith("new_save_");
+	private static final FileFilter              DIR_FILTER       = file -> file.isDirectory() && file.getName().startsWith("new_save_");
 	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>();
 	
 	static {
-		//		DEFAULT_SETTINGS.put("background", "testWorld");
-		//		DEFAULT_SETTINGS.put("background", "beautifulWorld");
+		// DEFAULT_SETTINGS.put("background", "testWorld");
+		// DEFAULT_SETTINGS.put("background", "beautifulWorld");
 		DEFAULT_SETTINGS.put("background", "beautifulWorld2");
 		DEFAULT_SETTINGS.put("entities", Collections.EMPTY_LIST);
 	}
 	
-	public Background background;
+	public Background         background;
 	public LinkedList<Entity> entities = new LinkedList<>();
-	public LinkedList<Fluid> fluids = new LinkedList<>();
-	public LinkedList<Tile> tiles = new LinkedList<>();
-	public Player player;
+	public LinkedList<Fluid>  fluids   = new LinkedList<>();
+	public LinkedList<Tile>   tiles    = new LinkedList<>();
+	public Player             player;
 	
-	protected final String name, filePath, entityDir;
+	protected final String   name, filePath, entityDir;
 	protected final GameData data;
 	
 	protected Save(final String name, final HashMap<String, Object> data) {
@@ -54,7 +54,7 @@ public class Save {
 	}
 	
 	public Save() {
-		final int num = Arrays.stream(new File(getClass().getResource("/").getFile() + "/saves/").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
+		final int num = Arrays.stream(new File("/saves/").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
 			return Math.max(number, Integer.valueOf(file.getName().replace("new_save_", "")));
 		}, (a, b) -> a);
 		
@@ -72,6 +72,7 @@ public class Save {
 			changeBackground((String) data.get("background"));
 			
 			final UUID playerUUID = (UUID) data.get("player");
+			@SuppressWarnings("unchecked")
 			final ArrayList<UUID> uuids = (ArrayList<UUID>) data.get("entities");
 			uuids.forEach(uuid -> {
 				try {
@@ -81,11 +82,11 @@ public class Save {
 					
 					if(ed.getEntity().getUniqueId().equals(playerUUID)) RPG.gameField.setPlayerController(new PlayerController((Player) ed.getEntity()));
 					else entities.add(ed.getEntity());
-				}catch(final IOException e) {
+				} catch(final IOException e) {
 					Logger.error(e);
 				}
 			});
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			Logger.error(e);
 		}
 	}
@@ -98,14 +99,14 @@ public class Save {
 		entities.parallelStream().forEach(e -> {
 			try {
 				new EntityData(e, entityDir).save();
-			}catch(final IOException ex) {
+			} catch(final IOException ex) {
 				ex.printStackTrace();
 			}
 		});
 		
 		try {
 			data.save();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			Logger.error(e);
 		}
 	}
