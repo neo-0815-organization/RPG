@@ -227,7 +227,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
 
 		tiles = RPG.gameField.checkCollisionTiles(this);
-		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid)) || location.getValueX() <= 0 || location.getValueY() <= 0 || location.getX().getValuePixel() + getWidth() >= RPG.gameField.save.background.getWidth() || location.getY().getValuePixel() + getHeight() >= RPG.gameField.save.background.getHeight()) location = loc;
+		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid)) || location.getValueX() < 0 || location.getValueY() < 0 || location.getX().getValuePixel() + getWidth() > RPG.gameField.save.background.getWidth() || location.getY().getValuePixel() + getHeight() > RPG.gameField.save.background.getHeight()) location = loc;
 
 		sprite.update(deltaTime);
 

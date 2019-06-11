@@ -2,13 +2,13 @@ package rpg.api.tile;
 
 import rpg.api.entity.Entity;
 import rpg.api.eventhandling.EventType;
-import rpg.api.vector.Vec2D;
+import rpg.api.vector.UnmodifiableVec2D;
 
 public abstract class Fluid extends Tile {
-	public static Vec2D<?> acceleration;
+	public UnmodifiableVec2D acceleration;
 
-	public Fluid(final Vec2D<?> acceleration) {
-		Fluid.acceleration = acceleration;
+	public Fluid(final UnmodifiableVec2D acceleration) {
+		this.acceleration = acceleration;
 	}
 
 	@Override
