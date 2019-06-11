@@ -1,6 +1,5 @@
 package rpg.api.scene;
 
-import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.stream.Collectors;
 
 import rpg.Logger;
 import rpg.RPG;
+import rpg.Statics;
 import rpg.api.entity.Entity;
 import rpg.api.entity.Player;
 import rpg.api.entity.PlayerController;
@@ -22,7 +22,7 @@ import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
 
 public class Save {
-	private static final FileFilter              DIR_FILTER       = file -> file.isDirectory() && file.getName().startsWith("new_save_");
+	private static final FileFilter DIR_FILTER = file -> file.isDirectory() && file.getName().startsWith("new_save_");
 	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>();
 	
 	static {
@@ -32,13 +32,13 @@ public class Save {
 		DEFAULT_SETTINGS.put("entities", Collections.EMPTY_LIST);
 	}
 	
-	public Background         background;
+	public Background background;
 	public LinkedList<Entity> entities = new LinkedList<>();
-	public LinkedList<Fluid>  fluids   = new LinkedList<>();
-	public LinkedList<Tile>   tiles    = new LinkedList<>();
-	public Player             player;
+	public LinkedList<Fluid> fluids = new LinkedList<>();
+	public LinkedList<Tile> tiles = new LinkedList<>();
+	public Player player;
 	
-	protected final String   name, filePath, entityDir;
+	protected final String name, filePath, entityDir;
 	protected final GameData data;
 	
 	protected Save(final String name, final HashMap<String, Object> data) {
@@ -54,7 +54,7 @@ public class Save {
 	}
 	
 	public Save() {
-		final int num = Arrays.stream(new File("/saves/").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
+		final int num = Arrays.stream(Statics.fileFromExecutionDir("saves").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
 			return Math.max(number, Integer.valueOf(file.getName().replace("new_save_", "")));
 		}, (a, b) -> a);
 		
@@ -82,11 +82,11 @@ public class Save {
 					
 					if(ed.getEntity().getUniqueId().equals(playerUUID)) RPG.gameField.setPlayerController(new PlayerController((Player) ed.getEntity()));
 					else entities.add(ed.getEntity());
-				} catch(final IOException e) {
+				}catch(final IOException e) {
 					Logger.error(e);
 				}
 			});
-		} catch(final IOException e) {
+		}catch(final IOException e) {
 			Logger.error(e);
 		}
 	}
@@ -99,14 +99,14 @@ public class Save {
 		entities.parallelStream().forEach(e -> {
 			try {
 				new EntityData(e, entityDir).save();
-			} catch(final IOException ex) {
+			}catch(final IOException ex) {
 				ex.printStackTrace();
 			}
 		});
 		
 		try {
 			data.save();
-		} catch(final IOException e) {
+		}catch(final IOException e) {
 			Logger.error(e);
 		}
 	}

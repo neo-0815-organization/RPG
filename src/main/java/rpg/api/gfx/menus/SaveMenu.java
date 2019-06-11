@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.Statics;
 import rpg.api.entity.Player;
@@ -25,7 +26,7 @@ import rpg.api.vector.ModifiableVec2D;
 
 public class SaveMenu extends Menu {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory();
-	private static final File       SAVES_DIR  = new File("/saves/");
+	private static final File SAVES_DIR = Statics.fileFromExecutionDir("saves");
 	
 	private boolean openGame = false, openCharacterSelection, openDevWorld;
 	
@@ -44,11 +45,13 @@ public class SaveMenu extends Menu {
 		addComponent(scroll);
 		
 		final Consumer<String> startSave = name -> {
+			Logger.info("Loading save with name '" + name + "'...");
+			
 			if(name == null || name == "/dev/") {
 				openCharacterSelection = true;
 				
 				if(name == "/dev/") openDevWorld = true;
-			} else {
+			}else {
 				(RPG.gameField.save = new Save(name)).load();
 				
 				openGame = true;
