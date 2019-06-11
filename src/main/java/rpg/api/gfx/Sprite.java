@@ -153,7 +153,7 @@ public class Sprite implements Cloneable {
 	 * @see Animation#getFrameHeight()
 	 */
 	public int getHeight() {
-		return currentAnimation.getFrameWidth();
+		return currentAnimation.getFrameHeight();
 	}
 	
 	/**
