@@ -111,7 +111,7 @@ public class Save {
 	}
 	
 	public void changeBackground(final String name) {
-		if(background.getName().equals(name)) Logger.info("Reloading current background '" + name + "'...");
+		if(background != null && background.getName().equals(name)) Logger.info("Reloading current background '" + name + "'...");
 		
 		background = new Background(name);
 		
