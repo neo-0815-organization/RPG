@@ -13,9 +13,9 @@ public class TileCandle extends TypedTile<CandleType> {
 	}
 	
 	public enum CandleType implements TileType {
-		BRONZE("bronze/candle_bronze"),
-		GOLD("gold/candle_gold"),
-		SILVER("silver/candle_silver");
+		BRONZE("candle_bronze"),
+		GOLD("candle_gold"),
+		SILVER("candle_silver");
 		
 		private final String name;
 		

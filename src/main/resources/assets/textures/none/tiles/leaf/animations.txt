@@ -1,2 +1,2 @@
-leaf_green:32:false
-leaf_orange:32:false
+leaf_green:24:false
+leaf_orange:24:false

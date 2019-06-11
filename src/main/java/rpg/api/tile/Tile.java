@@ -1,5 +1,8 @@
 package rpg.api.tile;
 
+import java.util.NoSuchElementException;
+
+import rpg.Logger;
 import rpg.RPG;
 import rpg.api.collision.Hitbox;
 import rpg.api.collision.ICollideable;
@@ -109,7 +112,12 @@ public abstract class Tile implements ISprite, ICollideable, EventTrigger {
 	 */
 	protected void addAnims0(final String... anims) {
 		for(final String anim : anims)
-			sprite.addAnimation(anim);
+			try {
+				sprite.addAnimation(anim);
+			}catch(final NoSuchElementException e) {
+				Logger.error("Error while adding animation '" + anim + "' to sprite '" + sprite.getName() + "'");
+				Logger.error(e);
+			}
 		
 		sprite.setAnimation(anims[0]);
 	}
