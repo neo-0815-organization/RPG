@@ -1,4 +1,16 @@
 button.singleplayer.name=Singleplayer
 button.multiplayer.name=Multiplayer
-button.skip.name=->
+button.prolog.skip.name=->
 button.save.create.name=New
+button.save.start_game.name=Start
+
+prolog.text=TRANSLATE
+
+char.info.thief.male=TRANSLATE
+char.info.thief.female=TRANSLATE
+char.info.nature.male=TRANSLATE
+char.info.nature.female=TRANSLATE
+char.info.wizzard.male=TRANSLATE
+char.info.wizzard.female=TRANSLATE
+
+dialog.next=>>>(SPACE)

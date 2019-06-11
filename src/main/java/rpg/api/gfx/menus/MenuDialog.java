@@ -17,7 +17,7 @@ import rpg.api.gfx.ImageUtility;
 import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 
-public class DialogMenu extends Menu {
+public class MenuDialog extends Menu {
 	
 	private static final int    MAX_LINE_NUMBER = 13;
 	private final Dialog        dialog;
@@ -26,7 +26,7 @@ public class DialogMenu extends Menu {
 
 	private int actualLineNumber = 0;
 
-	public DialogMenu(final Dialog dialog, final Entity entity) {
+	public MenuDialog(final Dialog dialog, final Entity entity) {
 		this.dialog = dialog;
 
 		entityImage = ImageUtility.scale(entity.getSprite().getAnimation("walking/down").currentFrame(), 11);

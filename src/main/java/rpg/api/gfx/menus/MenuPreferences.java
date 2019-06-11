@@ -22,7 +22,7 @@ import rpg.api.gfx.framework.RPGButton;
 import rpg.api.localization.Locale;
 import rpg.api.localization.StringLocalizer;
 
-public class PreferencesMenu extends Menu {
+public class MenuPreferences extends Menu {
 	private static final BufferedImage ENGLISH = ResourceGetter.getImage("/assets/textures/menu/language/language_english.png"), GERMAN = ResourceGetter.getImage("/assets/textures/menu/language/language_german.png");
 	private static String SETTING_FILE = "H:/Desktop/settings.preferences";
 	
@@ -31,7 +31,7 @@ public class PreferencesMenu extends Menu {
 	private final RPGButton language;
 	private int count;
 	
-	public PreferencesMenu() {
+	public MenuPreferences() {
 		englishSelected = true;
 		language = new RPGButton(ENGLISH);
 		language.setBounds(500, 200, 512, 256);
@@ -59,7 +59,7 @@ public class PreferencesMenu extends Menu {
 		
 		final int finalRadius = Statics.scale(85);
 		
-		final RPGButton exit = new RPGButton(StartMenu.EXIT_IMAGE);
+		final RPGButton exit = new RPGButton(MenuStart.EXIT_IMAGE);
 		exit.setBounds(Statics.frameSize.width - finalRadius, Statics.frameSize.height - finalRadius, finalRadius, finalRadius);
 		exit.disableBorder();
 		exit.addActionListener(new ActionListener() {
@@ -69,7 +69,7 @@ public class PreferencesMenu extends Menu {
 				setOpen(false);
 			}
 		});
-		exit.setFocusImage(StartMenu.EXIT_IMAGE_FOCUS);
+		exit.setFocusImage(MenuStart.EXIT_IMAGE_FOCUS);
 		addComponent(exit);
 		
 		setBackground(RPGButton.BUTTON_TEMPLATE);

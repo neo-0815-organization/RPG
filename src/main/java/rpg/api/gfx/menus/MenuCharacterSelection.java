@@ -12,14 +12,14 @@ import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 import rpg.api.localization.StringLocalizer;
 
-public class CharacterSelectMenu extends Menu {
+public class MenuCharacterSelection extends Menu {
 	private static BufferedImage maleIMG = ResourceGetter.getImage("/assets/textures/menu/button_male.png"), femaleIMG = ResourceGetter.getImage("/assets/textures/menu/button_female.png");
 	RPGButton male, female, thief, natureGuardian, magican, startGame;
 	
 	boolean maleSelected = true;
 	int currentSelected;
 	
-	public CharacterSelectMenu() {
+	public MenuCharacterSelection() {
 		final Dimension size = Statics.frameSize;
 		male = new RPGButton(maleIMG);
 		male.setBounds((int) (size.width * 0.35), 800, 200, 200);
@@ -90,7 +90,7 @@ public class CharacterSelectMenu extends Menu {
 		});
 		addComponent(magican);
 		
-		startGame = new RPGButton("start_game");
+		startGame = new RPGButton("save.start_game");
 		startGame.setBounds(size.width - 200, size.height - 200, 200, 200);
 		startGame.addActionListener(new ActionListener() {
 			

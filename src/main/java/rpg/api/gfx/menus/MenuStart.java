@@ -13,14 +13,14 @@ import rpg.api.gfx.framework.RPGButton;
  * @author EriDie
  *
  */
-public final class StartMenu extends Menu {
+public final class MenuStart extends Menu {
 	private static final BufferedImage BACKGROUND_IMAGE = ResourceGetter.getImage("/assets/textures/menu/background.png"), SETTINGS_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_options.png"), SETTINGS_IMAGE_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_options_activated.png");
 	private static final BufferedImage SP_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (cyan).png"), MP_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_oval_activated (orange).png");
 	static final BufferedImage EXIT_IMAGE = ResourceGetter.getImage("/assets/textures/menu/button_exit.png"), EXIT_IMAGE_FOCUS = ResourceGetter.getImage("/assets/textures/menu/button_exit_activated.png");
 	
 	private boolean openPref, openSave;
 	
-	public StartMenu() {
+	public MenuStart() {
 		final int rectWidth = Statics.scale(310), rectHeight = Statics.scale(80);
 		
 		final RPGButton singleplayer = new RPGButton("singleplayer");
@@ -58,13 +58,13 @@ public final class StartMenu extends Menu {
 	@Override
 	public void updateMenu() {
 		if(openPref) {
-			openSubMenu(new PreferencesMenu());
+			openSubMenu(new MenuPreferences());
 			
 			openPref = false;
 		}
 		
 		if(openSave) {
-			final SaveMenu menu = new SaveMenu();
+			final MenuSaves menu = new MenuSaves();
 			openSubMenu(menu);
 			
 			if(menu.shouldOpenGame()) setOpen(false);

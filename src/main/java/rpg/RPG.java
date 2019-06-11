@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import rpg.api.entity.Person;
 import rpg.api.gfx.GameFrame;
-import rpg.api.gfx.menus.StartMenu;
+import rpg.api.gfx.menus.MenuStart;
 import rpg.api.listener.key.KeyState;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.localization.StringLocalizer;
@@ -41,7 +41,7 @@ public class RPG {
 	}
 	
 	private static void showStartMenu() {
-		new StartMenu().show();
+		new MenuStart().show();
 	}
 	
 	private static void registerKeys() {

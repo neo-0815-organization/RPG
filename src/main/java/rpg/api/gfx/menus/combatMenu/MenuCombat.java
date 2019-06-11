@@ -23,7 +23,7 @@ import rpg.api.gfx.framework.Menu;
 import rpg.api.gfx.framework.RPGButton;
 import rpg.api.gfx.menus.combatMenu.TextAnimation.MovingPattern;
 
-public class CombatMenu extends Menu {
+public class MenuCombat extends Menu {
 	private static CombatAnimationSheet RUN_ANIM = new CombatAnimationSheet("run.png", 4, 0.1, 3), ATTACK_ANIMATION_SHEET = new CombatAnimationSheet("attack.png", 4, 0.75 / 4d, 4);
 	
 	private final ActionControlPanel actionControlPanel;
@@ -31,7 +31,7 @@ public class CombatMenu extends Menu {
 	
 	public CombatResult combatResult;
 	
-	public CombatMenu(final LivingEntity enemy, final boolean isEscapeable) {
+	public MenuCombat(final LivingEntity enemy, final boolean isEscapeable) {
 		drawPanel = new DrawPanel(enemy, this);
 		//		addComponent(drawPanel); Add itself!
 		
@@ -66,10 +66,10 @@ public class CombatMenu extends Menu {
 		
 		private DrawPanel drawPanel;
 		private LivingEntity enemy, player;
-		private CombatMenu combatMenu;
+		private MenuCombat combatMenu;
 		private boolean isEscapeable;
 		
-		private ActionControlPanel(final DrawPanel drawPanel, final LivingEntity enemy, final boolean isEscapeable, final CombatMenu combatMenu) {
+		private ActionControlPanel(final DrawPanel drawPanel, final LivingEntity enemy, final boolean isEscapeable, final MenuCombat combatMenu) {
 			setSize(SIZE);
 			setLayout(null);
 			actions = new RPGButton[ACTION_COUNT];
@@ -187,7 +187,7 @@ public class CombatMenu extends Menu {
 		
 		public Point playerLoc, enemyLoc;
 		
-		public DrawPanel(final LivingEntity enemy, final CombatMenu menuToAdd) {
+		public DrawPanel(final LivingEntity enemy, final MenuCombat menuToAdd) {
 			setVisible(true);
 			menuToAdd.addComponent(this);
 			createBufferStrategy(2);

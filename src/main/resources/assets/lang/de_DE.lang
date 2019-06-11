@@ -1,7 +1,8 @@
 button.singleplayer.name=Einzelspieler
 button.multiplayer.name=Mehrspieler
-button.skip.name=->
+button.prolog.skip.name=->
 button.save.create.name=Neu
+button.save.start_game.name=Start
 
 prolog.text=Flug Nr. 204, Richtung Bahamas, 17:00 Uhr. Eine Durchsage ertönt durch  die Lautsprecher des Airbus A380: Sehr geehrte Passagiere, hier spricht Ihr Pilot, wir sind gerade über dem Bermudadreieck und es gibt einige Turbulenzen. Wir bitten Sie daher sich zu Ihrem Sitzplatz zu begeben, diesen in Ausgangsposition zu bringen und Ihren Sicherheitsgurt zu schließen. Es besteht kein Grund zur Panik, bitte bewahren Sie Ruhe. Ihr Kapitän Lou van da Louft.  Die Passagiere laufen zu ihren Plätzen und schnallen sich an. Einer von ihnen bist DU! Kurze Zeit später fangen die erwarteten Turbulenzen an.  Du merkst, wie das Flugzeug anfängt zu beben und mit ihm rappelst du in deinem Sitz herum. Dir wird klar, dass dies stärker als gewöhnlich ist. Als plötzlich die Sauerstoffmasken aus der Decke runter kommen, bricht die Absolut totale Panik aus. Der Flugbegleiterin Sandra Saft fliegt der Kognak den sie dir gerade servieren wollte vom Tablett und spritzt durch die ganze Kabine. Und Buff (optional auch Peng, Knall, Bumms oder Rumms). Du siehst ein grelles Licht und alle Lichter gehen aus. 
 
@@ -12,7 +13,7 @@ char.info.nature.female=Die Hüterin der Natur arbeitet als Zoowärterin in eine
 char.info.wizzard.male=Der Illusionist war von früh an von Magie und vor allem von Zaubermeistern, wie Harry Houdini, begeistert. Er übte Tag für Tag an seinen Zauberkünsten, um eine Weltberühmtheit der Magie zu werden, was ihm jedoch leider nicht ganz gelang. Trotzdem konnte er sich gerade noch so mit den Vorführungen seiner Magie auf der Straße über Wasser halten. Bis er sich vorerst dazu entschloss die Straßenmagie aufzugeben und sich im Zirkus zu versuchen. Dies gelang ihm erfolgreich und er fand Gefallen daran seine Magie einem richtigen Publikum, welches nicht nur Zufällig vorbeiläuft, zu präsentieren. Durch seine Künste und Hingabe der Magie gegenüber wurde der Wahrhaftige Harry Houdini auf ihn aufmerksam und lud ihn zu einem Casting als Zauberer Assistent zu seiner Welt Tournee ein. Er war außer sich vor Freude und machte sich unverzüglich an die Arbeit, sich für sein Casting vorzubereiten und überlegte sich neue Tricks. Sie waren innovativ, brillant und atemberaubend. Nach dieser tollen Erfahrung kommt er glücklich wieder Zuhause an und entscheidet sich dazu in den Urlaub zu fliegen
 char.info.wizzard.female=Die Illusionistin war von früh an von Magie und vor allem von Zaubermeistern, wie Harry Houdini, begeistert. Sie übte Tag für Tag an ihren Zauberkünsten, um eine Weltberühmtheit der Magie zu werden, was ihr jedoch leider nicht ganz gelang. Trotzdem konnte sie sich gerade noch so mit den Vorführungen ihrer Magie auf der Straße über Wasser halten. Bis sie sich vorerst dazu entschloss die Straßenmagie aufzugeben und sich im Zirkus zu versuchen. Dies gelang ihr erfolgreich und sie fand Gefallen daran ihre Magie einem richtigen Publikum, welches nicht nur Zufällig vorbeiläuft, zu präsentieren. Durch ihre Künste und Hingabe der Magie gegenüber wurde der Wahrhaftige Harry Houdini auf sie aufmerksam und lud sie zu einem Casting als Co-Zauberer zu seiner Welt Tournee ein. Sie war außer sich vor Freude und machte sich unverzüglich an die Arbeit sich für ihr Casting vorzubereiten und überlegte sich neue Tricks. Sie waren innovativ, brillant und atemberaubend. Nach dieser tollen Erfahrung kommt sie glücklich wieder Zuhause an und entscheidet sich dazu in den Urlaub zu fliegen
 
-dialog.next=>>>(Leertaste)
+dialog.next=>>>(LEERTASTE)
 
 dialog.0.lines=2
 dialog.0.0=Du: "Hallo?"

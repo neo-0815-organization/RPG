@@ -1,7 +1,7 @@
 package rpg.api.gfx.menus;
 
-import static rpg.api.gfx.menus.StartMenu.EXIT_IMAGE;
-import static rpg.api.gfx.menus.StartMenu.EXIT_IMAGE_FOCUS;
+import static rpg.api.gfx.menus.MenuStart.EXIT_IMAGE;
+import static rpg.api.gfx.menus.MenuStart.EXIT_IMAGE_FOCUS;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -24,13 +24,13 @@ import rpg.api.scene.DevSave;
 import rpg.api.scene.Save;
 import rpg.api.vector.ModifiableVec2D;
 
-public class SaveMenu extends Menu {
+public class MenuSaves extends Menu {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory();
 	private static final File SAVES_DIR = Statics.fileFromExecutionDir("saves");
 	
 	private boolean openGame = false, openCharacterSelection, openDevWorld;
 	
-	public SaveMenu() {
+	public MenuSaves() {
 		final int finalRadius = Statics.scale(85);
 		
 		final JPanel savesPane = new JPanel();
@@ -105,7 +105,7 @@ public class SaveMenu extends Menu {
 	@Override
 	protected void updateMenu() {
 		if(openCharacterSelection) {
-			final CharacterSelectMenu charSelect = new CharacterSelectMenu();
+			final MenuCharacterSelection charSelect = new MenuCharacterSelection();
 			openSubMenu(charSelect);
 			
 			if(openDevWorld) (RPG.gameField.save = new DevSave()).load();
@@ -121,7 +121,7 @@ public class SaveMenu extends Menu {
 			openCharacterSelection = false;
 			openDevWorld = false;
 			
-			openSubMenu(new Prolog(20));
+			openSubMenu(new MenuProlog(20));
 			
 			setOpen(false);
 		}
