@@ -6,8 +6,8 @@ import java.util.HashMap;
  * @author Neo Hornberger, Tim Ludwig
  */
 public class KeyboardListener {
-	private static HashMap<Integer, OnKey>			keys	= new HashMap<>();
-	public static final HashMap<Integer, KeyState>	states	= new HashMap<>();
+	private static HashMap<Integer, OnKey>         keys   = new HashMap<>();
+	public static final HashMap<Integer, KeyState> states = new HashMap<>();
 	
 //	private static Thread thread = new Thread("KeyboardListenerThread") {
 //
@@ -19,7 +19,7 @@ public class KeyboardListener {
 //	};
 	
 	public static synchronized void updateKeys() {
-		states.entrySet().parallelStream().filter(entry -> entry.getValue().isActive()).forEach(entry -> {
+		states.entrySet().parallelStream().filter(entry -> keys.containsKey(entry.getKey())).filter(entry -> entry.getValue().isActive()).forEach(entry -> {
 			keys.get(entry.getKey()).onKey(entry.getValue());
 			
 			setState(entry.getKey(), entry.getValue().next());
