@@ -13,11 +13,11 @@ public class TileBottle extends TypedTile<BottleType> {
 	}
 	
 	public enum BottleType implements TileType {
-		BEACH("beach/bottle_beach"),
-		BEACH2("beach2/beach2"),
-		HOLY_WATER("holy_water/bottle_water_holy"),
-		MESSAGE("message/bottle_message"),
-		RIVER("river/bottle_river");
+		BEACH("bottle_beach"),
+		BEACH2("bottle_beach2"),
+		HOLY_WATER("bottle_water_holy"),
+		MESSAGE("bottle_message"),
+		RIVER("bottle_river");
 		
 		private final String name;
 		

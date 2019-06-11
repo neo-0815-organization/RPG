@@ -1,1 +1,1 @@
-chalice:16:false
+chalice:10:false

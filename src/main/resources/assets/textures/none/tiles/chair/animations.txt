@@ -1,4 +1,4 @@
-back:64:false
-front:64:false
-left:64:false
-right:64:false
+back:47:false
+front:47:false
+left:47:false
+right:47:false
