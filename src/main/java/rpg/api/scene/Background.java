@@ -83,7 +83,6 @@ import rpg.api.tile.tiles.TileWagon;
 import rpg.api.tile.tiles.TileWagon.WagonType;
 import rpg.api.tile.tiles.TileWorkbench;
 import rpg.api.units.DistanceValue;
-import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.UnmodifiableVec2D;
 import rpg.api.vector.Vec2D;
 
@@ -203,14 +202,20 @@ public class Background implements IImage {
 		buf.readFromInputStream(streams.get("hitboxes"));
 		
 		final int hitboxCount = buf.readInt();
+		UnmodifiableVec2D location;
+		int hitboxesOnLocation;
+		TileBarrier t;
 		for(int i = 0; i < hitboxCount; i++) {
-			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
-			final int hitboxesOnLocation = buf.readInt();
+			location = UnmodifiableVec2D.createXY(buf.readInt(), buf.readInt());
+			hitboxesOnLocation = buf.readInt();
 			
 			for(int j = 0; j < hitboxesOnLocation; j++) {
 				buf.readInt(); // INFO skip 'tileLayer' for backwards compatibility
 				
-				tiles.add(new TileBarrier(new Hitbox(new DistanceValue(buf.readDouble()), new DistanceValue(buf.readDouble()))));
+				t = new TileBarrier(new Hitbox(new DistanceValue(buf.readDouble()), new DistanceValue(buf.readDouble())));
+				t.setLocation(location);
+				
+				tiles.add(t);
 			}
 		}
 		
