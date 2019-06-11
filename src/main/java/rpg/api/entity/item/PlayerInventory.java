@@ -14,54 +14,54 @@ import rpg.api.listener.key.KeyboardListener;
 
 public class PlayerInventory extends Inventory {
 	private static final int HOTBAR_SLOTS = 4, INVENTORY_ROWS = 4, MAX_INVENTORY_SIZE = HOTBAR_SLOTS * INVENTORY_ROWS;
-	
+
 	private final LinkedList<ItemStack> questItems = new LinkedList<>();
-	private final InventoryRenderer renderer = new InventoryRenderer(this);
-	
+	private final InventoryRenderer     renderer   = new InventoryRenderer(this);
+
 	public int selectedSlot = 0;
-	
+
 	public PlayerInventory() {
 		super(MAX_INVENTORY_SIZE);
 	}
-	
+
 	public PlayerInventory(final Inventory inv) {
 		super(inv.getMaxSize());
-		
+
 		inv.items.forEach(items::add);
 	}
-	
+
 	@Override
 	public boolean addItemStack(final ItemStack stack) {
 		if(stack.isQuestItem()) {
 			questItems.add(stack);
-			
+
 			return true;
-		}else return super.addItemStack(stack);
+		} else return super.addItemStack(stack);
 	}
-	
+
 	@Override
 	public void removeItemStack(final ItemStack stack) {
 		if(stack.isQuestItem()) questItems.remove(stack);
 		else super.removeItemStack(stack);
 	}
-	
+
 	private void throwItem(final int slot) {
 		if(slot >= items.size()) return;
-		
+
 		RPG.gameField.addEntity(items.get(slot));
 		items.get(slot).setLocation(RPG.gameField.getPlayerController().getPlayer().getLocation());
 		items.remove(slot);
 	}
-	
+
 	public void throwCurrentItem() {
 		throwItem(selectedSlot);
 	}
-	
+
 	@Override
 	public InventoryRenderer getRenderer() {
 		return renderer;
 	}
-	
+
 	public static class InventoryRenderer implements IDrawable {
 		private static final int TEXT_SHOW_TIME = 2 * 1000;
 		// @formatter:off
@@ -70,20 +70,18 @@ public class PlayerInventory extends Inventory {
 										   QUEST_SLOT = ResourceGetter.getImage("/assets/textures/overlay/inventory/quest_slot.png"),
 										   INVENTORY_SLOT = ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory_slot.png"),
 										   INVENTORY_SELECTOR = ResourceGetter.getImage("/assets/textures/overlay/inventory/inventory_selector.png");
-		
+
 		private static final int W_INV = HOTBAR_SLOT.getWidth() * HOTBAR_SLOTS,
-								 H_INV = INVENTORY_SLOT.getHeight() * (MAX_INVENTORY_SIZE / HOTBAR_SLOTS - 1),
 								 SLOT_SIZE = HOTBAR_SLOT.getHeight(),
 								 X_INV = gameSize.width - W_INV,
-								 Y_HOT = gameSize.height - SLOT_SIZE,
-								 Y_INV = gameSize.height - H_INV - SLOT_SIZE;
+								 Y_HOT = gameSize.height - SLOT_SIZE;
 		// @formatter:on
 		
-		public boolean showInv = false;
+		public boolean showInv   = false;
 		public boolean showQuest = false;
 		
-		private String text = "";
-		private long textTime = 0;
+		private String                text     = "";
+		private long                  textTime = 0;
 		private final PlayerInventory playerInv;
 		
 		static {

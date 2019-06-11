@@ -95,8 +95,8 @@ public class Background implements IImage {
 	private BufferedImage background;
 	
 	private final ArrayList<Fluid> fluids;
-	private final ArrayList<Tile> tiles;
-	private final String name;
+	private final ArrayList<Tile>  tiles;
+	private final String           name;
 	
 	public Background() {
 		this(null);
@@ -110,7 +110,7 @@ public class Background implements IImage {
 		
 		if(name != null) try {
 			loadFromFile();
-		}catch(final IOException e) {
+		} catch(final IOException e) {
 			Logger.error(e);
 		}
 	}
@@ -202,14 +202,16 @@ public class Background implements IImage {
 		buf.readFromInputStream(streams.get("hitboxes"));
 		
 		final int hitboxCount = buf.readInt();
-		final Hitbox hitbox;
+		// TODO tileBarrier
+		Hitbox hb;
+		int tileLayer;
 		for(int i = 0; i < hitboxCount; i++) {
 			final ModifiableVec2D location = ModifiableVec2D.createXY(buf.readInt(), buf.readInt());
 			final int hitboxesOnLocation = buf.readInt();
 			
 			for(int j = 0; j < hitboxesOnLocation; j++) {
-				final int tileLayer = buf.readInt();
-				final Hitbox hb = new Hitbox(new DistanceValue(buf.readDouble()), new DistanceValue(buf.readDouble()));
+				tileLayer = buf.readInt();
+				hb = new Hitbox(new DistanceValue(buf.readDouble()), new DistanceValue(buf.readDouble()));
 			}
 		}
 		
@@ -217,7 +219,7 @@ public class Background implements IImage {
 		streams.values().parallelStream().forEach(bais -> {
 			try {
 				bais.close();
-			}catch(final IOException e) {
+			} catch(final IOException e) {
 				Logger.error(e);
 			}
 		});

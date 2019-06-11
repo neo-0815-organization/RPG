@@ -166,12 +166,9 @@ public class EditHitboxDialog extends JDialog {
 	private class PointInput extends JPanel {
 		private static final long serialVersionUID = 7343936080384113644L;
 		
-		private final boolean twoTuple;
 		private JFormattedTextField x, y;
 		
 		public PointInput(final String title, final boolean twoTuple, final int width, final int height) {
-			this.twoTuple = twoTuple;
-			
 			setSize(width, height);
 			setLayout(null);
 			
