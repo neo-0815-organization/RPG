@@ -181,7 +181,8 @@ public class PlayerInventory extends Inventory {
 			if(showInv) drawInventory(g);
 			if(showQuest) drawQuests(g);
 			
-			if(showInv || System.currentTimeMillis() - textTime < TEXT_SHOW_TIME) g.drawCenteredString(text, gameSize.width / 2, 0);
+			if(showInv || System.currentTimeMillis() - textTime < TEXT_SHOW_TIME)
+				g.drawCenteredString(text, gameSize.width / 2, 0);
 		}
 		
 		public void setText(final String text) {

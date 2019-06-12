@@ -1,11 +1,13 @@
 package rpg.api.quests;
 
+import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import rpg.Logger;
 import rpg.RPG;
+import rpg.Statics;
 import rpg.api.entity.CharacterType;
 import rpg.api.eventhandling.BundledListener;
 import rpg.api.filehandling.RPGFileReader;
@@ -17,8 +19,10 @@ import rpg.api.localization.StringLocalizer;
  * @author Tim Ludwig, Erik Diers, Jan Unterhuber, Alexander Schallenberg
  */
 public class Quest {
-	private final int id;
-	private final String title, questInfo, map;
+	private final int id, idOfTheQuestBefore;
+	private final String title;
+	private String questInfo;
+	private final String map;
 	private final CharacterType type;
 	private final boolean repeatable;
 	private boolean isFinished = false;
@@ -27,8 +31,9 @@ public class Quest {
 	private final IReward[] rewards;
 	private final BundledListener startListener, endListener;
 	
-	public Quest(final int id, final String map, final CharacterType type, final boolean repeatable, final BundledListener startListener, final BundledListener endListener, final IReward... rewards) {
+	public Quest(final int id, final int idOfTheQuestBefore, final String map, final CharacterType type, final boolean repeatable, final BundledListener startListener, final BundledListener endListener, final IReward... rewards) {
 		this.id = id;
+		this.idOfTheQuestBefore = idOfTheQuestBefore;
 		this.map = map;
 		title = StringLocalizer.localize("quest." + id + ".title");
 		questInfo = StringLocalizer.localize("quest." + id + ".text");
@@ -38,6 +43,11 @@ public class Quest {
 		this.startListener = startListener;
 		this.endListener = endListener;
 		this.rewards = rewards;
+	}
+	
+	public Quest setStartText(String unlocName) {
+		questInfo = Statics.formatToWidth(StringLocalizer.localize(unlocName), 600, new Font("Arial", 0, 20), "<br>");
+		return this;
 	}
 	
 	/**
@@ -56,7 +66,7 @@ public class Quest {
 	 * @return {@code true} if the Link{Quest} can start
 	 */
 	public boolean canStart() {
-		return startListener.isTriggered();
+		return (idOfTheQuestBefore == -1 || QuestHandler.isQuestFinished(idOfTheQuestBefore)) &&  startListener.isTriggered();
 	}
 	
 	/**
@@ -95,7 +105,8 @@ public class Quest {
 	 */
 	public void startQuest() {
 		inProgress = true;
-		Logger.debug("Quest has been started");
+		RPG.getPlayer().getInventory().getRenderer().setText(questInfo);
+		Logger.debug("Quest has been started"); 
 	}
 	
 	/**

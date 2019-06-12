@@ -2,13 +2,22 @@ package rpg;
 
 import java.awt.event.KeyEvent;
 
+import rpg.api.entity.CharacterType;
 import rpg.api.entity.Person;
+import rpg.api.entity.Player;
+import rpg.api.eventhandling.BundledListener;
+import rpg.api.eventhandling.events.Event;
+import rpg.api.eventhandling.events.MoveEvent;
 import rpg.api.gfx.GameFrame;
 import rpg.api.gfx.menus.MenuStart;
 import rpg.api.listener.key.KeyState;
 import rpg.api.listener.key.KeyboardListener;
 import rpg.api.localization.StringLocalizer;
+import rpg.api.quests.Quest;
+import rpg.api.quests.QuestHandler;
+import rpg.api.quests.QuestInit;
 import rpg.api.scene.GameField;
+import rpg.api.eventhandling.EventHandler;
 
 /**
  * The main class of this project.
@@ -21,6 +30,7 @@ public class RPG {
 	
 	public static void main(final String[] args) {
 		StringLocalizer.setActiveLocale(args != null && args.length != 0 ? args[0] : "de_DE");
+		
 		init();
 	}
 	
@@ -32,6 +42,7 @@ public class RPG {
 		gameFrame = new GameFrame();
 		gameField = new GameField();
 		
+		QuestInit.initQuests();
 		showStartMenu();
 		
 		gameField.startUpdating();
@@ -44,12 +55,19 @@ public class RPG {
 		new MenuStart().show();
 	}
 	
+	public static Player getPlayer() {
+		return gameField.getPlayerController().getPlayer();
+	}
+	
 	private static void registerKeys() {
 		KeyboardListener.registerKey(KeyEvent.VK_F1, (state) -> {
 			if(state == KeyState.PRESSING) showHitbox = !showHitbox;
 		});
 		KeyboardListener.registerKey(KeyEvent.VK_W, (state) -> {
 			switch(state) {
+				case PRESSING:
+					EventHandler.handle(new MoveEvent('W'));
+					break;
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_W);
 					break;
@@ -61,6 +79,9 @@ public class RPG {
 		});
 		KeyboardListener.registerKey(KeyEvent.VK_A, (state) -> {
 			switch(state) {
+				case PRESSING:
+					EventHandler.handle(new MoveEvent('A'));
+					break;
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_A);
 					break;
@@ -72,6 +93,9 @@ public class RPG {
 		});
 		KeyboardListener.registerKey(KeyEvent.VK_S, (state) -> {
 			switch(state) {
+				case PRESSING:
+					EventHandler.handle(new MoveEvent('S'));
+					break;
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_S);
 					break;
@@ -83,6 +107,9 @@ public class RPG {
 		});
 		KeyboardListener.registerKey(KeyEvent.VK_D, (state) -> {
 			switch(state) {
+				case PRESSING:
+					EventHandler.handle(new MoveEvent('D'));
+					break;
 				case PRESSED:
 					gameField.getPlayerController().controlPlayerMovement(KeyEvent.VK_D);
 					break;
