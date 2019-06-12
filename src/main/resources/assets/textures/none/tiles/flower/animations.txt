@@ -3,10 +3,10 @@ flower_pink:15:false
 flower_purple_right:16:false
 flower_purple_left:16:false
 flower_red_left:16:false
-flower_red_multiple:40:false
+flower_red_multiple:37:false
 flower_red_right:16:false
 flower_yellow_left:16:false
 flower_yellow_left_low:16:false
-flower_yellow_multiple:40:false
+flower_yellow_multiple:37:false
 flower_yellow_right:16:false
 flower_yellow_right_low:16:false

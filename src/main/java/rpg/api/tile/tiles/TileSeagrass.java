@@ -1,6 +1,5 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.eventhandling.EventType;
 import rpg.api.tile.TileType;
 import rpg.api.tile.TypedTile;
 import rpg.api.tile.tiles.TileSeagrass.SeagrassType;
@@ -10,12 +9,8 @@ public class TileSeagrass extends TypedTile<SeagrassType> {
 	public TileSeagrass(final SeagrassType type) {
 		super(type);
 		
-		setHitbox(0.5);
 		setSprite("seagrass", type.name);
 	}
-	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
 	
 	public enum SeagrassType implements TileType {
 		NORMAL("seagrass"),

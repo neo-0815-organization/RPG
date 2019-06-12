@@ -1,6 +1,5 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.SpriteTheme;
 import rpg.api.tile.TileType;
 import rpg.api.tile.TypedTile;
@@ -11,12 +10,8 @@ public class TileWagon extends TypedTile<WagonType> {
 	public TileWagon(final WagonType type) {
 		super(type);
 		
-		setHitbox(2, 1);
 		setSprite("wagon", SpriteTheme.MOERSBERGE, type.name);
 	}
-	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
 	
 	public enum WagonType implements TileType {
 		NORMAL("wagon"),

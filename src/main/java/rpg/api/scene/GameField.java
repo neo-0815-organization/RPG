@@ -2,7 +2,9 @@ package rpg.api.scene;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
@@ -27,16 +29,16 @@ public class GameField extends Scene {
 	public static final double MAX_DELTA_TIME = 0.21, MIN_DELTA_TIME = 0.015;
 	
 	public static boolean inGame = true;
-	public Save save;
+	public Save           save;
 	
 	private double deltaTime;
-	private long lastFrame = System.currentTimeMillis();
+	private long   lastFrame = System.currentTimeMillis();
 	
 	private Thread update, draw;
 	
 	private final LinkedList<Controller> controller = new LinkedList<>();
-	private PlayerController playerController;
-	private final HUD hud = new HUD();
+	private PlayerController             playerController;
+	private final HUD                    hud        = new HUD();
 	
 	public GameField() {}
 	
@@ -74,13 +76,22 @@ public class GameField extends Scene {
 		update = new Thread("GameLoop") {
 			@Override
 			public void run() {
-				//				addEntity(new Person("Heinz", CharacterSheet.PLAYER_THIEF_FEMALE, 100, "twc", Vec2D.ORIGIN.toModifiable()));
+				// addEntity(new Person("Heinz", CharacterSheet.PLAYER_THIEF_FEMALE, 100, "twc",
+				// Vec2D.ORIGIN.toModifiable()));
 				while(inGame) {
 					deltaTime = (System.currentTimeMillis() - lastFrame) / 1000d;
 					lastFrame = System.currentTimeMillis();
 					
 					if(deltaTime > MAX_DELTA_TIME) deltaTime = MAX_DELTA_TIME;
-					if(deltaTime < MIN_DELTA_TIME) deltaTime = MIN_DELTA_TIME;
+					if(deltaTime < MIN_DELTA_TIME) {
+						try {
+							sleep((long) (MIN_DELTA_TIME * 1000));
+						} catch(final InterruptedException e) {
+							Logger.error(e);
+						}
+
+						deltaTime += MIN_DELTA_TIME;
+					}
 					
 					update(deltaTime);
 					
@@ -125,27 +136,20 @@ public class GameField extends Scene {
 		final LinkedList<Tile> ts = new LinkedList<>();
 		
 		synchronized(save.fluids) {
-			for(final Fluid f : save.fluids)
-				if(f.getHitbox().checkCollision(f.getLocation(), e.getHitbox(), e.getLocation())) ts.add(f);
+			save.fluids.stream().filter(f -> f.getHitbox().checkCollision(f.getLocation(), e.getHitbox(), e.getLocation())).forEach(ts::add);
 		}
 		
 		synchronized(save.tiles) {
-			for(final Tile t : save.tiles)
-				if(t.getHitbox().checkCollision(t.getLocation(), e.getHitbox(), e.getLocation())) ts.add(t);
+			save.tiles.stream().filter(t -> t.getHitbox().checkCollision(t.getLocation(), e.getHitbox(), e.getLocation())).forEach(ts::add);
 		}
 		
 		return ts;
 	}
 	
 	public List<Entity> checkCollisionEntities(final Entity e) {
-		final LinkedList<Entity> entList = new LinkedList<>();
-		
 		synchronized(save.entities) {
-			for(final Entity ent : save.entities)
-				if(ent != e && ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())) entList.add(ent);
+			return save.entities.stream().filter(ent -> ent != e).filter(ent -> ent.getHitbox().checkCollision(ent.getLocation(), e.getHitbox(), e.getLocation())).collect(Collectors.toList());
 		}
-		
-		return entList;
 	}
 	
 	public void removeEntitiesByName(String name) {
@@ -163,12 +167,7 @@ public class GameField extends Scene {
 	
 	public void removeEntity(final Entity entity) {
 		synchronized(save.entities) {
-			for(final Entity e : save.entities)
-				if(e.equals(entity)) {
-					save.entities.remove(e);
-					
-					return;
-				}
+			save.entities.remove(save.entities.stream().filter(e -> e.equals(entity)).findFirst().orElse(null));
 		}
 	}
 	

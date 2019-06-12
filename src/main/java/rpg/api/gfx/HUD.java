@@ -49,7 +49,6 @@ public class HUD implements IDrawable {
 			g.drawImage(MP_ICON, MP_ICON_X, MP_ICON_Y, null);
 			g.pop();
 			
-			// TODO scale Images
 			g.setFont(Statics.defaultFont(20d));
 			drawCenteredString(g, "" + p.getXPLevel(), 26, 114, 35);
 			drawCenteredString(g, "" + p.getHP(), 170, 16, 35);

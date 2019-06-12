@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import rpg.Logger;
+import rpg.Statics;
 import rpg.api.Direction;
 import rpg.api.collision.Hitbox;
 import rpg.api.packethandler.ByteBuffer;
@@ -33,7 +34,7 @@ public class GameData {
 	
 	/**
 	 * Constructs a new representation of data.
-	 * 
+	 *
 	 * @param dir
 	 *            the path to the directory of the {@link File}
 	 * @param file
@@ -45,20 +46,19 @@ public class GameData {
 	
 	/**
 	 * Constructs a new representation of data with given defaults.
-	 * 
+	 *
 	 * @param dir
 	 *            the path tothe directory of the {@link File}
 	 * @param file
 	 *            the filename
 	 * @param data
 	 *            the default data {@link HashMap}
-	 * 
 	 * @see #save()
 	 */
 	public GameData(final String dir, final String file, final HashMap<String, Object> data) {
 		this.dir = dir;
 		filename = file;
-		this.file = new File(getClass().getResource("/").getFile() + "/" + dir + "/" + file);
+		this.file = Statics.fileFromExecutionDir(dir, file);
 		
 		this.data = data;
 		buffer = new ExtendedByteBuffer();

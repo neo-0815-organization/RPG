@@ -1,3 +1,3 @@
-tent_normal:43:false
-tent_red:64:false
-tent_yellow:64:false
+tent_normal:86:false
+tent_red:71:false
+tent_yellow:71:false

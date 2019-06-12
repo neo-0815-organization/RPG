@@ -37,7 +37,7 @@ public class RPGWorldCreator {
 	protected static void loadPictures(final String dir, final TwoValueMap<String, Integer, BufferedImage> map, final HashMap<String, Integer> ids) {
 		final Consumer<String> consumer = new Consumer<String>() {
 			private BufferedImage image = null;
-			private int count = 0, size = 0;
+			private int count = 0, maxSize = 0, minSize = 0;
 			
 			@Override
 			public void accept(String name) {
@@ -46,11 +46,13 @@ public class RPGWorldCreator {
 				name = name.replace(".png", "");
 				
 				if(dir.equals("tiles")) {
-					size = Math.max(image.getWidth(), image.getHeight());
+					minSize = Math.min(image.getWidth(), image.getHeight());
+					maxSize = Math.max(image.getWidth(), image.getHeight());
 					
 					texts.put(name, image.getWidth() / (double) Data.tileSize + "tiles x " + image.getHeight() / (double) Data.tileSize + "tiles");
 					
-					if(size > Data.tileSize) image = ImageUtility.scale(image, Data.tileSize, Data.tileSize);
+					if(maxSize > Data.tileSize) image = ImageUtility.scale(image, Data.tileSize, Data.tileSize);
+					else if(minSize < Data.tileSize) image = ImageUtility.scale(image, Data.tileSize, Data.tileSize);
 				}else if(dir.equals("fluids")) image = image.getSubimage(0, 0, Data.tileSize, Data.tileSize);
 				
 				if(ids.containsKey(name)) map.put(name, ids.get(name), image);

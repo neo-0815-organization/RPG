@@ -1,2 +1,2 @@
-treestump:92:false
-treestump_snowed:92:false
+treestump:41:false
+treestump_snowed:41:false

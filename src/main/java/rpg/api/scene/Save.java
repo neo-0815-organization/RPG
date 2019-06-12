@@ -1,6 +1,5 @@
 package rpg.api.scene;
 
-import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.stream.Collectors;
 
 import rpg.Logger;
 import rpg.RPG;
+import rpg.Statics;
 import rpg.api.entity.Entity;
 import rpg.api.entity.Player;
 import rpg.api.entity.PlayerController;
@@ -23,16 +23,13 @@ import rpg.api.tile.Tile;
 
 public class Save {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory() && file.getName().startsWith("new_save_");
-	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>(), DEFAULT_DEV_SETTINGS = new HashMap<>();
+	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>();
 	
 	static {
-		//		DEFAULT_SETTINGS.put("background", "testWorld");
-		//		DEFAULT_SETTINGS.put("background", "beautifulWorld");
-		DEFAULT_SETTINGS.put("background", "Kristallebene");
+		// DEFAULT_SETTINGS.put("background", "testWorld");
+		// DEFAULT_SETTINGS.put("background", "beautifulWorld");
+		DEFAULT_SETTINGS.put("background", "beautifulWorld2");
 		DEFAULT_SETTINGS.put("entities", Collections.EMPTY_LIST);
-		
-		DEFAULT_DEV_SETTINGS.put("background", "dev/world");
-		DEFAULT_DEV_SETTINGS.put("entities", Collections.EMPTY_LIST);
 	}
 	
 	public Background background;
@@ -41,19 +38,23 @@ public class Save {
 	public LinkedList<Tile> tiles = new LinkedList<>();
 	public Player player;
 	
-	private final String name, filePath, entityDir;
-	private final GameData data;
+	protected final String name, filePath, entityDir;
+	protected final GameData data;
 	
-	public Save(final String name) {
+	protected Save(final String name, final HashMap<String, Object> data) {
 		this.name = name;
 		filePath = "saves/" + name + "/";
 		entityDir = filePath + "entities/";
 		
-		data = new GameData(filePath, "level.save", DEFAULT_SETTINGS);
+		this.data = new GameData(filePath, "level.save", data);
+	}
+	
+	public Save(final String name) {
+		this(name, DEFAULT_SETTINGS);
 	}
 	
 	public Save() {
-		final int num = Arrays.stream(new File(getClass().getResource("/").getFile() + "/saves/").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
+		final int num = Arrays.stream(Statics.fileFromExecutionDir("saves").listFiles(DIR_FILTER)).reduce(-1, (number, file) -> {
 			return Math.max(number, Integer.valueOf(file.getName().replace("new_save_", "")));
 		}, (a, b) -> a);
 		
@@ -68,9 +69,10 @@ public class Save {
 		try {
 			data.load();
 			
-			background = new Background((String) data.get("background"));
+			changeBackground((String) data.get("background"));
 			
 			final UUID playerUUID = (UUID) data.get("player");
+			@SuppressWarnings("unchecked")
 			final ArrayList<UUID> uuids = (ArrayList<UUID>) data.get("entities");
 			uuids.forEach(uuid -> {
 				try {
@@ -84,9 +86,6 @@ public class Save {
 					Logger.error(e);
 				}
 			});
-			
-			fluids = new LinkedList<>(background.getFluids());
-			tiles = new LinkedList<>(background.getTiles());
 		}catch(final IOException e) {
 			Logger.error(e);
 		}
@@ -110,5 +109,17 @@ public class Save {
 		}catch(final IOException e) {
 			Logger.error(e);
 		}
+	}
+	
+	public void changeBackground(final String name) {
+		if(background != null && background.getName().equals(name)) Logger.info("Reloading current background '" + name + "'...");
+		
+		background = new Background(name);
+		
+		fluids = new LinkedList<>(background.getFluids());
+		tiles = new LinkedList<>(background.getTiles());
+		
+		background.getFluids().clear();
+		background.getTiles().clear();
 	}
 }

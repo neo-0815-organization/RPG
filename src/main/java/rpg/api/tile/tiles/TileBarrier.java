@@ -1,6 +1,6 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.eventhandling.EventType;
+import rpg.api.collision.Hitbox;
 import rpg.api.tile.Tile;
 
 public class TileBarrier extends Tile {
@@ -9,6 +9,7 @@ public class TileBarrier extends Tile {
 		setHitbox(1);
 	}
 	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
+	public TileBarrier(final Hitbox hitbox) {
+		this.hitbox = hitbox;
+	}
 }

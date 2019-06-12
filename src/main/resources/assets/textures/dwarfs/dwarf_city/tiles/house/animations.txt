@@ -1,3 +1,2 @@
-house_dwarf_2:250:false
-house_dwarf:150:false
-barrack_dwarf:150:false
+house_dwarf_2:252:false
+house_dwarf:144:false

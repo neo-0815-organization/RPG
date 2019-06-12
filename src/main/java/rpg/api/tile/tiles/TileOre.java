@@ -1,6 +1,5 @@
 package rpg.api.tile.tiles;
 
-import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.SpriteTheme;
 import rpg.api.tile.TileType;
 import rpg.api.tile.TypedTile;
@@ -11,12 +10,8 @@ public class TileOre extends TypedTile<OreType> {
 	public TileOre(final OreType type) {
 		super(type);
 		
-		setHitbox(1);
 		setSprite("ore", SpriteTheme.MOERSBERGWERKE, type.name);
 	}
-	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {}
 	
 	public enum OreType implements TileType {
 		BLUE("ore_blue"),

@@ -1,1 +1,1 @@
-barrack_dwarf:150:false
+barrack_dwarf:256:false

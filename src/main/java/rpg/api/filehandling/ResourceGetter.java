@@ -123,5 +123,4 @@ public class ResourceGetter {
 		
 		return null;
 	}
-	
 }

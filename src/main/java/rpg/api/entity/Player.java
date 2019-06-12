@@ -3,7 +3,7 @@ package rpg.api.entity;
 import rpg.api.collision.Hitbox;
 import rpg.api.entity.item.Inventory;
 import rpg.api.entity.item.InventoryHolder;
-import rpg.api.entity.item.InventoryPlayer;
+import rpg.api.entity.item.PlayerInventory;
 import rpg.api.eventhandling.EventType;
 import rpg.api.units.DistanceValue;
 
@@ -14,7 +14,7 @@ import rpg.api.units.DistanceValue;
  */
 public class Player extends LivingEntity implements InventoryHolder {
 	private float xp, mp;
-	private InventoryPlayer inv;
+	private PlayerInventory inv;
 	
 	/**
 	 * Constructs a player with the standard display name
@@ -24,7 +24,7 @@ public class Player extends LivingEntity implements InventoryHolder {
 		super("entity.player");
 		
 		hitbox = new Hitbox(new DistanceValue(1d), new DistanceValue(1d));
-		inv = new InventoryPlayer();
+		inv = new PlayerInventory();
 		
 		setSprite(CharacterSheet.PLAYER_MAGICAN_MALE.getSprite());
 	}
@@ -35,13 +35,13 @@ public class Player extends LivingEntity implements InventoryHolder {
 	}
 	
 	@Override
-	public InventoryPlayer getInventory() {
+	public PlayerInventory getInventory() {
 		return inv;
 	}
 	
 	@Override
 	public void setInventory(final Inventory inv) {
-		this.inv = new InventoryPlayer(inv);
+		this.inv = new PlayerInventory(inv);
 	}
 	
 	public float getXP() {

@@ -1,2 +1,2 @@
-door:48:false
-door_tattice:48:false
+door:51:false
+door_tattice:51:false

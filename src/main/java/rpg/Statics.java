@@ -6,6 +6,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.swing.JLabel;
 
@@ -58,14 +61,13 @@ public class Statics {
 	public static String formatToWidth(String txt, int width, Font font) {
 		return formatToWidth(txt, width, font, "\n");
 	}
-
 	
 	public static String formatToWidth(String txt, int width, Font font, String seperator) {
 		final char widestChar = 'W';
 		final int charWidth = new JLabel().getFontMetrics(font).stringWidth(widestChar + "");
-		int charsPerRow = (int) ((int) (width / (double)charWidth) * 1.25);
+		final int charsPerRow = (int) ((int) (width / (double) charWidth) * 1.25);
 		
-		for (int currentPos = charsPerRow; currentPos < txt.length(); currentPos += charsPerRow) {
+		for(int currentPos = charsPerRow; currentPos < txt.length(); currentPos += charsPerRow) {
 			int spacePos = 0, lastSpacePos = 0;
 			while((spacePos = txt.indexOf(' ', spacePos)) != -1 && spacePos < currentPos) {
 				lastSpacePos = spacePos;
@@ -78,12 +80,12 @@ public class Statics {
 		return txt;
 	}
 	
-	public static String formatToWidthAsHTML(String txt, int width, Font font) {
+	public static String formatToWidthAsHTML(String txt, final int width, final Font font) {
 		final char widestChar = 'W';
 		final int charWidth = new JLabel().getFontMetrics(font).stringWidth(widestChar + "");
-		int charsPerRow = (int) ((int) (width / (double)charWidth) * 1.25);
+		final int charsPerRow = (int) ((int) (width / (double) charWidth) * 1.25);
 		
-		for (int currentPos = charsPerRow; currentPos < txt.length(); currentPos += charsPerRow) {
+		for(int currentPos = charsPerRow; currentPos < txt.length(); currentPos += charsPerRow) {
 			int spacePos = 0, lastSpacePos = 0;
 			while((spacePos = txt.indexOf(' ', spacePos)) != -1 && spacePos < currentPos) {
 				lastSpacePos = spacePos;
@@ -94,5 +96,23 @@ public class Statics {
 		}
 		
 		return "<html>" + txt + "</html>";
+	}
+	
+	public static File executionDir = new File("/");
+	
+	static {
+		try {
+			executionDir = new File(URLDecoder.decode(Statics.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8"));
+		}catch(final UnsupportedEncodingException e) {
+			executionDir = new File(Statics.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		}
+	}
+	
+	public static File fileFromExecutionDir(final String name) {
+		return fileFromExecutionDir("", name);
+	}
+	
+	public static File fileFromExecutionDir(final String path, final String name) {
+		return new File(executionDir, path + "/" + name);
 	}
 }

@@ -4,9 +4,8 @@ import rpg.api.collision.Hitbox;
 import rpg.api.dialog.Dialog;
 import rpg.api.eventhandling.EventHandler;
 import rpg.api.eventhandling.EventType;
-import rpg.api.eventhandling.events.Event;
 import rpg.api.eventhandling.events.SpeakEvent;
-import rpg.api.gfx.menus.DialogMenu;
+import rpg.api.gfx.menus.MenuDialog;
 import rpg.api.vector.ModifiableVec2D;
 
 public class Person extends LivingEntity {
@@ -30,7 +29,7 @@ public class Person extends LivingEntity {
 	@Override
 	public void triggerEvent(final EventType eventType, final Object... objects) {
 		if(I_PRESSED) {
-			new DialogMenu(new Dialog(dialogName), this).show();
+			new MenuDialog(new Dialog(dialogName), this).show();
 			
 			EventHandler.handle(new SpeakEvent(this));
 			

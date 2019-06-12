@@ -1,7 +1,5 @@
 package rpg.api.collision;
 
-import rpg.api.eventhandling.EventTrigger;
-import rpg.api.eventhandling.EventType;
 import rpg.api.units.DistanceValue;
 import rpg.api.vector.Vec2D;
 
@@ -10,13 +8,8 @@ import rpg.api.vector.Vec2D;
  * 
  * @author Tim Ludwig
  */
-public class Hitbox implements EventTrigger {
+public class Hitbox {
 	private final DistanceValue width, height;
-	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		
-	}
 	
 	public Hitbox(final int tileWidth, final int tileHeight) {
 		this(new DistanceValue((double) tileWidth), new DistanceValue((double) tileHeight));

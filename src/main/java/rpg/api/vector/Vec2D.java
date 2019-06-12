@@ -115,6 +115,10 @@ public abstract class Vec2D<T extends Vec2D<?>> implements Cloneable {
 		return y;
 	}
 	
+	public boolean isOrigin() {
+		return x == 0 && y == 0;
+	}
+	
 	/**
 	 * Returns a human readable representation of this {@link Vec2D} looking
 	 * like Vec2D@hash[x, y]
