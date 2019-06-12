@@ -7,7 +7,7 @@ import rpg.api.eventhandling.events.Event;
 
 public class QuestInit {
 	public static void initQuests() {
-		QuestHandler.addQuest(new Quest(0, -1, "beautifulWorld2", CharacterType.NONE, false, new BundledListener(new BundledListener.EventCondition() {
+		QuestHandler.addQuest(new Quest(0, -1, "Kristallebene", CharacterType.NONE, false, new BundledListener(new BundledListener.EventCondition() {
 			@Override
 			public boolean eventTriggered(Event e) {
 				return true;

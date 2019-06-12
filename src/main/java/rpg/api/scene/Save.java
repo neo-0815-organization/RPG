@@ -28,7 +28,7 @@ public class Save {
 	static {
 		//		DEFAULT_SETTINGS.put("background", "testWorld");
 		//		DEFAULT_SETTINGS.put("background", "beautifulWorld");
-		DEFAULT_SETTINGS.put("background", "beautifulWorld2");
+		DEFAULT_SETTINGS.put("background", "Kristallebene");
 		DEFAULT_SETTINGS.put("entities", Collections.EMPTY_LIST);
 		
 		DEFAULT_DEV_SETTINGS.put("background", "dev/world");

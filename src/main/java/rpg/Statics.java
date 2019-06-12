@@ -56,6 +56,11 @@ public class Statics {
 	}
 	
 	public static String formatToWidth(String txt, int width, Font font) {
+		return formatToWidth(txt, width, font, "\n");
+	}
+
+	
+	public static String formatToWidth(String txt, int width, Font font, String seperator) {
 		final char widestChar = 'W';
 		final int charWidth = new JLabel().getFontMetrics(font).stringWidth(widestChar + "");
 		int charsPerRow = (int) ((int) (width / (double)charWidth) * 1.25);
@@ -66,7 +71,7 @@ public class Statics {
 				lastSpacePos = spacePos;
 				spacePos++;
 			}
-			txt = txt.substring(0, lastSpacePos) + "\n" + txt.substring(lastSpacePos);
+			txt = txt.substring(0, lastSpacePos) + seperator + txt.substring(lastSpacePos);
 			currentPos += 2;
 		}
 		
