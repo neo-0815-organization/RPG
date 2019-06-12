@@ -1,2 +1,2 @@
-wagon:27:false
-wagon_damaged:27:false
+wagon:108:false
+wagon_damaged:108:false
