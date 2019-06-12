@@ -7,7 +7,7 @@ import rpg.api.vector.UnmodifiableVec2D;
 public class FluidWater extends Fluid {
 	
 	public FluidWater() {
-		super(UnmodifiableVec2D.createXY(0.5, 0));
+		super(UnmodifiableVec2D.createXY(1.5, 0));
 		
 		setHitbox(1, 1);
 		

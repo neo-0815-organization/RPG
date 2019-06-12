@@ -27,20 +27,20 @@ import rpg.api.vector.Vec2D;
  */
 public abstract class Entity implements INameable, ISprite, ICollideable, EventTrigger {
 	protected ModifiableVec2D location;
-	protected Sprite          sprite;
-	protected Direction       lookingDirection = Direction.SOUTH;
-	protected ModifiableVec2D velocity         = ModifiableVec2D.ORIGIN.toModifiable();
-	protected ModifiableVec2D fluidVel         = ModifiableVec2D.ORIGIN.toModifiable();
-	protected String          displayName, imageName;
-	protected UUID            uuid;
-	protected Hitbox          hitbox;
-	protected boolean         solid;
+	protected Sprite sprite;
+	protected Direction lookingDirection = Direction.SOUTH;
+	protected ModifiableVec2D velocity = ModifiableVec2D.ORIGIN.toModifiable(), accVel = ModifiableVec2D.ORIGIN.toModifiable();
+	protected String displayName, imageName;
+	protected UUID uuid;
+	protected Hitbox hitbox;
+	protected boolean solid;
+	protected int accAdded;
 	
 	/**
 	 * Constructs a new {@link Entity} with the display name 'name'.
 	 *
 	 * @param name
-	 *             the display name to set
+	 *            the display name to set
 	 */
 	public Entity(final String name) {
 		this(name, false);
@@ -51,9 +51,9 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * solid state 'solid'.
 	 *
 	 * @param name
-	 *              the display name to set
+	 *            the display name to set
 	 * @param solid
-	 *              the solid state
+	 *            the solid state
 	 */
 	public Entity(final String name, final boolean solid) {
 		setDisplayName(name);
@@ -66,10 +66,10 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Accelerates this {@link Entity}.
 	 *
 	 * @param direction
-	 *                  the {@link Direction} to accelerate in
+	 *            the {@link Direction} to accelerate in
 	 * @param force
-	 *                  the amount of accelerating force
-	 * @see             #accelerate(Vec2D)
+	 *            the amount of accelerating force
+	 * @see #accelerate(Vec2D)
 	 */
 	public void accelerate(final Direction direction, final double force) {
 		accelerate(direction.getVector().scale(force));
@@ -211,26 +211,29 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * Updates this {@link Entity}.
 	 *
 	 * @param deltaTime
-	 *                  time since last frame in sec
+	 *            time since last frame in sec
 	 */
 	public void update(final double deltaTime) {
 		final ModifiableVec2D loc = location.clone();
-
+		
 		List<Tile> tiles = RPG.gameField.checkCollisionTiles(this);
 		final List<Entity> entities = RPG.gameField.checkCollisionEntities(this);
-
+		
 		tiles.forEach(t -> t.triggerEvent(EventType.COLLISION_EVENT, t, this));
 		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
 		
-		if(tiles.stream().filter(t -> (t instanceof Fluid)).count() > 0) velocity.add(fluidVel.scale(1d / tiles.stream().filter(t -> (t instanceof Fluid)).count()));
-		fluidVel.scale(0);
+		//if(tiles.stream().filter(t -> (t instanceof Fluid)).count() > 0) velocity.add(accVel.scale(1d / tiles.stream().filter(t -> (t instanceof Fluid)).count()));
+		if(!accVel.isOrigin() && accAdded != 0) velocity.add(accVel.scale(1d / accAdded));
+		accVel.scale(0);
+		accAdded = 0;
+		
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
-
+		
 		tiles = RPG.gameField.checkCollisionTiles(this);
 		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid)) || location.getValueX() < 0 || location.getValueY() < 0 || location.getX().getValuePixel() + getWidth() > RPG.gameField.save.background.getWidth() || location.getY().getValuePixel() + getHeight() > RPG.gameField.save.background.getHeight()) location = loc;
-
+		
 		sprite.update(deltaTime);
-
+		
 		velocity.scale(0);
 	}
 	
@@ -262,18 +265,15 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	 * like Entity@hash[{@link UUID}, displayName].
 	 *
 	 * @return the textual representation of this {@link Entity}
-	 * @see    Object#toString()
+	 * @see Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return super.toString() + "[uuid=" + uuid + ", displayName=" + displayName + "]";
 	}
 	
-	public ModifiableVec2D getFluidVel() {
-		return fluidVel;
-	}
-	
-	public void addFluidVel(final Vec2D<?> acceleration) {
-		fluidVel.add(acceleration);
+	public void addAccVel(final Vec2D<?> acc) {
+		accVel.add(acc);
+		accAdded++;
 	}
 }
