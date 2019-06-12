@@ -286,35 +286,35 @@ public class AnchorableDrawingGraphics extends DrawingGraphics {
 		super.drawString(str, p.getX(), p.getY());
 	}
 	
+	//	@Override
+	//	public void drawCenteredString(final String str, final int x, final int y) {
+	//		
+	//		if (str.indexOf("<br>") != -1) {
+	//			String[] strArr = str.split("<br>");
+	//		
+	//			int addHeight = 0;
+	//			for (int i = 0; i < strArr.length; i++) {
+	//				final Rectangle2D textSize = g().getFontMetrics().getStringBounds(strArr[i], g());
+	//				final Point p = p((int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
+	//				
+	//				super.drawString(strArr[i], p.getX(), p.getY() + addHeight);
+	//				addHeight += textSize.getHeight();
+	//			}
+	//		} else {
+	//			final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
+	//			final Point p = p((int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
+	//			
+	//			super.drawString(str, p.getX(), p.getY());
+	//		}
+	//	}
+	
 	@Override
 	public void drawCenteredString(final String str, final int x, final int y) {
+		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
+		final Point p = p((int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
 		
-		if (str.indexOf("<br>") != -1) {
-			String[] strArr = str.split("<br>");
-		
-			int addHeight = 0;
-			for (int i = 0; i < strArr.length; i++) {
-				final Rectangle2D textSize = g().getFontMetrics().getStringBounds(strArr[i], g());
-				final Point p = p((int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
-				
-				super.drawString(strArr[i], p.getX(), p.getY() + addHeight);
-				addHeight += textSize.getHeight();
-			}
-		} else {
-			final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
-			final Point p = p((int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
-			
-			super.drawString(str, p.getX(), p.getY());
-		}
+		super.drawString(str, p.getX(), p.getY());
 	}
-	
-//	@Override
-//	public void drawCenteredString(final String str, final int x, final int y) {
-//		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
-//		final Point p = p((int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()), textSize.getWidth(), textSize.getHeight());
-//		
-//		super.drawString(str, p.getX(), p.getY());
-//	}
 	
 	@Override
 	public boolean drawImage(final Image img, final int x, final int y, final ImageObserver observer) {

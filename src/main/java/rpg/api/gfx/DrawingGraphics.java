@@ -202,15 +202,10 @@ public class DrawingGraphics extends Graphics2D {
 		g().drawString(str, x, (int) (y + textSize.getHeight()));
 	}
 	
-	public void drawCenteredString(final String str, final int x, int y) {
-		String[] strArr = str.split("<br>");
+	public void drawCenteredString(final String str, final int x, final int y) {
+		final Rectangle2D textSize = g().getFontMetrics().getStringBounds(str, g());
 		
-		for (int i = 0; i < strArr.length; i++) {
-			final Rectangle2D textSize = g().getFontMetrics().getStringBounds(strArr[i], g());
-			
-			g().drawString(strArr[i], (int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()));
-			y += textSize.getHeight();
-		}
+		g().drawString(str, (int) (x - textSize.getWidth() / 2), (int) (y + textSize.getHeight()));
 	}
 	
 	@Override
