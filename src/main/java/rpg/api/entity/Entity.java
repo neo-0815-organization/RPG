@@ -16,6 +16,7 @@ import rpg.api.localization.INameable;
 import rpg.api.scene.Camera;
 import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
+import rpg.api.tile.tiles.TileCastle;
 import rpg.api.units.DistanceValue;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
@@ -216,11 +217,8 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 	public void update(final double deltaTime) {
 		final ModifiableVec2D loc = location.clone();
 		
-		List<Tile> tiles = RPG.gameField.checkCollisionTiles(this);
-		final List<Entity> entities = RPG.gameField.checkCollisionEntities(this);
-		
-		tiles.forEach(t -> t.triggerEvent(EventType.COLLISION_EVENT, t, this));
-		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
+		final List<Fluid> fluids = RPG.gameField.checkCollisionFluids(this);
+		fluids.forEach(f -> f.triggerEvent(EventType.COLLISION_EVENT, f, this));
 		
 		//if(tiles.stream().filter(t -> (t instanceof Fluid)).count() > 0) velocity.add(accVel.scale(1d / tiles.stream().filter(t -> (t instanceof Fluid)).count()));
 		if(!accVel.isOrigin() && accAdded != 0) velocity.add(accVel.scale(1d / accAdded));
@@ -229,8 +227,13 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		
 		location.add(velocity.toUnmodifiable().scale(deltaTime));
 		
-		tiles = RPG.gameField.checkCollisionTiles(this);
-		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof Fluid)) || location.getValueX() < 0 || location.getValueY() < 0 || location.getX().getValuePixel() + getWidth() > RPG.gameField.save.background.getWidth() || location.getY().getValuePixel() + getHeight() > RPG.gameField.save.background.getHeight()) location = loc;
+		final List<Tile> tiles = RPG.gameField.checkCollisionTiles(this);
+		final List<Entity> entities = RPG.gameField.checkCollisionEntities(this);
+		
+		tiles.forEach(t -> t.triggerEvent(EventType.COLLISION_EVENT, t, this));
+		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
+		
+		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof TileCastle)) || location.getValueX() < 0 || location.getValueY() < 0 || location.getX().getValuePixel() + getWidth() > RPG.gameField.save.background.getWidth() || location.getY().getValuePixel() + getHeight() > RPG.gameField.save.background.getHeight()) location = loc;
 		
 		sprite.update(deltaTime);
 		

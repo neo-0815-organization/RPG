@@ -664,7 +664,7 @@ public class WorldCreatorFrame extends JFrame {
 			final ByteBuffer buf = new ByteBuffer();
 			final ArrayList<SpritePane> panes = new ArrayList<>();
 			
-			Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[0].isNull()).forEach(panes::add);
+			Arrays.stream(spritePanes).flatMap(Arrays::stream).filter(pane -> !pane.images[0].isNull()).forEach(panes::add);
 			
 			buf.writeInt(panes.size());
 			panes.stream().forEach(pane -> {
@@ -684,7 +684,7 @@ public class WorldCreatorFrame extends JFrame {
 			final ByteBuffer buf = new ByteBuffer();
 			final ArrayList<SpritePane> panes = new ArrayList<>();
 			
-			Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> !pane.images[2].isNull()).forEach(panes::add);
+			Arrays.stream(spritePanes).flatMap(Arrays::stream).filter(pane -> !pane.images[2].isNull()).forEach(panes::add);
 			
 			buf.writeInt(panes.size());
 			panes.stream().forEach(pane -> {
@@ -704,7 +704,7 @@ public class WorldCreatorFrame extends JFrame {
 			final ByteBuffer buf = new ByteBuffer();
 			final ArrayList<SpritePane> panes = new ArrayList<>();
 			
-			Arrays.stream(spritePanes).parallel().flatMap(Arrays::stream).filter(pane -> {
+			Arrays.stream(spritePanes).flatMap(Arrays::stream).filter(pane -> {
 				for(final WorldCreatorHitbox hitbox : pane.hitboxes)
 					if(!hitbox.isNull()) return true;
 				
@@ -1100,6 +1100,7 @@ public class WorldCreatorFrame extends JFrame {
 	}
 	
 	private void showError(final Exception e) {
+		Logger.error(e);
 		showError(e.getClass().getName() + "\n\n" + e.getMessage());
 	}
 	

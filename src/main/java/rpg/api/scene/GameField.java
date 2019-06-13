@@ -133,17 +133,15 @@ public class GameField extends Scene {
 	}
 	
 	public List<Tile> checkCollisionTiles(final Entity e) {
-		final LinkedList<Tile> ts = new LinkedList<>();
-		
-		synchronized(save.fluids) {
-			save.fluids.stream().filter(f -> f.getHitbox().checkCollision(f.getLocation(), e.getHitbox(), e.getLocation())).forEach(ts::add);
-		}
-		
 		synchronized(save.tiles) {
-			save.tiles.stream().filter(t -> t.getHitbox().checkCollision(t.getLocation(), e.getHitbox(), e.getLocation())).forEach(ts::add);
+			return save.tiles.stream().filter(t -> t.getHitbox().checkCollision(t.getLocation(), e.getHitbox(), e.getLocation())).collect(Collectors.toList());
 		}
-		
-		return ts;
+	}
+	
+	public List<Fluid> checkCollisionFluids(final Entity e) {
+		synchronized(save.fluids) {
+			return save.fluids.stream().filter(f -> f.getHitbox().checkCollision(f.getLocation(), e.getHitbox(), e.getLocation())).collect(Collectors.toList());
+		}
 	}
 	
 	public List<Entity> checkCollisionEntities(final Entity e) {

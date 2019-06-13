@@ -20,16 +20,17 @@ import rpg.api.gamedata.EntityData;
 import rpg.api.gamedata.GameData;
 import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
+import rpg.api.vector.UnmodifiableVec2D;
 
 public class Save {
 	private static final FileFilter DIR_FILTER = file -> file.isDirectory() && file.getName().startsWith("new_save_");
 	private static final HashMap<String, Object> DEFAULT_SETTINGS = new HashMap<>();
 	
 	static {
-		// DEFAULT_SETTINGS.put("background", "testWorld");
-		// DEFAULT_SETTINGS.put("background", "beautifulWorld");
-		DEFAULT_SETTINGS.put("background", "beautifulWorld2");
-		// DEFAULT_SETTINGS.put("background", "Kristallebene");
+		// DEFAULT_SETTINGS.put("background", "test/testWorld");
+		// DEFAULT_SETTINGS.put("background", "test/beautifulWorld");
+		// DEFAULT_SETTINGS.put("background", "test/beautifulWorld2");
+		DEFAULT_SETTINGS.put("background", "dwarf_city");
 		DEFAULT_SETTINGS.put("entities", Collections.EMPTY_LIST);
 	}
 	
@@ -112,7 +113,7 @@ public class Save {
 		}
 	}
 	
-	public void changeBackground(final String name) {
+	public void changeBackground(final String name, final double x, final double y) {
 		if(background != null && background.getName().equals(name)) Logger.info("Reloading current background '" + name + "'...");
 		
 		background = new Background(name);
@@ -122,5 +123,11 @@ public class Save {
 		
 		background.getFluids().clear();
 		background.getTiles().clear();
+		
+		if(player != null) player.setLocation(UnmodifiableVec2D.createXY(x, y));
+	}
+	
+	public void changeBackground(final String name) {
+		changeBackground(name, 0, 0);
 	}
 }

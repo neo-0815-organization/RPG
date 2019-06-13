@@ -1,5 +1,6 @@
 package rpg.api.scene;
 
+import rpg.Logger;
 import rpg.RPG;
 import rpg.Statics;
 import rpg.api.entity.Entity;
@@ -19,6 +20,9 @@ public class Camera {
 	private static int SCALED_2 = Statics.scale(2);
 	
 	public static void update() {
+//		Logger.info(location);
+//		Logger.info(entityToFollow.getLocation());
+		
 		if(entityToFollow != null) {
 			location.setX(new DistanceValue(entityToFollow.getLocation().getX().getValuePixel() + (entityToFollow.getWidth() - Statics.frameSize.width) / SCALED_2));
 			location.setY(new DistanceValue(entityToFollow.getLocation().getY().getValuePixel() + (entityToFollow.getHeight() - Statics.frameSize.height) / SCALED_2));

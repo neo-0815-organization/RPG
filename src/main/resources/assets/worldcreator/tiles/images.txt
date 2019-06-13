@@ -10,6 +10,7 @@ candle_bronze.png
 candle_gold.png
 candle_silver.png
 canvas_sunflower.png
+castle.png
 cauldron.png
 chalice.png
 chest.png
@@ -80,6 +81,7 @@ table_light.png
 tent.png
 tent_red.png
 tent_yellow.png
+train.png
 tree.png
 tree_apple.png
 tree_apple2.png

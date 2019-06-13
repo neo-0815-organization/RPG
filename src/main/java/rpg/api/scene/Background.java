@@ -31,6 +31,7 @@ import rpg.api.tile.tiles.TileBush;
 import rpg.api.tile.tiles.TileCandle;
 import rpg.api.tile.tiles.TileCandle.CandleType;
 import rpg.api.tile.tiles.TileCanvas;
+import rpg.api.tile.tiles.TileCastle;
 import rpg.api.tile.tiles.TileCauldron;
 import rpg.api.tile.tiles.TileChair;
 import rpg.api.tile.tiles.TileChair.ChairType;
@@ -75,6 +76,7 @@ import rpg.api.tile.tiles.TileTable;
 import rpg.api.tile.tiles.TileTable.TableType;
 import rpg.api.tile.tiles.TileTent;
 import rpg.api.tile.tiles.TileTent.TentType;
+import rpg.api.tile.tiles.TileTrain;
 import rpg.api.tile.tiles.TileTree;
 import rpg.api.tile.tiles.TileTree.TreeType;
 import rpg.api.tile.tiles.TileTreestump;
@@ -269,6 +271,8 @@ public class Background implements IImage {
 					return new TileBush();
 				case "canvas_sunflower":
 					return new TileCanvas();
+				case "castle":
+					return new TileCastle();
 				case "cauldron":
 					return new TileCauldron();
 				case "chalice":
@@ -313,6 +317,8 @@ public class Background implements IImage {
 					return new TileSofa();
 				case "tent":
 					return new TileTent(TentType.NORMAL);
+				case "train":
+					return new TileTrain();
 				case "tree":
 					return new TileTree(TreeType.NORMAL);
 				case "workbench":
