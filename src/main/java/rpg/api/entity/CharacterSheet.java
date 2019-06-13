@@ -5,6 +5,7 @@ import rpg.api.gfx.Gender;
 import rpg.api.gfx.PathModifier;
 import rpg.api.gfx.Sprite;
 import rpg.api.gfx.Sprite.WalkableSprite;
+import rpg.api.gfx.SpriteTheme;
 
 public enum CharacterSheet implements PathModifier {
 	PLAYER_THIEF_MALE(CharacterType.THIEF, Gender.MALE),
@@ -12,7 +13,9 @@ public enum CharacterSheet implements PathModifier {
 	PLAYER_NATUREGUARDIAN_MALE(CharacterType.NATURE, Gender.MALE),
 	PLAYER_NATUREGUARDIAN_FEMALE(CharacterType.NATURE, Gender.FEMALE),
 	PLAYER_MAGICAN_MALE(CharacterType.MAGE, Gender.MALE),
-	PLAYER_MAGICAN_FEMALE(CharacterType.MAGE, Gender.FEMALE);
+	PLAYER_MAGICAN_FEMALE(CharacterType.MAGE, Gender.FEMALE),
+	
+	DRAFT_GUARFIAN(CharacterType.DWARFT_GUARIAN_TYPE, Gender.MALE);
 
 	protected CharacterType	type;
 	protected Gender		gender;
@@ -42,7 +45,12 @@ public enum CharacterSheet implements PathModifier {
 	}
 
 	public Sprite getSprite() {
-		return new WalkableSprite(getPath());
+		if (type.hasWalkanimation()) {
+			return new WalkableSprite(getPath());
+		} 
+		Sprite s = Sprite.createSpriteErik();
+		s.addAndSetAnimationSingleImageErik(type.getName());
+		return s;
 	}
 
 	public static CharacterSheet getCharacterSheet(final CharacterType type, final Gender gender) {

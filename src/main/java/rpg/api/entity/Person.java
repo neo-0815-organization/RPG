@@ -30,7 +30,6 @@ public class Person extends LivingEntity {
 	public void triggerEvent(final EventType eventType, final Object... objects) {
 		if(I_PRESSED) {
 			new MenuDialog(new Dialog(dialogName), this).show();
-			
 			EventHandler.handle(new SpeakEvent(this));
 			
 			I_PRESSED = false;

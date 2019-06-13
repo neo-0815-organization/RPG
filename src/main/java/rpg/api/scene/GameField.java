@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import rpg.Logger;
 import rpg.RPG;
+import rpg.api.entity.CharacterSheet;
 import rpg.api.entity.Controller;
 import rpg.api.entity.Entity;
 import rpg.api.entity.LocalController;
+import rpg.api.entity.Person;
 import rpg.api.entity.Player;
 import rpg.api.entity.PlayerController;
 import rpg.api.eventhandling.EventHandler;
@@ -19,6 +21,8 @@ import rpg.api.listener.key.KeyboardListener;
 import rpg.api.quests.QuestHandler;
 import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
+import rpg.api.vector.ModifiableVec2D;
+import rpg.api.vector.UnmodifiableVec2D;
 
 /**
  * The class GameField represents the game world.

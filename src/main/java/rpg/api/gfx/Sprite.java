@@ -27,6 +27,15 @@ public class Sprite implements Cloneable {
 	private double currentFrameDelay;
 	
 	private double frameDelay = 0.2;
+		
+	public static Sprite createSpriteErik() {
+		return new Sprite(1.0, 1.0, 1.0);
+	}
+	
+	private Sprite(double usless1, double usless12, double usless123) {
+		frameDelay = 1;
+		name = "NoName";
+	}
 	
 	public Sprite(final String name) {
 		this(name, SpriteTheme.NONE);
@@ -134,6 +143,18 @@ public class Sprite implements Cloneable {
 			frames.add(animation.getSubimage(0, loadingFrame * frameHeight, animWidth, frameHeight));
 		
 		animations.put(animationName, new Animation(animationName, frameHeight, animWidth, frames, loop));
+	}
+	
+	public void addAndSetAnimationSingleImageErik(final String pathName) {
+		final LinkedList<BufferedImage> frames = new LinkedList<>();
+		
+		final BufferedImage animation = ResourceGetter.getImage("/assets/textures/" + pathName);
+
+		frames.add(animation);
+		
+		animations.put("default", new Animation("default", animation.getHeight(), animation.getWidth(), frames, false));
+		setAnimation("default");
+
 	}
 	
 	/**

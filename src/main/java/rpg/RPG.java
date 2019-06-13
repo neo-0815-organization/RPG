@@ -43,7 +43,9 @@ public class RPG {
 		gameField = new GameField();
 		
 		QuestInit.initQuests();
+		
 		showStartMenu();
+		QuestInit.initPersons();
 		
 		gameField.startUpdating();
 		

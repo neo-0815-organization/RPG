@@ -538,5 +538,10 @@ dialog.30.13=Du: "nicht unendlich viel Zeit. Die Insel nimmt mehr und mehr Schad
 dialog.30.14=Du: "WÃ¼nschen sie mir GlÃ¼ck dabei!"
 dialog.30.15=KÃ¶nig Ludwig: "Spieler, du bist ein wahrer Ehrenmann! Viel GlÃ¼ck!"
 
-quest.0.info=Krabum. Du kriechst aus dem Wrack deines Flugzeuges und fühlst dich komisch, was nicht nur daran liegt, dass du nass bist. Schaue dich um und laufe dafür einmal in jede Himmelsrichtung.Erlerne die Steuerung.
+quest.0.info=Krabum. Du kriechst aus dem Wrack deines Flugzeuges und fühlst dich komisch, was nicht nur daran liegt, dass du nass bist. Schaue dich um und laufe dafür einmal in jede Himmelsrichtung.Erlerne die Steuerung. [Drücke W A S D [Was denn auch sonst?????]]
+quest.1.info=Gehe zu Heinz und lass dich überraschen. [Drücke I um zu Interagieren [Selbstverständlich, nicht wahr? [... Oder??????]]]
 
+credtis.text=Credits:<br><br><br>Projekt-Manager:<br>Manuel Gutsch<br><br>Programmierer:<br>Erik Diers<br>Neo Hornberger<br>Vincent Liam Grewer<br>Tim Ludwig<br>Alexander Schallenberg<br>Jan Unterhuber<br><br>Grafiker:<br>Adrian Hapke<br>Marc Henkes<br>Leon Horst<br>Tobias Langel<br>Enrico Orru<br>Paul Prielipp<br>Dorian Roter<br>Oliver Schomann<br>Daniel Zabin<br><br>Storygruppe:<br>Timon Brombach<br>Louis Konrad Mörsberger<br>Mervenur Seyhan<br>Sandra Stasch<br><br>Special Thanks to:<br>Kevin aka Manuels kleiner Bruder<br><br><br><br><br>Und Vielen Dank an den Großmeister<br>Marakus Mergardius!
+dialog.credtisdialog.lines=2
+dialog.credtisdialog.0=Du hast das Spiel durchgespielt und
+dialog.credtisdialog.1=bist würdig den Abspann zu sehen
