@@ -22,7 +22,7 @@ public class MenuCharacterSelection extends Menu {
 	public MenuCharacterSelection() {
 		final Dimension size = Statics.frameSize;
 		male = new RPGButton(maleIMG);
-		male.setBounds((int) (size.width * 0.35), 800, 200, 200);
+		male.setBounds((int) (size.width * 0.35), (int) (size.height * 0.7619047619047619), 200, 200);
 		male.addActionListener(new ActionListener() {
 			
 			@Override
@@ -34,7 +34,7 @@ public class MenuCharacterSelection extends Menu {
 		addComponent(male);
 		
 		female = new RPGButton(femaleIMG);
-		female.setBounds((int) (size.width * 0.55), 800, 200, 200);
+		female.setBounds((int) (size.width * 0.55), (int) (size.height * 0.7619047619047619), 200, 200);
 		female.addActionListener(new ActionListener() {
 			
 			@Override
