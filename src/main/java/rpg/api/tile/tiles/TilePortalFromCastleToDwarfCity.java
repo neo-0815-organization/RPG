@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromCastleToDwarfCity extends TilePortal {
 
 	public TilePortalFromCastleToDwarfCity() {
-		super("Zwergenstadt");
+		super("dwarf_city");
 	}
 
 	@Override

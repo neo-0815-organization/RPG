@@ -8,7 +8,7 @@ import rpg.api.tile.Tile;
 public class TileMineEntrance extends TilePortal {
 	
 	public TileMineEntrance() {
-		super("MörsbergBergwerk");
+		super("moersberg_mineshaft");
 		setSprite("mine_entrance", "mine_entrance");
 	}
 	

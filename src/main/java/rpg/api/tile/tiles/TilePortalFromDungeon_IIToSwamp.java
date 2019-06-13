@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromDungeon_IIToSwamp extends TilePortal{
 
 	public TilePortalFromDungeon_IIToSwamp() {
-		super("Sumpfebene");
+		super("swamp");
 	}
 	
 	@Override

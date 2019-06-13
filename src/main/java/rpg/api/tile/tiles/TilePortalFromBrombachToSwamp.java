@@ -4,10 +4,10 @@ import rpg.RPG;
 import rpg.api.eventhandling.EventType;
 import rpg.api.scene.Background;
 
-public class TilePortalToBrombachToSwamp extends TilePortal{
+public class TilePortalFromBrombachToSwamp extends TilePortal{
 
-	public TilePortalToBrombachToSwamp() {
-		super("Sumpfebene");
+	public TilePortalFromBrombachToSwamp() {
+		super("swamp");
 	}
 
 	@Override

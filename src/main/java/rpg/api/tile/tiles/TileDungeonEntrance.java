@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TileDungeonEntrance extends TilePortal {
 	
 	public TileDungeonEntrance() {
-		super("Seyhan");
+		super("seyhan");
 		setSprite("dungeon_entrance", "dungeon_entrance");
 	}
 	

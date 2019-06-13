@@ -9,7 +9,7 @@ import rpg.api.tile.Tile;
 public class TilePortalToSeyhan extends TilePortal {
 	
 	public TilePortalToSeyhan() {
-		super("Schallenberge");
+		super("schallenberge");
 		setSprite("portal_to_seyhan", SpriteTheme.SCHALLENBERGE, "portal_to_seyhan");
 	}
 	

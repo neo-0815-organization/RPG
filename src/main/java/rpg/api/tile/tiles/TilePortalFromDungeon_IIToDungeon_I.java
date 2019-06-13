@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromDungeon_IIToDungeon_I extends TilePortal{
 
 	public TilePortalFromDungeon_IIToDungeon_I() {
-		super("Dungeon_I");
+		super("dungeon_i");
 	}
 
 	@Override

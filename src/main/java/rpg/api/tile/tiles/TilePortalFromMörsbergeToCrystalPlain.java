@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromMörsbergeToCrystalPlain extends TilePortal{
 
 	public TilePortalFromMörsbergeToCrystalPlain() {
-		super("Kristallebene");
+		super("crystal_flatlands");
 	}
 
 	@Override

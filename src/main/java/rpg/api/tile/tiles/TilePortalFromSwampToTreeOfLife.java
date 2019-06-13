@@ -7,8 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromSwampToTreeOfLife extends TilePortal{
 
 	public TilePortalFromSwampToTreeOfLife() {
-		// TODO name?
-		super("TreeOfLife");
+		super("tree_of_life");
 	}
 
 	@Override
