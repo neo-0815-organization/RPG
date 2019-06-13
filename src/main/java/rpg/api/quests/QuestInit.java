@@ -13,7 +13,7 @@ import rpg.api.vector.ModifiableVec2D;
 
 public class QuestInit {
 	public static void initQuests() {
-		QuestHandler.addQuest(new Quest(0, -1, "beautifulWorld2", CharacterType.NONE, false, new BundledListener(new BundledListener.EventCondition() {
+		QuestHandler.addQuest(new Quest(0, -1, "crystal_flatlands", CharacterType.NONE, false, new BundledListener(new BundledListener.EventCondition() {
 			@Override
 			public boolean eventTriggered(Event e) {
 				return true;
@@ -34,7 +34,7 @@ public class QuestInit {
 			}
 		}).setStartText("quest.0.info"));
 		
-		QuestHandler.addQuest(new Quest(1, 0, "beautifulWorld2", CharacterType.NONE, false, new BundledListener(new BundledListener.EventCondition() {
+		QuestHandler.addQuest(new Quest(1, 0, "crystal_flatlands", CharacterType.NONE, false, new BundledListener(new BundledListener.EventCondition() {
 			@Override
 			public boolean eventTriggered(Event e) {
 				return true;
@@ -62,8 +62,8 @@ public class QuestInit {
 		GameField gameField = RPG.gameField;
 		
 		switch(RPG.gameField.getBackground().getName()) {
-		case "beautifulWorld2":
-			gameField.addEntity(new Person("Heinz", CharacterSheet.DRAFT_GUARFIAN, 0, "credtisdialog", ModifiableVec2D.createXY(7, 7)));
+		case "crystal_flatlands":
+			gameField.addEntity(new Person("Heinz", CharacterSheet.DRAFT_GUARFIAN, 0, "credtisdialog", ModifiableVec2D.createXY(10, 5)));
 			break;
 		}
 	}
