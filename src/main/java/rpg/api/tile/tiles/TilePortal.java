@@ -5,15 +5,18 @@ import rpg.api.eventhandling.EventType;
 import rpg.api.scene.Background;
 import rpg.api.tile.Tile;
 
-public class TileMineEntrance extends TilePortal {
+public class TilePortal extends Tile {
 	
-	public TileMineEntrance() {
-		super("MörsbergBergwerk");
-		setSprite("mine_entrance", "mine_entrance");
+	String destination;
+
+	public TilePortal(String destination) {
+		super();
+		this.destination = destination;
 	}
 	
 	@Override
 	public void triggerEvent(final EventType eventType, final Object... objects) {
 		RPG.gameField.save.background = new Background(destination);
 	}
+
 }
