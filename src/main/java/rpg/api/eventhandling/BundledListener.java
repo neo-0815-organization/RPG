@@ -91,8 +91,8 @@ public class BundledListener {
 		
 		private String unlocalizedName;
 		
-		public SpeakTo(String unlocalizedName) {
-			this.unlocalizedName = unlocalizedName;
+		public SpeakTo(String name) {
+			this.unlocalizedName = name + ".name";
 		}
 		@Override
 		public EventType getEventType() {

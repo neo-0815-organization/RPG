@@ -121,7 +121,7 @@ public class MenuSaves extends Menu {
 			openCharacterSelection = false;
 			openDevWorld = false;
 			
-			openSubMenu(new MenuProlog(20));
+			openSubMenu(new MenuProlog(20, true));
 			
 			setOpen(false);
 		}

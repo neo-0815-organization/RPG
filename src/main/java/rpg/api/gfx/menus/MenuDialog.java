@@ -21,7 +21,8 @@ public class MenuDialog extends Menu {
 	
 	private static final int    MAX_LINE_NUMBER = 13;
 	private final Dialog        dialog;
-	private final BufferedImage entityImage, playerImage;
+	private BufferedImage entityImage;
+	private final BufferedImage playerImage;
 	private final Graphics2D    dialogGraphics;
 
 	private int actualLineNumber = 0;
@@ -29,7 +30,11 @@ public class MenuDialog extends Menu {
 	public MenuDialog(final Dialog dialog, final Entity entity) {
 		this.dialog = dialog;
 
-		entityImage = ImageUtility.scale(entity.getSprite().getAnimation("walking/down").currentFrame(), 11);
+		try {
+			entityImage = ImageUtility.scale(entity.getSprite().getAnimation("walking/down").currentFrame(), 11);
+		} catch(NullPointerException e) {
+			entityImage = ImageUtility.scale(entity.getSprite().getAnimation("default").currentFrame(), 11);
+		}
 		playerImage = ImageUtility.scale(RPG.gameField.getPlayerController().getPlayer().getSprite().getAnimation("walking/down").currentFrame(), 11);
 
 		final int width = Statics.frameSize.width / 2 - 50, height = 360;
