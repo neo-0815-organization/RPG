@@ -6,17 +6,18 @@ import rpg.api.scene.Background;
 import rpg.api.tile.Tile;
 
 public class TilePortal extends Tile {
-	
-	String destination;
+	private final String destination;
+	private final double x;
+	private final double y;
 
-	public TilePortal(String destination) {
-		super();
+	public TilePortal(String destination, double x, double y) {
 		this.destination = destination;
+		this.x = x;
+		this.y = y;
 	}
 	
 	@Override
 	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
+		RPG.gameField.save.changeBackground(destination);
 	}
-
 }

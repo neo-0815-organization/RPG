@@ -10,8 +10,5 @@ public class TilePortalFromMörsbergMineToDungeon_I extends TilePortal {
 		super("dungeon_i");
 	}
 
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+	
 }

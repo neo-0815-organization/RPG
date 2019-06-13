@@ -10,8 +10,4 @@ public class TilePortalFromSwampToTreeOfLife extends TilePortal{
 		super("tree_of_life");
 	}
 
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
 }

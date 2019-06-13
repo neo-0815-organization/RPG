@@ -8,10 +8,8 @@ public class TilePortalFromCrystalPlainToMörsberge  extends TilePortal{
 
 	public TilePortalFromCrystalPlainToMörsberge() {
 		super("moersberge");
+		setSprite("train", "train");
 	}
 
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+	
 }

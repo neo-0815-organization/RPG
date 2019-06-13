@@ -10,8 +10,5 @@ public class TilePortalFromBrombachToMörsberge extends TilePortal{
 		super("moersberge");
 	}
 
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+	
 }

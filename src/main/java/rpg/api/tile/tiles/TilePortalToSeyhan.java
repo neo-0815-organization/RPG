@@ -12,9 +12,5 @@ public class TilePortalToSeyhan extends TilePortal {
 		super("schallenberge");
 		setSprite("portal_to_seyhan", SpriteTheme.SCHALLENBERGE, "portal_to_seyhan");
 	}
-	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+
 }

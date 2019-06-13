@@ -10,8 +10,5 @@ public class TilePortalFromSchallenbergeToDune extends TilePortal{
 		super("bay_of_the_stranded");
 	}
 
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+	
 }

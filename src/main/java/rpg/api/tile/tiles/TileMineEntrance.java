@@ -12,8 +12,5 @@ public class TileMineEntrance extends TilePortal {
 		setSprite("mine_entrance", "mine_entrance");
 	}
 	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+
 }

@@ -10,8 +10,5 @@ public class TilePortalFromDwarfCityToCastle extends TilePortal{
 		super("castle");
 	}
 
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+	
 }

@@ -10,9 +10,6 @@ public class TilePortalFromDungeon_IIToSwamp extends TilePortal{
 		super("swamp");
 	}
 	
-	@Override
-	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.background = new Background(destination);
-	}
+	
 
 }
