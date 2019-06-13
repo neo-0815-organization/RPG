@@ -1,14 +1,10 @@
 package rpg.api.tile.tiles;
 
-import rpg.RPG;
-import rpg.api.eventhandling.EventType;
-import rpg.api.scene.Background;
-
 public class TileDungeonEntrance extends TilePortal {
 	
 	public TileDungeonEntrance() {
-		super("seyhan");
+		super("seyhan", 0, 0);
+		
 		setSprite("dungeon_entrance", "dungeon_entrance");
 	}
-	
 }

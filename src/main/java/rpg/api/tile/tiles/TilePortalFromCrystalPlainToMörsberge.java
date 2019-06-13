@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromCrystalPlainToMörsberge  extends TilePortal{
 
 	public TilePortalFromCrystalPlainToMörsberge() {
-		super("moersberge");
+		super("moersberge",0,0);
 		setSprite("train", "train");
 	}
 

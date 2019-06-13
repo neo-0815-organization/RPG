@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromSwampToBrombach extends TilePortal{
 
 	public TilePortalFromSwampToBrombach() {
-		super("brombach");
+		super("brombach",0,0);
 	}
 
 	

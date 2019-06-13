@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromTreeOfLifeToSwamp extends TilePortal{
 
 	public TilePortalFromTreeOfLifeToSwamp() {
-		super("swamp");
+		super("swamp",0,0);
 	}
 
 	

@@ -16,7 +16,7 @@ import rpg.api.localization.INameable;
 import rpg.api.scene.Camera;
 import rpg.api.tile.Fluid;
 import rpg.api.tile.Tile;
-import rpg.api.tile.tiles.TileCastle;
+import rpg.api.tile.tiles.TilePortal;
 import rpg.api.units.DistanceValue;
 import rpg.api.vector.ModifiableVec2D;
 import rpg.api.vector.Vec2D;
@@ -233,7 +233,7 @@ public abstract class Entity implements INameable, ISprite, ICollideable, EventT
 		tiles.forEach(t -> t.triggerEvent(EventType.COLLISION_EVENT, t, this));
 		entities.forEach(e -> triggerEvent(EventType.COLLISION_EVENT, this, e));
 		
-		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof TileCastle)) || location.getValueX() < 0 || location.getValueY() < 0 || location.getX().getValuePixel() + getWidth() > RPG.gameField.save.background.getWidth() || location.getY().getValuePixel() + getHeight() > RPG.gameField.save.background.getHeight()) location = loc;
+		if(entities.stream().anyMatch(e -> e.solid) || tiles.stream().anyMatch(t -> !(t instanceof TilePortal)) || location.getValueX() < 0 || location.getValueY() < 0 || location.getX().getValuePixel() + getWidth() > RPG.gameField.save.background.getWidth() || location.getY().getValuePixel() + getHeight() > RPG.gameField.save.background.getHeight()) location = loc;
 		
 		sprite.update(deltaTime);
 		

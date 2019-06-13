@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromDungeon_IToMörsbergMine extends TilePortal{
 
 	public TilePortalFromDungeon_IToMörsbergMine() {
-		super("moersberge_mineshaft");
+		super("moersberge_mineshaft",0,0);
 	}
 
 	

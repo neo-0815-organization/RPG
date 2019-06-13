@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromSchallenbergeToBrombach extends TilePortal{
 
 	public TilePortalFromSchallenbergeToBrombach() {
-		super("brombach");
+		super("brombach",0,0);
 	}
 
 	

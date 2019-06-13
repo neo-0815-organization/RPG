@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromSchallenbergeToDune extends TilePortal{
 
 	public TilePortalFromSchallenbergeToDune() {
-		super("bay_of_the_stranded");
+		super("bay_of_the_stranded",0,0);
 	}
 
 	

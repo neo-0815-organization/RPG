@@ -61,10 +61,10 @@ public class QuestInit {
 	public static void initPersons() {
 		GameField gameField = RPG.gameField;
 		
-		switch(RPG.gameField.getBackground().getName()) {
-		case "crystal_flatlands":
-			gameField.addEntity(new Person("Heinz", CharacterSheet.DRAFT_GUARFIAN, 0, "credtisdialog", ModifiableVec2D.createXY(10, 5)));
-			break;
+		switch(gameField.getBackground().getName()) {
+			case "crystal_flatlands":
+				gameField.addEntity(new Person("Heinz", CharacterSheet.DRAFT_GUARFIAN, 0, "credtisdialog", ModifiableVec2D.createXY(10, 5)));
+				break;
 		}
 	}
 }

@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromCrystalPlainToBrombach extends TilePortal{
 
 	public TilePortalFromCrystalPlainToBrombach() {
-		super("brombach");
+		super("brombach",0,0);
 		setHitbox(24, 1);
 	}
 

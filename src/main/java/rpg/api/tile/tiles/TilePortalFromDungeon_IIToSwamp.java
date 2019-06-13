@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromDungeon_IIToSwamp extends TilePortal{
 
 	public TilePortalFromDungeon_IIToSwamp() {
-		super("swamp");
+		super("swamp",0,0);
 	}
 	
 	

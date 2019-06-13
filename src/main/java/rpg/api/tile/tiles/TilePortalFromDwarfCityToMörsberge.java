@@ -7,7 +7,7 @@ import rpg.api.scene.Background;
 public class TilePortalFromDwarfCityToMörsberge extends TilePortal{
 
 	public TilePortalFromDwarfCityToMörsberge() {
-		super("moersberge");
+		super("moersberge",0,0);
 	}
 
 	

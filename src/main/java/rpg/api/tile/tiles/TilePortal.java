@@ -18,6 +18,6 @@ public class TilePortal extends Tile {
 	
 	@Override
 	public void triggerEvent(final EventType eventType, final Object... objects) {
-		RPG.gameField.save.changeBackground(destination);
+		RPG.gameField.save.changeBackground(destination, x, y);
 	}
 }

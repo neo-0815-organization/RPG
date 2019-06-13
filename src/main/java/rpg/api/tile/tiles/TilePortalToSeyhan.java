@@ -1,16 +1,12 @@
 package rpg.api.tile.tiles;
 
-import rpg.RPG;
-import rpg.api.eventhandling.EventType;
 import rpg.api.gfx.SpriteTheme;
-import rpg.api.scene.Background;
-import rpg.api.tile.Tile;
 
 public class TilePortalToSeyhan extends TilePortal {
 	
 	public TilePortalToSeyhan() {
-		super("schallenberge");
+		super("schallenberge",0,0);
+		
 		setSprite("portal_to_seyhan", SpriteTheme.SCHALLENBERGE, "portal_to_seyhan");
 	}
-
 }
